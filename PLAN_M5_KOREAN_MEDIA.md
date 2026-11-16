@@ -135,11 +135,11 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 
 **Accept:** both existing v1 files still validate with 0 errors; a hand-made 3-entry v2 sample validates; a sample with a non-allowlisted URL, a missing citation, or a dialogue missing the phrase produces exactly the expected errors. Use the DEBUG launch validation path, since D1 = No tests.
 
-### K2 — Content: `ko_media.json` (about 40 entries)
+### K2 — Content: `ko_media.json` (about 80 entries)
 **Files:** `Resources/Decks/ko_media.json`; a verification table in the PR description or commit message.
 **Requires:** an agent with **web access** (to verify references), or the owner.
 
-1. Pick ~40 phrases from the candidate list (§7), plus owner additions. Order them by `rank` = how common they are in everyday speech (most useful first).
+1. Pick **~80 phrases** (owner direction 2026-11-16: large, varied pool): the 40 candidates in §7 plus ~40 more, found while researching the priority artists and shows, across greetings, romance, friendship, conflict, encouragement, slang and address terms. Order them by `rank` = how common they are in everyday speech (most useful first).
 2. For each phrase, write: meanings, RR romanization, register, notes (polite/casual counterparts), and **one original dialogue** (2–3 lines).
 3. For each phrase, find **0–3 verified** media references, preferring well-known titles. For every reference:
    - open an official lyrics or episode source
@@ -254,7 +254,7 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 The K2 author checks the romanization of every entry against the official Revised Romanization rules before finalising. `-` marks register-neutral items.
 
 ## 8. Assumptions / open questions
-- **ASSUMPTION:** ~40 entries is the right size for the first release; more can be added in batches (ranks are append-only and ids are never reused).
+- **DECIDED (owner, 2026-11-16):** a large pool, ~80 entries in the first release; more can be added in batches (ranks are append-only and ids are never reused).
 - **DECIDED (owner, 2026-11-16):** no external links; references show the song or show name only.
 - **DECIDED (owner, 2026-11-16):** content priorities as in K2 step 5 (BTS, LE SSERAFIM, TWICE, NewJeans, ILLIT and newer groups; reality shows such as Kian's Bizarre B&B and The Devil's Plan first, then popular dramas).
 - **DECIDED (owner, 2026-11-16):** no audio clips in "My snippet", now or later. It stays text-only.

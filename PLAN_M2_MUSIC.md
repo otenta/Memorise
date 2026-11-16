@@ -3,7 +3,7 @@
 - **Date:** 2026-11-16
 - **Owner of this file:** planner. Implementor agents execute segments in order and tick the tracker (§4). PLAN.md §16 and `CLAUDE.md` apply. That includes the frozen persisted coding rule from G1: new `DeckOptions` cases are fine; renaming cases or changing payloads is not.
 - **Prerequisites:** M1.1 G1–G5 implemented (done), G6 device checks recommended. M2 and M5 are independent and can run in either order.
-- **Testing stance:** D1 = No (no test target). Each segment therefore has **manual or DEBUG-check acceptance**. M2 adds the most algorithmic code so far (interval spelling, the audio synth, pitch detection). See §6 D1 for the recommendation.
+- **Testing:** out of scope for this plan; the tester agent owns it (owner decision 2026-11-16). Segments give acceptance criteria and reference examples only.
 
 ---
 
@@ -129,7 +129,7 @@ M2-0a → M2-0c are strictly sequential and change no behaviour. After M2-1, the
 3. `Pitch` (MIDI note): `midi: Int`, `pitchClass`, `octave` (scientific: MIDI 60 = C4), `frequency` (A4 = 440 Hz, 12-TET), `nearest(toFrequency:) -> (Pitch, cents)`.
 4. `Fretboard.positions(of pitchClass:, strings:, tuning:, fretRange:) -> [(string, fret)]`, and `Fretboard.midi(string:, fret:, tuning:)`.
 
-**Accept:** a DEBUG self-check `TheoryCheck.run()`, run at launch next to `PersistedFormatCheck`, asserts the transposition examples above, plus every interval from each of the 7 naturals giving the correct pitch class, plus `frequency(69) == 440`.
+**Accept:** the transposition examples above hold, every interval from each of the 7 naturals gives the correct pitch class, and `frequency(69) == 440`. These are reference examples for the tester.
 
 ### M2-2 — "Name the note" deck (reverse cards)
 **Deck:** `music.fretboard.names` · kind `.fretboardNames` · title "Name the Note" · subtitle "See a fret, say the note". Options: reuses `.fretboard(FretboardOptions)`.
@@ -169,7 +169,7 @@ M2-0a → M2-0c are strictly sequential and change no behaviour. After M2-1, the
 4. Answer: the target note name (e.g. "E"), with every target position marked within a playable window: same string, or the next 1–2 higher strings, within root fret −4…+5. The nearest/typical shape is highlighted (`.answer`) and the others are `.secondary`. Caption: "major 3rd = 4 semitones".
 5. Pattern penalty: same interval as previous ×0.35; same root string ×0.6.
 
-**Accept:** over 50 prompts with Mixed spelling, no double accidental appears; each answer's marked positions sound the interval (verify against the theory check and on guitar for 10 random cards).
+**Accept:** over 50 prompts with Mixed spelling, no double accidental appears; each answer's marked positions sound the interval (verify on guitar for 10 random cards).
 
 ### M2-5 — Note playback (plucked-string synth)
 **Goal:** hear the exact pitch of the answer (string + fret → MIDI). Fully offline, no samples.
@@ -265,7 +265,7 @@ M2-0a → M2-0c are strictly sequential and change no behaviour. After M2-1, the
 | M2-0a Core deck hooks (F10.1) | ☐ | no behaviour change |
 | M2-0b Deck-UI registry (F10.2) | ☐ | no behaviour change |
 | M2-0c Tuning plumbing + presets (F10.3) | ☐ | key prefix rule |
-| M2-1 Theory: intervals, spelling, Pitch | ☐ | DEBUG `TheoryCheck` |
+| M2-1 Theory: intervals, spelling, Pitch | ☐ | |
 | M2-2 Name the Note deck | ☐ | |
 | M2-3 Find All deck | ☐ | |
 | M2-4 Intervals deck | ☐ | new options case |
@@ -290,5 +290,5 @@ New persisted fields and cases: `FretboardOptions.tuning`, `DeckOptions.interval
 - **ASSUMPTION:** mic mode auto-grades **only correct** answers; timeouts fall back to self-grading. This is honest, because pitch detection can miss a correctly played note.
 - **ASSUMPTION:** synthesised plucked tones (no samples) are good enough for M2; a sampler is a later upgrade.
 - **ASSUMPTION:** the five tuning presets are enough; custom tunings come later.
-- **D1 (re-ask, recommended Yes for M2):** M2 adds interval spelling, a DSP synth and pitch detection. The DEBUG `TheoryCheck` covers the theory, but YIN accuracy and the engine's `answerDetected` timing are exactly what unit tests catch cheaply: feeding synthetic sine/pluck buffers to the detector, and replaying with `ManualClock`. Recommendation: allow a small `MemoriseCoreTests` target for M2-1 and the engine API, and keep the DSP checks as an app-side DEBUG harness.
+- **DECIDED (owner, 2026-11-16):** testing is handled by the tester agent; this plan contains no test work.
 - **OPEN (owner):** should mic mode also exist for **Find All**? It would need tracking a sequence of distinct octaves; it is left out of M2.
