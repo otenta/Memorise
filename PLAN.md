@@ -840,7 +840,7 @@ Determinism: no test may depend on wall-clock time or unseeded randomness.
 
 Every item below should only need: new `CardContent` case(s), a deck generator/loader, prompt/answer views, optional pattern rules. The engine, scheduler, stats, summary and history are reused as-is.
 
-**M2 — Music fundamentals+**
+**M2 — Music fundamentals+**: planned in [PLAN_M2_MUSIC.md](PLAN_M2_MUSIC.md) (M2-0a…M2-8, starting with F10 deck extensibility and alternate tunings).
 - Reverse cards: fretboard position shown → name the note.
 - "Find all": play every A on the neck (answer shows all positions; one timing).
 - Intervals on the fretboard (play a major 3rd above this note).
@@ -920,3 +920,4 @@ _(Agents append dated entries here: decision, reason, segment.)_
 - 2026-11-16 · M1.1 R2 · G1–G5 code implemented. G1: wire shape captured from the M1 build before editing; `FretboardOptions.strings` and `VocabOptions.tags` are now encoded sorted (decode unchanged) so `PersistedFormatCheck` byte comparison is deterministic (Set order is per-process). `SessionConfig` equality/hash exclude `recoveredFields`. G5: timing log + DEBUG-simulator seeder added; measurements pending (owner). G6 pending (owner, on device).
 - 2026-11-16 · Planner · Added milestone M5 (K-pop/K-drama phrases with a reveal snippet panel), planned as K1–K5 in PLAN_M5_KOREAN_MEDIA.md. Bundled content excludes lyrics, transcripts and clips; references must be verified with citations; personal snippets are stored on-device only.
 - 2026-11-16 · Owner/Planner · M5: no external links (names only, app stays offline); no audio clips in My snippet; content priority BTS, LE SSERAFIM, TWICE, NewJeans, ILLIT and newer groups, then reality shows (Kian's Bizarre B&B, The Devil's Plan), then popular dramas. Show references may be owner-verified (`citation: "owner"`).
+- 2026-11-16 · Planner · M2 planned in PLAN_M2_MUSIC.md. F10 is split into M2-0a (core hooks; `present(options:)` replaces the F2 `randomizeSpelling` flag), M2-0b (app DeckUI registry) and M2-0c (tuning presets; standard keys unchanged, other tunings use the `@<tuning>` key prefix). New decks: Name the Note, Find All, Intervals, Interval Ear. Capabilities: Karplus–Strong playback and YIN mic answer (auto-grades correct only).

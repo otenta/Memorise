@@ -62,7 +62,7 @@ If D1 is **No**, skip F1 and drop the "Tests" step of each segment. The fixes th
 | F7 Stats tab loading | P2-7 (phase A), P3-7 | ☑ | phase B deferred |
 | F8 Robustness | P2-4 (decks, recorder), P2-5 | ☑ | |
 | F9 Low / polish batch | P3-1..5, P4 | ☑ | P4-d n/a (F1 skipped) |
-| F10 Deck extensibility (M2-0) | P2-8 | deferred | design outline only |
+| F10 Deck extensibility (M2-0) | P2-8 | planned | → PLAN_M2_MUSIC.md M2-0a/0b/0c |
 
 ---
 
@@ -303,6 +303,7 @@ One commit, or one per bullet if preferred. Each fix is small.
 ---
 
 ### F10 — Deck extensibility (P2-8) · **first task of M2, design only here**
+> **Superseded by [PLAN_M2_MUSIC.md](PLAN_M2_MUSIC.md) M2-0a/0b/0c** (2026-11-16). The outline below is kept for history.
 Do not implement in M1.1. Outline for the M2 planner pass:
 1. `Deck` gains:
    - `func present(_ card: Card, options: DeckOptions, using rng: inout SplitMix64) -> Card`; F2's prompt flag can then be removed
