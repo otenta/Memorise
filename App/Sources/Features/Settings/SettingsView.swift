@@ -36,24 +36,24 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Note names", selection: $s.noteNaming) {
+                    Picker(selection: $s.noteNaming) {
                         Text("Letter (A)").tag(NoteNaming.letter)
                         Text("Solfège (La)").tag(NoteNaming.solfege)
                         Text("Both (A (La))").tag(NoteNaming.both)
-                    }
-                    Picker("Seventh degree", selection: $s.solfegeVariant) {
+                    } label: { SettingLabel("Note names", icon: "music.note", colors: Subject.music.colors) }
+                    Picker(selection: $s.solfegeVariant) {
                         Text("Si").tag(SolfegeVariant.si)
                         Text("Ti").tag(SolfegeVariant.ti)
-                    }
-                    Toggle("Left-handed", isOn: $s.leftHanded)
-                    Picker("String order", selection: $s.highEOnTop) {
+                    } label: { SettingLabel("Seventh degree", icon: "7.circle.fill", colors: [Theme.violet, Theme.pink]) }
+                    Toggle(isOn: $s.leftHanded) { SettingLabel("Left-handed", icon: "hand.raised.fill", colors: [Theme.amber, .orange]) }
+                    Picker(selection: $s.highEOnTop) {
                         Text("High E on top (tab)").tag(true)
                         Text("Low E on top").tag(false)
-                    }
-                    Picker("Max fret for new setups", selection: $s.defaultMaxFret) {
+                    } label: { SettingLabel("String order", icon: "line.3.horizontal", colors: [Theme.teal, Theme.indigo]) }
+                    Picker(selection: $s.defaultMaxFret) {
                         ForEach(FretboardOptions.maxFretPresets, id: \.self) { Text("\($0)").tag($0) }
-                    }
-                    Toggle("Show string hint (low E…)", isOn: $s.showStringHint)
+                    } label: { SettingLabel("Max fret for new setups", icon: "ruler.fill", colors: [Theme.indigo, Theme.teal]) }
+                    Toggle(isOn: $s.showStringHint) { SettingLabel("Show string hint (low E…)", icon: "lightbulb.fill", colors: [Theme.amber, Theme.coral]) }
                 } header: {
                     Text("Music")
                 } footer: {
@@ -61,19 +61,28 @@ struct SettingsView: View {
                 }
 
                 Section("Korean") {
-                    Toggle("Auto-play pronunciation", isOn: $s.autoPlayPronunciation)
-                    VStack(alignment: .leading) {
-                        Text("Speech rate")
+                    Toggle(isOn: $s.autoPlayPronunciation) { SettingLabel("Auto-play pronunciation", icon: "speaker.wave.2.fill", colors: Subject.korean.colors) }
+                    VStack(alignment: .leading, spacing: 10) {
+                        SettingLabel("Speech rate", icon: "metronome.fill", colors: [Theme.pink, Theme.violet])
                         Slider(value: $s.speechRate, in: 0.2...0.6) {
                             Text("Speech rate")
                         } minimumValueLabel: {
-                            Image(systemName: "tortoise")
+                            Image(systemName: "tortoise.fill").foregroundStyle(.secondary)
                         } maximumValueLabel: {
-                            Image(systemName: "hare")
+                            Image(systemName: "hare.fill").foregroundStyle(.secondary)
+                        }
+                        .tint(Theme.pink)
+                    }
+                    .padding(.vertical, 4)
+                    Button { env.speech.speak("안녕하세요", rate: s.speechRate) } label: {
+                        HStack {
+                            SettingLabel("Test voice", icon: "waveform", colors: [Theme.coral, Theme.amber])
+                            Spacer()
+                            Text("안녕하세요").font(.subheadline.weight(.semibold)).foregroundStyle(Subject.korean.gradient)
                         }
                     }
-                    Button("Test voice") { env.speech.speak("안녕하세요", rate: s.speechRate) }
-                    Toggle("Show romanization on reveal", isOn: $s.showRomanization)
+                    .foregroundStyle(.primary)
+                    Toggle(isOn: $s.showRomanization) { SettingLabel("Show romanization on reveal", icon: "character.textbox", colors: [Theme.violet, Theme.pink]) }
                     if !env.speech.hasKoreanVoice {
                         Text("No Korean voice installed. Add one in Settings → Accessibility → Spoken Content → Voices → Korean.")
                             .font(.footnote).foregroundStyle(.secondary)
@@ -81,9 +90,9 @@ struct SettingsView: View {
                 }
 
                 Section("Session") {
-                    Toggle("Tap anywhere for OK", isOn: $s.tapAnywhereForOK)
-                    Toggle("Show timer during prompt", isOn: $s.showTimer)
-                    Toggle("Haptics", isOn: $s.hapticsEnabled)
+                    Toggle(isOn: $s.tapAnywhereForOK) { SettingLabel("Tap anywhere to reveal", icon: "hand.tap.fill", colors: [Theme.indigo, Theme.violet]) }
+                    Toggle(isOn: $s.showTimer) { SettingLabel("Show timer during prompt", icon: "stopwatch.fill", colors: [Theme.amber, .orange]) }
+                    Toggle(isOn: $s.hapticsEnabled) { SettingLabel("Haptics", icon: "iphone.radiowaves.left.and.right", colors: [Theme.mint, Theme.teal]) }
                 }
 
                 Section {
@@ -92,26 +101,31 @@ struct SettingsView: View {
                             Task { await prepareExport() }
                         } label: {
                             HStack {
-                                Text("Export data")
+                                SettingLabel("Export data", icon: "tray.and.arrow.up.fill", colors: [Theme.teal, Theme.mint])
                                 if exporting { Spacer(); ProgressView() }
                             }
                         }
+                        .foregroundStyle(.primary)
                         .disabled(exporting)
                         .accessibilityIdentifier("exportButton")
                     } else {
                         ShareLink(items: exportURLs) {
-                            Label("Share export (JSON + CSV)", systemImage: "square.and.arrow.up")
+                            SettingLabel("Share export (JSON + CSV)", icon: "square.and.arrow.up.fill", colors: [Theme.mint, Theme.teal])
                         }
+                        .foregroundStyle(.primary)
+                        .transition(.scale(scale: 0.9).combined(with: .opacity))
                     }
                     if let exportError {
                         Text(exportError).font(.footnote).foregroundStyle(.red)
                     }
-                    Menu("Reset stats…") {
+                    Menu {
                         ForEach(env.catalog.decks, id: \.id) { deck in
                             Button(deck.title, role: .destructive) { resetTarget = .deck(deck.id, deck.title) }
                         }
                         Divider()
                         Button("All decks", role: .destructive) { resetTarget = .all }
+                    } label: {
+                        SettingLabel("Reset stats…", icon: "arrow.counterclockwise", colors: [Theme.rose, Theme.coral])
                     }
                     .foregroundStyle(.red)
                     .accessibilityIdentifier("resetMenu")
@@ -123,7 +137,7 @@ struct SettingsView: View {
 
                 #if DEBUG && targetEnvironment(simulator)
                 Section("Developer") {
-                    Button(seeding ? "Seeding…" : "Seed 1 year of synthetic history") {
+                    Button {
                         seeding = true
                         Task {
                             do {
@@ -134,16 +148,26 @@ struct SettingsView: View {
                             seeding = false
                             env.dataDidChange()
                         }
+                    } label: {
+                        HStack {
+                            SettingLabel(seeding ? "Seeding…" : "Seed 1 year of synthetic history", icon: "hammer.fill", colors: [.gray, .secondary])
+                            if seeding { Spacer(); ProgressView() }
+                        }
                     }
+                    .foregroundStyle(.primary)
                     .disabled(seeding)
                 }
                 #endif
 
-                Section("About") {
-                    LabeledContent("Version", value: Self.version)
-                    LabeledContent("Source", value: "github.com/…/Memorise")
+                Section {
+                    aboutCard
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background { AuroraBackground(colors: [Theme.violet, Theme.teal], intensity: 0.6) }
+            .animation(Theme.spring, value: exportURLs)
             .navigationTitle("Settings")
             .onChange(of: env.dataVersion) { exportURLs = [] }
             .confirmationDialog(resetTarget?.title ?? "", isPresented: Binding(
@@ -155,6 +179,26 @@ struct SettingsView: View {
                 Text("This permanently deletes the history and statistics. It cannot be undone.")
             }
         }
+    }
+
+    private var aboutCard: some View {
+        VStack(spacing: 10) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(LinearGradient(colors: [Theme.indigo, Theme.violet, Theme.pink], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .frame(width: 64, height: 64)
+                    .shadow(color: Theme.violet.opacity(0.4), radius: 10, y: 6)
+                Image(systemName: "rectangle.stack.fill")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.white)
+            }
+            Text("Memorise").font(.system(.title3, design: .rounded, weight: .bold))
+            Text("Version \(Self.version)").font(.footnote.monospacedDigit()).foregroundStyle(.secondary)
+            Text("github.com/…/Memorise").font(.caption).foregroundStyle(.tertiary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+        .accessibilityElement(children: .combine)
     }
 
     private static let version: String = {
@@ -197,6 +241,34 @@ struct SettingsView: View {
         }
         resetTarget = nil
         env.dataDidChange()
+    }
+}
+
+/// System-Settings-style row label with a gradient icon tile.
+struct SettingLabel: View {
+    let title: String
+    let icon: String
+    let colors: [Color]
+
+    init(_ title: String, icon: String, colors: [Color]) {
+        self.title = title
+        self.icon = icon
+        self.colors = colors
+    }
+
+    var body: some View {
+        Label {
+            Text(title)
+        } icon: {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 29, height: 29)
+                .background(
+                    LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing),
+                    in: RoundedRectangle(cornerRadius: 8, style: .continuous)
+                )
+        }
     }
 }
 

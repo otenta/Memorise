@@ -40,9 +40,11 @@ struct FretboardPromptView: View {
     var body: some View {
         let display = settings.musicDisplay
         VStack(spacing: 12) {
-            Text("Play").font(.title3).foregroundStyle(.secondary)
+            Text("PLAY").font(.caption.weight(.heavy)).tracking(3).foregroundStyle(.secondary)
             Text(Self.deck.noteText(prompt, settings: display))
-                .font(.system(size: 72, weight: .bold, design: .rounded))
+                .font(.system(size: 88, weight: .heavy, design: .rounded))
+                .foregroundStyle(Subject.music.gradient)
+                .shadow(color: Theme.violet.opacity(0.3), radius: 12, y: 6)
                 .lineLimit(1).minimumScaleFactor(0.4)
             Text("on \(Self.deck.stringText(prompt, settings: display))")
                 .font(.title.weight(.semibold))
@@ -62,7 +64,8 @@ struct FretboardAnswerView: View {
         let name = prompt.spelling.displayName
         VStack(spacing: 16) {
             Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
-                .font(.largeTitle.weight(.bold))
+                .font(.system(size: 44, weight: .heavy, design: .rounded))
+                .foregroundStyle(Subject.music.gradient)
             FretboardView(
                 maxFret: maxFret,
                 marks: prompt.answerFrets.map { FretMark(string: prompt.stringNumber, fret: $0, label: name) },
@@ -87,7 +90,9 @@ struct VocabPromptView: View {
             switch prompt.direction {
             case .koToEn:
                 Text(e.hangul)
-                    .font(.system(size: 64, weight: .semibold))
+                    .font(.system(size: 72, weight: .bold))
+                    .foregroundStyle(Subject.korean.gradient)
+                    .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
                     .lineLimit(2).minimumScaleFactor(0.4)
                     .multilineTextAlignment(.center)
             case .enToKo:
@@ -111,7 +116,8 @@ struct VocabAnswerView: View {
         let settings = env.settings
         VStack(spacing: 14) {
             HStack(spacing: 12) {
-                Text(e.hangul).font(.system(size: 48, weight: .semibold))
+                Text(e.hangul).font(.system(size: 52, weight: .bold))
+                    .foregroundStyle(Subject.korean.gradient)
                     .lineLimit(2).minimumScaleFactor(0.5)
                 speakButton(e.hangul, label: "Play pronunciation")
             }
@@ -130,7 +136,7 @@ struct VocabAnswerView: View {
                 }
                 .padding(12)
                 .frame(maxWidth: .infinity)
-                .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 12))
+                .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
             if let notes = e.notes {
                 Text(notes).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
@@ -142,9 +148,15 @@ struct VocabAnswerView: View {
         Button {
             env.speech.speak(text, rate: env.settings.speechRate)
         } label: {
-            Image(systemName: "speaker.wave.2.fill").font(.title3).frame(minWidth: 44, minHeight: 44)
+            Image(systemName: "speaker.wave.2.fill")
+                .font(.headline)
+                .foregroundStyle(.white)
+                .frame(width: 40, height: 40)
+                .background(Subject.korean.gradient, in: Circle())
+                .shadow(color: Theme.pink.opacity(0.35), radius: 6, y: 3)
+                .frame(minWidth: 44, minHeight: 44)
         }
-        .buttonStyle(.borderless)
+        .buttonStyle(PressableStyle(scale: 0.88))
         .accessibilityLabel(label)
         .accessibilityIdentifier("speakButton")
     }

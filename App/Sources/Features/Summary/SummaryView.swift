@@ -12,6 +12,7 @@ struct SummaryView: View {
     @Environment(AppEnvironment.self) private var env
     @State private var showAll = false
     @State private var labels: [ItemKey: String] = [:]
+    @State private var appeared = false
 
     var body: some View {
         List {
@@ -29,9 +30,14 @@ struct SummaryView: View {
                         .accessibilityIdentifier("recoveredSettingsCaption")
                 }
             }
-            Section { tiles }
-                .listRowInsets(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-                .listRowBackground(Color.clear)
+            Section {
+                VStack(spacing: 14) {
+                    hero
+                    tiles
+                }
+            }
+            .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 8, trailing: 4))
+            .listRowBackground(Color.clear)
 
             if !chartRows.isEmpty {
                 Section("Response times") { chart }
@@ -65,10 +71,52 @@ struct SummaryView: View {
                 ContentUnavailableView("No cards answered", systemImage: "rectangle.stack")
             }
         }
+        .scrollContentBackground(.hidden)
+        .background { AuroraBackground(colors: colors, intensity: 0.7) }
         .navigationTitle(summary.status == .abandoned ? "Session ended" : "Summary")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: summary.sessionID) { buildLabels() }
         .accessibilityIdentifier("summaryView")
+    }
+
+    private var colors: [Color] { deck?.subject.colors ?? Subject.music.colors }
+
+    // MARK: Hero
+
+    private var hero: some View {
+        let accuracy = summary.accuracy ?? 0
+        let (headline, symbol): (String, String) = switch accuracy {
+        case 0.95...: ("Flawless!", "crown.fill")
+        case 0.8..<0.95: ("Great run!", "flame.fill")
+        case 0.6..<0.8: ("Solid practice", "hand.thumbsup.fill")
+        default: ("Keep at it", "figure.strengthtraining.traditional")
+        }
+        return HStack(spacing: 20) {
+            ZStack {
+                RingGauge(value: accuracy, colors: [Theme.mint, Theme.teal, Theme.indigo], lineWidth: 12)
+                VStack(spacing: 0) {
+                    Text(Fmt.percent(summary.accuracy))
+                        .font(.system(.title2, design: .rounded, weight: .heavy).monospacedDigit())
+                    Text("accuracy").font(.caption2).foregroundStyle(.secondary)
+                }
+            }
+            .frame(width: 104, height: 104)
+            VStack(alignment: .leading, spacing: 6) {
+                Image(systemName: symbol)
+                    .font(.title2)
+                    .foregroundStyle(LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .symbolEffect(.bounce, value: appeared)
+                Text(summary.rows.isEmpty ? "Nothing yet" : headline)
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+                Text(deck?.title ?? "Session")
+                    .font(.subheadline).foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(18)
+        .glassCard(tint: colors[0])
+        .onAppear { appeared = true }
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: Tiles
@@ -76,20 +124,22 @@ struct SummaryView: View {
     private var tiles: some View {
         Grid(horizontalSpacing: 10, verticalSpacing: 10) {
             GridRow {
-                StatTile(title: "Cards", value: "\(summary.gradedCount)")
+                StatTile(title: "Cards", value: "\(summary.gradedCount)", systemImage: "rectangle.stack.fill", tint: colors[0])
                 StatTile(
                     title: "Accuracy", value: Fmt.percent(summary.accuracy),
                     delta: Fmt.delta(percentPoints: summary.accuracyDelta),
-                    deltaColor: Palette.deltaColor(summary.accuracyDelta, lowerIsBetter: false, zero: Fmt.isZeroDelta(percentPoints:))
+                    deltaColor: Palette.deltaColor(summary.accuracyDelta, lowerIsBetter: false, zero: Fmt.isZeroDelta(percentPoints:)),
+                    systemImage: "target", tint: Theme.mint
                 )
             }
             GridRow {
                 StatTile(
                     title: "Median time", value: Fmt.seconds(summary.medianMs),
                     delta: Fmt.delta(ms: summary.medianDeltaMs),
-                    deltaColor: Palette.deltaColor(summary.medianDeltaMs, lowerIsBetter: true, zero: Fmt.isZeroDelta(ms:))
+                    deltaColor: Palette.deltaColor(summary.medianDeltaMs, lowerIsBetter: true, zero: Fmt.isZeroDelta(ms:)),
+                    systemImage: "timer", tint: Theme.amber
                 )
-                StatTile(title: "Total time", value: Fmt.clock(summary.totalDuration))
+                StatTile(title: "Total time", value: Fmt.clock(summary.totalDuration), systemImage: "hourglass", tint: colors[1])
             }
         }
     }
@@ -103,6 +153,7 @@ struct SummaryView: View {
             ForEach(Array(chartRows.enumerated()), id: \.element.id) { i, r in
                 BarMark(x: .value("Card", i + 1), y: .value("Seconds", Double(r.responseMs) / 1_000))
                     .foregroundStyle(by: .value("Result", r.correct ? "Correct" : "Wrong"))
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
                     .opacity(r.isRetry ? 0.5 : 1)
             }
             if let median = summary.medianMs {
@@ -114,7 +165,7 @@ struct SummaryView: View {
                     }
             }
         }
-        .chartForegroundStyleScale(["Correct": Palette.correct, "Wrong": Palette.wrong])
+        .chartForegroundStyleScale(["Correct": Theme.correctGradient, "Wrong": Theme.wrongGradient])
         .chartYAxisLabel("s")
         .frame(height: 200)
         .padding(.vertical, 8)
@@ -125,7 +176,8 @@ struct SummaryView: View {
     private func row(_ r: SessionSummary.Row, showHistory: Bool = false) -> some View {
         HStack(spacing: 10) {
             Image(systemName: r.correct ? "checkmark.circle.fill" : "xmark.circle.fill")
-                .foregroundStyle(r.correct ? Palette.correct : Palette.wrong)
+                .font(.title3)
+                .foregroundStyle(r.correct ? Theme.correctGradient : Theme.wrongGradient)
             VStack(alignment: .leading, spacing: 2) {
                 Text(labels[r.itemKey] ?? r.itemKey.raw).lineLimit(2)
                 if r.isRetry {

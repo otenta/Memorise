@@ -40,6 +40,9 @@ private struct SessionContent: View {
     @State private var dragOffset: CGFloat = 0
     /// False during the grade lockout: grade buttons are dimmed and not hit-testable.
     @State private var gradeEnabled = true
+    /// Last grade for the edge-glow feedback (`true` = correct).
+    @State private var flash: Bool?
+    @State private var flashToken = 0
 
     var body: some View {
         Group {
@@ -72,6 +75,8 @@ private struct SessionContent: View {
 
     // MARK: Running session
 
+    private var subjectColors: [Color] { vm.deck.subject.colors }
+
     private var running: some View {
         VStack(spacing: 0) {
             topBar
@@ -79,27 +84,39 @@ private struct SessionContent: View {
                 switch vm.state {
                 case let .prompting(p):
                     promptState(p)
+                        // Instant: the response timer starts on appear, so no entry animation.
                         .transition(.identity)
                 case let .revealed(p, ms):
                     revealState(p, responseMs: ms)
-                        .transition(.asymmetric(insertion: .opacity, removal: .identity))
+                        .transition(.asymmetric(
+                            insertion: reduceMotion ? .opacity : .modifier(active: FlipIn(progress: 0), identity: FlipIn(progress: 1)),
+                            removal: .identity
+                        ))
                 case let .paused(p, _):
                     pausedOverlay(p)
+                        .transition(.opacity.combined(with: .scale(scale: 0.94)))
                 default:
                     ProgressView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: phaseKey)
+            .animation(reduceMotion ? .easeOut(duration: 0.12) : .spring(response: 0.32, dampingFraction: 0.78), value: phaseKey)
         }
+        .background { AuroraBackground(colors: subjectColors, intensity: 0.85) }
+        .overlay { gradeFlashOverlay }
         .focusable()
         .focused($keyboardFocused)
         .focusEffectDisabled()
         .onKeyPress(phases: .down) { handleKey($0.key) }
         .onAppear { keyboardFocused = true }
-        .onChange(of: phaseKey) { keyboardFocused = true }
+        .onChange(of: phaseKey) { keyboardFocused = true; dragOffset = 0 }
         .onChange(of: confirmQuit) { _, shown in if !shown { keyboardFocused = true } }
         .onChange(of: vm.showVoiceHint) { _, shown in if !shown { keyboardFocused = true } }
+        .task(id: flashToken) {
+            guard flash != nil else { return }
+            try? await Task.sleep(for: .milliseconds(160))
+            withAnimation(.easeOut(duration: 0.35)) { flash = nil }
+        }
         .confirmationDialog("End session?", isPresented: $confirmQuit, titleVisibility: .visible) {
             Button("End session", role: .destructive) { vm.quit() }
             Button("Keep going", role: .cancel) { vm.resume() }
@@ -113,6 +130,30 @@ private struct SessionContent: View {
         }
     }
 
+    /// Brief coloured edge glow after each grade.
+    @ViewBuilder private var gradeFlashOverlay: some View {
+        if let flash {
+            Rectangle()
+                .strokeBorder(flash ? Theme.correctGradient : Theme.wrongGradient, lineWidth: 10)
+                .blur(radius: 14)
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
+                .transition(.opacity)
+                .accessibilityHidden(true)
+        }
+    }
+
+    /// Grades and, if accepted, fires the visual feedback.
+    @discardableResult
+    private func grade(_ correct: Bool) -> Bool {
+        let accepted = vm.grade(correct: correct)
+        if accepted {
+            withAnimation(.easeOut(duration: 0.08)) { flash = correct }
+            flashToken += 1
+        }
+        return accepted
+    }
+
     private var phaseKey: Int {
         switch vm.state {
         case let .prompting(p): p.presentationID * 4
@@ -123,29 +164,28 @@ private struct SessionContent: View {
     }
 
     private var topBar: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 10) {
             HStack {
-                Button { vm.pause(); confirmQuit = true } label: {
-                    Image(systemName: "xmark").font(.title3.weight(.semibold)).frame(width: 44, height: 44)
-                }
-                .accessibilityLabel("End session")
-                .accessibilityIdentifier("closeButton")
+                CircleIconButton(systemImage: "xmark") { vm.pause(); confirmQuit = true }
+                    .accessibilityLabel("End session")
+                    .accessibilityIdentifier("closeButton")
                 Spacer()
                 progressLabel
+                    .padding(.horizontal, 14).padding(.vertical, 8)
+                    .background(.thinMaterial, in: Capsule())
                 Spacer()
-                Button { vm.pause() } label: {
-                    Image(systemName: "pause.fill").font(.title3).frame(width: 44, height: 44)
-                }
-                .accessibilityLabel("Pause")
-                .accessibilityIdentifier("pauseButton")
-                .disabled(isPaused)
+                CircleIconButton(systemImage: "pause.fill") { vm.pause() }
+                    .accessibilityLabel("Pause")
+                    .accessibilityIdentifier("pauseButton")
+                    .disabled(isPaused)
+                    .opacity(isPaused ? 0.4 : 1)
             }
             if case .minutes = vm.config.length {
                 TimelineView(.periodic(from: .now, by: 1)) { _ in
-                    ProgressView(value: vm.progress).progressViewStyle(.linear)
+                    GradientProgressBar(value: vm.progress, colors: subjectColors)
                 }
             } else {
-                ProgressView(value: vm.progress).progressViewStyle(.linear)
+                GradientProgressBar(value: vm.progress, colors: subjectColors)
             }
         }
         .padding(.horizontal)
@@ -154,10 +194,15 @@ private struct SessionContent: View {
 
     @ViewBuilder private var progressLabel: some View {
         if let text = vm.progressText {
-            Text(text).font(.headline.monospacedDigit()).accessibilityLabel("Card \(text)")
+            Text(text)
+                .font(.system(.headline, design: .rounded, weight: .bold).monospacedDigit())
+                .contentTransition(.numericText())
+                .animation(Theme.spring, value: text)
+                .accessibilityLabel("Card \(text)")
         } else {
             TimelineView(.periodic(from: .now, by: 1)) { _ in
-                Text(Fmt.clock(vm.remainingSeconds ?? 0)).font(.headline.monospacedDigit())
+                Label(Fmt.clock(vm.remainingSeconds ?? 0), systemImage: "timer")
+                    .font(.system(.headline, design: .rounded, weight: .bold).monospacedDigit())
                     .accessibilityLabel("Time remaining")
             }
         }
@@ -170,22 +215,33 @@ private struct SessionContent: View {
 
     // MARK: States
 
+    /// The flashcard surface.
+    private func cardSurface(@ViewBuilder _ content: () -> some View) -> some View {
+        content()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .glassCard(radius: 32, tint: subjectColors[0])
+    }
+
     private func promptState(_ p: PresentedCard) -> some View {
         layout {
-            VStack(spacing: 16) {
-                if p.isRetry { retryBadge }
-                CardPromptView(card: p.card)
-                if env.settings.showTimer {
-                    TimelineView(.periodic(from: .now, by: 0.1)) { _ in
-                        Text(String(format: "%.1f s", vm.promptElapsedSeconds ?? 0))
-                            .font(.title3.monospacedDigit()).foregroundStyle(.secondary)
+            cardSurface {
+                VStack(spacing: 16) {
+                    if p.isRetry { retryBadge }
+                    CardPromptView(card: p.card)
+                    if env.settings.showTimer {
+                        TimelineView(.periodic(from: .now, by: 0.1)) { _ in
+                            Text(String(format: "%.1f s", vm.promptElapsedSeconds ?? 0))
+                                .font(.system(.title3, design: .rounded, weight: .semibold).monospacedDigit())
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 12).padding(.vertical, 4)
+                                .background(.primary.opacity(0.06), in: Capsule())
+                        }
                     }
                 }
+                .padding(24)
             }
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         } controls: {
-            BigButton(title: "OK", systemImage: "checkmark") { vm.ok() }
+            BigButton(title: "Reveal", systemImage: "eye.fill", colors: subjectColors) { vm.ok() }
                 .accessibilityIdentifier("okButton")
         }
         .contentShape(Rectangle())
@@ -194,30 +250,40 @@ private struct SessionContent: View {
     }
 
     private func revealState(_ p: PresentedCard, responseMs: Int) -> some View {
-        layout {
-            ScrollView {
-                VStack(spacing: 16) {
-                    if p.isRetry { retryBadge }
-                    CardAnswerView(card: p.card, maxFret: vm.maxFret)
-                    Text(Fmt.seconds(responseMs))
-                        .font(.headline.monospacedDigit())
-                        .foregroundStyle(Palette.responseColor(ms: responseMs, prior: p.priorEwmaMs))
-                        .accessibilityLabel("Response time \(Fmt.seconds(responseMs))")
+        let swipe = max(-1, min(1, dragOffset / 140))
+        return layout {
+            cardSurface {
+                ScrollView {
+                    VStack(spacing: 16) {
+                        if p.isRetry { retryBadge }
+                        CardAnswerView(card: p.card, maxFret: vm.maxFret)
+                        let color = Palette.responseColor(ms: responseMs, prior: p.priorEwmaMs)
+                        Label(Fmt.seconds(responseMs), systemImage: "stopwatch.fill")
+                            .font(.system(.headline, design: .rounded, weight: .bold).monospacedDigit())
+                            .foregroundStyle(color)
+                            .padding(.horizontal, 14).padding(.vertical, 6)
+                            .background(color.opacity(0.14), in: Capsule())
+                            .accessibilityLabel("Response time \(Fmt.seconds(responseMs))")
+                    }
+                    .padding(24)
+                    .frame(maxWidth: .infinity)
                 }
-                .padding()
-                .frame(maxWidth: .infinity)
+                .scrollBounceBehavior(.basedOnSize)
             }
-            .scrollBounceBehavior(.basedOnSize)
+            .overlay { swipeTint(swipe) }
             .offset(x: dragOffset)
+            .rotationEffect(.degrees(reduceMotion ? 0 : Double(swipe) * 8), anchor: .bottom)
             .gesture(swipeToGrade)
         } controls: {
             HStack(spacing: 12) {
-                BigButton(title: "Wrong", systemImage: "xmark", tint: Palette.wrong) { vm.grade(correct: false) }
+                BigButton(title: "Wrong", systemImage: "xmark", colors: [Theme.rose, Theme.amber]) { grade(false) }
                     .accessibilityIdentifier("wrongButton")
-                BigButton(title: "Correct", systemImage: "checkmark", tint: Palette.correct) { vm.grade(correct: true) }
+                    .scaleEffect(swipe < 0 ? 1 + abs(swipe) * 0.06 : 1)
+                BigButton(title: "Correct", systemImage: "checkmark", colors: [Theme.mint, Theme.teal]) { grade(true) }
                     .accessibilityIdentifier("correctButton")
+                    .scaleEffect(swipe > 0 ? 1 + swipe * 0.06 : 1)
             }
-            // Not `.disabled`: the bordered-prominent grey would flash on every card.
+            // Not `.disabled`: the disabled grey would flash on every card.
             .opacity(gradeEnabled ? 1 : 0.55)
             .allowsHitTesting(gradeEnabled)
             .animation(reduceMotion ? nil : .easeIn(duration: 0.15), value: gradeEnabled)
@@ -230,12 +296,36 @@ private struct SessionContent: View {
         }
     }
 
-    private func pausedOverlay(_ p: PresentedCard) -> some View {
-        VStack(spacing: 12) {
-            Image(systemName: "pause.circle.fill").font(.system(size: 64)).foregroundStyle(.secondary)
-            Text("Paused").font(.title.weight(.semibold))
-            Text("Tap to resume").foregroundStyle(.secondary)
+    /// Green/red wash + icon while the card is dragged.
+    @ViewBuilder private func swipeTint(_ swipe: CGFloat) -> some View {
+        if swipe != 0 {
+            let correct = swipe > 0
+            RoundedRectangle(cornerRadius: 32, style: .continuous)
+                .fill((correct ? Theme.correctGradient : Theme.wrongGradient).opacity(abs(swipe) * 0.35))
+                .overlay(alignment: correct ? .topLeading : .topTrailing) {
+                    Image(systemName: correct ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .font(.system(size: 48, weight: .bold))
+                        .foregroundStyle(.white)
+                        .shadow(radius: 6)
+                        .scaleEffect(0.6 + abs(swipe) * 0.5)
+                        .opacity(Double(abs(swipe)))
+                        .padding(24)
+                }
+                .allowsHitTesting(false)
         }
+    }
+
+    private func pausedOverlay(_ p: PresentedCard) -> some View {
+        VStack(spacing: 14) {
+            Image(systemName: "pause.circle.fill")
+                .font(.system(size: 72))
+                .foregroundStyle(LinearGradient(colors: subjectColors, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .symbolEffect(.pulse, options: .repeating, isActive: !reduceMotion)
+            Text("Paused").font(.system(.largeTitle, design: .rounded, weight: .bold))
+            Text("Tap anywhere to resume").foregroundStyle(.secondary)
+        }
+        .padding(40)
+        .glassCard(radius: 32, tint: subjectColors[0])
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
         .onTapGesture { vm.resume() }
@@ -246,9 +336,11 @@ private struct SessionContent: View {
 
     private var retryBadge: some View {
         Label("Retry", systemImage: "arrow.uturn.left")
-            .font(.caption.weight(.semibold))
-            .padding(.horizontal, 10).padding(.vertical, 4)
-            .background(.orange.opacity(0.2), in: Capsule())
+            .font(.caption.weight(.bold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 12).padding(.vertical, 5)
+            .background(LinearGradient(colors: [Theme.amber, .orange], startPoint: .leading, endPoint: .trailing), in: Capsule())
+            .shadow(color: .orange.opacity(0.4), radius: 6, y: 3)
     }
 
     /// Portrait: content above controls. Landscape (compact height): side by side.
@@ -261,7 +353,7 @@ private struct SessionContent: View {
             }
             .padding()
         } else {
-            VStack(spacing: 16) {
+            VStack(spacing: 20) {
                 content()
                 controls()
             }
@@ -271,11 +363,11 @@ private struct SessionContent: View {
 
     private var swipeToGrade: some Gesture {
         DragGesture(minimumDistance: 24)
-            .onChanged { dragOffset = $0.translation.width * 0.4 }
+            .onChanged { dragOffset = $0.translation.width }
             .onEnded { value in
-                let dx = value.translation.width
-                dragOffset = 0
-                if dx > 100 { vm.grade(correct: true) } else if dx < -100 { vm.grade(correct: false) }
+                let dx = value.translation.width + (value.predictedEndTranslation.width - value.translation.width) * 0.3
+                if dx > 120 { grade(true) } else if dx < -120 { grade(false) }
+                withAnimation(Theme.spring) { dragOffset = 0 }
             }
     }
 
@@ -291,8 +383,8 @@ private struct SessionContent: View {
             }
         case .revealed:
             switch key {
-            case .rightArrow, .pageDown, .return: return vm.grade(correct: true) ? .handled : .ignored
-            case .leftArrow, .pageUp, .delete: return vm.grade(correct: false) ? .handled : .ignored
+            case .rightArrow, .pageDown, .return: return grade(true) ? .handled : .ignored
+            case .leftArrow, .pageUp, .delete: return grade(false) ? .handled : .ignored
             case .escape: vm.pause()
             default: return .ignored
             }
@@ -305,6 +397,18 @@ private struct SessionContent: View {
             return .ignored
         }
         return .handled
+    }
+}
+
+/// 3D flip-in used when the answer is revealed.
+private struct FlipIn: ViewModifier {
+    let progress: Double
+
+    func body(content: Content) -> some View {
+        content
+            .rotation3DEffect(.degrees((1 - progress) * -75), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
+            .scaleEffect(0.92 + 0.08 * progress)
+            .opacity(min(1, progress * 2))
     }
 }
 

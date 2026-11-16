@@ -26,6 +26,7 @@ struct RootView: View {
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape") }
         }
+        .tint(Theme.indigo)
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { env.speech.refreshVoices() }
         }

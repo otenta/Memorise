@@ -75,6 +75,9 @@ struct StatsView: View {
                     historySection
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background { AuroraBackground(colors: deck?.subject.colors ?? Subject.music.colors, intensity: 0.6) }
+            .animation(Theme.softSpring, value: deck?.id)
             .navigationTitle("Stats")
             .navigationDestination(for: SessionRecord.self) { s in
                 SessionHistoryDetail(session: s, deck: deck, previous: data.previousBaseline(before: s))
@@ -118,14 +121,13 @@ struct StatsView: View {
                 Chart(data.points) { p in
                     if showAccuracy {
                         if let a = p.baseline.accuracy {
-                            LineMark(x: .value("Date", p.session.startedAt), y: .value("Accuracy", a * 100))
-                            PointMark(x: .value("Date", p.session.startedAt), y: .value("Accuracy", a * 100))
+                            trendMarks(date: p.session.startedAt, label: "Accuracy", value: a * 100)
                         }
                     } else if let m = p.baseline.medianMs {
-                        LineMark(x: .value("Date", p.session.startedAt), y: .value("Seconds", m / 1_000))
-                        PointMark(x: .value("Date", p.session.startedAt), y: .value("Seconds", m / 1_000))
+                        trendMarks(date: p.session.startedAt, label: "Seconds", value: m / 1_000)
                     }
                 }
+                .animation(Theme.softSpring, value: showAccuracy)
                 .chartYAxisLabel(showAccuracy ? "%" : "s")
                 .chartYScale(domain: .automatic(includesZero: true))
                 .frame(height: 180)
@@ -134,6 +136,21 @@ struct StatsView: View {
         } header: {
             Text("Trend")
         }
+    }
+
+    @ChartContentBuilder
+    private func trendMarks(date: Date, label: String, value: Double) -> some ChartContent {
+        let colors = showAccuracy ? [Theme.mint, Theme.teal] : (deck?.subject.colors ?? Subject.music.colors)
+        AreaMark(x: .value("Date", date), y: .value(label, value))
+            .interpolationMethod(.catmullRom)
+            .foregroundStyle(LinearGradient(colors: [colors[0].opacity(0.35), colors[0].opacity(0.02)], startPoint: .top, endPoint: .bottom))
+        LineMark(x: .value("Date", date), y: .value(label, value))
+            .interpolationMethod(.catmullRom)
+            .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round))
+            .foregroundStyle(LinearGradient(colors: colors, startPoint: .leading, endPoint: .trailing))
+        PointMark(x: .value("Date", date), y: .value(label, value))
+            .symbolSize(50)
+            .foregroundStyle(colors[1])
     }
 
     // MARK: History

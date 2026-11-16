@@ -26,13 +26,14 @@ struct SessionSetupView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
             }
             .safeAreaInset(edge: .bottom) {
-                BigButton(title: "Start", systemImage: "play.fill") {
+                BigButton(title: "Start", systemImage: "play.fill", colors: deck.subject.colors) {
                     guard let config else { return }
                     env.configStore.save(config)
                     onStart(config)
                 }
                 .disabled(poolCount == 0)
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 10)
                 .background(.bar)
                 .accessibilityIdentifier("startButton")
             }
@@ -82,7 +83,13 @@ private struct SetupForm: View {
             }
 
             Section {
-                LabeledContent("Cards available", value: "\(poolCount)")
+                LabeledContent("Cards available") {
+                    Text("\(poolCount)")
+                        .font(.system(.body, design: .rounded, weight: .bold).monospacedDigit())
+                        .foregroundStyle(poolCount == 0 ? AnyShapeStyle(.red) : AnyShapeStyle(deck.subject.gradient))
+                        .contentTransition(.numericText())
+                        .animation(Theme.spring, value: poolCount)
+                }
             }
         }
     }
@@ -130,15 +137,21 @@ private struct FretboardOptionsSection: View {
                 ForEach([6, 5, 4, 3, 2, 1], id: \.self) { s in
                     let on = options.strings.contains(s)
                     Button {
-                        if on { if options.strings.count > 1 { options.strings.remove(s) } } else { options.strings.insert(s) }
+                        withAnimation(Theme.spring) {
+                            if on { if options.strings.count > 1 { options.strings.remove(s) } } else { options.strings.insert(s) }
+                        }
                     } label: {
                         Text("\(s)")
-                            .font(.headline.monospacedDigit())
+                            .font(.system(.headline, design: .rounded, weight: .bold).monospacedDigit())
                             .frame(maxWidth: .infinity, minHeight: 44)
-                            .background(on ? Color.accentColor : Color.secondary.opacity(0.15), in: Capsule())
+                            .background {
+                                Capsule().fill(on ? AnyShapeStyle(Subject.music.gradient) : AnyShapeStyle(Color.secondary.opacity(0.15)))
+                                    .shadow(color: on ? Theme.indigo.opacity(0.35) : .clear, radius: 5, y: 3)
+                            }
                             .foregroundStyle(on ? Color.white : Color.primary)
+                            .scaleEffect(on ? 1 : 0.92)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableStyle(scale: 0.88))
                     .accessibilityLabel("String \(s)")
                     .accessibilityAddTraits(on ? .isSelected : [])
                 }
