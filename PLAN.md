@@ -855,6 +855,11 @@ Every item below should only need: new `CardContent` case(s), a deck generator/l
 - **AION 2 screenshot → cards**: import a screenshot, on-device OCR with the Vision framework (supports Korean), pick unknown words, add them to a custom "My AION words" deck.
 - User-created custom decks & JSON import.
 
+**M5 — Korean phrases from K-pop & K-dramas** (can be scheduled before M2; must start after G1)
+- New `ko.media` deck of everyday phrases heard in popular songs and dramas, using vocab deck schema v2 (additive: `register`, `dialogue`, `sources`).
+- On reveal, a "snippet" panel shows an original mini-dialogue, verified "Heard in" references (title, artist/network, year, where, our own description; names only, no links), and the user's own on-device, text-only "My snippet".
+- No lyrics, script transcripts or clips are bundled (copyright), and every media reference is verified with a citation. Full plan: [PLAN_M5_KOREAN_MEDIA.md](PLAN_M5_KOREAN_MEDIA.md).
+
 **Later / quality of life**
 - iCloud sync (SwiftData + CloudKit), home-screen widget with daily streak, practice reminders, spaced-repetition hybrid (combine response-time weighting with interval scheduling for Korean), Apple Watch remote OK button, Shortcuts/Siri "start fretboard session".
 
@@ -913,4 +918,5 @@ _(Agents append dated entries here: decision, reason, segment.)_
 - 2026-11-16 · M1.1 · Fix plan F2–F9 implemented. D1 = No: no test target, so F1 and every per-segment test step were skipped; F0 skipped (no commits requested). `VocabOptions.sanitized(allTags:)` added in core for P3-2. `Fmt.delta` zero renders `= 0.00 s` / `= 0 pt`. `undoLastGrade` remains deferred.
 - 2026-11-16 · Planner · Round 2 review (N1–N7) planned as G1–G6 in PLAN_M1_FIXES.md §7–§10. N7 resolved: §9.3 and S6 now say retries may come back earlier in a starved pool, and §9.3's launch sweep text now matches F6.
 - 2026-11-16 · M1.1 R2 · G1–G5 code implemented. G1: wire shape captured from the M1 build before editing; `FretboardOptions.strings` and `VocabOptions.tags` are now encoded sorted (decode unchanged) so `PersistedFormatCheck` byte comparison is deterministic (Set order is per-process). `SessionConfig` equality/hash exclude `recoveredFields`. G5: timing log + DEBUG-simulator seeder added; measurements pending (owner). G6 pending (owner, on device).
-
+- 2026-11-16 · Planner · Added milestone M5 (K-pop/K-drama phrases with a reveal snippet panel), planned as K1–K5 in PLAN_M5_KOREAN_MEDIA.md. Bundled content excludes lyrics, transcripts and clips; references must be verified with citations; personal snippets are stored on-device only.
+- 2026-11-16 · Owner/Planner · M5: no external links (names only, app stays offline); no audio clips in My snippet; content priority BTS, LE SSERAFIM, TWICE, NewJeans, ILLIT and newer groups, then reality shows (Kian's Bizarre B&B, The Devil's Plan), then popular dramas. Show references may be owner-verified (`citation: "owner"`).
