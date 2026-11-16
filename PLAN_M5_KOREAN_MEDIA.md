@@ -2,7 +2,9 @@
 
 - **Date:** 2026-11-16
 - **Owner of this file:** planner. Implementor agents execute **K1–K5** in order and tick the tracker (§6). PLAN.md §16 conventions and `CLAUDE.md` apply.
-- **Placement:** M5 depends only on the existing vocab pipeline. It does **not** need F10 (the deck registry), so it can be scheduled before M2. It must start **after G1** (frozen persisted coding), because K4 extends the export format.
+- **Placement:** M5 reuses the vocab pipeline and must start **after G1** (frozen persisted coding), because K4 extends the export format. Since M2-0b is being implemented, **K3 lands after M2-0b** and builds on the `DeckUI` vocab provider, not the old shared `CardViews` switch.
+- **Shared with M4:** M4 also extends the vocab schema and the export. **Whichever milestone lands first** bumps `VocabDeckFile.currentSchemaVersion` to 2 and `ExportSnapshot.schemaVersion` to 2; the other adds its optional fields and keys without a further bump.
+- **Testing:** out of scope; the tester agent owns it. Segments give acceptance criteria and reference examples only.
 
 ---
 
@@ -133,7 +135,7 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 5. Add `"ko_media"` to `DeckCatalog.bundledVocabFiles` (display order: after `ko_core_1`, before `ko_aion2`). Note that until K2 lands the file is missing, which shows the G3 "couldn't be loaded" row, so **K1 and K2 merge together**, or K1 lands with the list entry commented out.
 6. PLAN.md §8.2: document v2 and link to this file.
 
-**Accept:** both existing v1 files still validate with 0 errors; a hand-made 3-entry v2 sample validates; a sample with a non-allowlisted URL, a missing citation, or a dialogue missing the phrase produces exactly the expected errors. Use the DEBUG launch validation path, since D1 = No tests.
+**Accept:** both existing v1 files still validate with 0 errors; a 3-entry v2 sample validates. Reference examples for the tester: a source with a stray `url` key, a missing citation, or a dialogue missing the phrase each produce exactly one validator error.
 
 ### K2 — Content: `ko_media.json` (about 80 entries)
 **Files:** `Resources/Decks/ko_media.json`; a verification table in the PR description or commit message.
@@ -162,13 +164,13 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 - a `grep` of `context` and `dialogue` against the cited lyrics shows no copied lines beyond the phrase itself
 
 ### K3 — Reveal "snippet" panel (app)
-**Files:** `App/Sources/Components/CardViews.swift` (`VocabAnswerView`), new `App/Sources/Components/MediaSnippetView.swift`.
+**Files:** `App/Sources/DeckUI/VocabUI.swift` (the vocab provider's answer view, from M2-0b), new `App/Sources/Components/MediaSnippetView.swift`.
 
 1. `MediaSnippetView(entry:)` has three sections, each shown only when it has data:
    - **"In a scene"**: dialogue lines as chat bubbles (A on the left, B on the right, C on the left with a different tint). Each bubble shows Korean, with the English line below in secondary text and a 🔊 button.
    - **"Heard in"**: one row per source. SF Symbol `music.note` for songs, `tv` for drama/show, `film` for film. Shows title (plus `titleKo` if present), `by` · `year`, the locator chip, and the context text. Plain text only; no links or buttons.
    - **"My snippet"**: placeholder in K3; wired up in K4.
-2. Embed it in `VocabAnswerView` below the existing content, only when `entry.dialogue` or `entry.sources` is non-empty, so the existing decks look unchanged.
+2. Embed it in the vocab provider's answer view below the existing content, only when `entry.dialogue` or `entry.sources` is non-empty, so the existing decks look unchanged.
 3. Add the `register` chip ("casual" / "polite" / "formal") next to the romanization in both the prompt and answer views when present.
 4. Accessibility: each bubble is a combined element ("Speaker A: …, meaning …"); each source row reads as "Heard in <title> by <by>, <year>, <locator>". Identifiers: `mediaSnippet`, `dialogueLine.<n>`, `mediaSource.<n>`.
 5. `#Preview`s: an entry with dialogue + 2 sources; dialogue only; dark mode; largest Dynamic Type; landscape.
@@ -183,7 +185,7 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 
 1. Storage: a JSON file in Application Support (`personal_snippets.json`, a `[entryId: PersonalSnippet]` map), owned by an `actor PersonalSnippetStore`. **No SwiftData schema change.** `PersonalSnippet { text: String (≤ 500 chars), source: String? (free text, e.g. "song name"), updatedAt: Date }`, with tolerant decoding. Writes are atomic.
 2. UI: in the reveal panel, "My snippet" shows the saved text, or a "+ Add your own snippet" button that opens a sheet with a multi-line text field, an optional source field, and Save/Delete. Opening the sheet during a session **pauses** the session (same path as the ✕ button) and resumes it on dismiss.
-3. Export: add `personalSnippets` to the export JSON (optional key, so older importers ignore it). Bump `ExportSnapshot.schemaVersion` to 2. Reset-all asks separately: "Also delete my snippets?"
+3. Export: add `personalSnippets` to the export JSON (optional key, so older importers ignore it). Bump `ExportSnapshot.schemaVersion` to 2 unless M4-8 already did (see Placement). Reset-all asks separately: "Also delete my snippets?"
 4. Privacy: snippets never leave the device except through the user's own Export share sheet.
 
 **Accept:** add, edit and delete a snippet; it survives relaunch; it appears in the export; a session timer paused while editing shows no inflated response time.
