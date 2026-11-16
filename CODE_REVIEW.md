@@ -1,5 +1,112 @@
 # Memorise — Code Review (M1)
 
+> **Round 2 (re-review after fixes F2–F9)** is directly below. **Round 1** (the original review) follows it unchanged, as the audit trail. Item IDs (P1-1 …) refer to Round 1.
+
+---
+
+# Round 2 — Re-review of M1.1 fixes
+
+- **Date:** 2026-11-16
+- **Scope:** the 28 Swift files changed since Round 1, as listed by the implementor's handoff and `PLAN_M1_FIXES.md` (F2–F9). Unchanged files were not re-read.
+- **Method:** static read again. `swift build` for `MemoriseCore` passes. Nothing was executed on device or simulator, and there are still no tests, so every "fixed" below means **fixed by inspection**. Items marked *unverified* need the device checks listed in `PLAN_M1_FIXES.md`.
+
+## Verdict
+
+Good fix round. The fixes are targeted, they match the fix plan, and none of them introduces a regression I could find.
+- **Both functional P1 bugs are fixed.** All the P2 items in scope are fixed; one of those, P2-3, still needs a runtime check.
+- **What remains open is by owner decision:** P1-3 (no tests) and P2-8 (deferred to M2 as F10).
+- **This round found 7 new issues.** One is Medium; the rest are Low or Polish.
+
+## Status of Round 1 findings
+
+| ID | Finding | Status | Evidence / remark |
+|---|---|---|---|
+| P1-1 | Sharps behaves like Mixed | ✅ Fixed | `FretboardNotePrompt.randomizeSpelling` is set only for `.mixed` (`FretboardNotesDeck.swift:84`) and checked in `present` (`:95`). `respelled` preserves it (`Card.swift:42-46`). Retries and resumed cards re-use the presented card, so their spelling stays stable. |
+| P1-2 | Sessions dropped on config decode failure | ✅ Fixed | Tolerant `init(from:)` on `SessionConfig`, `FretboardOptions` and `VocabOptions`. `SDSession.core` is non-optional, logs failures, and uses `DeckOptions.fallback` (`SwiftDataModels.swift`). `compactMap` is replaced by `map` in `SwiftDataStatsStore.swift:36, 56`. **Gap:** the F5 golden-fixture step was skipped, so the persisted shape of `DeckOptions` / `SessionLength` (synthesised `_0` coding) is still unpinned. See P1-3. |
+| P1-3 | No automated verification | ⚠️ Open: owner declined (D1 = No) | Partly mitigated: `DeckValidator` now runs in every configuration, and its results show on Home (`DeckCatalog.swift:42-43`). CI is still build-only. Risk is unchanged for the scheduler, the engine and decoding compatibility. |
+| P2-1 | Scheduler fallback ignores exclusions / gating | ✅ Fixed | The `allowed[]` mask mirrors the weight predicate (`Scheduler.swift:58-63`), and the fallback chooses only from allowed cards (`:88-95`). The engine order is due retry → weighted pick → earliest non-adjacent retry → allowed fallback → any retry (`SessionEngine.swift:248-278`). I re-traced the Round 1 4-card case: card 1 now comes back as a *retry* at position 5 and is never counted twice. RNG use stays deterministic, because a failed weighted pass consumes no randomness. |
+| P2-2 | Double-tap grades | ✅ Fixed (*unverified on device*) | `canGrade` with `gradeLockoutMs = 250`, enforced in the engine (`SessionEngine.swift:163-171`), so taps, swipes and keys are all covered. The VM guards before firing haptics or speech (`SessionViewModel.swift:83`). Pause/resume shifts `revealedAt` correctly. See new N3 for UX. |
+| P2-3 | ModelActor on main thread | ✅ Fixed (*unverified*) | The store is now constructed inside `Task.detached` (`DeferredStatsStore.swift:14-20`). The F6 step-1 measurement (`Thread.isMainThread` in `save`) was **skipped**, so neither the original problem nor the fix has been observed. Do the measurement once. |
+| P2-4 | Silent degradations | ✅ Fixed | In-memory fallback → red banner on Home (`HomeView.swift:73-75, 93-104`). Each deck file loads on its own (`DeckCatalog.swift:35-41`). Recorder failures are counted and shown on the Summary (`SessionViewModel.swift:58-61`, `SummaryView.swift:18-24`). See new N2 for wording. |
+| P2-5 | Keyboard focus not restored | ✅ Fixed (*unverified*) | Focus is re-asserted on `phaseKey`, on `scenePhase == .active`, on dialog dismissal and on alert dismissal (`SessionView.swift`, `running` modifiers). |
+| P2-6 | Killed sessions marked abandoned | ✅ Fixed | `SessionRecord.closedAfterInterruption` → `.completed` with ≥ 1 counted attempt and an `endedAt` derived from the attempts (`Records.swift:36-46`). Applied in both stores. |
+| P2-7 | Stats tab reloads all attempts | 🟡 Partly fixed → downgraded to **P3** (see N5) | Raw attempts no longer live on the main actor, the load is gated on visibility and staleness (`StatsView.swift:83-99`), and history detail loads one session at a time. However, `trendPoints` still fetches **every** attempt of the deck on each stale load (`StatsStore.swift:36-47`). Phase B was deferred by design. |
+| P2-8 | Closed deck-type sites | ⏸ Deferred (F10, M2-0) | `DeckOptions.fallback` adds one more closed switch (`Deck.swift:23-25`). It is acknowledged in code. |
+| P3-1 | Default max fret ignored | ✅ Addressed | Relabelled "Max fret for new setups", with an explanatory footer (`SettingsView.swift:50-58`). Behaviour is unchanged, by design. |
+| P3-2 | Stale tag filters | ✅ Fixed | `VocabOptions.sanitized(allTags:)` is applied in `initialConfig` (`AppEnvironment.swift:68-70`). |
+| P3-3 | Timed progress bar stalls | ✅ Fixed | The bar is wrapped in a 1 s `TimelineView` for `.minutes` sessions. |
+| P3-4 | Pools regenerated in bodies | ✅ Fixed | Setup: `poolCount` is computed in `.task(id: config?.options)`. Weakest words: the model is `@State` behind `.task(id:)`. Home: the pool count is computed in the async `load()`, outside `body`. |
+| P3-5 | Korean voice cached forever | ✅ Fixed | `refreshVoices()` runs on `scenePhase == .active` (`MemoriseApp.swift:29-31`). The one-time hint flag remains; that is acceptable. |
+| P3-6 | No fetch indexes | ➖ No action (accepted) | iOS 17 target. |
+| P3-7 | `attempts(forDeck:)` order contract | ✅ Fixed | The doc and both stores now order by `shownAt`, then `index`. |
+| P3-8 | Fire-and-forget launch sweep | ✅ Fixed | The sweep runs inside `ready`, and every store call awaits `ready` first. |
+| P4 | Polish (4) | ✅ 3 fixed, 1 n/a | Audio session deactivated on session exit, `fastest` / `slowest` clamped with a stable sort, zero deltas formatted without an arrow (see N4). The CI rename is n/a because F1 was skipped. |
+
+## New findings (Round 2)
+
+### N1 · P2 (Medium) · The persisted-format guarantee for history rests on untested synthesised coding
+**Files:** `Packages/MemoriseCore/Sources/MemoriseCore/Domain/Deck.swift:7` (`DeckOptions`), `Domain/SessionConfig.swift:2` (`SessionLength`), and F5 step 1 (skipped).
+
+P1-2's fix makes history survive *field* changes inside the options structs. The outer enums still use **synthesised** `Codable`: `{"fretboard":{"_0":{…}}}` and `{"cards":{"_0":20}}`. If one of them changes shape, `SessionConfig.init(from:)` silently replaces the stored options with `DeckOptions.fallback` and the length with `.cards(20)`. That can happen by labelling an associated value, renaming a case, or changing the payload type. History then survives, but **shows the wrong configuration for every past session**, with nothing in the UI to say so. The F5 golden fixtures were the guard against this, and they were skipped together with the tests.
+
+**Failure scenario:** M2 adds `case fretboard(FretboardOptions, tuning: Tuning)` or relabels `_0`. Every stored session decodes with fallback options. The History summaries' labels (`buildLabels` uses `summary.config.options`) and the Setup "last used" config quietly reset.
+
+**Fix direction:** either
+- pin the two outer enums with hand-written coding now (keyed `"kind"` + `"value"`, decoding the current `_0` shape as legacy), or
+- add a code comment on both enums plus a `CLAUDE.md` rule: never change their case names or associated-value shapes without a migration.
+
+The first is cheaper than it sounds (about 30 lines) and removes the dependency on tests.
+
+### N2 · P3 (Low) · The deck-issues banner says "couldn't be loaded" when the decks did load
+**Files:** `App/Sources/Features/Home/HomeView.swift:109`, `Packages/MemoriseCore/Sources/MemoriseCore/Decks/DeckCatalog.swift:42-43`
+
+`issues` mixes two kinds of message: load failures (deck skipped) and validation errors (deck **still loaded**). Both produce "Some decks couldn't be loaded". A validation-only issue, such as a duplicate cross-file id, is the more dangerous one, because stats merge silently. It gets the less accurate message.
+
+**Fix direction:** return two lists (`loadFailures`, `validationWarnings`) and word them differently. For example: "Some decks couldn't be loaded" and "Deck data has problems; stats for affected words may be mixed".
+
+### N3 · P3 (Low) · The grade lockout gives no feedback
+**Files:** `App/Sources/Features/Session/SessionViewModel.swift:83`, `SessionView.swift` (Wrong/Correct buttons, `handleKey`)
+
+A tap or key arriving within 250 ms is dropped silently, and the buttons look enabled the whole time. Pedal users who press OK→Correct in one quick double press will find the second press ignored and the card still on screen. The press looks lost, and that is easy to read as the pedal failing. `handleKey` also returns `.handled` for the dropped press.
+
+**Fix direction:**
+- Visually disable or dim Wrong/Correct until `canGrade` is true (a one-shot 250 ms timer, or derive it from `revealedAt`).
+- Return `.ignored` from `handleKey` when the grade was rejected.
+
+### N4 · P4 (Polish) · Zero-delta format is inconsistent
+**File:** `App/Sources/Support/Formatters.swift:36, 43`
+
+`"= 0.00 s"` doesn't match `Fmt.seconds`, which renders "850 ms" / "2.3 s"; that format would say "= 0 ms". In addition, the zero case is colored green by `SummaryView.swift:76, 83`, because `<= 0` / `>= 0` counts as an improvement.
+
+**Fix direction:** use `"= " + seconds(0)`, and use `.secondary` for an exact zero.
+
+### N5 · P3 (Low) · `trendPoints` still loads every attempt of a deck (P2-7 remainder)
+**File:** `Packages/MemoriseCore/Sources/MemoriseCore/Persistence/StatsStore.swift:36-47`
+
+This is now off the main actor and runs only when the Stats tab is visible and stale, so the user impact is small. The cost still grows linearly with all-time attempts, though: about 30k rows per year is ~30k `SDAttempt` → `Attempt` mappings per stale load. Phase B (persist baselines on `SDSession` via `SchemaV2`) remains the real fix. The trigger the plan defined (> 150 ms measured) is reasonable; just make sure someone actually measures it.
+
+### N6 · P3 (Low) · History detail turns a fetch error into an empty summary
+**File:** `App/Sources/Features/Stats/StatsView.swift:185`
+
+`(try? await env.store.attempts(for:)) ?? []` shows "No cards answered" for a session that has cards, whenever the fetch fails. Show an error state instead (`ContentUnavailableView` + log).
+
+### N7 · P4 (Polish) · PLAN contradicts itself on retry timing
+**Files:** `PLAN.md:524` (§9.2: "after **3–5** further cards") vs `PLAN.md:617-624` (§10.6: in a starved pool the engine flushes the earliest pending retry, possibly sooner) and `SessionEngine.swift:262-266`
+
+The code follows §10.6, which is the right call. §9.2 and the S6 acceptance line (`PLAN.md:769`) should say "3–5 cards later, or earlier when the pool is exhausted". Otherwise a future test written from §9.2 will fail on a correct engine.
+
+## Round 2 — Suggested next steps
+
+1. **N1**: pin the `DeckOptions` / `SessionLength` coding, or at least document the freeze, **before** starting M2/F10, since F10 is exactly the change that would trip it.
+2. **Device checks** for the *unverified* items: P2-2 (double-tap), P2-3 (`Thread.isMainThread` log), P2-5 (pedal focus after the dialog, alert and background), and P2-6 (kill mid-session → completed).
+3. N2, N3, N6 (each is small).
+4. Reconsider D1 (tests). The cheapest high-value set is still: validator over the bundled decks, `present` spelling per option, the starved-pool scheduler trace, and decoding fixtures for N1.
+5. Commit the work. The implementation, the fixes and `PLAN_M1_FIXES.md` are still **uncommitted**, so none of the M1.1 changes has a reviewable diff or a rollback point.
+
+---
+
+# Round 1 — Original review
+
 - **Date:** 2026-11-16
 - **Scope:** everything under `Packages/MemoriseCore/` and `App/`, plus `project.yml` and the CI workflows. That is about 5k lines of Swift and the 2 bundled deck JSON files (205 + 81 entries).
 - **Reviewed against:** `PLAN.md` (spec + §17 decision log).
