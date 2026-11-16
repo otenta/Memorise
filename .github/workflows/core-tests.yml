@@ -1,0 +1,13 @@
+name: Core (Linux)
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: swift:6.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build MemoriseCore
+        working-directory: Packages/MemoriseCore
+        run: swift build -c release

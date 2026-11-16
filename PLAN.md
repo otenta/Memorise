@@ -515,16 +515,17 @@ idle ───────────────► prompting(card)  ── pr
 
 pause()/interrupt(): prompting → paused → resume() → prompting(same card, new timer)
 quit(): any → finished(summary of what was done)   (session status = .abandoned if 0 graded? else .completed)
+grade lockout: grade(correct:) is ignored (no effects, no state change) until gradeLockoutMs (250 ms, SchedulerConstants) after the reveal; pause time does not count
 undoLastGrade(): allowed only from the state right after a grade and before the next ok(); flips correctness, re-applies stats (stretch goal, nice to have)
 ```
 
 Engine responsibilities:
 1. Ask the **Scheduler** for the next card (passing history of this session).
-2. Manage the **retry queue**: when a card is graded wrong and `retryWrongCards` is on, schedule it to re-appear after **3–5** further cards (random), **at most once per card per session**. Retry attempts have `isRetry = true`. Retries do **not** count toward session length and are **excluded** from ItemStats updates (they're primed, so not informative) but are shown in the summary separately.
+2. Manage the **retry queue**: when a card is graded wrong and `retryWrongCards` is on, schedule it to re-appear after **3–5** further cards (random), or **earlier** when the scheduler has nothing else to offer (starved pool, see §10.6), and **at most once per card per session**. Retry attempts have `isRetry = true`. Retries do **not** count toward session length and are **excluded** from ItemStats updates (they're primed, so not informative) but are shown in the summary separately.
 3. After each grade: build `Attempt`, call `StatsUpdater` to compute the new `ItemStats`, and persist **both immediately** through `StatsStore` (crash-safe).
 4. On finish, compute `SessionSummary`.
 
-On app launch, any `SessionRecord` with status `.inProgress` is marked `.abandoned` (attempts already saved are kept and remain valid).
+On app launch, every `SessionRecord` with status `.inProgress` is closed before any read or write. If it has ≥ 1 counted attempt, it becomes `.completed`, with `endedAt` derived from its last attempt. Otherwise it becomes `.abandoned`. Attempts already saved are kept and remain valid. _(Revised 2026-11-16, F6.)_
 
 ### 9.4 Stats update (per counted attempt)
 
@@ -615,7 +616,12 @@ To avoid throwing 200 unseen words at the user:
 
 ### 10.6 Selection
 
-Weighted random choice over eligible cards (`Σw > 0`). If all weights are 0 (tiny pool + cooldown), relax cooldown to `K-1` and retry; if still 0, pick uniformly from the pool excluding the immediately previous card.
+Weighted random choice over eligible cards (`Σw > 0`). If all weights are 0 (tiny pool + cooldown), relax cooldown to `K-1` and retry. If still 0:
+1. The engine first flushes the earliest pending retry that is not the immediately previous card.
+2. Otherwise, the scheduler picks uniformly from the **allowed set**: cards not excluded (no pending retries) and either seen or in `eligibleNew`. It excludes the immediately previous card when it can.
+3. If the allowed set is empty, the scheduler returns `nil`. The engine then flushes any remaining retry, or ends the session.
+
+The fallback never picks a pending-retry card or a gated unseen card. _(Revised 2026-11-16 after CODE_REVIEW P2-1; see PLAN_M1_FIXES.md F3.)_
 
 ### 10.7 Required tests (non-exhaustive)
 
@@ -760,7 +766,7 @@ Every segment's **Definition of Done**: code compiles; `swift test` passes in `P
 **Goal:** §9.1–9.3, §9.5.
 - `MonotonicClock`, `ManualClock` (tests), `SessionEngine` state machine, retry queue, pause/interrupt/resume, quit, `SessionSummary` builder, optional `undoLastGrade`.
 - Engine talks to `StatsStore` (protocol from S7 — define the protocol here if S7 is not yet done, see S7) and the Scheduler.
-**Accept:** tests drive full sessions with `ManualClock` + seeded RNG + `InMemoryStatsStore`: correct responseMs; interrupted attempts excluded; retries appear 3–5 cards later, once, not counted toward length; timed session ends after current card; summary numbers verified by hand-computed fixture.
+**Accept:** tests drive full sessions with `ManualClock` + seeded RNG + `InMemoryStatsStore`: correct responseMs; interrupted attempts excluded; retries appear 3–5 cards later (or earlier when the pool is starved, §10.6), once, not counted toward length; timed session ends after current card; summary numbers verified by hand-computed fixture.
 
 ### S7 — Persistence
 **Goal:** storage behind a protocol.
@@ -865,6 +871,8 @@ Every item below should only need: new `CardContent` case(s), a deck generator/l
 - SwiftUI: `@Observable` view models, `NavigationStack`, no `ObservableObject` in new code; every view has a `#Preview`.
 - Accessibility identifiers on interactive controls used by UI tests.
 - Commit message format: `S<n>: <short summary>`; update §17 in the same commit.
+- Persisted `Codable` types use hand-written tolerant `init(from:)`; every new property needs a default; never rename coding keys or enum raw values.
+- `DeckOptions` and `SessionLength` have a frozen, hand-written wire format. New cases are fine; renaming cases or changing payload types needs a legacy decode path plus an update to `PersistedFormatCheck`.
 - If the plan is ambiguous or wrong, make the smallest sensible decision, implement it, and record it in **§17 Decision log**.
 
 ---
@@ -873,20 +881,36 @@ Every item below should only need: new `CardContent` case(s), a deck generator/l
 
 | Segment | Status | Notes |
 |---|---|---|
-| S0 Scaffolding & CI | ☐ |  |
-| S1 Domain types | ☐ |  |
-| S2 Music theory | ☐ |  |
-| S3 Fretboard deck | ☐ |  |
-| S4 Korean content & loader | ☐ |  |
-| S5 Scheduler & stats | ☐ |  |
-| S6 Session engine & summary | ☐ |  |
-| S7 Persistence | ☐ |  |
-| S8 Shell, Home, Setup | ☐ |  |
-| S9 Session screen | ☐ |  |
-| S10 Summary screen | ☐ |  |
-| S11 Stats tab | ☐ |  |
-| S12 Settings & polish | ☐ |  |
-| S13 QA | ☐ |  |
+| S0 Scaffolding & CI | ☑ | Build-only CI (no tests, per owner) |
+| S1 Domain types | ☑ |  |
+| S2 Music theory | ☑ |  |
+| S3 Fretboard deck | ☑ |  |
+| S4 Korean content & loader | ☑ | Core 1 = 205, AION 2 = 81 entries |
+| S5 Scheduler & stats | ☑ |  |
+| S6 Session engine & summary | ☑ | undoLastGrade not implemented (stretch) |
+| S7 Persistence | ☑ |  |
+| S8 Shell, Home, Setup | ☑ |  |
+| S9 Session screen | ☑ |  |
+| S10 Summary screen | ☑ |  |
+| S11 Stats tab | ☑ |  |
+| S12 Settings & polish | ☑ |  |
+| S13 QA | ☑ | UI smoke test skipped (no tests, per owner); manual checklist in README |
+
+**M1.1 review fixes:** tracked in [PLAN_M1_FIXES.md](PLAN_M1_FIXES.md): §4 for Round 1 (F0–F10) and §8 for Round 2 (G1–G6).
 
 ### Decision log
 _(Agents append dated entries here: decision, reason, segment.)_
+
+- 2026-11-16 · All · Owner asked for implementation only: no unit/UI test targets; CI builds core (Linux) and app (macOS) without tests.
+- 2026-11-16 · S6/S7 · `SessionEngine` is synchronous and returns `SessionEffect`s; `SessionRecorder` applies them to the `StatsStore` strictly in order on a background task (avoids non-Sendable engine crossing actors; still persisted per grade).
+- 2026-11-16 · S1 · `Deck` gained `subtitle`, `defaultOptions` and `present(_:using:)` (random ♯/♭ choice for `.mixed` spelling at presentation time; key unchanged). `patternPenalty` takes `ArraySlice<Card>`.
+- 2026-11-16 · S5 · `.off` focus = weight 1 for every eligible card (truly uniform). Pending retries are excluded from scheduler picks (engine injects them). Fill rule: gating relaxes until ≥ 6 eligible cards (`minEligiblePool`). `newPerSession` counts entries (ranks), both directions of an entry share a rank.
+- 2026-11-16 · S6 · Interrupted attempt stores elapsed time so far with `correct = false`; paused time is excluded from timed sessions. When the length is reached, still-pending retries are dropped. Retries flush if the scheduler has nothing left.
+- 2026-11-16 · S4 · Slash entries split (가방, 인벤토리 separate). Economy tag ranked after items. Deck ids prefixes: `ko.core.NNNN`, `ko.aion2.NNNN`.
+- 2026-11-16 · S7 · `StatsStore` methods are `async throws`; added `attempts(forDeck:)` for trend charts. SwiftData models are flat (no relationships), config stored as JSON `Data`.
+- 2026-11-16 · S0 · Info.plist generated at `App/Info.plist` (outside resources to avoid copy-phase clash). Resources bundled with `.copy("Resources/Decks")` to keep the subdirectory.
+- 2026-11-16 · S11 · "Learned" = ≥ 3 counted attempts and error EWMA < 0.2.
+- 2026-11-16 · M1.1 · Fix plan F2–F9 implemented. D1 = No: no test target, so F1 and every per-segment test step were skipped; F0 skipped (no commits requested). `VocabOptions.sanitized(allTags:)` added in core for P3-2. `Fmt.delta` zero renders `= 0.00 s` / `= 0 pt`. `undoLastGrade` remains deferred.
+- 2026-11-16 · Planner · Round 2 review (N1–N7) planned as G1–G6 in PLAN_M1_FIXES.md §7–§10. N7 resolved: §9.3 and S6 now say retries may come back earlier in a starved pool, and §9.3's launch sweep text now matches F6.
+- 2026-11-16 · M1.1 R2 · G1–G5 code implemented. G1: wire shape captured from the M1 build before editing; `FretboardOptions.strings` and `VocabOptions.tags` are now encoded sorted (decode unchanged) so `PersistedFormatCheck` byte comparison is deterministic (Set order is per-process). `SessionConfig` equality/hash exclude `recoveredFields`. G5: timing log + DEBUG-simulator seeder added; measurements pending (owner). G6 pending (owner, on device).
+
