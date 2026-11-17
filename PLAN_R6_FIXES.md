@@ -45,7 +45,7 @@
 | T3 Matcher: ±요 is close for non-predicate Hangul | R6-2 | ☑ | Core only. Done: f3f7028 |
 | T4 Make the media deck's glosses unique | R6-2 | ☑ | After T1 is committed. Done: 8790aed; no other collisions |
 | T5 Ignore pre-arm audio; no 0 ms mic answers | R6-3 | ☑ | App + one core line. Done: abac376; iOS build 0 warnings |
-| T6 Home aurora under the session cover | R6-7a | ☐ | Frontend agent; measure first |
+| T6 Home aurora under the session cover | R6-7a | ☑ | Measured: it ticked at 30 Hz under the cover. Fixed: `animated: launch == nil` in HomeView. HomeView is the only `SessionView(` presenter |
 | C1 Verification rows: Core 5 226–450 + AION 2 | R6-4 | ☐ | Content agent, after T2; owner spot-checks 15 per deck |
 | T7 K5 integration + README QA | R6-6, PLAN_M5 K5 | ☑ | After T1 (ideally after T3/T4). Done: 96c0f36; steps 1–2 verified in code; QA lines unticked (not run on device) |
 
