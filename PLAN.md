@@ -1111,3 +1111,13 @@ _(Agents append dated entries here: decision, reason, segment.)_
   - **Aurora cost, measured** on the iPhone 17 Pro simulator, with Home idle and 10 s CPU-time deltas. The animated aurora costs about 7% of app CPU and about 33% of render-server CPU. Frozen, both drop to about 0.1–0.4%. Removing the blur filter changes nothing. So the cost is the glass materials above the aurora re-blurring their backdrop on every aurora frame, plus the 30 Hz main-thread tick. The blur itself is not the cost.
   - **Fix:** `.auroraBackground(colors:intensity:animated:running:)` replaces `.background { AuroraBackground(…) }` on every screen. On iOS 18+, it holds the aurora while the screen's scroll view is scrolling (`onScrollPhaseChange`). A held aurora keeps its frame and resumes without a jump, using a clock that excludes paused time. Probe result during a 2.4 s programmatic scroll on Home: 0 draws, then 30 fps resumes when the scroll phase is `idle` again. Home now *holds* under the session cover (`running: launch == nil`, which supersedes R6-7a's `animated:`), so it no longer snaps to the rest frame when the cover opens. `animated: false` (the rest frame) stays for sessions (R3-2).
   - **Aurora drawing:** it now renders off the main thread (`Canvas(rendersAsynchronously:)`) into a bitmap 4× smaller at 1× scale, upscaled to fill. That is about 140× fewer blurred pixels on a device GPU, and it looks the same (screenshots compared). It made no measurable difference in the simulator.
+- 2026-11-17 · Planner · **PLAN_R7_FIXES** from the owner's on-device test (8 findings).
+  - F1: card selection by rounds (no repeat until the pool is used up; correct cards rest one extra round; introduction tops up to the session's distinct-card target). This replaces the in-session `alreadyShownFactor`.
+  - F2: "End session" discards (no record, no attempts, stats restored).
+  - F3: mic "Correct / Try again" feedback, with octave-tolerant matching.
+  - F4: zoomed horizontal fretboard.
+  - F5: stable Home section ids.
+  - F6: `KoreanHeadline` (length-tiered sizes, no mid-word breaks).
+  - F7: one deck per Korean headword (hidden in code, JSON untouched) and interleaved derived-deck introduction.
+  - C2: distinct glosses. The owner waived the append-only content rule for this.
+  - Defaults D1–D5 are listed in PLAN_R7_FIXES §4.
