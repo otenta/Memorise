@@ -199,11 +199,11 @@ struct VocabAnswerView: View {
             if let notes = e.notes {
                 Text(notes).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
             }
-            // M5: only media phrases get the panel, so other decks look unchanged.
-            if MediaSnippetView.shouldShow(for: e) {
-                MediaSnippetView(entry: e, onEditSnippet: onEditSnippet)
-                    .padding(.top, 8)
-            }
+            // R5-5 (b): every vocab reveal gets the panel. Plain entries show one quiet
+            // "Add your own snippet" button (or their saved snippet); "In a scene" / "Heard in"
+            // appear only when the entry has that data.
+            MediaSnippetView(entry: e, onEditSnippet: onEditSnippet)
+                .padding(.top, 8)
         }
     }
 

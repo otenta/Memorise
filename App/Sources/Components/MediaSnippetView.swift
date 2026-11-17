@@ -3,8 +3,9 @@ import SwiftUI
 
 // MARK: - Panel (M5 K3/K4)
 
-/// "In a scene" / "Heard in" / "My snippet" panel under a media phrase's answer.
-/// Plain text only — no links anywhere (PLAN_M5 §2).
+/// "In a scene" / "Heard in" / "My snippet" panel under every vocab answer (R5-5 b).
+/// Media phrases get the full panel. Plain entries get a single quiet "Add your own snippet"
+/// button until a snippet is saved, then the "My snippet" section. Plain text only, no links (PLAN_M5 §2).
 struct MediaSnippetView: View {
     let entry: VocabEntry
     /// Session-hosted editor (pauses the session). `nil` = present a local sheet (previews, outside sessions).
@@ -13,10 +14,14 @@ struct MediaSnippetView: View {
     @Environment(AppEnvironment.self) private var env
     @State private var localEditor: SnippetEditTarget?
 
-    /// Only media-style entries get the panel, so existing decks look unchanged.
-    static func shouldShow(for entry: VocabEntry) -> Bool {
+    /// Whether the entry carries scene dialogue or media sources.
+    static func hasMedia(for entry: VocabEntry) -> Bool {
         !entry.dialogue.isEmpty || !entry.sources.isEmpty
     }
+
+    private var snippet: PersonalSnippet? { env.personalSnippet(for: entry.id) }
+    /// Plain entry with nothing saved: just the dashed button, no titled section.
+    private var isCompact: Bool { !Self.hasMedia(for: entry) && snippet == nil }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
@@ -40,11 +45,19 @@ struct MediaSnippetView: View {
                     }
                 }
             }
-            PanelSection(title: "My snippet", systemImage: "pencil.and.scribble", colors: [Theme.mint, Theme.teal]) {
-                MySnippetCard(snippet: env.personalSnippet(for: entry.id), edit: edit)
-                    .appearAnimation(index: entry.dialogue.count + entry.sources.count + 1)
+            if isCompact {
+                AddSnippetButton(hangul: entry.hangul, edit: edit)
+                    .appearAnimation(index: 1)
+                    .transition(BlurReplaceTransition(configuration: .downUp).combined(with: ScaleTransition(0.96)))
+            } else {
+                PanelSection(title: "My snippet", systemImage: "pencil.and.scribble", colors: [Theme.mint, Theme.teal]) {
+                    MySnippetCard(snippet: snippet, hangul: entry.hangul, edit: edit)
+                        .appearAnimation(index: entry.dialogue.count + entry.sources.count + 1)
+                }
+                .transition(BlurReplaceTransition(configuration: .downUp).combined(with: MoveTransition(edge: .bottom)))
             }
         }
+        .animation(Theme.spring, value: isCompact)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityIdentifier("mediaSnippet")
         .sheet(item: $localEditor) { SnippetEditorSheet(entry: $0.entry) }
@@ -248,6 +261,7 @@ private struct MediaSourceRow: View {
 
 private struct MySnippetCard: View {
     let snippet: PersonalSnippet?
+    let hangul: String
     let edit: () -> Void
 
     var body: some View {
@@ -255,7 +269,7 @@ private struct MySnippetCard: View {
             if let snippet {
                 saved(snippet)
             } else {
-                addButton
+                AddSnippetButton(hangul: hangul, edit: edit)
             }
         }
         .animation(Theme.spring, value: snippet)
@@ -303,23 +317,49 @@ private struct MySnippetCard: View {
         .accessibilityHint("Edit your snippet")
         .accessibilityIdentifier("editSnippetButton")
     }
+}
 
-    private var addButton: some View {
+/// Dashed "+ Add your own snippet" button: the whole panel for plain entries, and the empty state of "My snippet".
+private struct AddSnippetButton: View {
+    let hangul: String
+    let edit: () -> Void
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var glow = false
+
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: 18, style: .continuous)
         Button(action: edit) {
-            Label("Add your own snippet", systemImage: "plus.circle.fill")
-                .font(.subheadline.weight(.semibold))
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(Theme.teal)
-                .frame(maxWidth: .infinity, minHeight: 52)
-                .background(Theme.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .strokeBorder(Theme.teal.opacity(0.45), style: StrokeStyle(lineWidth: 1.5, dash: [6, 5]))
+            HStack(spacing: 8) {
+                Image(systemName: "plus.circle.fill")
+                    .symbolRenderingMode(.hierarchical)
+                    .symbolEffect(.bounce, options: .nonRepeating, value: glow)
+                Text("Add your own snippet")
+            }
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(Theme.teal)
+            .frame(maxWidth: .infinity, minHeight: 52)
+            .background {
+                shape.fill(LinearGradient(colors: [Theme.mint.opacity(0.08), Theme.teal.opacity(0.05)],
+                                          startPoint: .topLeading, endPoint: .bottomTrailing))
+            }
+            .overlay {
+                shape.strokeBorder(
+                    LinearGradient(colors: [Theme.mint.opacity(0.7), Theme.teal.opacity(0.45)],
+                                   startPoint: .leading, endPoint: .trailing),
+                    style: StrokeStyle(lineWidth: 1.5, dash: [6, 5], dashPhase: glow ? 22 : 0)
                 )
-                .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            }
+            .contentShape(shape)
         }
         .buttonStyle(PressableStyle(scale: 0.97))
         .transition(.scale(scale: 0.92).combined(with: .opacity))
+        .onAppear {
+            guard !reduceMotion else { return }
+            // One gentle dash crawl + icon bounce on reveal, then still: a hint, not a distraction.
+            withAnimation(.easeInOut(duration: 1.2).delay(0.35)) { glow = true }
+        }
+        .accessibilityLabel("Add your own snippet for \(hangul)")
         .accessibilityIdentifier("addSnippetButton")
     }
 }
@@ -419,6 +459,30 @@ extension VocabEntry {
     ScrollView { MediaSnippetView(entry: .previewMedia).padding() }
         .background { AuroraBackground(colors: Subject.korean.colors) }
         .environment(AppEnvironment.preview())
+}
+
+extension VocabEntry {
+    static let previewPlain = VocabEntry(
+        id: "ko.core.preview", hangul: "사랑", romanization: "sarang", meanings: ["love"],
+        pos: "noun", rank: 1, example: VocabEntry.Example(ko: "사랑해요.", en: "I love you.")
+    )
+}
+
+#Preview("Plain entry · compact button") {
+    ScrollView { MediaSnippetView(entry: .previewPlain).padding() }
+        .background { AuroraBackground(colors: Subject.korean.colors) }
+        .environment(AppEnvironment.preview())
+}
+
+#Preview("Plain entry · saved snippet") {
+    let env = AppEnvironment.preview()
+    ScrollView { MediaSnippetView(entry: .previewPlain).padding() }
+        .background { AuroraBackground(colors: Subject.korean.colors) }
+        .environment(env)
+        .task {
+            try? await env.savePersonalSnippet(entryID: VocabEntry.previewPlain.id,
+                                               text: "The word that ends every love-song chorus.", source: "My playlist")
+        }
 }
 
 #Preview("Panel · dialogue only") {
