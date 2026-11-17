@@ -131,3 +131,13 @@
 | ko.media.0124 | 끝났어 | song | 끝났어 | Lee Jung-hyun | 2000 | lyrics | https://music.bugs.co.kr/track/87780 | agent | VERIFIED | 2026-11-17 |
 | ko.media.0127 | 같이 있어 줘 | song | 같이 있어줘 | 태하 & 화요비 | 2011 | lyrics | https://music.bugs.co.kr/track/2315707 | agent | VERIFIED | 2026-11-17 |
 | ko.media.0128 | 시간이 없어 | song | RE : WIND (이세계아이돌) | ISEGYE IDOL | 2021 | lyrics | https://music.bugs.co.kr/track/32416798 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0140 | 사랑한다 | drama | I'm Sorry, I Love You (미안하다, 사랑한다) | KBS2 | 2004 | title | https://news.tf.co.kr/read/ogmeta/2216851.htm | agent | VERIFIED | 2026-11-17 |
+| ko.media.0126 | 내 편 | drama | My Only One (하나뿐인 내편) | KBS2 | 2018 | title | https://m.seoul.co.kr/news/2018/09/15/20180915500043 | agent | VERIFIED | 2026-11-17 |
+
+### Drama pass (2026-11-17)
+
+- **Result:** 2 title references (사랑한다 → 미안하다, 사랑한다; 내 편 → 하나뿐인 내편), each confirmed against a press article that names the title, KBS2 and the airing year. No dialogue references were found, so 11 of 41 extension phrases now have a source (13 references: 11 songs, 2 dramas).
+- **Read, no quoted line matched (dialogue only; headlines and journalist prose not counted):** Dailian 1413832 (엄마친구아들), 1048051 (갯마을 차차차), 1355809 (눈물의 여왕), 1244122 (어쩌다 마주친, 그대); Seoul Shinmun 밥 잘 사주는 예쁜 누나 (2018-04-19) and 욱씨남정기 (2016-04-18); Busan Ilbo 또 오해영 (2016-05-30); TenAsia 괜찮아 사랑이야 (2014082548144), 법대로 사랑하라 (2022092308944), 착하지 않은 여자들 (2015031672604); OSEN 드라마 명대사 7 (G1110407246), 넝쿨째 굴러온 당신 (G1109358506); GQ Korea 동백꽃 필 무렵 (2019-10-23); Maeil SKY 캐슬 (2018121309241100672); XSports News 2016 roundup (803658); Harper's Bazaar 66215, 67838, 74037 (partly behind a login wall).
+- **Near misses not counted:** 심쿵한 / 심쿵할 (또 오해영, Busan Ilbo); 우리 결혼해요 (image caption only); 약속이나 지켜요, 가져다줄게요 (SKY 캐슬).
+- **Why so few:** these extension phrases are everyday casual lines that press round-ups rarely quote; dialogue references will need the owner (`citation: "owner"`) or a phrase list chosen from known scenes.
+

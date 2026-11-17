@@ -4836,6 +4836,18 @@
           "ko": "무슨 소리야. 난 항상 네 편이야.",
           "en": "What are you talking about? I'm always on your side."
         }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "My Only One",
+          "titleKo": "하나뿐인 내편",
+          "by": "KBS2",
+          "year": 2018,
+          "locator": "title",
+          "context": "The title of this hit KBS2 weekend family drama means 'the only one on my side'.",
+          "citation": "https://m.seoul.co.kr/news/2018/09/15/20180915500043"
+        }
       ]
     },
     {
@@ -5267,6 +5279,18 @@
           "speaker": "B",
           "ko": "말 안 해도 알잖아. 사랑한다.",
           "en": "You know without me saying it. I love you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "I'm Sorry, I Love You",
+          "titleKo": "미안하다, 사랑한다",
+          "by": "KBS2",
+          "year": 2004,
+          "locator": "title",
+          "context": "The phrase is the second half of the title of this tragic 2004 melodrama about a man raised on the streets of Australia who returns to Korea.",
+          "citation": "https://news.tf.co.kr/read/ogmeta/2216851.htm"
         }
       ]
     },
