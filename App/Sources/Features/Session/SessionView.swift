@@ -79,6 +79,24 @@ private struct SessionContent: View {
 
     // MARK: Running session
 
+    /// R7-F3: "Correct" / "Try again" over the card for microphone answers.
+    private var micFeedbackBanner: some View {
+        ZStack {
+            if let feedback = vm.micFeedback {
+                MicFeedbackBanner(feedback: feedback)
+                    .id(vm.micFeedbackID)
+                    .transition(reduceMotion ? .opacity : .scale(scale: 0.7).combined(with: .opacity))
+            }
+        }
+        .animation(reduceMotion ? .easeOut(duration: 0.15) : .spring(response: 0.3, dampingFraction: 0.65), value: vm.micFeedbackID)
+        .animation(.easeOut(duration: 0.2), value: vm.micFeedback == nil)
+        .allowsHitTesting(false)
+        .onChange(of: vm.micFeedbackID) {
+            guard let feedback = vm.micFeedback else { return }
+            AccessibilityNotification.Announcement(feedback.text).post()
+        }
+    }
+
     private var subjectColors: [Color] { vm.deck.subject.colors }
 
     private var running: some View {
@@ -108,6 +126,7 @@ private struct SessionContent: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(reduceMotion ? .easeOut(duration: 0.12) : .spring(response: 0.32, dampingFraction: 0.78), value: phaseKey)
+            .overlay { micFeedbackBanner }
             typedField
         }
         .background { AuroraBackground(colors: subjectColors, intensity: 0.85, animated: false) }
@@ -566,7 +585,7 @@ private struct FlipIn: ViewModifier {
         .environment(AppEnvironment.preview())
 }
 
-/// "Listening…" chip with a live level meter and a transient "Heard G♯" note.
+/// "Listening…" chip with a live level meter (wrong notes show in `MicFeedbackBanner`, R7-F3).
 private struct MicListeningChip: View {
     let mic: MicAnswerController
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -576,18 +595,36 @@ private struct MicListeningChip: View {
             Image(systemName: "mic.fill")
                 .foregroundStyle(Subject.music.gradient)
                 .symbolEffect(.pulse, options: .repeating, isActive: mic.isListening && !reduceMotion)
-            Text(mic.heardWrong.map { "Heard \($0)" } ?? (mic.isListening ? "Listening…" : "Mic paused"))
+            Text(mic.isListening ? "Listening…" : "Mic paused")
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(mic.heardWrong == nil ? Color.primary : Theme.rose)
                 .contentTransition(.opacity)
             LevelMeter(levelDB: mic.levelDB)
                 .frame(width: 60, height: 6)
         }
         .padding(.horizontal, 14).padding(.vertical, 8)
         .background(.thinMaterial, in: Capsule())
-        .animation(.easeOut(duration: 0.15), value: mic.heardWrong)
+        .animation(.easeOut(duration: 0.15), value: mic.isListening)
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("micChip")
+    }
+}
+
+/// Large capsule over the card: "Correct ✓" (mint) or "Try again · heard G♯" / "Not quite" (rose).
+private struct MicFeedbackBanner: View {
+    let feedback: MicFeedback
+
+    var body: some View {
+        let tint = feedback.isPositive ? Theme.mint : Theme.rose
+        Label(feedback.text, systemImage: feedback.isPositive ? "checkmark.circle.fill" : "arrow.uturn.backward.circle.fill")
+            .font(.title2.weight(.bold))
+            .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 24).padding(.vertical, 14)
+            .background(tint.gradient, in: Capsule())
+            .shadow(color: tint.opacity(0.45), radius: 16, y: 6)
+            .padding(.horizontal, 16)
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("micFeedbackBanner")
     }
 }
 

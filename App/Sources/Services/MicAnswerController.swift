@@ -16,21 +16,20 @@ final class MicAnswerController {
     /// Smoothed input level in dBFS (for the meter). Published at ≤ 20 Hz, only while listening
     /// and only when it moves by more than 1 dB.
     private(set) var levelDB: Double = -80
-    /// Transient "Heard G♯" text for a stable but wrong note.
-    private(set) var heardWrong: String?
     /// Whether frames are currently being matched (prompt visible).
     private(set) var isListening = false
     private(set) var isRunning = false
 
     /// Called on a stable note. Return true when it answered the card (stops listening).
     @ObservationIgnored var onStableNote: ((_ midi: Int, _ onsetHostSeconds: Double) -> Bool)?
+    /// Called when a stable note did not answer the card (R7-F3: the session shows "Try again").
+    @ObservationIgnored var onWrongNote: ((_ midi: Int) -> Void)?
 
     @ObservationIgnored private let audio: AudioSessionCoordinator
     @ObservationIgnored private let engine = AVAudioEngine()
     @ObservationIgnored private var detector: PitchDetector?
     @ObservationIgnored private let tracker = MicFrameTracker(stableFrames: MicAnswerController.stableFrames,
                                                               centsTolerance: MicAnswerController.centsTolerance)
-    @ObservationIgnored private var wrongClearTask: Task<Void, Never>?
 
     static let stableFrames = 3
     static let centsTolerance = 40.0
@@ -106,7 +105,6 @@ final class MicAnswerController {
         isListening = on
         tracker.setListening(on, at: Self.hostNowSeconds)
         detector?.setActive(on)
-        heardWrong = nil
     }
 
     // MARK: Main-actor delivery
@@ -122,18 +120,13 @@ final class MicAnswerController {
         if onStableNote?(note.midi, note.onsetHostSeconds) == true {
             setListening(false)
         } else {
-            showWrong(note.midi)
+            onWrongNote?(note.midi)
         }
     }
 
-    private func showWrong(_ midi: Int) {
-        heardWrong = Pitch(midi: midi).name(spelling: .preferred(for: PitchClass(midi), preferFlat: false))
-        wrongClearTask?.cancel()
-        wrongClearTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(1.5))
-            guard !Task.isCancelled else { return }
-            self?.heardWrong = nil
-        }
+    /// Display name of a heard note ("G♯").
+    static func noteName(_ midi: Int) -> String {
+        Pitch(midi: midi).name(spelling: .preferred(for: PitchClass(midi), preferFlat: false))
     }
 
     /// Current host-clock time in seconds.

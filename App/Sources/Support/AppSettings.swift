@@ -25,6 +25,8 @@ final class AppSettings {
     var dotLabels: DotLabels { didSet { store(dotLabels.rawValue, .dotLabels) } }
     /// "A-shape barre" hint on Play the Chord prompts.
     var showShapeHint: Bool { didSet { store(showShapeHint, .showShapeHint) } }
+    /// Microphone answers: say "Correct" / "Try again" (R7-F3). Banners and haptics always run.
+    var spokenMicFeedback: Bool { didSet { store(spokenMicFeedback, .spokenMicFeedback) } }
 
     // Korean
     var autoPlayPronunciation: Bool { didSet { store(autoPlayPronunciation, .autoPlayPronunciation) } }
@@ -44,7 +46,7 @@ final class AppSettings {
 
     private enum Key: String {
         case noteNaming, solfegeVariant, leftHanded, highEOnTop, defaultMaxFret, showStringHint
-        case playNoteOnReveal, noteVolume, dotLabels, showShapeHint
+        case playNoteOnReveal, noteVolume, dotLabels, showShapeHint, spokenMicFeedback
         case autoPlayPronunciation, speechRate, showRomanization, koreanVoiceHintShown
         case tapAnywhereForOK, showTimer, hapticsEnabled, autoAdvanceOnCorrect
     }
@@ -57,6 +59,7 @@ final class AppSettings {
         noteVolume = defaults.object(forKey: Key.noteVolume.rawValue) as? Double ?? 0.8
         dotLabels = defaults.string(forKey: Key.dotLabels.rawValue).flatMap(DotLabels.init) ?? .notes
         showShapeHint = bool(.showShapeHint, true)
+        spokenMicFeedback = bool(.spokenMicFeedback, true)
         solfegeVariant = defaults.string(forKey: Key.solfegeVariant.rawValue).flatMap(SolfegeVariant.init) ?? .si
         leftHanded = bool(.leftHanded, false)
         highEOnTop = bool(.highEOnTop, true)

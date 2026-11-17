@@ -64,6 +64,8 @@ struct SettingsView: View {
                     .accessibilityIdentifier("dotLabelsPicker")
                     Toggle(isOn: $s.showShapeHint) { SettingLabel("Show chord shape hint", icon: "hand.point.up.left.fill", colors: [Theme.teal, Theme.mint]) }
                         .accessibilityIdentifier("showShapeHintToggle")
+                    Toggle(isOn: $s.spokenMicFeedback) { SettingLabel("Say Correct / Try again", icon: "mic.badge.plus", colors: [Theme.mint, Theme.teal]) }
+                        .accessibilityIdentifier("spokenMicFeedbackToggle")
                     VStack(alignment: .leading) {
                         SettingLabel("Note volume", icon: "speaker.wave.3.fill", colors: Subject.music.colors)
                         Slider(value: $s.noteVolume, in: 0...1) {

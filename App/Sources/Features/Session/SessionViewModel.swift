@@ -19,6 +19,35 @@ struct AutoAnswer: Hashable {
     var correct: Bool { override ?? verdict.isCorrect(exactRequired: exactRequired) }
 }
 
+/// Microphone answer feedback shown over the card (R7-F3).
+enum MicFeedback: Hashable {
+    /// The card accepted the note; the next card follows after `SessionViewModel.micCorrectDelay`.
+    case correct
+    /// A stable note the card doesn't accept; still listening.
+    case tryAgain(heard: String)
+    /// The third wrong note: the answer is revealed and graded wrong.
+    case notQuite
+
+    var text: String {
+        switch self {
+        case .correct: "Correct"
+        case let .tryAgain(heard): "Try again · heard \(heard)"
+        case .notQuite: "Not quite: here's the answer"
+        }
+    }
+
+    /// What spoken feedback says.
+    var spoken: String {
+        switch self {
+        case .correct: "Correct"
+        case .tryAgain: "Try again"
+        case .notQuite: "Not quite"
+        }
+    }
+
+    var isPositive: Bool { self == .correct }
+}
+
 /// Drives a `SessionEngine` from the UI and persists its effects in order.
 @MainActor @Observable
 final class SessionViewModel {
@@ -44,6 +73,9 @@ final class SessionViewModel {
     var snippetTarget: SnippetEditTarget?
     /// Set when "End session" erased the session (R7-F2); the view dismisses without a summary.
     private(set) var discarded = false
+    /// Microphone answer banner (R7-F3); `micFeedbackID` changes on every new event.
+    private(set) var micFeedback: MicFeedback?
+    private(set) var micFeedbackID = 0
 
     @ObservationIgnored let ui: any DeckUI
     @ObservationIgnored private let env: AppEnvironment
@@ -52,6 +84,25 @@ final class SessionViewModel {
     @ObservationIgnored private var micTimeoutTask: Task<Void, Never>?
     @ObservationIgnored private var preparedPresentation: Int?
     @ObservationIgnored private var choiceRNG = SplitMix64()
+    // Microphone feedback (R7-F3).
+    @ObservationIgnored private var wrongNoteCount = 0
+    @ObservationIgnored private var lastWrongNote: (midi: Int, at: ContinuousClock.Instant)?
+    /// The pending "Correct" → grade step; non-nil while a correct note is being confirmed.
+    @ObservationIgnored private var micAnswerTask: Task<Void, Never>?
+    @ObservationIgnored private var micFeedbackClearTask: Task<Void, Never>?
+    @ObservationIgnored private var micAutoGradeTask: Task<Void, Never>?
+    /// The current reveal came from the third wrong note: any grade is stored as wrong.
+    @ObservationIgnored private var micForcedWrong = false
+
+    /// Pause between "Correct" and the next card. The grade uses the note's onset, so this
+    /// doesn't inflate `responseMs`.
+    static let micCorrectDelay: Duration = .milliseconds(900)
+    /// Wrong notes on one card before the answer is revealed and graded wrong.
+    static let micMaxWrongNotes = 3
+    /// The revealed answer after the last wrong note is graded wrong after this delay.
+    static let micAutoGradeDelay: Duration = .milliseconds(1500)
+    /// How long "Try again" stays up.
+    static let micTryAgainVisible: Duration = .milliseconds(1200)
 
     init(env: AppEnvironment, deck: any Deck, config: SessionConfig) {
         self.env = env
@@ -132,7 +183,7 @@ final class SessionViewModel {
     /// Manual reveal. A touch reveal (including the touch fallback for cards without choices or a
     /// typed spec) counts its time; a microphone timeout reveal doesn't (R4-4).
     private func reveal(countsTime: Bool) {
-        guard let engine, case .prompting = engine.state else { return }
+        guard let engine, case .prompting = engine.state, micAnswerTask == nil else { return }
         // Typed / choice prompts reveal through `submitTyped` / `choose` / `giveUp`.
         guard choices == nil, typedSpec == nil else { return }
         engine.ok(countsTime: countsTime)
@@ -149,6 +200,10 @@ final class SessionViewModel {
     @discardableResult
     func grade(correct: Bool, haptic: Bool = true) -> Bool {
         guard let engine, engine.canGrade else { return false }
+        // R7-F3: a reveal after the last wrong note is always graded wrong.
+        let correct = correct && !micForcedWrong
+        micAutoGradeTask?.cancel()
+        micForcedWrong = false
         env.speech.stop()
         if haptic { env.haptics.grade(correct: correct) }
         apply(engine.grade(correct: correct))
@@ -157,6 +212,8 @@ final class SessionViewModel {
 
     func pause() {
         guard let engine else { return }
+        // A pending "Correct" is dropped: the card is re-shown unanswered on resume.
+        cancelMicFeedback()
         apply(engine.pause())
     }
 
@@ -258,6 +315,9 @@ final class SessionViewModel {
         guard preparedPresentation != p.presentationID else { return }
         preparedPresentation = p.presentationID
         autoAnswer = nil
+        wrongNoteCount = 0
+        lastWrongNote = nil
+        micForcedWrong = false
         choices = config.inputMode == .choice ? ui.choices(for: p.card, options: config.options, using: &choiceRNG) : nil
         typedSpec = config.inputMode == .typed ? ui.typedAnswer(for: p.card) : nil
     }
@@ -272,6 +332,7 @@ final class SessionViewModel {
         }
         let mic = MicAnswerController(audio: env.audio)
         mic.onStableNote = { [weak self] midi, onset in self?.micHeard(midi: midi, onsetHostSeconds: onset) ?? false }
+        mic.onWrongNote = { [weak self] midi in self?.micWrongNote(midi: midi) }
         do {
             try mic.start()
             self.mic = mic
@@ -282,14 +343,108 @@ final class SessionViewModel {
     }
 
     /// A stable note was heard. Returns true when it answered the card.
+    ///
+    /// R7-F3: a correct note shows "Correct", then grades after `micCorrectDelay` using the note's
+    /// onset. After any wrong note on this card it still says "Correct" and moves on, but stores
+    /// the card as wrong (owner D1), so it comes back and the stats stay honest.
     private func micHeard(midi: Int, onsetHostSeconds: Double) -> Bool {
-        guard let engine, case let .prompting(p) = engine.state, ui.micAccepts(p.card, midi: midi) else { return false }
+        guard let engine, case let .prompting(p) = engine.state, micAnswerTask == nil else { return false }
+        guard ui.micAccepts(p.card, midi: midi) else { return false }
         // Both clocks are monotonic; map the onset onto the engine clock (error < 1 ms while awake).
         let ago = max(0, MicAnswerController.hostNowSeconds - onsetHostSeconds)
         let onset = engine.clockNow - .nanoseconds(Int64(ago * 1e9))
+        let firstTry = wrongNoteCount == 0
+        mic?.setListening(false)
+        micTimeoutTask?.cancel()
+        showMicFeedback(.correct, clearAfter: nil)
         env.haptics.grade(correct: true)
-        apply(engine.answerDetected(at: onset))
+        speakMicFeedback(.correct, onFinish: nil)
+        let id = p.presentationID
+        micAnswerTask = Task { [weak self] in
+            try? await Task.sleep(for: Self.micCorrectDelay)
+            guard !Task.isCancelled, let self, let engine = self.engine,
+                  case let .prompting(cur) = engine.state, cur.presentationID == id else { return }
+            self.micAnswerTask = nil
+            self.micFeedback = nil
+            self.apply(firstTry
+                ? engine.answerDetected(at: onset)
+                : engine.answerEvaluated(correct: false, at: onset, countsTime: false))
+        }
         return true
+    }
+
+    /// A stable note the card doesn't accept: "Try again", or on the last allowed wrong note,
+    /// reveal the answer and grade it wrong after `micAutoGradeDelay` (a tap grades sooner).
+    private func micWrongNote(midi: Int) {
+        guard let engine, case let .prompting(p) = engine.state, micAnswerTask == nil else { return }
+        // A note still ringing after the mic re-arms (spoken feedback) isn't a new attempt.
+        let now = ContinuousClock.now
+        if let last = lastWrongNote, last.midi == midi, now - last.at < .seconds(2) {
+            lastWrongNote = (midi, now)
+            return
+        }
+        lastWrongNote = (midi, now)
+        wrongNoteCount += 1
+        env.haptics.grade(correct: false)
+
+        guard wrongNoteCount >= Self.micMaxWrongNotes else {
+            let feedback = MicFeedback.tryAgain(heard: MicAnswerController.noteName(midi))
+            showMicFeedback(feedback, clearAfter: Self.micTryAgainVisible)
+            if env.settings.spokenMicFeedback {
+                // Don't let the phone's own voice be heard as a note.
+                mic?.setListening(false)
+                let id = p.presentationID
+                speakMicFeedback(feedback) { [weak self] in
+                    guard let self, case let .prompting(cur) = self.state, cur.presentationID == id,
+                          self.micAnswerTask == nil else { return }
+                    self.mic?.setListening(true)
+                }
+            }
+            return
+        }
+
+        micTimeoutTask?.cancel()
+        showMicFeedback(.notQuite, clearAfter: Self.micAutoGradeDelay)
+        speakMicFeedback(.notQuite, onFinish: nil)
+        reveal(countsTime: false)
+        guard case let .revealed(revealed, _) = state else { return }
+        micForcedWrong = true
+        let id = revealed.presentationID
+        micAutoGradeTask = Task { [weak self] in
+            try? await Task.sleep(for: Self.micAutoGradeDelay)
+            guard !Task.isCancelled, let self, case let .revealed(cur, _) = self.state, cur.presentationID == id else { return }
+            self.grade(correct: false, haptic: false)
+        }
+    }
+
+    private func showMicFeedback(_ feedback: MicFeedback, clearAfter delay: Duration?) {
+        micFeedback = feedback
+        micFeedbackID &+= 1
+        micFeedbackClearTask?.cancel()
+        guard let delay else { return }
+        let id = micFeedbackID
+        micFeedbackClearTask = Task { [weak self] in
+            try? await Task.sleep(for: delay)
+            guard !Task.isCancelled, let self, self.micFeedbackID == id else { return }
+            self.micFeedback = nil
+        }
+    }
+
+    /// Speaks the feedback word in English when enabled; `onFinish` runs either way.
+    private func speakMicFeedback(_ feedback: MicFeedback, onFinish: (@MainActor () -> Void)?) {
+        guard env.settings.spokenMicFeedback else {
+            onFinish?()
+            return
+        }
+        env.speech.speakEnglish(feedback.spoken, onFinish: onFinish)
+    }
+
+    private func cancelMicFeedback() {
+        micAnswerTask?.cancel()
+        micAnswerTask = nil
+        micAutoGradeTask?.cancel()
+        micFeedbackClearTask?.cancel()
+        micFeedback = nil
     }
 
     /// After the timeout, reveal for manual grading (the mic may have missed a correct note).
@@ -308,6 +463,7 @@ final class SessionViewModel {
 
     func stopMic() {
         micTimeoutTask?.cancel()
+        cancelMicFeedback()
         mic?.stop()
         mic = nil
     }

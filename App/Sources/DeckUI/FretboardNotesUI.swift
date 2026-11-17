@@ -33,12 +33,11 @@ struct FretboardNotesUI: DeckUI {
 
     var supportsMicAnswer: Bool { true }
 
-    /// Correct pitch class, within the target string's playable range.
+    /// Correct pitch class anywhere in the guitar's range (R7-F3). The string can't be told from
+    /// the pitch, and YIN octave errors on low strings used to reject correctly played notes.
     func micAccepts(_ card: Card, midi: Int) -> Bool {
         guard let p = card.fretboardNote else { return false }
-        let open = Tuning.preset(p.tuning).openMidi(string: p.stringNumber)
-        let maxFret = max(p.answerFrets.max() ?? 12, 12)
-        return PitchClass(midi) == p.pitchClass && (open...(open + maxFret)).contains(midi)
+        return PitchClass(midi) == p.pitchClass && micRange(.preset(p.tuning)).contains(midi)
     }
 
     /// The lowest answer fret.
@@ -46,6 +45,11 @@ struct FretboardNotesUI: DeckUI {
         guard let p = card.fretboardNote, let f = p.answerFrets.first else { return [] }
         return [(Fretboard.midi(string: p.stringNumber, fret: f, tuning: .preset(p.tuning)), 0)]
     }
+}
+
+/// Pitches a guitar in `tuning` can produce: the lowest open string to string 1 at fret 24.
+func micRange(_ tuning: Tuning) -> ClosedRange<Int> {
+    (tuning.openMidi.min() ?? 40)...(tuning.openMidi(string: 1) + 24)
 }
 
 /// " · Drop D" for non-standard tunings.

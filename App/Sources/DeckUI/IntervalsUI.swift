@@ -38,10 +38,11 @@ struct IntervalsUI: DeckUI {
 
     var supportsMicAnswer: Bool { true }
 
-    /// Target pitch class within one octave above the root.
+    /// Target pitch class anywhere in the guitar's range (R7-F3, octave tolerant), except the
+    /// root itself (an octave's target shares its pitch class).
     func micAccepts(_ card: Card, midi: Int) -> Bool {
         guard let p = card.interval else { return false }
-        return PitchClass(midi) == p.targetSpelling.pitchClass && ((p.rootMidi + 1)...(p.rootMidi + 12)).contains(midi)
+        return midi != p.rootMidi && PitchClass(midi) == p.targetSpelling.pitchClass && micRange(.preset(p.tuning)).contains(midi)
     }
 
     /// Root, then target.
