@@ -64,7 +64,13 @@ public struct DeckCatalog: Sendable {
     }
 
     /// Bundled vocab files in display order.
-    public static let bundledVocabFiles = ["ko_core_1", "ko_core_2", "ko_core_3", "ko_core_4", "ko_core_5", "ko_patterns", "ko_aion2"]
+    /// M5 K1: `"ko_media"` goes before `"ko_aion2"` once K2 adds `ko_media.json`; until then a missing file
+    /// would show the "couldn't be loaded" row, so it stays out of the list.
+    public static let bundledVocabFiles = [
+        "ko_core_1", "ko_core_2", "ko_core_3", "ko_core_4", "ko_core_5", "ko_patterns",
+        // "ko_media", // M5 K2
+        "ko_aion2",
+    ]
 
     /// Fretboard Notes + every bundled vocab deck that loads.
     ///

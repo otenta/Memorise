@@ -1,3 +1,5 @@
+import Foundation
+
 /// Direction a vocab card is asked in. Raw values are part of `ItemKey`s — never change.
 public enum VocabDirection: String, Codable, Sendable, CaseIterable {
     /// Recognition: Hangul → meaning.
@@ -51,7 +53,116 @@ public enum ConjugationClass: String, Codable, Sendable, CaseIterable {
     case copula
 }
 
-/// One vocabulary entry (schema v1, plus the optional v2 fields `conj` and `examples`).
+/// Speech level of a phrase (schema v2, PLAN_M5 §3). Raw values are persisted — additive only.
+public enum Register: String, Codable, Sendable, CaseIterable {
+    case casual, polite, formal
+}
+
+/// One line of an original mini-dialogue (schema v2, PLAN_M5 §3). `speaker` is "A", "B" or "C".
+public struct DialogueLine: Hashable, Codable, Sendable {
+    public static let speakers: Set<String> = ["A", "B", "C"]
+
+    public let speaker: String
+    public let ko: String
+    public let en: String
+
+    public init(speaker: String, ko: String, en: String) {
+        self.speaker = speaker
+        self.ko = ko
+        self.en = en
+    }
+
+    private enum CodingKeys: String, CodingKey { case speaker, ko, en }
+
+    /// Tolerant: missing fields decode as empty strings, which the validator reports.
+    public init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        speaker = (try? c.decodeIfPresent(String.self, forKey: .speaker)) ?? ""
+        ko = (try? c.decodeIfPresent(String.self, forKey: .ko)) ?? ""
+        en = (try? c.decodeIfPresent(String.self, forKey: .en)) ?? ""
+    }
+}
+
+/// A verified media reference for a phrase (schema v2, PLAN_M5 §3). Names only — never a link.
+public struct MediaRef: Hashable, Codable, Sendable {
+    /// Raw values are persisted — additive only.
+    public enum Kind: String, Codable, Sendable, CaseIterable {
+        case song, drama
+        /// Variety / reality programme.
+        case show
+        case film
+    }
+
+    public let kind: Kind
+    public let title: String
+    public let titleKo: String?
+    /// Artist (songs) or broadcaster/network (screen).
+    public let by: String
+    public let year: Int
+    /// "chorus", "verse 1", "S1 E4", …
+    public let locator: String
+    /// Original 1–2 sentence description of the moment (≤ 200 chars).
+    public let context: String
+    /// `https` URL used to verify, or `"owner"`. Never shown in the UI outside DEBUG.
+    public let citation: String
+    /// The file had a `url` key (forbidden: no-links rule). Decoded only, never encoded.
+    public let hadURLKey: Bool
+
+    public init(
+        kind: Kind, title: String, titleKo: String? = nil, by: String, year: Int, locator: String,
+        context: String, citation: String
+    ) {
+        self.kind = kind
+        self.title = title
+        self.titleKo = titleKo
+        self.by = by
+        self.year = year
+        self.locator = locator
+        self.context = context
+        self.citation = citation
+        hadURLKey = false
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case kind, title, titleKo, by, year, locator, context, citation
+        /// Decoding only, so the validator can flag it.
+        case url
+    }
+
+    /// Tolerant except for `kind`: an unknown or missing kind throws, and `VocabEntry` drops just this ref.
+    public init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        kind = try c.decode(Kind.self, forKey: .kind)
+        title = (try? c.decodeIfPresent(String.self, forKey: .title)) ?? ""
+        titleKo = try? c.decodeIfPresent(String.self, forKey: .titleKo)
+        by = (try? c.decodeIfPresent(String.self, forKey: .by)) ?? ""
+        year = (try? c.decodeIfPresent(Int.self, forKey: .year)) ?? 0
+        locator = (try? c.decodeIfPresent(String.self, forKey: .locator)) ?? ""
+        context = (try? c.decodeIfPresent(String.self, forKey: .context)) ?? ""
+        citation = (try? c.decodeIfPresent(String.self, forKey: .citation)) ?? ""
+        hadURLKey = c.contains(.url)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(kind, forKey: .kind)
+        try c.encode(title, forKey: .title)
+        try c.encodeIfPresent(titleKo, forKey: .titleKo)
+        try c.encode(by, forKey: .by)
+        try c.encode(year, forKey: .year)
+        try c.encode(locator, forKey: .locator)
+        try c.encode(context, forKey: .context)
+        try c.encode(citation, forKey: .citation)
+    }
+}
+
+/// Decodes one element of an array without failing the whole array.
+private struct Lossy<T: Decodable>: Decodable {
+    let value: T?
+    init(from decoder: any Decoder) throws { value = try? T(from: decoder) }
+}
+
+/// One vocabulary entry (schema v1, plus the optional v2 fields `conj`, `examples`, `register`, `dialogue`, `sources`).
 public struct VocabEntry: Hashable, Codable, Sendable, Identifiable {
     public struct Example: Hashable, Codable, Sendable {
         public let ko: String
@@ -82,11 +193,20 @@ public struct VocabEntry: Hashable, Codable, Sendable, Identifiable {
     public let conj: String?
     /// Up to 3 extra example pairs (v2, patterns deck).
     public let examples: [Example]
+    /// Speech level (v2, media deck). Unknown values decode as `nil`.
+    public let register: Register?
+    /// Original mini-dialogue, 2–4 lines (v2, media deck).
+    public let dialogue: [DialogueLine]
+    /// Verified media references, 0–3 (v2, media deck).
+    public let sources: [MediaRef]
+    /// Sources dropped while decoding (unknown `kind`). Not encoded; reported by the validator.
+    public let droppedSourceCount: Int
 
     public init(
         id: String, hangul: String, romanization: String, meanings: [String], pos: String, rank: Int,
         tags: [String] = [], hanja: String? = nil, example: Example? = nil, notes: String? = nil,
-        conj: String? = nil, examples: [Example] = []
+        conj: String? = nil, examples: [Example] = [], register: Register? = nil,
+        dialogue: [DialogueLine] = [], sources: [MediaRef] = []
     ) {
         self.id = id
         self.hangul = hangul
@@ -100,10 +220,15 @@ public struct VocabEntry: Hashable, Codable, Sendable, Identifiable {
         self.notes = notes
         self.conj = conj
         self.examples = examples
+        self.register = register
+        self.dialogue = dialogue
+        self.sources = sources
+        droppedSourceCount = 0
     }
 
     private enum CodingKeys: String, CodingKey {
         case id, hangul, romanization, meanings, pos, rank, tags, hanja, example, notes, conj, examples
+        case register, dialogue, sources
     }
 
     public init(from decoder: any Decoder) throws {
@@ -121,6 +246,11 @@ public struct VocabEntry: Hashable, Codable, Sendable, Identifiable {
         notes = try c.decodeIfPresent(String.self, forKey: .notes)
         conj = try? c.decodeIfPresent(String.self, forKey: .conj)
         examples = (try? c.decodeIfPresent([Example].self, forKey: .examples)) ?? []
+        register = try? c.decodeIfPresent(Register.self, forKey: .register)
+        dialogue = (try? c.decodeIfPresent([DialogueLine].self, forKey: .dialogue)) ?? []
+        let rawSources = (try? c.decodeIfPresent([Lossy<MediaRef>].self, forKey: .sources)) ?? []
+        sources = rawSources.compactMap(\.value)
+        droppedSourceCount = rawSources.count - sources.count
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -137,6 +267,9 @@ public struct VocabEntry: Hashable, Codable, Sendable, Identifiable {
         try c.encodeIfPresent(notes, forKey: .notes)
         try c.encodeIfPresent(conj, forKey: .conj)
         if !examples.isEmpty { try c.encode(examples, forKey: .examples) }
+        try c.encodeIfPresent(register, forKey: .register)
+        if !dialogue.isEmpty { try c.encode(dialogue, forKey: .dialogue) }
+        if !sources.isEmpty { try c.encode(sources, forKey: .sources) }
     }
 
     public var partOfSpeech: PartOfSpeech? { PartOfSpeech(rawValue: pos) }
@@ -155,7 +288,8 @@ public struct VocabEntry: Hashable, Codable, Sendable, Identifiable {
     public var meaningText: String { meanings.joined(separator: ", ") }
 }
 
-/// On-disk deck file. v2 adds optional entry fields (`conj`, `examples`, pos `pattern`);
+/// On-disk deck file. v2 adds optional entry fields (`conj`, `examples`, pos `pattern`;
+/// `register`, `dialogue`, `sources` for the media deck — PLAN_M5 §3);
 /// v1 files remain valid.
 public struct VocabDeckFile: Codable, Sendable, Hashable {
     public static let currentSchemaVersion = 2
@@ -322,6 +456,18 @@ public enum Hangul {
             return false
         }
         return sawSyllable
+    }
+
+    /// Expression headword in a v2 file (PLAN_M5 §3): a normal headword that may also contain `? ! , . …`.
+    public static func isValidExpressionHeadword(_ text: String) -> Bool {
+        let punctuation = "?!,.…".unicodeScalars
+        let stripped = String(String.UnicodeScalarView(text.unicodeScalars.filter { !punctuation.contains($0) }))
+        return isValidHeadword(stripped)
+    }
+
+    /// Text reduced to letters and digits, for punctuation/whitespace-insensitive matching.
+    public static func matchKey(_ text: String) -> String {
+        String(String.UnicodeScalarView(text.unicodeScalars.filter { CharacterSet.alphanumerics.contains($0) }))
     }
 
     /// Number of Hangul syllables in `text`.

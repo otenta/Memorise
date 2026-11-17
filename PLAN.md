@@ -389,6 +389,11 @@ Rules (enforced by a validator + unit test that runs over every bundled file):
 - `rank`: 1…N, unique within the file, defines introduction order (§10.5).
 - `example` optional; if present, both `ko` and `en` non-empty, short (≤ 40 Hangul chars), polite `-요` style preferred.
 
+**Schema v2** (`VocabDeckFile.currentSchemaVersion = 2`; files with version 1…2 are accepted, and v1 files stay valid). All v2 fields are optional:
+- M4 (see §8.3b, PLAN_M4 §3.2): `conj`, `examples`, pos `pattern`.
+- M5 (see [PLAN_M5_KOREAN_MEDIA.md](PLAN_M5_KOREAN_MEDIA.md) §3): `register` (casual/polite/formal), `dialogue` (2–4 original lines, speakers A/B/C, ≤ 40 Hangul each, containing the phrase), `sources` (0–3 `MediaRef`s: kind song/drama/show/film, title, by, year 1990…now, locator, context ≤ 200 chars, citation = `https` URL or `"owner"`). A `url` key on a source is a validator error (names only, no links). A source with an unknown `kind` is dropped and reported; the entry is kept.
+- In v2 files, `expression` headwords may also contain `? ! , . …` (진짜?, 잠깐만!).
+
 ### 8.3 Bundled content for M1
 
 **`ko_core_1.json` — Korean Core 1 (~200 entries)**
@@ -1034,4 +1039,9 @@ _(Agents append dated entries here: decision, reason, segment.)_
 - 2026-11-17 · M4 · M4-1 Core 5 (`ko_core_5.json`): 225 entries, `ko.core.0870`–`1094`. This completes M4-1 content: Core 2–5 add 889 words, against the ~800 target. 48 % are nouns across 23 themes (adding directions/compass points, holidays, clothes and accessories, animals and weather), 34 % are verbs/adjectives (covering every irregular class: ㄷ 깨닫다/싣다, ㅅ 붓다/긋다, ㄹ 날다/졸다, 르 흐르다/누르다, 으 잠그다/뜨다, ㅂ 줍다/가렵다, ㅎ 어떻다/동그랗다), and 30 have example sentences. No hangul + pos repeats Core 1–4. Its rows were appended to `docs/core-verification.md` (889 rows, all still unchecked).
   - **Conjugator fix:** 정 added to `boundHaRoots`, so 정하다 now gives 안 정해요 instead of "정 안 해요".
   - **Known oddities (grammatical, semantically rare):** negatives of 없다-compounds (안 맛없어요, 안 재미없어요) and of 어떻다 (안 어때요); 화나다 → 안 화나요 (colloquially 화 안 나요).
+- 2026-11-17 · M5 · K1 (schema v2 media fields + validator): `Register`, `DialogueLine` and `MediaRef` added to `Korean/Vocab.swift`; `VocabEntry` gains `register`, `dialogue` and `sources` with defaulted init parameters. `DeckValidator` adds the dialogue, source and citation rules and the v2 expression-punctuation headword rule. `currentYear` is injected (default: system calendar).
+  - **Deviation:** the schema bump to 2 was already done by M4, so K1 adds fields only.
+  - **Deviation:** a source with an unknown `kind` is reported through the validator's error list (the catalog shows it as a validation warning and still loads the deck), because the validator has no separate warning channel. A non-encoded `droppedSourceCount` on `VocabEntry` carries the count.
+  - **Deviation:** `"ko_media"` sits commented out in `bundledVocabFiles` (before `ko_aion2`) until K2 adds the file.
+  - K3 (reveal snippet panel) is UI work and is left for the UI engineer.
 

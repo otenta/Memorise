@@ -1,11 +1,14 @@
-/// Validates vocab deck files against the schema rules (§8.2, PLAN_M4 §3.2).
+import Foundation
+
+/// Validates vocab deck files against the schema rules (§8.2, PLAN_M4 §3.2, PLAN_M5 §3).
 public enum DeckValidator {
     /// `.bundled`: full schema rules. `.user` (M4-8): romanization and `conj` optional, empty deck allowed,
     /// ids must be `user.<8 hex>[.NNNN]`.
     public enum Mode: Sendable { case bundled, user }
 
     /// Validates one file. Returns human-readable errors (empty = valid).
-    public static func validate(_ file: VocabDeckFile, mode: Mode = .bundled) -> [String] {
+    /// `currentYear` bounds `MediaRef.year` (injected; defaults to the system calendar).
+    public static func validate(_ file: VocabDeckFile, mode: Mode = .bundled, currentYear: Int = defaultCurrentYear()) -> [String] {
         var errors: [String] = []
         let prefix = idPrefix(for: file.deckId)
         let user = mode == .user
@@ -28,6 +31,9 @@ public enum DeckValidator {
                     errors.append("\(at): pattern '\(e.hangul)' must start with '-' or contain '~'")
                 }
                 if e.allExamples.count < 2 { errors.append("\(at): patterns need at least 2 examples") }
+            } else if file.schemaVersion >= 2, e.partOfSpeech == .expression {
+                // v2: expressions may carry ? ! , . … (진짜?, 잠깐만!).
+                if !Hangul.isValidExpressionHeadword(e.hangul) { errors.append("\(at): invalid hangul '\(e.hangul)'") }
             } else if !Hangul.isValidHeadword(e.hangul) {
                 errors.append("\(at): invalid hangul '\(e.hangul)'")
             }
@@ -56,6 +62,7 @@ public enum DeckValidator {
                 if ex.ko.isBlank || ex.en.isBlank { errors.append("\(at): examples ko/en must be non-empty") }
                 if Hangul.syllableCount(ex.ko) > 40 { errors.append("\(at): example longer than 40 Hangul") }
             }
+            errors += mediaErrors(e, at: at, mode: mode, currentYear: currentYear)
             if !ranks.insert(e.rank).inserted { errors.append("\(at): duplicate rank \(e.rank)") }
             if let ex = e.example {
                 if ex.ko.isBlank || ex.en.isBlank {
@@ -95,6 +102,53 @@ public enum DeckValidator {
             }
         }
         return errors
+    }
+
+    /// Dialogue and media-reference rules (PLAN_M5 §3, K1).
+    static func mediaErrors(_ e: VocabEntry, at: String, mode: Mode, currentYear: Int) -> [String] {
+        var errors: [String] = []
+        if !e.dialogue.isEmpty {
+            if !(2...4).contains(e.dialogue.count) { errors.append("\(at): dialogue must have 2–4 lines") }
+            for (i, line) in e.dialogue.enumerated() {
+                let l = "\(at): dialogue line \(i + 1)"
+                if !DialogueLine.speakers.contains(line.speaker) { errors.append("\(l): speaker must be A, B or C") }
+                if line.ko.isBlank || line.en.isBlank { errors.append("\(l): ko/en must be non-empty") }
+                if Hangul.syllableCount(line.ko) > 40 { errors.append("\(l): longer than 40 Hangul") }
+            }
+            let phrase = Hangul.matchKey(e.hangul)
+            if !phrase.isEmpty, !e.dialogue.contains(where: { Hangul.matchKey($0.ko).contains(phrase) }) {
+                errors.append("\(at): dialogue must contain '\(e.hangul)'")
+            }
+        }
+        if e.droppedSourceCount > 0 {
+            errors.append("\(at): \(e.droppedSourceCount) source(s) dropped (unknown or missing kind)")
+        }
+        if e.sources.count > 3 { errors.append("\(at): at most 3 sources") }
+        for (i, ref) in e.sources.enumerated() {
+            let s = "\(at): source \(i + 1)"
+            if ref.title.isBlank || ref.by.isBlank { errors.append("\(s): title and by must be non-empty") }
+            if let ko = ref.titleKo, ko.isBlank { errors.append("\(s): titleKo must be non-empty when present") }
+            if !(1990...currentYear).contains(ref.year) { errors.append("\(s): year must be 1990…\(currentYear)") }
+            if ref.locator.isBlank { errors.append("\(s): locator must be non-empty") }
+            if ref.context.isBlank || ref.context.count > 200 { errors.append("\(s): context must be 1–200 characters") }
+            if mode == .bundled, !isValidCitation(ref.citation) {
+                errors.append("\(s): citation must be an https URL or \"owner\"")
+            }
+            if ref.hadURLKey { errors.append("\(s): 'url' is not allowed (references are names only)") }
+        }
+        return errors
+    }
+
+    /// An `https` URL with a host, or the literal `"owner"`.
+    static func isValidCitation(_ citation: String) -> Bool {
+        if citation == "owner" { return true }
+        guard let url = URL(string: citation), url.scheme == "https", let host = url.host, !host.isEmpty else { return false }
+        return true
+    }
+
+    /// Current Gregorian year — the injected default for `validate(_:mode:currentYear:)`.
+    public static func defaultCurrentYear() -> Int {
+        Calendar(identifier: .gregorian).component(.year, from: Date())
     }
 
     /// `"ko.core.1"` → `"ko.core"`, `"ko.aion2"` → `"ko.aion2"`.
