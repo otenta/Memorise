@@ -5973,6 +5973,4904 @@
       "example": null,
       "notes": null,
       "register": "casual"
+    },
+    {
+      "id": "ko.media.0170",
+      "hangul": "울고 싶지 않아",
+      "romanization": "ulgo sipji ana",
+      "meanings": [
+        "I don't want to cry"
+      ],
+      "pos": "expression",
+      "rank": 170,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "영화 보고 울었어?",
+          "en": "Did you cry at the movie?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 울고 싶지 않아.",
+          "en": "No, I don't want to cry."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "울고 싶지 않아",
+          "by": "SEVENTEEN",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A wistful song about holding back tears.",
+          "citation": "https://music.bugs.co.kr/track/30661761"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0171",
+      "hangul": "좀 더 힘을 내",
+      "romanization": "jom deo himeul nae",
+      "meanings": [
+        "Hang in there a bit more"
+      ],
+      "pos": "expression",
+      "rank": 171,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 거의 다 왔어.",
+          "en": "We're almost there."
+        },
+        {
+          "speaker": "B",
+          "ko": "좀 더 힘을 내 봐!",
+          "en": "Hang in there a bit more!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "CHEER UP",
+          "by": "TWICE",
+          "year": 2016,
+          "locator": "chorus",
+          "context": "A bubbly song about hiding nerves behind a cheerful face.",
+          "citation": "https://music.bugs.co.kr/track/30233414"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0172",
+      "hangul": "우연이 아니니까",
+      "romanization": "uyeoni aninikka",
+      "meanings": [
+        "because it's no coincidence"
+      ],
+      "pos": "expression",
+      "rank": 172,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리가 같은 학교에 온 게 신기해.",
+          "en": "It's amazing we came to the same school."
+        },
+        {
+          "speaker": "B",
+          "ko": "우연이 아니니까 더 신기하지.",
+          "en": "It's even more amazing because it's no coincidence."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "DNA",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A confident love song about meeting someone who feels like destiny.",
+          "citation": "https://music.bugs.co.kr/track/30785785"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0173",
+      "hangul": "날 믿어봐",
+      "romanization": "nal mideobwa",
+      "meanings": [
+        "Give me a chance and trust me"
+      ],
+      "pos": "expression",
+      "rank": 173,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이게 정말 될까?",
+          "en": "Will this really work?"
+        },
+        {
+          "speaker": "B",
+          "ko": "날 믿어봐.",
+          "en": "Trust me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Hype Boy",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "chorus",
+          "context": "A soft, catchy song about a crush who feels different.",
+          "citation": "https://music.bugs.co.kr/track/6170217"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0174",
+      "hangul": "넌 그냥 믿으면 돼",
+      "romanization": "neon geunyang mideumyeon dwae",
+      "meanings": [
+        "Just believe, that's all"
+      ],
+      "pos": "expression",
+      "rank": 174,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "정말 잘될까?",
+          "en": "Will it really turn out well?"
+        },
+        {
+          "speaker": "B",
+          "ko": "넌 그냥 믿으면 돼.",
+          "en": "Just believe, that's all."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "I AM",
+          "by": "IVE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A glamorous anthem about self-confidence.",
+          "citation": "https://music.bugs.co.kr/track/6195812"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0175",
+      "hangul": "고민하지 마",
+      "romanization": "gominhaji ma",
+      "meanings": [
+        "Don't overthink it"
+      ],
+      "pos": "expression",
+      "rank": 175,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "뭘 입을지 모르겠어.",
+          "en": "I don't know what to wear."
+        },
+        {
+          "speaker": "B",
+          "ko": "고민하지 마. 그냥 입어.",
+          "en": "Don't overthink it. Just put it on."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "DRIP",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A swaggering hip-hop track about confidence.",
+          "citation": "https://music.bugs.co.kr/track/6268450"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0176",
+      "hangul": "너와 난 운명이니까",
+      "romanization": "neowa nan unmyeongnikka",
+      "meanings": [
+        "because you and I are fated"
+      ],
+      "pos": "expression",
+      "rank": 176,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 또 만났네!",
+          "en": "We met again!"
+        },
+        {
+          "speaker": "B",
+          "ko": "너와 난 운명이니까.",
+          "en": "Because you and I are fated."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LOVEPOCALYPSE",
+          "by": "ZEROBASEONE",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A dramatic song about a love that feels fated.",
+          "citation": "https://music.bugs.co.kr/track/6413595"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0177",
+      "hangul": "질문은 계속돼",
+      "romanization": "jilmuneun gyesokdwae",
+      "meanings": [
+        "The questions keep coming"
+      ],
+      "pos": "expression",
+      "rank": 177,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "대답은 다 했어요?",
+          "en": "Did you finish answering?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아직요. 질문은 계속돼요.",
+          "en": "Not yet. The questions keep coming."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Supernova",
+          "by": "aespa",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A cosmic song about looking for where it all began.",
+          "citation": "https://music.bugs.co.kr/track/6245033"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0178",
+      "hangul": "우린 하나가 돼",
+      "romanization": "urin hanaga dwae",
+      "meanings": [
+        "We become one"
+      ],
+      "pos": "expression",
+      "rank": 178,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 응원 열심히 하자!",
+          "en": "Let's cheer hard today!"
+        },
+        {
+          "speaker": "B",
+          "ko": "그래, 우린 하나가 돼!",
+          "en": "Yeah, we become one!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Fly Up",
+          "by": "RIIZE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "An energetic, group-spirit song about rising together.",
+          "citation": "https://music.bugs.co.kr/track/6308575"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0179",
+      "hangul": "이렇게 좋아해 본 적이 없어요",
+      "romanization": "ireoke joahae bon jeogi eopseoyo",
+      "meanings": [
+        "I've never liked anyone this much"
+      ],
+      "pos": "expression",
+      "rank": 179,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "저, 사실 고백할 게 있어요.",
+          "en": "Actually, I have something to confess."
+        },
+        {
+          "speaker": "B",
+          "ko": "이렇게 좋아해 본 적이 없어요.",
+          "en": "I've never liked anyone this much."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "이렇게 좋아해 본 적이 없어요",
+          "by": "BOYNEXTDOOR",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A sweet, sincere song about a first deep crush.",
+          "citation": "https://music.bugs.co.kr/track/6293573"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0180",
+      "hangul": "더는 못 참겠어",
+      "romanization": "deoneun mot chamgesseo",
+      "meanings": [
+        "I can't take it any more"
+      ],
+      "pos": "expression",
+      "rank": 180,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "아직도 줄이 이렇게 길어?",
+          "en": "The line is still this long?"
+        },
+        {
+          "speaker": "B",
+          "ko": "더는 못 참겠어.",
+          "en": "I can't take it any more."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "OVERDRIVE",
+          "by": "TWS",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A high-energy song about a rush of feeling that can't be held back.",
+          "citation": "https://music.bugs.co.kr/track/6360702"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0181",
+      "hangul": "내 심장이 뛰네",
+      "romanization": "nae simjangi ttwine",
+      "meanings": [
+        "My heart is beating fast"
+      ],
+      "pos": "expression",
+      "rank": 181,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무슨 일이야? 왜 그래?",
+          "en": "What's up? What's wrong?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너를 보니까 내 심장이 뛰네.",
+          "en": "Seeing you makes my heart race."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "이브, 프시케 그리고 푸른 수염의 아내",
+          "by": "LE SSERAFIM",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A dramatic song with a dark fairy-tale feel.",
+          "citation": "https://music.bugs.co.kr/track/6197839"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0182",
+      "hangul": "날 말릴 순 없을걸",
+      "romanization": "nal mallil sun eopseulgeol",
+      "meanings": [
+        "You can't stop me"
+      ],
+      "pos": "expression",
+      "rank": 182,
+      "tags": [
+        "conflict",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 오디션은 너무 어려워.",
+          "en": "That audition is too hard."
+        },
+        {
+          "speaker": "B",
+          "ko": "날 말릴 순 없을걸.",
+          "en": "You can't stop me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Cherish (My Love)",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A sparkling, upbeat song about unstoppable excitement.",
+          "citation": "https://music.bugs.co.kr/track/33329626"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0183",
+      "hangul": "누가 뭐라든지 넌 너야",
+      "romanization": "nuga mworadeunji neon neoya",
+      "meanings": [
+        "No matter what anyone says, you're you"
+      ],
+      "pos": "expression",
+      "rank": 183,
+      "tags": [
+        "encouragement",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사람들이 날 이상하대.",
+          "en": "People say I'm weird."
+        },
+        {
+          "speaker": "B",
+          "ko": "누가 뭐라든지 넌 너야.",
+          "en": "No matter what anyone says, you're you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "쉿 (Shhh)",
+          "by": "KISS OF LIFE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A self-assured song about staying true to yourself.",
+          "citation": "https://music.bugs.co.kr/track/6205118"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0184",
+      "hangul": "헤매도 돼",
+      "romanization": "hemaedo dwae",
+      "meanings": [
+        "It's okay to wander"
+      ],
+      "pos": "expression",
+      "rank": 184,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "길을 잃으면 어떡하지?",
+          "en": "What if I lose my way?"
+        },
+        {
+          "speaker": "B",
+          "ko": "헤매도 돼.",
+          "en": "It's okay to wander."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "IDESERVEIT",
+          "by": "NMIXX",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A confident song about trusting your own pace.",
+          "citation": "https://music.bugs.co.kr/track/6463155"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0185",
+      "hangul": "장난치지 마",
+      "romanization": "jangnanchiji ma",
+      "meanings": [
+        "Don't mess around"
+      ],
+      "pos": "expression",
+      "rank": 185,
+      "tags": [
+        "conflict",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사실 농담이었어.",
+          "en": "Actually, it was a joke."
+        },
+        {
+          "speaker": "B",
+          "ko": "장난치지 마.",
+          "en": "Don't mess around."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "울고 싶지 않아",
+          "by": "SEVENTEEN",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A wistful song about a missing person.",
+          "citation": "https://music.bugs.co.kr/track/30661761"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0186",
+      "hangul": "준비하고 기다릴게",
+      "romanization": "junbihago gidarilge",
+      "meanings": [
+        "I'll be ready and waiting"
+      ],
+      "pos": "expression",
+      "rank": 186,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 집에 가도 돼?",
+          "en": "Can I come over tomorrow?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 준비하고 기다릴게.",
+          "en": "Sure, I'll be ready and waiting."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "KNOCK KNOCK",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A playful song about waiting for someone to come knocking.",
+          "citation": "https://music.bugs.co.kr/track/30557790"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0187",
+      "hangul": "우린 완전 달라",
+      "romanization": "urin wanjeon dalla",
+      "meanings": [
+        "We're completely different"
+      ],
+      "pos": "expression",
+      "rank": 187,
+      "tags": [
+        "conflict",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너랑 나는 취향이 비슷하지?",
+          "en": "We have similar tastes, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 우린 완전 달라.",
+          "en": "No, we're completely different."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "DNA",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A bold song about two people who feel made for each other.",
+          "citation": "https://music.bugs.co.kr/track/30785785"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0188",
+      "hangul": "아침은 너무 멀어",
+      "romanization": "achimeun neomu meoreo",
+      "meanings": [
+        "Morning is so far away"
+      ],
+      "pos": "expression",
+      "rank": 188,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "벌써 헤어져야 해?",
+          "en": "Do we have to part already?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 아침은 너무 멀어.",
+          "en": "Yeah, morning is so far away."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Ditto",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A dreamy, wistful song about a one-sided crush.",
+          "citation": "https://music.bugs.co.kr/track/6184997"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0189",
+      "hangul": "위험을 겁내지 마",
+      "romanization": "wiheomeul geomnaeji ma",
+      "meanings": [
+        "Don't fear the danger"
+      ],
+      "pos": "expression",
+      "rank": 189,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 길은 너무 위험해 보여.",
+          "en": "This road looks too dangerous."
+        },
+        {
+          "speaker": "B",
+          "ko": "위험을 겁내지 마.",
+          "en": "Don't fear the danger."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "BLACKHOLE",
+          "by": "IVE",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A dark, dramatic song about being drawn in.",
+          "citation": "https://music.bugs.co.kr/track/6427499"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0190",
+      "hangul": "용기를 좀 내봐",
+      "romanization": "yonggireul jom naebwa",
+      "meanings": [
+        "Try to find some courage"
+      ],
+      "pos": "expression",
+      "rank": 190,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "말을 걸까 말까?",
+          "en": "Should I talk to them or not?"
+        },
+        {
+          "speaker": "B",
+          "ko": "용기를 좀 내봐.",
+          "en": "Try to find some courage."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "I LIKE IT",
+          "by": "BABYMONSTER",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A sassy, flirty song about stepping up.",
+          "citation": "https://music.bugs.co.kr/track/6461835"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0191",
+      "hangul": "오직 너야",
+      "romanization": "ojik neoya",
+      "meanings": [
+        "You're the only one"
+      ],
+      "pos": "expression",
+      "rank": 191,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "누구를 제일 좋아해?",
+          "en": "Who do you like most?"
+        },
+        {
+          "speaker": "B",
+          "ko": "오직 너야.",
+          "en": "You're the only one."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LOVEPOCALYPSE",
+          "by": "ZEROBASEONE",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A dramatic, devoted love song.",
+          "citation": "https://music.bugs.co.kr/track/6413595"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0192",
+      "hangul": "우린 어디서 왔나",
+      "romanization": "urin eodiseo wanna",
+      "meanings": [
+        "Where did we come from?"
+      ],
+      "pos": "expression",
+      "rank": 192,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "가끔 이런 생각이 들어.",
+          "en": "Sometimes I think about this."
+        },
+        {
+          "speaker": "B",
+          "ko": "우린 어디서 왔나?",
+          "en": "Where did we come from?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Supernova",
+          "by": "aespa",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A space-themed anthem about big questions.",
+          "citation": "https://music.bugs.co.kr/track/6245033"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0193",
+      "hangul": "느낀 대로 해",
+      "romanization": "neukkin daero hae",
+      "meanings": [
+        "Go with how you feel"
+      ],
+      "pos": "expression",
+      "rank": 193,
+      "tags": [
+        "encouragement",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어떤 선택이 맞을까?",
+          "en": "Which choice is right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "느낀 대로 해.",
+          "en": "Go with how you feel."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Boom Boom Bass",
+          "by": "RIIZE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A groovy song that tells you to follow your instincts.",
+          "citation": "https://music.bugs.co.kr/track/6248695"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0194",
+      "hangul": "꼭 안아 줄게요",
+      "romanization": "kkok ana julgeyo",
+      "meanings": [
+        "I'll hold you tight"
+      ],
+      "pos": "expression",
+      "rank": 194,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 너무 힘들었어요.",
+          "en": "Today was really hard."
+        },
+        {
+          "speaker": "B",
+          "ko": "이리 와요, 꼭 안아 줄게요.",
+          "en": "Come here, I'll hold you tight."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "이렇게 좋아해 본 적이 없어요",
+          "by": "BOYNEXTDOOR",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A warm, tender song about comforting someone.",
+          "citation": "https://music.bugs.co.kr/track/6293573"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0195",
+      "hangul": "하고 싶은 걸 따라가자",
+      "romanization": "hago sipeun geol ttaragaja",
+      "meanings": [
+        "Let's follow what we want to do"
+      ],
+      "pos": "expression",
+      "rank": 195,
+      "tags": [
+        "encouragement",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "진로를 못 정하겠어.",
+          "en": "I can't pick a career."
+        },
+        {
+          "speaker": "B",
+          "ko": "하고 싶은 걸 따라가자.",
+          "en": "Let's follow what we want to do."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "마음 따라 뛰는 건 멋지지 않아?",
+          "by": "TWS",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A cheerful song about running toward whatever makes your heart race.",
+          "citation": "https://music.bugs.co.kr/track/6300927"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0196",
+      "hangul": "떨어져도 돼",
+      "romanization": "tteoreojyeodo dwae",
+      "meanings": [
+        "It's okay to fall"
+      ],
+      "pos": "expression",
+      "rank": 196,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "점프하다 넘어지면 어떡해?",
+          "en": "What if I fall while jumping?"
+        },
+        {
+          "speaker": "B",
+          "ko": "떨어져도 돼. 내가 받아 줄게.",
+          "en": "It's okay to fall. I'll catch you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ANTIFRAGILE",
+          "by": "LE SSERAFIM",
+          "year": 2022,
+          "locator": "chorus",
+          "context": "A fierce song about growing stronger from every fall.",
+          "citation": "https://music.bugs.co.kr/track/6179181"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0197",
+      "hangul": "고백은 너무 이른 걸",
+      "romanization": "gobaegeun neomu ireun geol",
+      "meanings": [
+        "Confessing is too early"
+      ],
+      "pos": "expression",
+      "rank": 197,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 고백해 버릴까?",
+          "en": "Should I just confess today?"
+        },
+        {
+          "speaker": "B",
+          "ko": "고백은 너무 이른 걸.",
+          "en": "Confessing is too early."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "jellyous",
+          "by": "ILLIT",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A playful song about being nervous and jealous.",
+          "citation": "https://music.bugs.co.kr/track/6316284"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0198",
+      "hangul": "위험할수록 재밌잖아",
+      "romanization": "wiheomhalsurok jaemitjanha",
+      "meanings": [
+        "The riskier, the more fun, right?"
+      ],
+      "pos": "expression",
+      "rank": 198,
+      "tags": [
+        "slang",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 놀이기구 너무 높지 않아?",
+          "en": "Isn't this ride too high?"
+        },
+        {
+          "speaker": "B",
+          "ko": "위험할수록 재밌잖아.",
+          "en": "The riskier, the more fun, right?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Midas Touch",
+          "by": "KISS OF LIFE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A sultry song about the thrill of danger.",
+          "citation": "https://music.bugs.co.kr/track/6239848"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0199",
+      "hangul": "손을 잡아",
+      "romanization": "soneul jaba",
+      "meanings": [
+        "Take my hand"
+      ],
+      "pos": "expression",
+      "rank": 199,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 계단 너무 높아.",
+          "en": "These steps are too high."
+        },
+        {
+          "speaker": "B",
+          "ko": "손을 잡아.",
+          "en": "Take my hand."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "KNOW ABOUT ME",
+          "by": "NMIXX",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A bold song about stepping up with someone.",
+          "citation": "https://music.bugs.co.kr/track/6294415"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0200",
+      "hangul": "널 찾아가야 돼",
+      "romanization": "neol chajagaya dwae",
+      "meanings": [
+        "I have to go find you"
+      ],
+      "pos": "expression",
+      "rank": 200,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "지금 밖에 비 와.",
+          "en": "It's raining outside."
+        },
+        {
+          "speaker": "B",
+          "ko": "그래도 널 찾아가야 돼.",
+          "en": "Even so, I have to go find you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "울고 싶지 않아",
+          "by": "SEVENTEEN",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A wistful song about searching for someone.",
+          "citation": "https://music.bugs.co.kr/track/30661761"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0201",
+      "hangul": "내일도 모레도 다시 와줘",
+      "romanization": "naeildo moredo dasi wajwo",
+      "meanings": [
+        "Come again tomorrow and the day after"
+      ],
+      "pos": "expression",
+      "rank": 201,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 즐거웠어.",
+          "en": "I had fun today."
+        },
+        {
+          "speaker": "B",
+          "ko": "내일도 모레도 다시 와줘.",
+          "en": "Come again tomorrow and the day after."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "KNOCK KNOCK",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A cheerful song about inviting someone back again and again.",
+          "citation": "https://music.bugs.co.kr/track/30557790"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0202",
+      "hangul": "영원히 함께니까",
+      "romanization": "yeongwonhi hamkkenikka",
+      "meanings": [
+        "because we're together forever"
+      ],
+      "pos": "expression",
+      "rank": 202,
+      "tags": [
+        "romance",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "졸업하면 우리 못 보겠지?",
+          "en": "We won't see each other after graduation, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "무슨 소리야, 영원히 함께니까.",
+          "en": "What are you talking about? We're together forever."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "DNA",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A sparkling love song about fate and togetherness.",
+          "citation": "https://music.bugs.co.kr/track/30785785"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0203",
+      "hangul": "꿈에서 깨워주지 마",
+      "romanization": "kkumeseo kkaewojuji ma",
+      "meanings": [
+        "Don't wake me from this dream"
+      ],
+      "pos": "expression",
+      "rank": 203,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "일어나, 벌써 아침이야.",
+          "en": "Get up, it's already morning."
+        },
+        {
+          "speaker": "B",
+          "ko": "꿈에서 깨워주지 마.",
+          "en": "Don't wake me from this dream."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Attention",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "chorus",
+          "context": "A light, dreamy track about being captivated.",
+          "citation": "https://music.bugs.co.kr/track/6170060"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0204",
+      "hangul": "꺾이지 않아",
+      "romanization": "kkeokkiji ana",
+      "meanings": [
+        "I won't be broken"
+      ],
+      "pos": "expression",
+      "rank": 204,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다들 안 된다고 하는데.",
+          "en": "Everyone says it can't be done."
+        },
+        {
+          "speaker": "B",
+          "ko": "난 꺾이지 않아.",
+          "en": "I won't be broken."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "REBEL HEART",
+          "by": "IVE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A stirring song about holding on to your passion.",
+          "citation": "https://music.bugs.co.kr/track/6281197"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0205",
+      "hangul": "너도 원하잖아",
+      "romanization": "neodo wonhajanha",
+      "meanings": [
+        "You want it too, don't you"
+      ],
+      "pos": "expression",
+      "rank": 205,
+      "tags": [
+        "romance",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나만 이러는 거 아니지?",
+          "en": "It's not just me, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너도 원하잖아.",
+          "en": "You want it too, don't you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "I LIKE IT",
+          "by": "BABYMONSTER",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A flirty track that calls out mutual attraction.",
+          "citation": "https://music.bugs.co.kr/track/6461835"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0206",
+      "hangul": "너 아니면 소용없어",
+      "romanization": "neo animyeon soyongeopseo",
+      "meanings": [
+        "It's pointless without you"
+      ],
+      "pos": "expression",
+      "rank": 206,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다른 사람이 도와줄 수도 있어.",
+          "en": "Someone else could help."
+        },
+        {
+          "speaker": "B",
+          "ko": "너 아니면 소용없어.",
+          "en": "It's pointless without you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Doctor! Doctor!",
+          "by": "ZEROBASEONE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A playful song that treats love as the only cure.",
+          "citation": "https://music.bugs.co.kr/track/33450022"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0207",
+      "hangul": "왜 이제야",
+      "romanization": "wae ijeya",
+      "meanings": [
+        "Why only now?"
+      ],
+      "pos": "expression",
+      "rank": 207,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "미안, 네 문자를 이제 봤어.",
+          "en": "Sorry, I only saw your text now."
+        },
+        {
+          "speaker": "B",
+          "ko": "왜 이제야 말해?",
+          "en": "Why are you only telling me now?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Whiplash",
+          "by": "aespa",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A sharp, edgy song about a shock to the system.",
+          "citation": "https://music.bugs.co.kr/track/6266734"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0208",
+      "hangul": "시작해 봐",
+      "romanization": "sijakae bwa",
+      "meanings": [
+        "Give it a try"
+      ],
+      "pos": "expression",
+      "rank": 208,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "기타를 배우고 싶은데.",
+          "en": "I want to learn guitar."
+        },
+        {
+          "speaker": "B",
+          "ko": "지금 시작해 봐.",
+          "en": "Start now and give it a try."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Get A Guitar",
+          "by": "RIIZE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A catchy, upbeat song about trying something new.",
+          "citation": "https://music.bugs.co.kr/track/6213292"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0209",
+      "hangul": "그저 머물러줘요",
+      "romanization": "geujeo meomulleojwoyo",
+      "meanings": [
+        "Just stay with me"
+      ],
+      "pos": "expression",
+      "rank": 209,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "가야 할 시간이에요.",
+          "en": "It's time for me to go."
+        },
+        {
+          "speaker": "B",
+          "ko": "아무 말 없이 그저 머물러줘요.",
+          "en": "Without a word, just stay with me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "이렇게 좋아해 본 적이 없어요",
+          "by": "BOYNEXTDOOR",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A tender song about wanting someone nearby.",
+          "citation": "https://music.bugs.co.kr/track/6293573"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0210",
+      "hangul": "함께라는 말이 좋아",
+      "romanization": "hamkkeraneun mari joa",
+      "meanings": [
+        "I like the word 'together'"
+      ],
+      "pos": "expression",
+      "rank": 210,
+      "tags": [
+        "friendship",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 계속 같이 하자.",
+          "en": "Let's keep doing this together."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 함께라는 말이 좋아.",
+          "en": "Yeah, I like the word 'together'."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "hey! hey!",
+          "by": "TWS",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "An upbeat song celebrating friends who run side by side.",
+          "citation": "https://music.bugs.co.kr/track/6247698"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0211",
+      "hangul": "그냥 포기해",
+      "romanization": "geunyang pogihae",
+      "meanings": [
+        "Just give up"
+      ],
+      "pos": "expression",
+      "rank": 211,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 게임은 네가 못 이겨.",
+          "en": "You can't win this game."
+        },
+        {
+          "speaker": "B",
+          "ko": "그냥 포기해.",
+          "en": "Just give up."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "SPAGHETTI",
+          "by": "LE SSERAFIM",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A cheeky, confident song about shrugging off pressure.",
+          "citation": "https://music.bugs.co.kr/track/6366519"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0212",
+      "hangul": "날 좋아할까",
+      "romanization": "nal joahalkka",
+      "meanings": [
+        "Does he/she like me?"
+      ],
+      "pos": "expression",
+      "rank": 212,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "걔가 나를 보고 웃었어!",
+          "en": "They smiled at me!"
+        },
+        {
+          "speaker": "B",
+          "ko": "날 좋아할까?",
+          "en": "Does he/she like me?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Tick-Tack",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A fluttery song about a crush's mixed signals.",
+          "citation": "https://music.bugs.co.kr/track/33329629"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0213",
+      "hangul": "멈출 생각은 없지",
+      "romanization": "meomchul saenggageun eopji",
+      "meanings": [
+        "I've got no plans to stop"
+      ],
+      "pos": "expression",
+      "rank": 213,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 그만 달릴 거야?",
+          "en": "Are you going to stop running now?"
+        },
+        {
+          "speaker": "B",
+          "ko": "멈출 생각은 없지.",
+          "en": "I've got no plans to stop."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Get Loud",
+          "by": "KISS OF LIFE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A loud, high-energy track about being unstoppable.",
+          "citation": "https://music.bugs.co.kr/track/6264798"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0214",
+      "hangul": "내일은 곧 오늘이 돼",
+      "romanization": "naeireun got oneuri dwae",
+      "meanings": [
+        "Tomorrow soon becomes today"
+      ],
+      "pos": "expression",
+      "rank": 214,
+      "tags": [
+        "daily",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 일은 내일 생각하자.",
+          "en": "Let's think about tomorrow tomorrow."
+        },
+        {
+          "speaker": "B",
+          "ko": "내일은 곧 오늘이 돼.",
+          "en": "Tomorrow soon becomes today."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "IDESERVEIT",
+          "by": "NMIXX",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A self-assured track about keeping moving.",
+          "citation": "https://music.bugs.co.kr/track/6463155"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0215",
+      "hangul": "네가 좋은 걸 어쩌나",
+      "romanization": "nega joeun geol eojjeona",
+      "meanings": [
+        "What can I do, I like you"
+      ],
+      "pos": "expression",
+      "rank": 215,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 좋아하는 거 티 나?",
+          "en": "Is it obvious that I like you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네가 좋은 걸 어쩌나.",
+          "en": "What can I do, I like you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "어쩌나",
+          "by": "SEVENTEEN",
+          "year": 2018,
+          "locator": "chorus",
+          "context": "A playful song about being helplessly smitten.",
+          "citation": "https://music.bugs.co.kr/track/31149474"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0216",
+      "hangul": "더는 망설이지 마",
+      "romanization": "deoneun mangseorijji ma",
+      "meanings": [
+        "Stop hesitating"
+      ],
+      "pos": "expression",
+      "rank": 216,
+      "tags": [
+        "encouragement",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "고백할까 말까 계속 고민돼.",
+          "en": "I keep wondering whether to confess or not."
+        },
+        {
+          "speaker": "B",
+          "ko": "더는 망설이지 마.",
+          "en": "Stop hesitating."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A fluttery song about a crush who needs a little push.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0217",
+      "hangul": "여기 내 손을 잡아",
+      "romanization": "yeogi nae soneul jaba",
+      "meanings": [
+        "Take my hand right here"
+      ],
+      "pos": "expression",
+      "rank": 217,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너무 무서워서 못 내려가겠어.",
+          "en": "I'm too scared to go down."
+        },
+        {
+          "speaker": "B",
+          "ko": "여기 내 손을 잡아.",
+          "en": "Take my hand right here."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A gentle song of comfort about carrying on through hard times.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0218",
+      "hangul": "알려주지 않아도 돼",
+      "romanization": "allyeojuji anado dwae",
+      "meanings": [
+        "You don't have to tell me"
+      ],
+      "pos": "expression",
+      "rank": 218,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 얘기는 하기 싫어.",
+          "en": "I don't want to talk about that."
+        },
+        {
+          "speaker": "B",
+          "ko": "알려주지 않아도 돼.",
+          "en": "You don't have to tell me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "How Sweet",
+          "by": "NewJeans",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A playful, summery song with a sweet attitude.",
+          "citation": "https://music.bugs.co.kr/track/6246205"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0219",
+      "hangul": "내가 정할게",
+      "romanization": "naega jeonghalge",
+      "meanings": [
+        "I'll decide"
+      ],
+      "pos": "expression",
+      "rank": 219,
+      "tags": [
+        "daily",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 어디서 먹을까?",
+          "en": "Where should we eat?"
+        },
+        {
+          "speaker": "B",
+          "ko": "오늘은 내가 정할게.",
+          "en": "I'll decide today."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ATTITUDE",
+          "by": "IVE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A confident song about doing things your own way.",
+          "citation": "https://music.bugs.co.kr/track/6284624"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0220",
+      "hangul": "애써 외면하지 마",
+      "romanization": "aesseo oemyeonhaji ma",
+      "meanings": [
+        "Don't try to look away"
+      ],
+      "pos": "expression",
+      "rank": 220,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 얘긴 그만하자.",
+          "en": "Let's stop talking about that."
+        },
+        {
+          "speaker": "B",
+          "ko": "애써 외면하지 마.",
+          "en": "Don't try to look away."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Love In My Heart",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A powerful ballad-like track about facing your feelings.",
+          "citation": "https://music.bugs.co.kr/track/6268454"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0221",
+      "hangul": "그녀를 놓치지 마",
+      "romanization": "geunyeoreul nochiji ma",
+      "meanings": [
+        "Don't let her go"
+      ],
+      "pos": "expression",
+      "rank": 221,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "걔 정말 좋은 사람이야.",
+          "en": "She's a really good person."
+        },
+        {
+          "speaker": "B",
+          "ko": "그녀를 놓치지 마.",
+          "en": "Don't let her go."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "GOOD SO BAD",
+          "by": "ZEROBASEONE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A confident song about a love that feels cosmic.",
+          "citation": "https://music.bugs.co.kr/track/33269244"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0222",
+      "hangul": "문을 열어",
+      "romanization": "muneul yeoreo",
+      "meanings": [
+        "Open the door"
+      ],
+      "pos": "expression",
+      "rank": 222,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "누구세요?",
+          "en": "Who is it?"
+        },
+        {
+          "speaker": "B",
+          "ko": "나야, 문을 열어.",
+          "en": "It's me, open the door."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Next Level",
+          "by": "aespa",
+          "year": 2021,
+          "locator": "chorus",
+          "context": "A hard-hitting song about leaping into a new world.",
+          "citation": "https://music.bugs.co.kr/track/32235760"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0223",
+      "hangul": "다 모여봐",
+      "romanization": "da moyeobwa",
+      "meanings": [
+        "Everybody gather round"
+      ],
+      "pos": "expression",
+      "rank": 223,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사진 찍자!",
+          "en": "Let's take a photo!"
+        },
+        {
+          "speaker": "B",
+          "ko": "다 모여봐!",
+          "en": "Everybody gather round!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Siren",
+          "by": "RIIZE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A rhythmic, high-energy song that calls everyone together.",
+          "citation": "https://music.bugs.co.kr/track/6239850"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0224",
+      "hangul": "내 손잡아 주세요",
+      "romanization": "nae sonjaba juseyo",
+      "meanings": [
+        "Please hold my hand"
+      ],
+      "pos": "expression",
+      "rank": 224,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "길이 많이 미끄러워요.",
+          "en": "The road is very slippery."
+        },
+        {
+          "speaker": "B",
+          "ko": "그럼 내 손잡아 주세요.",
+          "en": "Then please hold my hand."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "이렇게 좋아해 본 적이 없어요",
+          "by": "BOYNEXTDOOR",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A gentle song of devotion.",
+          "citation": "https://music.bugs.co.kr/track/6293573"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0225",
+      "hangul": "어디라도 좋을 것 같아",
+      "romanization": "eodirado joeul geot gata",
+      "meanings": [
+        "Anywhere would be good"
+      ],
+      "pos": "expression",
+      "rank": 225,
+      "tags": [
+        "friendship",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "주말에 어디 갈까?",
+          "en": "Where shall we go this weekend?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너랑이면 어디라도 좋을 것 같아.",
+          "en": "With you, anywhere would be good."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "BFF",
+          "by": "TWS",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A bright song about best friends and the places they'd go.",
+          "citation": "https://music.bugs.co.kr/track/6230616"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0226",
+      "hangul": "이대로도 좋아",
+      "romanization": "idaerodo joa",
+      "meanings": [
+        "I'm fine just as I am"
+      ],
+      "pos": "expression",
+      "rank": 226,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "좀 더 꾸며야 하지 않을까?",
+          "en": "Shouldn't I dress up a bit more?"
+        },
+        {
+          "speaker": "B",
+          "ko": "이대로도 좋아.",
+          "en": "I'm fine just as I am."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Good Parts (when the quality is bad but I am)",
+          "by": "LE SSERAFIM",
+          "year": 2022,
+          "locator": "chorus",
+          "context": "A relaxed song about accepting yourself, flaws and all.",
+          "citation": "https://music.bugs.co.kr/track/6179184"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0227",
+      "hangul": "상냥하게 다뤄줄게",
+      "romanization": "sangnyanghage dalwojulge",
+      "meanings": [
+        "I'll treat you gently"
+      ],
+      "pos": "expression",
+      "rank": 227,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 요즘 많이 예민해.",
+          "en": "I've been really sensitive lately."
+        },
+        {
+          "speaker": "B",
+          "ko": "상냥하게 다뤄줄게.",
+          "en": "I'll treat you gently."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "체포하겠어",
+          "by": "ILLIT",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A cheeky song that turns a crush into a playful arrest.",
+          "citation": "https://music.bugs.co.kr/track/6513869"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0228",
+      "hangul": "너만 알고 있음 된 거야",
+      "romanization": "neoman algo isseum doen geoya",
+      "meanings": [
+        "Just keep it to yourself"
+      ],
+      "pos": "expression",
+      "rank": 228,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이건 비밀인데...",
+          "en": "This is a secret..."
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어. 너만 알고 있음 된 거야.",
+          "en": "Okay. Just keep it to yourself."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "쉿 (Shhh)",
+          "by": "KISS OF LIFE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A playful song about a secret between friends.",
+          "citation": "https://music.bugs.co.kr/track/6205118"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0229",
+      "hangul": "널 혼자 두지 않아",
+      "romanization": "neol honja duji ana",
+      "meanings": [
+        "I won't leave you alone"
+      ],
+      "pos": "expression",
+      "rank": 229,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 혼자 있는 거 무서워.",
+          "en": "I'm scared to be alone."
+        },
+        {
+          "speaker": "B",
+          "ko": "널 혼자 두지 않아.",
+          "en": "I won't leave you alone."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Rock with you",
+          "by": "SEVENTEEN",
+          "year": 2021,
+          "locator": "chorus",
+          "context": "A warm, groovy song about staying close to someone.",
+          "citation": "https://music.bugs.co.kr/track/6132537"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0230",
+      "hangul": "놓치기 싫어",
+      "romanization": "nochigi sireo",
+      "meanings": [
+        "I don't want to lose you"
+      ],
+      "pos": "expression",
+      "rank": 230,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람 꼭 잡아.",
+          "en": "Hold on to that person."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 놓치기 싫어.",
+          "en": "Yeah, I don't want to lose them."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A bright pop song about falling for someone at first sight.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0231",
+      "hangul": "잠시 두 눈을 감아",
+      "romanization": "jamsi du nuneul gama",
+      "meanings": [
+        "Close your eyes for a moment"
+      ],
+      "pos": "expression",
+      "rank": 231,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "놀라지 마, 선물이야.",
+          "en": "Don't be startled, it's a gift."
+        },
+        {
+          "speaker": "B",
+          "ko": "알겠어. 잠시 두 눈을 감아 볼게.",
+          "en": "Okay. I'll close my eyes for a moment."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A soft, reassuring song that says the world will keep turning.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0232",
+      "hangul": "되돌아가긴 싫어",
+      "romanization": "doedoragagin sireo",
+      "meanings": [
+        "I don't want to go back"
+      ],
+      "pos": "expression",
+      "rank": 232,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "예전 직장으로 다시 갈래?",
+          "en": "Would you go back to your old job?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 되돌아가긴 싫어.",
+          "en": "No, I don't want to go back."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Supernatural",
+          "by": "NewJeans",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A dreamy song about a bond that feels like fate.",
+          "citation": "https://music.bugs.co.kr/track/6249329"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0233",
+      "hangul": "행운은 늘 내 편인 걸",
+      "romanization": "haenguneun neul nae pyeonin geol",
+      "meanings": [
+        "Luck is always on my side"
+      ],
+      "pos": "expression",
+      "rank": 233,
+      "tags": [
+        "feelings",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너 오늘도 복권 맞았어?",
+          "en": "Did you win the lottery again today?"
+        },
+        {
+          "speaker": "B",
+          "ko": "행운은 늘 내 편인 걸.",
+          "en": "Luck is always on my side."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ATTITUDE",
+          "by": "IVE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A cheerful, swaggering song about a lucky streak.",
+          "citation": "https://music.bugs.co.kr/track/6284624"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0234",
+      "hangul": "더 이상 참고 싶지 않아",
+      "romanization": "deo isang chamgo sipji ana",
+      "meanings": [
+        "I don't want to hold back any more"
+      ],
+      "pos": "expression",
+      "rank": 234,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "또 아무 말도 안 할 거야?",
+          "en": "Are you going to say nothing again?"
+        },
+        {
+          "speaker": "B",
+          "ko": "더 이상 참고 싶지 않아.",
+          "en": "I don't want to hold back any more."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Love In My Heart",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A powerful song about releasing pent-up feelings.",
+          "citation": "https://music.bugs.co.kr/track/6268454"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0235",
+      "hangul": "밤새 잠 못 드는 중이야",
+      "romanization": "bamsae jam mot deuneun jungiya",
+      "meanings": [
+        "I've been unable to sleep all night"
+      ],
+      "pos": "expression",
+      "rank": 235,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 이렇게 피곤해 보여?",
+          "en": "Why do you look so tired?"
+        },
+        {
+          "speaker": "B",
+          "ko": "밤새 잠 못 드는 중이야.",
+          "en": "I've been unable to sleep all night."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Insomnia",
+          "by": "ZEROBASEONE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A moody song about lying awake thinking of someone.",
+          "citation": "https://music.bugs.co.kr/track/33269247"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0236",
+      "hangul": "겁내지 마",
+      "romanization": "geomnaeji ma",
+      "meanings": [
+        "Don't be scared"
+      ],
+      "pos": "expression",
+      "rank": 236,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무대에 서는 게 무서워.",
+          "en": "I'm scared of standing on stage."
+        },
+        {
+          "speaker": "B",
+          "ko": "겁내지 마. 넌 할 수 있어.",
+          "en": "Don't be scared. You can do it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Spicy",
+          "by": "aespa",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A spunky summer song full of attitude.",
+          "citation": "https://music.bugs.co.kr/track/32845387"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0237",
+      "hangul": "뭔가 달라",
+      "romanization": "mwonga dalla",
+      "meanings": [
+        "Something's different"
+      ],
+      "pos": "expression",
+      "rank": 237,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너 머리 잘랐어?",
+          "en": "Did you get a haircut?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 뭔가 달라 보여?",
+          "en": "Yeah, do I look different?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Talk Saxy",
+          "by": "RIIZE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A smooth, jazzy song with a flirty vibe.",
+          "citation": "https://music.bugs.co.kr/track/6260454"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0238",
+      "hangul": "다 똑같아",
+      "romanization": "da ttokgata",
+      "meanings": [
+        "They're all the same"
+      ],
+      "pos": "expression",
+      "rank": 238,
+      "tags": [
+        "conflict",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 가게 저 가게 뭐가 달라?",
+          "en": "What's the difference between those shops?"
+        },
+        {
+          "speaker": "B",
+          "ko": "다 똑같아.",
+          "en": "They're all the same."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "뭣 같아",
+          "by": "BOYNEXTDOOR",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A raw song about the sting of heartbreak.",
+          "citation": "https://music.bugs.co.kr/track/6214656"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0239",
+      "hangul": "널 본 순간 알았어",
+      "romanization": "neol bon sungan arasseo",
+      "meanings": [
+        "I knew the moment I saw you"
+      ],
+      "pos": "expression",
+      "rank": 239,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어떻게 처음부터 날 좋아했어?",
+          "en": "How did you like me from the start?"
+        },
+        {
+          "speaker": "B",
+          "ko": "널 본 순간 알았어.",
+          "en": "I knew the moment I saw you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "널 따라가 (You, You)",
+          "by": "TWS",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A fluttering song about being pulled toward someone at first sight.",
+          "citation": "https://music.bugs.co.kr/track/6458715"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0240",
+      "hangul": "실수해도 좋아",
+      "romanization": "silsuhaedo joa",
+      "meanings": [
+        "It's fine to make mistakes"
+      ],
+      "pos": "expression",
+      "rank": 240,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "발표하다 틀리면 어떡하지?",
+          "en": "What if I slip up in my presentation?"
+        },
+        {
+          "speaker": "B",
+          "ko": "실수해도 좋아. 괜찮아.",
+          "en": "It's fine to make mistakes. It's okay."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Good Parts (when the quality is bad but I am)",
+          "by": "LE SSERAFIM",
+          "year": 2022,
+          "locator": "chorus",
+          "context": "A song that cheers imperfection.",
+          "citation": "https://music.bugs.co.kr/track/6179184"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0241",
+      "hangul": "두 손 두 발 들었지",
+      "romanization": "du son du bal deureotji",
+      "meanings": [
+        "I threw up both hands and gave up"
+      ],
+      "pos": "expression",
+      "rank": 241,
+      "tags": [
+        "feelings",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "부모님이 결국 허락하셨어?",
+          "en": "Did your parents finally allow it?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 두 손 두 발 들었지.",
+          "en": "Yeah, they threw up both hands and gave up."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Cherish (My Love)",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A bright song full of confidence and sparkle.",
+          "citation": "https://music.bugs.co.kr/track/33329626"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0242",
+      "hangul": "신경 쓰지 말자",
+      "romanization": "singyeong sseuji malja",
+      "meanings": [
+        "Let's not mind it"
+      ],
+      "pos": "expression",
+      "rank": 242,
+      "tags": [
+        "encouragement",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "남들이 우리를 이상하게 봐.",
+          "en": "People look at us strangely."
+        },
+        {
+          "speaker": "B",
+          "ko": "신경 쓰지 말자.",
+          "en": "Let's not mind it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "청춘찬가",
+          "by": "SEVENTEEN",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A cheerful song about youth and not caring about others' opinions.",
+          "citation": "https://music.bugs.co.kr/track/6243167"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0243",
+      "hangul": "둘 중에 하나만 골라",
+      "romanization": "dul junge hanaman golla",
+      "meanings": [
+        "Pick just one of the two"
+      ],
+      "pos": "expression",
+      "rank": 243,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "치킨 먹을까, 피자 먹을까?",
+          "en": "Should we eat chicken or pizza?"
+        },
+        {
+          "speaker": "B",
+          "ko": "둘 중에 하나만 골라.",
+          "en": "Pick just one of the two."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "YES or YES",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "chorus",
+          "context": "A bouncy song that gives you only one possible answer.",
+          "citation": "https://music.bugs.co.kr/track/31299324"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0244",
+      "hangul": "끝이 보이지 않아",
+      "romanization": "kkeuti boiji ana",
+      "meanings": [
+        "I can't see the end"
+      ],
+      "pos": "expression",
+      "rank": 244,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "시험 준비는 어때?",
+          "en": "How's the exam prep?"
+        },
+        {
+          "speaker": "B",
+          "ko": "끝이 보이지 않아.",
+          "en": "I can't see the end of it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A mellow song about feeling lost but moving forward anyway.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0245",
+      "hangul": "이건 말로 설명 못해",
+      "romanization": "igeon mallo seolmyeong mothae",
+      "meanings": [
+        "I can't explain this in words"
+      ],
+      "pos": "expression",
+      "rank": 245,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 콘서트 어땠어?",
+          "en": "How was the concert?"
+        },
+        {
+          "speaker": "B",
+          "ko": "이건 말로 설명 못해.",
+          "en": "I can't explain this in words."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Bubble Gum",
+          "by": "NewJeans",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A soft, floaty song about a feeling you can't put into words.",
+          "citation": "https://music.bugs.co.kr/track/6243126"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0246",
+      "hangul": "움츠리면 뭐할 건데",
+      "romanization": "umcheurimyeon mwohal geonde",
+      "meanings": [
+        "What's the point of shrinking back?"
+      ],
+      "pos": "expression",
+      "rank": 246,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "남들이 뭐라고 할까 봐 걱정돼.",
+          "en": "I'm worried about what others will say."
+        },
+        {
+          "speaker": "B",
+          "ko": "움츠리면 뭐할 건데?",
+          "en": "What's the point of shrinking back?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ATTITUDE",
+          "by": "IVE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A confident song about not caring what others think.",
+          "citation": "https://music.bugs.co.kr/track/6284624"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0247",
+      "hangul": "멋대로 착각하지는 마",
+      "romanization": "meotdaero chakkakaji-neun ma",
+      "meanings": [
+        "Don't go assuming things"
+      ],
+      "pos": "expression",
+      "rank": 247,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너 나 좋아하는 거지?",
+          "en": "You like me, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "멋대로 착각하지는 마.",
+          "en": "Don't go assuming things."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FOREVER",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A confident, sassy song with a hint of defiance.",
+          "citation": "https://music.bugs.co.kr/track/6250516"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0248",
+      "hangul": "놓칠 수 없어",
+      "romanization": "nochil su eopseo",
+      "meanings": [
+        "I can't let it slip away"
+      ],
+      "pos": "expression",
+      "rank": 248,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이번 기회는 짧아.",
+          "en": "This chance is short."
+        },
+        {
+          "speaker": "B",
+          "ko": "놓칠 수 없어.",
+          "en": "I can't let it slip away."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "SWEAT",
+          "by": "ZEROBASEONE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A hard-driving song about giving everything.",
+          "citation": "https://music.bugs.co.kr/track/33158531"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0249",
+      "hangul": "용기 내 봐",
+      "romanization": "yonggi nae bwa",
+      "meanings": [
+        "Try to find the courage"
+      ],
+      "pos": "expression",
+      "rank": 249,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람한테 말 걸고 싶은데.",
+          "en": "I want to talk to that person."
+        },
+        {
+          "speaker": "B",
+          "ko": "용기 내 봐!",
+          "en": "Find your courage!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Spicy",
+          "by": "aespa",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A spunky, confident song urging you to go for it.",
+          "citation": "https://music.bugs.co.kr/track/32845387"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0250",
+      "hangul": "내가 제일 좋아하는 거야",
+      "romanization": "naega jeil joahaneun geoya",
+      "meanings": [
+        "It's my favorite thing"
+      ],
+      "pos": "expression",
+      "rank": 250,
+      "tags": [
+        "daily",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 노래 어때?",
+          "en": "How's this song?"
+        },
+        {
+          "speaker": "B",
+          "ko": "내가 제일 좋아하는 거야.",
+          "en": "It's my favorite thing."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Memories",
+          "by": "RIIZE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A warm, nostalgic song about memories you hold dear.",
+          "citation": "https://music.bugs.co.kr/track/6213293"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0251",
+      "hangul": "아프지 않아",
+      "romanization": "apeuji ana",
+      "meanings": [
+        "It doesn't hurt"
+      ],
+      "pos": "expression",
+      "rank": 251,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다친 데 괜찮아?",
+          "en": "Is your injury okay?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 이제 아프지 않아.",
+          "en": "Yeah, it doesn't hurt anymore."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "있잖아",
+          "by": "BOYNEXTDOOR",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A wistful song about missing someone.",
+          "citation": "https://music.bugs.co.kr/track/6363795"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0252",
+      "hangul": "그거면 돼",
+      "romanization": "geugeomyeon dwae",
+      "meanings": [
+        "That's all I need"
+      ],
+      "pos": "expression",
+      "rank": 252,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "선물은 뭘 갖고 싶어?",
+          "en": "What gift do you want?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네가 와 주면 그거면 돼.",
+          "en": "If you come, that's all I need."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "내 이름을 불러줘",
+          "by": "TWS",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A gentle song about being called by name.",
+          "citation": "https://music.bugs.co.kr/track/6515241"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0253",
+      "hangul": "나랑 저 너머 같이 가자",
+      "romanization": "narang jeo neomeo gachi gaja",
+      "meanings": [
+        "Let's go beyond that together, you and me"
+      ],
+      "pos": "expression",
+      "rank": 253,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 산 너머엔 뭐가 있을까?",
+          "en": "What's beyond this mountain?"
+        },
+        {
+          "speaker": "B",
+          "ko": "나랑 저 너머 같이 가자.",
+          "en": "Let's go beyond it together, you and me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "UNFORGIVEN (feat. Nile Rodgers)",
+          "by": "LE SSERAFIM",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A western-style anthem about walking your own path.",
+          "citation": "https://music.bugs.co.kr/track/6197837"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0254",
+      "hangul": "넌 이미 유죄",
+      "romanization": "neon imi yujoe",
+      "meanings": [
+        "You're already guilty"
+      ],
+      "pos": "expression",
+      "rank": 254,
+      "tags": [
+        "romance",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내가 뭘 잘못했는데?",
+          "en": "What did I do wrong?"
+        },
+        {
+          "speaker": "B",
+          "ko": "넌 이미 유죄야.",
+          "en": "You're already guilty."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "체포하겠어",
+          "by": "ILLIT",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A playful song that frames love like a court case.",
+          "citation": "https://music.bugs.co.kr/track/6513869"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0255",
+      "hangul": "끝까지 가보자",
+      "romanization": "kkeutkkaji gaboja",
+      "meanings": [
+        "Let's go all the way to the end"
+      ],
+      "pos": "expression",
+      "rank": 255,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 길 너무 멀다.",
+          "en": "This road is so long."
+        },
+        {
+          "speaker": "B",
+          "ko": "그래도 끝까지 가보자.",
+          "en": "Even so, let's go all the way to the end."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "손오공",
+          "by": "SEVENTEEN",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A high-energy song about never stopping.",
+          "citation": "https://music.bugs.co.kr/track/6197215"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0256",
+      "hangul": "하나만 선택해",
+      "romanization": "hanaman seontaekae",
+      "meanings": [
+        "Choose just one"
+      ],
+      "pos": "expression",
+      "rank": 256,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다 마음에 들어서 못 정하겠어.",
+          "en": "I like them all, so I can't decide."
+        },
+        {
+          "speaker": "B",
+          "ko": "하나만 선택해.",
+          "en": "Choose just one."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "YES or YES",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "chorus",
+          "context": "A sassy pop track built around a choice with no way out.",
+          "citation": "https://music.bugs.co.kr/track/31299324"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0257",
+      "hangul": "저 미래로 달아나자",
+      "romanization": "jeo miraero daranaja",
+      "meanings": [
+        "Let's run away to that future"
+      ],
+      "pos": "expression",
+      "rank": 257,
+      "tags": [
+        "encouragement",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "여기선 아무것도 못 바꿔.",
+          "en": "We can't change anything here."
+        },
+        {
+          "speaker": "B",
+          "ko": "그럼 저 미래로 달아나자.",
+          "en": "Then let's run away to that future."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A comforting song about moving on together.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0258",
+      "hangul": "어디라도 따라갈래",
+      "romanization": "eodirado ttaragallae",
+      "meanings": [
+        "I'll follow you anywhere"
+      ],
+      "pos": "expression",
+      "rank": 258,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 내일 부산으로 이사 가.",
+          "en": "I'm moving to Busan tomorrow."
+        },
+        {
+          "speaker": "B",
+          "ko": "어디라도 따라갈래.",
+          "en": "I'll follow you anywhere."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Bubble Gum",
+          "by": "NewJeans",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A sweet, light song about sticking close to someone.",
+          "citation": "https://music.bugs.co.kr/track/6243126"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0259",
+      "hangul": "뭐든 될 대로 되라지",
+      "romanization": "mwodeun doel daero doeraji",
+      "meanings": [
+        "Whatever, let it be what it'll be"
+      ],
+      "pos": "expression",
+      "rank": 259,
+      "tags": [
+        "slang",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "계획이 다 틀어졌어.",
+          "en": "All our plans fell apart."
+        },
+        {
+          "speaker": "B",
+          "ko": "뭐든 될 대로 되라지.",
+          "en": "Whatever, let it be what it'll be."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Baddie",
+          "by": "IVE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A swaggering song with an I-don't-care attitude.",
+          "citation": "https://music.bugs.co.kr/track/6218218"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0260",
+      "hangul": "네 생각에 행복해",
+      "romanization": "ne saenggage haengbokae",
+      "meanings": [
+        "Thinking of you makes me happy"
+      ],
+      "pos": "expression",
+      "rank": 260,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 왜 이렇게 웃어?",
+          "en": "Why are you smiling so much lately?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네 생각에 행복해.",
+          "en": "Thinking of you makes me happy."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Really Like You",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A bright, gentle love song.",
+          "citation": "https://music.bugs.co.kr/track/6268452"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0261",
+      "hangul": "난 달려갈게",
+      "romanization": "nan dallyeogalge",
+      "meanings": [
+        "I'll run to you"
+      ],
+      "pos": "expression",
+      "rank": 261,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "역에 도착했어.",
+          "en": "I've arrived at the station."
+        },
+        {
+          "speaker": "B",
+          "ko": "조금만 기다려, 난 달려갈게.",
+          "en": "Wait a bit, I'll run to you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "In Bloom",
+          "by": "ZEROBASEONE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A bright song about racing toward someone.",
+          "citation": "https://music.bugs.co.kr/track/32900421"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0262",
+      "hangul": "삶의 주인공은 나",
+      "romanization": "salmui juingongeun na",
+      "meanings": [
+        "I'm the main character of my life"
+      ],
+      "pos": "expression",
+      "rank": 262,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "남들 눈치 좀 봐야 하지 않아?",
+          "en": "Shouldn't you care what others think?"
+        },
+        {
+          "speaker": "B",
+          "ko": "삶의 주인공은 나니까.",
+          "en": "Because I'm the main character of my life."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Live My Life",
+          "by": "aespa",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A bold song about running your own story.",
+          "citation": "https://music.bugs.co.kr/track/6245041"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0263",
+      "hangul": "난 놓치고 싶지 않아",
+      "romanization": "nan nochigo sipji ana",
+      "meanings": [
+        "I don't want to miss it"
+      ],
+      "pos": "expression",
+      "rank": 263,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "조금만 더 있다 가자.",
+          "en": "Let's stay a little longer."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 난 놓치고 싶지 않아.",
+          "en": "Yeah, I don't want to miss it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Memories",
+          "by": "RIIZE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A warm, nostalgic song about holding on to precious moments.",
+          "citation": "https://music.bugs.co.kr/track/6213293"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0264",
+      "hangul": "그냥 해",
+      "romanization": "geunyang hae",
+      "meanings": [
+        "Just do it"
+      ],
+      "pos": "expression",
+      "rank": 264,
+      "tags": [
+        "encouragement",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "할까 말까 고민돼.",
+          "en": "I can't decide whether to do it or not."
+        },
+        {
+          "speaker": "B",
+          "ko": "그냥 해!",
+          "en": "Just do it!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ANIMAL",
+          "by": "BOYNEXTDOOR",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A punchy track about letting loose.",
+          "citation": "https://music.bugs.co.kr/track/6509569"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0265",
+      "hangul": "첫 만남은 너무 어려워",
+      "romanization": "cheot mannameun neomu eoryeowo",
+      "meanings": [
+        "First meetings are so hard"
+      ],
+      "pos": "expression",
+      "rank": 265,
+      "tags": [
+        "feelings",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "새 친구들 만나는 게 무서워.",
+          "en": "I'm scared to meet new friends."
+        },
+        {
+          "speaker": "B",
+          "ko": "나도. 첫 만남은 너무 어려워.",
+          "en": "Me too. First meetings are so hard."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "첫 만남은 계획대로 되지 않아",
+          "by": "TWS",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A sweet debut song about the nerves of meeting someone new.",
+          "citation": "https://music.bugs.co.kr/track/6230613"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0266",
+      "hangul": "계속 달릴 수 있어",
+      "romanization": "gyesok dallil su isseo",
+      "meanings": [
+        "I can keep running"
+      ],
+      "pos": "expression",
+      "rank": 266,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "안 힘들어?",
+          "en": "Aren't you tired?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 계속 달릴 수 있어.",
+          "en": "No, I can keep running."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "손오공",
+          "by": "SEVENTEEN",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A high-energy song about limitless stamina.",
+          "citation": "https://music.bugs.co.kr/track/6197215"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0267",
+      "hangul": "너와 있을 때마다 이래",
+      "romanization": "neowa isseul ttaemada irae",
+      "meanings": [
+        "It's always like this whenever I'm with you"
+      ],
+      "pos": "expression",
+      "rank": 267,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 얼굴이 빨개?",
+          "en": "Why is your face red?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너와 있을 때마다 이래.",
+          "en": "It's always like this whenever I'm with you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Alcohol-Free",
+          "by": "TWICE",
+          "year": 2021,
+          "locator": "chorus",
+          "context": "A breezy summer song about feeling tipsy on love alone.",
+          "citation": "https://music.bugs.co.kr/track/32254320"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0268",
+      "hangul": "넘어져도 다시 일어나",
+      "romanization": "neomeojyeodo dasi ireona",
+      "meanings": [
+        "Even if you fall, get back up"
+      ],
+      "pos": "expression",
+      "rank": 268,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "또 실패했어. 이제 그만할래.",
+          "en": "I failed again. I'm quitting."
+        },
+        {
+          "speaker": "B",
+          "ko": "넘어져도 다시 일어나.",
+          "en": "Even if you fall, get back up."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ON",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A powerful song about pushing through hardship with everything you have.",
+          "citation": "https://music.bugs.co.kr/track/5863189"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0269",
+      "hangul": "단 너뿐이야",
+      "romanization": "dan neoppuniya",
+      "meanings": [
+        "Nobody but you"
+      ],
+      "pos": "expression",
+      "rank": 269,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내가 제일 좋아하는 사람이 누군지 알아?",
+          "en": "Do you know who I like the most?"
+        },
+        {
+          "speaker": "B",
+          "ko": "단 너뿐이야.",
+          "en": "It's only you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "OMG",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A bright song about being fixated on one person.",
+          "citation": "https://music.bugs.co.kr/track/6186207"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0270",
+      "hangul": "어차피 못 찾을 테니",
+      "romanization": "eochapi mot chajeul teni",
+      "meanings": [
+        "since you won't find it anyway"
+      ],
+      "pos": "expression",
+      "rank": 270,
+      "tags": [
+        "conflict",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내 비밀번호 알아내려고?",
+          "en": "Trying to figure out my password?"
+        },
+        {
+          "speaker": "B",
+          "ko": "어차피 못 찾을 테니 그만둬.",
+          "en": "You won't find it anyway, so give up."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Baddie",
+          "by": "IVE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A flashy, confident track.",
+          "citation": "https://music.bugs.co.kr/track/6218218"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0271",
+      "hangul": "말하고 싶어",
+      "romanization": "malhago sipeo",
+      "meanings": [
+        "I want to tell you"
+      ],
+      "pos": "expression",
+      "rank": 271,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "할 말 있어?",
+          "en": "Do you have something to say?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 말하고 싶어.",
+          "en": "Yeah, I want to tell you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Really Like You",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A sweet song about wanting to confess.",
+          "citation": "https://music.bugs.co.kr/track/6268452"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0272",
+      "hangul": "할 수 있을 것 같아",
+      "romanization": "hal su isseul geot gata",
+      "meanings": [
+        "I feel like I can do it"
+      ],
+      "pos": "expression",
+      "rank": 272,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 높이 뛸 수 있겠어?",
+          "en": "Can you jump this high?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 할 수 있을 것 같아.",
+          "en": "Yeah, I feel like I can do it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ICONIK",
+          "by": "ZEROBASEONE",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A bold song about trusting your own power.",
+          "citation": "https://music.bugs.co.kr/track/6341493"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0273",
+      "hangul": "뭘 어쩌겠어",
+      "romanization": "mwol eojjeogesseo",
+      "meanings": [
+        "What can I do about it?"
+      ],
+      "pos": "expression",
+      "rank": 273,
+      "tags": [
+        "daily",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "비가 와서 소풍이 취소됐어.",
+          "en": "The picnic's canceled because of rain."
+        },
+        {
+          "speaker": "B",
+          "ko": "뭘 어쩌겠어, 다음에 가자.",
+          "en": "What can I do about it? Let's go next time."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Home",
+          "by": "SEVENTEEN",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "A tender song about longing for a place to belong.",
+          "citation": "https://music.bugs.co.kr/track/31425616"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0274",
+      "hangul": "네가 있어 난 다시 웃어",
+      "romanization": "nega isseo nan dasi useo",
+      "meanings": [
+        "I smile again because of you"
+      ],
+      "pos": "expression",
+      "rank": 274,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 기분이 좋아 보여.",
+          "en": "You seem to be in a good mood lately."
+        },
+        {
+          "speaker": "B",
+          "ko": "네가 있어 난 다시 웃어.",
+          "en": "I smile again because of you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Feel Special",
+          "by": "TWICE",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "An uplifting song about finding strength in someone's support.",
+          "citation": "https://music.bugs.co.kr/track/31706264"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0275",
+      "hangul": "아파도 돼",
+      "romanization": "apado dwae",
+      "meanings": [
+        "It's okay to hurt"
+      ],
+      "pos": "expression",
+      "rank": 275,
+      "tags": [
+        "encouragement",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "힘든데 티 내면 안 되겠지?",
+          "en": "I'm struggling, but I shouldn't show it, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아파도 돼. 다 말해도 돼.",
+          "en": "It's okay to hurt. You can tell me everything."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "피 땀 눈물 (Blood Sweat & Tears)",
+          "by": "BTS",
+          "year": 2016,
+          "locator": "chorus",
+          "context": "A dark, intense song about love that hurts.",
+          "citation": "https://music.bugs.co.kr/track/30413061"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0276",
+      "hangul": "난 행운아야",
+      "romanization": "nan haeng-unaya",
+      "meanings": [
+        "I'm a lucky one"
+      ],
+      "pos": "expression",
+      "rank": 276,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "네가 있어서 정말 좋아.",
+          "en": "I'm so glad I have you."
+        },
+        {
+          "speaker": "B",
+          "ko": "나도. 난 행운아야.",
+          "en": "Me too. I'm a lucky one."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "OMG",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A cute, catchy song about counting your blessings.",
+          "citation": "https://music.bugs.co.kr/track/6186207"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0277",
+      "hangul": "멈추지 않아",
+      "romanization": "meomchuji ana",
+      "meanings": [
+        "I won't stop"
+      ],
+      "pos": "expression",
+      "rank": 277,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 좀 쉬어도 되지 않아?",
+          "en": "Can't you rest a bit now?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 난 멈추지 않아.",
+          "en": "No, I won't stop."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Off The Record",
+          "by": "IVE",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A cool, sleek song about moving on your own terms.",
+          "citation": "https://music.bugs.co.kr/track/6217625"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0278",
+      "hangul": "아마 모를걸",
+      "romanization": "ama moreulgeol",
+      "meanings": [
+        "You probably don't know"
+      ],
+      "pos": "expression",
+      "rank": 278,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내가 널 얼마나 좋아하는지 알아?",
+          "en": "Do you know how much I like you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아마 모를걸.",
+          "en": "You probably don't."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Really Like You",
+          "by": "BABYMONSTER",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A bright, gentle love song.",
+          "citation": "https://music.bugs.co.kr/track/6268452"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0279",
+      "hangul": "집 앞으로 갈게",
+      "romanization": "jip apeuro galge",
+      "meanings": [
+        "I'll come to your door"
+      ],
+      "pos": "expression",
+      "rank": 279,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 지금 집에 도착했어.",
+          "en": "I just got home."
+        },
+        {
+          "speaker": "B",
+          "ko": "그래? 집 앞으로 갈게.",
+          "en": "Really? I'll come to your door."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "붐붐",
+          "by": "SEVENTEEN",
+          "year": 2016,
+          "locator": "chorus",
+          "context": "A bright, bouncy song about rushing toward someone.",
+          "citation": "https://music.bugs.co.kr/track/30473333"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0280",
+      "hangul": "지금 너에게로 갈래",
+      "romanization": "jigeum neoegero gallae",
+      "meanings": [
+        "I'm going to you right now"
+      ],
+      "pos": "expression",
+      "rank": 280,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너 보고 싶어서 잠이 안 와.",
+          "en": "I miss you so much I can't sleep."
+        },
+        {
+          "speaker": "B",
+          "ko": "지금 너에게로 갈래.",
+          "en": "I'm going to you right now."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FANCY",
+          "by": "TWICE",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "A sparkling, bold love song.",
+          "citation": "https://music.bugs.co.kr/track/31559397"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0281",
+      "hangul": "넌 아름다워",
+      "romanization": "neon areumdawo",
+      "meanings": [
+        "You're beautiful"
+      ],
+      "pos": "expression",
+      "rank": 281,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 내 모습 어때?",
+          "en": "How do I look today?"
+        },
+        {
+          "speaker": "B",
+          "ko": "넌 아름다워. 언제나.",
+          "en": "You're beautiful. Always."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "I NEED U",
+          "by": "BTS",
+          "year": 2015,
+          "locator": "chorus",
+          "context": "An emotional song about wanting someone who keeps pulling away.",
+          "citation": "https://music.bugs.co.kr/track/4315824"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0282",
+      "hangul": "나 더는 묻지 않을래",
+      "romanization": "na deoneun mutji anheullae",
+      "meanings": [
+        "I won't ask any more"
+      ],
+      "pos": "expression",
+      "rank": 282,
+      "tags": [
+        "feelings",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "계속 물어봐도 대답 안 해 줄 거지?",
+          "en": "Even if I keep asking, you won't answer, will you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응. 나 더는 묻지 않을래.",
+          "en": "Right. I won't ask any more."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "How Sweet",
+          "by": "NewJeans",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A breezy summer song with a playful, confident attitude.",
+          "citation": "https://music.bugs.co.kr/track/6246205"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0283",
+      "hangul": "잘 봐",
+      "romanization": "jal bwa",
+      "meanings": [
+        "Watch closely"
+      ],
+      "pos": "expression",
+      "rank": 283,
+      "tags": [
+        "daily",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이거 어떻게 하는 거야?",
+          "en": "How do you do this?"
+        },
+        {
+          "speaker": "B",
+          "ko": "잘 봐. 이렇게 하면 돼.",
+          "en": "Watch closely. You just do it like this."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ELEVEN",
+          "by": "IVE",
+          "year": 2021,
+          "locator": "chorus",
+          "context": "A glittering debut song about falling for someone.",
+          "citation": "https://music.bugs.co.kr/track/6138300"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0284",
+      "hangul": "할 말 있어",
+      "romanization": "hal mal isseo",
+      "meanings": [
+        "I have something to say"
+      ],
+      "pos": "expression",
+      "rank": 284,
+      "tags": [
+        "daily",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무슨 일이야?",
+          "en": "What's up?"
+        },
+        {
+          "speaker": "B",
+          "ko": "할 말 있어.",
+          "en": "I have something to say."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "붐붐",
+          "by": "SEVENTEEN",
+          "year": 2016,
+          "locator": "chorus",
+          "context": "A bright, bouncy song about wanting to confess.",
+          "citation": "https://music.bugs.co.kr/track/30473333"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0285",
+      "hangul": "누가 먼저 좋아하면 어때",
+      "romanization": "nuga meonjeo joahamyeon eottae",
+      "meanings": [
+        "What if one of us likes the other first?"
+      ],
+      "pos": "expression",
+      "rank": 285,
+      "tags": [
+        "romance",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내가 먼저 고백하면 이상할까?",
+          "en": "Would it be weird if I confess first?"
+        },
+        {
+          "speaker": "B",
+          "ko": "누가 먼저 좋아하면 어때?",
+          "en": "What if one of us likes the other first?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FANCY",
+          "by": "TWICE",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "A sparkling, bold song about not playing games in love.",
+          "citation": "https://music.bugs.co.kr/track/31559397"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0286",
+      "hangul": "함께하고 싶어",
+      "romanization": "hamkkehago sipeo",
+      "meanings": [
+        "I want to share it with you"
+      ],
+      "pos": "expression",
+      "rank": 286,
+      "tags": [
+        "romance",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "맛있는 거 먹으면 누구 생각나?",
+          "en": "Who do you think of when you eat something good?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너. 모든 걸 함께하고 싶어.",
+          "en": "You. I want to share everything with you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "작은 것들을 위한 시 (Boy With Luv)",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A bright, bubbly love song about the small things.",
+          "citation": "https://music.bugs.co.kr/track/5863181"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0287",
+      "hangul": "조용함이 더 좋아",
+      "romanization": "joyonghami deo joa",
+      "meanings": [
+        "I prefer the quiet"
+      ],
+      "pos": "expression",
+      "rank": 287,
+      "tags": [
+        "feelings",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "주말에 파티 갈래?",
+          "en": "Want to go to a party this weekend?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 조용함이 더 좋아.",
+          "en": "No, I prefer the quiet."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Hurt",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "chorus",
+          "context": "A hushed song about wanting real feelings rather than noise.",
+          "citation": "https://music.bugs.co.kr/track/6170218"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0288",
+      "hangul": "내가 질투 나잖아",
+      "romanization": "naega jiltu najanha",
+      "meanings": [
+        "I'm getting jealous, you know"
+      ],
+      "pos": "expression",
+      "rank": 288,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람이랑 너무 친한 거 아니야?",
+          "en": "Aren't you too close to that person?"
+        },
+        {
+          "speaker": "B",
+          "ko": "맞아, 내가 질투 나잖아.",
+          "en": "Right, I'm getting jealous, you know."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "만세",
+          "by": "SEVENTEEN",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A playful song about being a bit jealous.",
+          "citation": "https://music.bugs.co.kr/track/6243177"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0289",
+      "hangul": "미칠 것만 같아",
+      "romanization": "michil geonman gata",
+      "meanings": [
+        "I feel like I'm going crazy"
+      ],
+      "pos": "expression",
+      "rank": 289,
+      "tags": [
+        "feelings",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "시험 결과 언제 나와?",
+          "en": "When do the exam results come out?"
+        },
+        {
+          "speaker": "B",
+          "ko": "몰라, 기다리다 미칠 것만 같아.",
+          "en": "I don't know, I feel like I'm going crazy waiting."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "What is Love?",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "chorus",
+          "context": "A dreamy song about imagining what love will feel like.",
+          "citation": "https://music.bugs.co.kr/track/31022636"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0290",
+      "hangul": "어쩌다 보니",
+      "romanization": "eojjeoda boni",
+      "meanings": [
+        "Before I knew it"
+      ],
+      "pos": "expression",
+      "rank": 290,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "언제 이렇게 친해졌어?",
+          "en": "When did you get so close?"
+        },
+        {
+          "speaker": "B",
+          "ko": "어쩌다 보니 그렇게 됐어.",
+          "en": "Before I knew it, it just happened."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "청춘찬가",
+          "by": "SEVENTEEN",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A cheerful song about youth passing in a blink.",
+          "citation": "https://music.bugs.co.kr/track/6243167"
+        }
+      ]
     }
   ]
 }

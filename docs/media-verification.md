@@ -1,6 +1,7 @@
 # K-media phrase verification table (PLAN_M5 K2 / PLAN_R5_FIXES S7)
 
 - **Entries:** 105 (`ko.media.0001`–`ko.media.0105`)
+- **R8-C1 (2026-11-17):** +121 K-pop chorus entries (`ko.media.0170`–`ko.media.0290`), 15 artists, every one with a `chorus` song reference. Rows are in the *R8-C1* section at the end of this file.
 - **Entries with ≥ 1 verified reference:** 69 (66 %). **Target missed:** the target is ≥ 70 %. The 36 entries without a reference include the PLAN_M5 §7 candidates (e.g. 화이팅, 대박, 헐) that no checked song or press article contained. They stay as dialogue-only cards rather than getting stretched references; songs for these phrases can be added in a K2b pass.
 - **Verified references:** 88 — songs 80 (91 %), shows 1 (1 %), dramas 7 (8 %). **Split target missed:** the target is ≈ 50 / 30 / 20. Songs could be checked line by line on lyrics pages, but dramas and shows have no public transcripts, so they rely on press that quotes the line. The split was not padded to hit the target.
 - **Verified by:** a web-capable content agent, 2026-11-17. Every row was checked by reading the cited page.
@@ -141,3 +142,132 @@
 - **Near misses not counted:** 심쿵한 / 심쿵할 (또 오해영, Busan Ilbo); 우리 결혼해요 (image caption only); 약속이나 지켜요, 가져다줄게요 (SKY 캐슬).
 - **Why so few:** these extension phrases are everyday casual lines that press round-ups rarely quote; dialogue references will need the owner (`citation: "owner"`) or a phrase list chosen from known scenes.
 
+## R8-C1 · K-pop chorus phrases (ko.media.0170–0290)
+
+**How verified.** A script fetched each cited Bugs track page and counted the phrase in the lyrics (Hangul only, ignoring spacing and punctuation). A reference is listed only when the phrase occurs **at least twice**, so it sits in a repeated block (`locator: "chorus"`). The release year is taken from the track page. Phrases that occurred only once, or only inside a longer word, were dropped. Bundled text is the 1–6 word phrase only; dialogues are original.
+
+**Not used:** songs whose repeated lines were English chants or onomatopoeia (e.g. Dynamite, Butter, Permission to Dance); Hangul fragments that are not usable on their own; phrases already in another `ko_*` deck (e.g. 보고 싶다, 사랑해).
+
+| id | hangul | kind | title | by | year | locator | citation | verified-by | status | date |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ko.media.0170 | 울고 싶지 않아 | song | 울고 싶지 않아 | SEVENTEEN | 2017 | chorus | https://music.bugs.co.kr/track/30661761 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0171 | 좀 더 힘을 내 | song | CHEER UP | TWICE | 2016 | chorus | https://music.bugs.co.kr/track/30233414 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0172 | 우연이 아니니까 | song | DNA | BTS | 2017 | chorus | https://music.bugs.co.kr/track/30785785 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0173 | 날 믿어봐 | song | Hype Boy | NewJeans | 2022 | chorus | https://music.bugs.co.kr/track/6170217 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0174 | 넌 그냥 믿으면 돼 | song | I AM | IVE | 2023 | chorus | https://music.bugs.co.kr/track/6195812 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0175 | 고민하지 마 | song | DRIP | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6268450 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0176 | 너와 난 운명이니까 | song | LOVEPOCALYPSE | ZEROBASEONE | 2026 | chorus | https://music.bugs.co.kr/track/6413595 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0177 | 질문은 계속돼 | song | Supernova | aespa | 2024 | chorus | https://music.bugs.co.kr/track/6245033 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0178 | 우린 하나가 돼 | song | Fly Up | RIIZE | 2025 | chorus | https://music.bugs.co.kr/track/6308575 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0179 | 이렇게 좋아해 본 적이 없어요 | song | 이렇게 좋아해 본 적이 없어요 | BOYNEXTDOOR | 2025 | chorus | https://music.bugs.co.kr/track/6293573 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0180 | 더는 못 참겠어 | song | OVERDRIVE | TWS | 2025 | chorus | https://music.bugs.co.kr/track/6360702 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0181 | 내 심장이 뛰네 | song | 이브, 프시케 그리고 푸른 수염의 아내 | LE SSERAFIM | 2023 | chorus | https://music.bugs.co.kr/track/6197839 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0182 | 날 말릴 순 없을걸 | song | Cherish (My Love) | ILLIT | 2024 | chorus | https://music.bugs.co.kr/track/33329626 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0183 | 누가 뭐라든지 넌 너야 | song | 쉿 (Shhh) | KISS OF LIFE | 2023 | chorus | https://music.bugs.co.kr/track/6205118 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0184 | 헤매도 돼 | song | IDESERVEIT | NMIXX | 2026 | chorus | https://music.bugs.co.kr/track/6463155 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0185 | 장난치지 마 | song | 울고 싶지 않아 | SEVENTEEN | 2017 | chorus | https://music.bugs.co.kr/track/30661761 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0186 | 준비하고 기다릴게 | song | KNOCK KNOCK | TWICE | 2017 | chorus | https://music.bugs.co.kr/track/30557790 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0187 | 우린 완전 달라 | song | DNA | BTS | 2017 | chorus | https://music.bugs.co.kr/track/30785785 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0188 | 아침은 너무 멀어 | song | Ditto | NewJeans | 2023 | chorus | https://music.bugs.co.kr/track/6184997 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0189 | 위험을 겁내지 마 | song | BLACKHOLE | IVE | 2026 | chorus | https://music.bugs.co.kr/track/6427499 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0190 | 용기를 좀 내봐 | song | I LIKE IT | BABYMONSTER | 2026 | chorus | https://music.bugs.co.kr/track/6461835 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0191 | 오직 너야 | song | LOVEPOCALYPSE | ZEROBASEONE | 2026 | chorus | https://music.bugs.co.kr/track/6413595 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0192 | 우린 어디서 왔나 | song | Supernova | aespa | 2024 | chorus | https://music.bugs.co.kr/track/6245033 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0193 | 느낀 대로 해 | song | Boom Boom Bass | RIIZE | 2024 | chorus | https://music.bugs.co.kr/track/6248695 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0194 | 꼭 안아 줄게요 | song | 이렇게 좋아해 본 적이 없어요 | BOYNEXTDOOR | 2025 | chorus | https://music.bugs.co.kr/track/6293573 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0195 | 하고 싶은 걸 따라가자 | song | 마음 따라 뛰는 건 멋지지 않아? | TWS | 2025 | chorus | https://music.bugs.co.kr/track/6300927 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0196 | 떨어져도 돼 | song | ANTIFRAGILE | LE SSERAFIM | 2022 | chorus | https://music.bugs.co.kr/track/6179181 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0197 | 고백은 너무 이른 걸 | song | jellyous | ILLIT | 2025 | chorus | https://music.bugs.co.kr/track/6316284 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0198 | 위험할수록 재밌잖아 | song | Midas Touch | KISS OF LIFE | 2024 | chorus | https://music.bugs.co.kr/track/6239848 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0199 | 손을 잡아 | song | KNOW ABOUT ME | NMIXX | 2025 | chorus | https://music.bugs.co.kr/track/6294415 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0200 | 널 찾아가야 돼 | song | 울고 싶지 않아 | SEVENTEEN | 2017 | chorus | https://music.bugs.co.kr/track/30661761 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0201 | 내일도 모레도 다시 와줘 | song | KNOCK KNOCK | TWICE | 2017 | chorus | https://music.bugs.co.kr/track/30557790 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0202 | 영원히 함께니까 | song | DNA | BTS | 2017 | chorus | https://music.bugs.co.kr/track/30785785 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0203 | 꿈에서 깨워주지 마 | song | Attention | NewJeans | 2022 | chorus | https://music.bugs.co.kr/track/6170060 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0204 | 꺾이지 않아 | song | REBEL HEART | IVE | 2025 | chorus | https://music.bugs.co.kr/track/6281197 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0205 | 너도 원하잖아 | song | I LIKE IT | BABYMONSTER | 2026 | chorus | https://music.bugs.co.kr/track/6461835 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0206 | 너 아니면 소용없어 | song | Doctor! Doctor! | ZEROBASEONE | 2025 | chorus | https://music.bugs.co.kr/track/33450022 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0207 | 왜 이제야 | song | Whiplash | aespa | 2024 | chorus | https://music.bugs.co.kr/track/6266734 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0208 | 시작해 봐 | song | Get A Guitar | RIIZE | 2023 | chorus | https://music.bugs.co.kr/track/6213292 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0209 | 그저 머물러줘요 | song | 이렇게 좋아해 본 적이 없어요 | BOYNEXTDOOR | 2025 | chorus | https://music.bugs.co.kr/track/6293573 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0210 | 함께라는 말이 좋아 | song | hey! hey! | TWS | 2024 | chorus | https://music.bugs.co.kr/track/6247698 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0211 | 그냥 포기해 | song | SPAGHETTI | LE SSERAFIM | 2025 | chorus | https://music.bugs.co.kr/track/6366519 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0212 | 날 좋아할까 | song | Tick-Tack | ILLIT | 2024 | chorus | https://music.bugs.co.kr/track/33329629 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0213 | 멈출 생각은 없지 | song | Get Loud | KISS OF LIFE | 2024 | chorus | https://music.bugs.co.kr/track/6264798 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0214 | 내일은 곧 오늘이 돼 | song | IDESERVEIT | NMIXX | 2026 | chorus | https://music.bugs.co.kr/track/6463155 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0215 | 네가 좋은 걸 어쩌나 | song | 어쩌나 | SEVENTEEN | 2018 | chorus | https://music.bugs.co.kr/track/31149474 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0216 | 더는 망설이지 마 | song | Heart Shaker | TWICE | 2017 | chorus | https://music.bugs.co.kr/track/30877135 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0217 | 여기 내 손을 잡아 | song | Life Goes On | BTS | 2020 | chorus | https://music.bugs.co.kr/track/32075135 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0218 | 알려주지 않아도 돼 | song | How Sweet | NewJeans | 2024 | chorus | https://music.bugs.co.kr/track/6246205 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0219 | 내가 정할게 | song | ATTITUDE | IVE | 2025 | chorus | https://music.bugs.co.kr/track/6284624 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0220 | 애써 외면하지 마 | song | Love In My Heart | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6268454 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0221 | 그녀를 놓치지 마 | song | GOOD SO BAD | ZEROBASEONE | 2024 | chorus | https://music.bugs.co.kr/track/33269244 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0222 | 문을 열어 | song | Next Level | aespa | 2021 | chorus | https://music.bugs.co.kr/track/32235760 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0223 | 다 모여봐 | song | Siren | RIIZE | 2024 | chorus | https://music.bugs.co.kr/track/6239850 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0224 | 내 손잡아 주세요 | song | 이렇게 좋아해 본 적이 없어요 | BOYNEXTDOOR | 2025 | chorus | https://music.bugs.co.kr/track/6293573 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0225 | 어디라도 좋을 것 같아 | song | BFF | TWS | 2024 | chorus | https://music.bugs.co.kr/track/6230616 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0226 | 이대로도 좋아 | song | Good Parts (when the quality is bad but I am) | LE SSERAFIM | 2022 | chorus | https://music.bugs.co.kr/track/6179184 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0227 | 상냥하게 다뤄줄게 | song | 체포하겠어 | ILLIT | 2026 | chorus | https://music.bugs.co.kr/track/6513869 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0228 | 너만 알고 있음 된 거야 | song | 쉿 (Shhh) | KISS OF LIFE | 2023 | chorus | https://music.bugs.co.kr/track/6205118 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0229 | 널 혼자 두지 않아 | song | Rock with you | SEVENTEEN | 2021 | chorus | https://music.bugs.co.kr/track/6132537 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0230 | 놓치기 싫어 | song | Heart Shaker | TWICE | 2017 | chorus | https://music.bugs.co.kr/track/30877135 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0231 | 잠시 두 눈을 감아 | song | Life Goes On | BTS | 2020 | chorus | https://music.bugs.co.kr/track/32075135 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0232 | 되돌아가긴 싫어 | song | Supernatural | NewJeans | 2024 | chorus | https://music.bugs.co.kr/track/6249329 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0233 | 행운은 늘 내 편인 걸 | song | ATTITUDE | IVE | 2025 | chorus | https://music.bugs.co.kr/track/6284624 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0234 | 더 이상 참고 싶지 않아 | song | Love In My Heart | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6268454 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0235 | 밤새 잠 못 드는 중이야 | song | Insomnia | ZEROBASEONE | 2024 | chorus | https://music.bugs.co.kr/track/33269247 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0236 | 겁내지 마 | song | Spicy | aespa | 2023 | chorus | https://music.bugs.co.kr/track/32845387 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0237 | 뭔가 달라 | song | Talk Saxy | RIIZE | 2024 | chorus | https://music.bugs.co.kr/track/6260454 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0238 | 다 똑같아 | song | 뭣 같아 | BOYNEXTDOOR | 2023 | chorus | https://music.bugs.co.kr/track/6214656 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0239 | 널 본 순간 알았어 | song | 널 따라가 (You, You) | TWS | 2026 | chorus | https://music.bugs.co.kr/track/6458715 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0240 | 실수해도 좋아 | song | Good Parts (when the quality is bad but I am) | LE SSERAFIM | 2022 | chorus | https://music.bugs.co.kr/track/6179184 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0241 | 두 손 두 발 들었지 | song | Cherish (My Love) | ILLIT | 2024 | chorus | https://music.bugs.co.kr/track/33329626 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0242 | 신경 쓰지 말자 | song | 청춘찬가 | SEVENTEEN | 2024 | chorus | https://music.bugs.co.kr/track/6243167 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0243 | 둘 중에 하나만 골라 | song | YES or YES | TWICE | 2018 | chorus | https://music.bugs.co.kr/track/31299324 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0244 | 끝이 보이지 않아 | song | Life Goes On | BTS | 2020 | chorus | https://music.bugs.co.kr/track/32075135 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0245 | 이건 말로 설명 못해 | song | Bubble Gum | NewJeans | 2024 | chorus | https://music.bugs.co.kr/track/6243126 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0246 | 움츠리면 뭐할 건데 | song | ATTITUDE | IVE | 2025 | chorus | https://music.bugs.co.kr/track/6284624 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0247 | 멋대로 착각하지는 마 | song | FOREVER | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6250516 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0248 | 놓칠 수 없어 | song | SWEAT | ZEROBASEONE | 2024 | chorus | https://music.bugs.co.kr/track/33158531 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0249 | 용기 내 봐 | song | Spicy | aespa | 2023 | chorus | https://music.bugs.co.kr/track/32845387 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0250 | 내가 제일 좋아하는 거야 | song | Memories | RIIZE | 2023 | chorus | https://music.bugs.co.kr/track/6213293 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0251 | 아프지 않아 | song | 있잖아 | BOYNEXTDOOR | 2025 | chorus | https://music.bugs.co.kr/track/6363795 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0252 | 그거면 돼 | song | 내 이름을 불러줘 | TWS | 2026 | chorus | https://music.bugs.co.kr/track/6515241 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0253 | 나랑 저 너머 같이 가자 | song | UNFORGIVEN (feat. Nile Rodgers) | LE SSERAFIM | 2023 | chorus | https://music.bugs.co.kr/track/6197837 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0254 | 넌 이미 유죄 | song | 체포하겠어 | ILLIT | 2026 | chorus | https://music.bugs.co.kr/track/6513869 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0255 | 끝까지 가보자 | song | 손오공 | SEVENTEEN | 2023 | chorus | https://music.bugs.co.kr/track/6197215 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0256 | 하나만 선택해 | song | YES or YES | TWICE | 2018 | chorus | https://music.bugs.co.kr/track/31299324 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0257 | 저 미래로 달아나자 | song | Life Goes On | BTS | 2020 | chorus | https://music.bugs.co.kr/track/32075135 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0258 | 어디라도 따라갈래 | song | Bubble Gum | NewJeans | 2024 | chorus | https://music.bugs.co.kr/track/6243126 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0259 | 뭐든 될 대로 되라지 | song | Baddie | IVE | 2023 | chorus | https://music.bugs.co.kr/track/6218218 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0260 | 네 생각에 행복해 | song | Really Like You | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6268452 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0261 | 난 달려갈게 | song | In Bloom | ZEROBASEONE | 2023 | chorus | https://music.bugs.co.kr/track/32900421 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0262 | 삶의 주인공은 나 | song | Live My Life | aespa | 2024 | chorus | https://music.bugs.co.kr/track/6245041 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0263 | 난 놓치고 싶지 않아 | song | Memories | RIIZE | 2023 | chorus | https://music.bugs.co.kr/track/6213293 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0264 | 그냥 해 | song | ANIMAL | BOYNEXTDOOR | 2026 | chorus | https://music.bugs.co.kr/track/6509569 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0265 | 첫 만남은 너무 어려워 | song | 첫 만남은 계획대로 되지 않아 | TWS | 2024 | chorus | https://music.bugs.co.kr/track/6230613 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0266 | 계속 달릴 수 있어 | song | 손오공 | SEVENTEEN | 2023 | chorus | https://music.bugs.co.kr/track/6197215 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0267 | 너와 있을 때마다 이래 | song | Alcohol-Free | TWICE | 2021 | chorus | https://music.bugs.co.kr/track/32254320 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0268 | 넘어져도 다시 일어나 | song | ON | BTS | 2020 | chorus | https://music.bugs.co.kr/track/5863189 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0269 | 단 너뿐이야 | song | OMG | NewJeans | 2023 | chorus | https://music.bugs.co.kr/track/6186207 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0270 | 어차피 못 찾을 테니 | song | Baddie | IVE | 2023 | chorus | https://music.bugs.co.kr/track/6218218 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0271 | 말하고 싶어 | song | Really Like You | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6268452 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0272 | 할 수 있을 것 같아 | song | ICONIK | ZEROBASEONE | 2025 | chorus | https://music.bugs.co.kr/track/6341493 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0273 | 뭘 어쩌겠어 | song | Home | SEVENTEEN | 2019 | chorus | https://music.bugs.co.kr/track/31425616 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0274 | 네가 있어 난 다시 웃어 | song | Feel Special | TWICE | 2019 | chorus | https://music.bugs.co.kr/track/31706264 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0275 | 아파도 돼 | song | 피 땀 눈물 (Blood Sweat & Tears) | BTS | 2016 | chorus | https://music.bugs.co.kr/track/30413061 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0276 | 난 행운아야 | song | OMG | NewJeans | 2023 | chorus | https://music.bugs.co.kr/track/6186207 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0277 | 멈추지 않아 | song | Off The Record | IVE | 2023 | chorus | https://music.bugs.co.kr/track/6217625 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0278 | 아마 모를걸 | song | Really Like You | BABYMONSTER | 2024 | chorus | https://music.bugs.co.kr/track/6268452 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0279 | 집 앞으로 갈게 | song | 붐붐 | SEVENTEEN | 2016 | chorus | https://music.bugs.co.kr/track/30473333 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0280 | 지금 너에게로 갈래 | song | FANCY | TWICE | 2019 | chorus | https://music.bugs.co.kr/track/31559397 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0281 | 넌 아름다워 | song | I NEED U | BTS | 2015 | chorus | https://music.bugs.co.kr/track/4315824 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0282 | 나 더는 묻지 않을래 | song | How Sweet | NewJeans | 2024 | chorus | https://music.bugs.co.kr/track/6246205 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0283 | 잘 봐 | song | ELEVEN | IVE | 2021 | chorus | https://music.bugs.co.kr/track/6138300 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0284 | 할 말 있어 | song | 붐붐 | SEVENTEEN | 2016 | chorus | https://music.bugs.co.kr/track/30473333 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0285 | 누가 먼저 좋아하면 어때 | song | FANCY | TWICE | 2019 | chorus | https://music.bugs.co.kr/track/31559397 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0286 | 함께하고 싶어 | song | 작은 것들을 위한 시 (Boy With Luv) | BTS | 2020 | chorus | https://music.bugs.co.kr/track/5863181 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0287 | 조용함이 더 좋아 | song | Hurt | NewJeans | 2022 | chorus | https://music.bugs.co.kr/track/6170218 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0288 | 내가 질투 나잖아 | song | 만세 | SEVENTEEN | 2024 | chorus | https://music.bugs.co.kr/track/6243177 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0289 | 미칠 것만 같아 | song | What is Love? | TWICE | 2018 | chorus | https://music.bugs.co.kr/track/31022636 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0290 | 어쩌다 보니 | song | 청춘찬가 | SEVENTEEN | 2024 | chorus | https://music.bugs.co.kr/track/6243167 | agent | VERIFIED | 2026-11-17 |
