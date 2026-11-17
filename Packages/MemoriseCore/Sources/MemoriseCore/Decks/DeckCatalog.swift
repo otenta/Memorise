@@ -63,12 +63,10 @@ public struct DeckCatalog: Sendable {
             .map(\.element)
     }
 
-    /// Bundled vocab files in display order.
-    /// M5 K1: `"ko_media"` goes before `"ko_aion2"` once K2 adds `ko_media.json`; until then a missing file
-    /// would show the "couldn't be loaded" row, so it stays out of the list.
+    /// Bundled vocab files in display order. The media deck (M5 K2) sits before AION 2.
     public static let bundledVocabFiles = [
         "ko_core_1", "ko_core_2", "ko_core_3", "ko_core_4", "ko_core_5", "ko_patterns",
-        // "ko_media", // M5 K2
+        "ko_media",
         "ko_aion2",
     ]
 

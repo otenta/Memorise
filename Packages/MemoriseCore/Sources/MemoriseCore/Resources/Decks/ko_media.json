@@ -1,0 +1,4127 @@
+{
+  "schemaVersion": 2,
+  "deckId": "ko.media",
+  "title": "Korean · K-pop & K-drama",
+  "subtitle": "Phrases you'll hear in songs and shows",
+  "subject": "korean",
+  "entries": [
+    {
+      "id": "ko.media.0001",
+      "hangul": "사랑해",
+      "romanization": "saranghae",
+      "meanings": [
+        "I love you"
+      ],
+      "pos": "expression",
+      "rank": 1,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 사랑해요. Formal: 사랑합니다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 하루 어땠어?",
+          "en": "How was your day?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너 생각만 했어. 사랑해.",
+          "en": "I only thought about you. I love you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FAKE LOVE",
+          "by": "BTS",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "In BTS's dark love song about wearing a mask for someone, the simple casual confession shows up amid the self-doubt.",
+          "citation": "https://music.bugs.co.kr/track/31078328"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0002",
+      "hangul": "고마워",
+      "romanization": "gomawo",
+      "meanings": [
+        "thanks",
+        "thank you"
+      ],
+      "pos": "expression",
+      "rank": 2,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 고마워요. Formal: 감사합니다 / 고맙습니다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "네 우산 가져왔어.",
+          "en": "I brought your umbrella."
+        },
+        {
+          "speaker": "B",
+          "ko": "와, 고마워!",
+          "en": "Oh, thanks!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0003",
+      "hangul": "미안해",
+      "romanization": "mianhae",
+      "meanings": [
+        "I'm sorry"
+      ],
+      "pos": "expression",
+      "rank": 3,
+      "tags": [
+        "conflict",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 미안해요. Formal: 죄송합니다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어제 왜 연락 안 했어?",
+          "en": "Why didn't you get in touch yesterday?"
+        },
+        {
+          "speaker": "B",
+          "ko": "미안해. 너무 바빴어.",
+          "en": "I'm sorry. I was really busy."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "lyrics",
+          "context": "BTS's pandemic-era song opens with an apology, as the world stops and the members reflect on what was lost.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        },
+        {
+          "kind": "song",
+          "title": "CHEER UP",
+          "by": "TWICE",
+          "year": 2016,
+          "locator": "lyrics",
+          "context": "In TWICE's breakout hit, the narrator apologises for not replying to a boy's messages right away.",
+          "citation": "https://music.bugs.co.kr/track/30233414"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0004",
+      "hangul": "괜찮아",
+      "romanization": "gwaenchana",
+      "meanings": [
+        "it's okay",
+        "I'm okay",
+        "are you okay?"
+      ],
+      "pos": "expression",
+      "rank": 4,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 괜찮아요. As a question: 괜찮아?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "넘어졌어? 괜찮아?",
+          "en": "Did you fall? Are you okay?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 괜찮아. 걱정 마.",
+          "en": "Yeah, I'm okay. Don't worry."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "OMG",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "NewJeans' upbeat song about a love that feels too good to be true uses it as soft reassurance.",
+          "citation": "https://music.bugs.co.kr/track/6186207"
+        },
+        {
+          "kind": "song",
+          "title": "FANCY",
+          "by": "TWICE",
+          "year": 2019,
+          "locator": "lyrics",
+          "context": "TWICE use it as the narrator brushes off her own nerves before telling someone she likes them.",
+          "citation": "https://music.bugs.co.kr/track/31559397"
+        },
+        {
+          "kind": "song",
+          "title": "FIRE",
+          "titleKo": "불타오르네",
+          "by": "BTS",
+          "year": 2016,
+          "locator": "lyrics",
+          "context": "BTS's explosive anthem tells listeners it's fine to lose, as long as they live their own way.",
+          "citation": "https://music.bugs.co.kr/track/32563047"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0005",
+      "hangul": "진짜?",
+      "romanization": "jinjja",
+      "meanings": [
+        "really?",
+        "seriously?"
+      ],
+      "pos": "expression",
+      "rank": 5,
+      "tags": [
+        "exclamation",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 진짜요? / 정말요? Without the question mark, 진짜 means 'really, truly'.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 시험 합격했어!",
+          "en": "I passed the exam!"
+        },
+        {
+          "speaker": "B",
+          "ko": "진짜? 대박!",
+          "en": "Really? Amazing!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "In TWICE's song about working up the nerve to confess first, the word marks how serious her feelings have become.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        },
+        {
+          "kind": "song",
+          "title": "My World",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "ILLIT's song about being unapologetically yourself uses it to insist the feeling is genuine.",
+          "citation": "https://music.bugs.co.kr/track/33133207"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0006",
+      "hangul": "보고 싶어",
+      "romanization": "bogo sipeo",
+      "meanings": [
+        "I miss you",
+        "I want to see you"
+      ],
+      "pos": "expression",
+      "rank": 6,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 보고 싶어요. Past: 보고 싶었어 (I missed you).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 전화했어?",
+          "en": "Why did you call?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그냥… 보고 싶어.",
+          "en": "Just… I miss you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Ditto",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "NewJeans' wintry hit about a shy, one-sided longing builds up to this quiet admission.",
+          "citation": "https://music.bugs.co.kr/track/6184997"
+        },
+        {
+          "kind": "song",
+          "title": "Cookie",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "In NewJeans' playful debut-era track, the narrator keeps telling her crush she wants to see him.",
+          "citation": "https://music.bugs.co.kr/track/6171084"
+        },
+        {
+          "kind": "song",
+          "title": "What is Love?",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "TWICE's song about imagining love from books and films reaches for it in the bridge.",
+          "citation": "https://music.bugs.co.kr/track/31022636"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0007",
+      "hangul": "보고 싶다",
+      "romanization": "bogo sipda",
+      "meanings": [
+        "I miss (you)",
+        "I wish I could see (you)"
+      ],
+      "pos": "expression",
+      "rank": 7,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Plain form, often said to oneself. Talking to someone: 보고 싶어 / 보고 싶어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사진 보는 거야?",
+          "en": "Are you looking at photos?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 할머니 보고 싶다.",
+          "en": "Yeah, I miss Grandma."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Spring Day",
+          "titleKo": "봄날",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "BTS's ballad about missing friends through a long winter is built around this sigh of longing.",
+          "citation": "https://music.bugs.co.kr/track/30547148"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0008",
+      "hangul": "몰라",
+      "romanization": "molla",
+      "meanings": [
+        "I don't know",
+        "who knows",
+        "whatever"
+      ],
+      "pos": "expression",
+      "rank": 8,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 몰라요 / 모르겠어요. Can sound dismissive if said sharply.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "지민이 어디 갔어?",
+          "en": "Where did Jimin go?"
+        },
+        {
+          "speaker": "B",
+          "ko": "몰라. 아까 나갔어.",
+          "en": "No idea. He left a while ago."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FAKE LOVE",
+          "by": "BTS",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "BTS use it as the narrator admits he no longer recognises who he's become.",
+          "citation": "https://music.bugs.co.kr/track/31078328"
+        },
+        {
+          "kind": "song",
+          "title": "YES or YES",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "TWICE playfully claim not to know any answer other than yes.",
+          "citation": "https://music.bugs.co.kr/track/31299324"
+        },
+        {
+          "kind": "song",
+          "title": "Cookie",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "NewJeans close their teasing song with a carefree shrug.",
+          "citation": "https://music.bugs.co.kr/track/6171084"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0009",
+      "hangul": "잠깐만",
+      "romanization": "jamkkanman",
+      "meanings": [
+        "wait a moment",
+        "hold on"
+      ],
+      "pos": "expression",
+      "rank": 9,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 잠깐만요 / 잠시만요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "빨리 가자!",
+          "en": "Let's go, quick!"
+        },
+        {
+          "speaker": "B",
+          "ko": "잠깐만! 신발 신고.",
+          "en": "Hold on! Let me put my shoes on."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LIKEY",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "In TWICE's song about posting for likes, the narrator asks for a moment before showing her real self.",
+          "citation": "https://music.bugs.co.kr/track/30826585"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0010",
+      "hangul": "어떡해",
+      "romanization": "eotteokae",
+      "meanings": [
+        "what do I do?",
+        "oh no"
+      ],
+      "pos": "expression",
+      "rank": 10,
+      "tags": [
+        "exclamation",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Contraction of 어떻게 해. Polite: 어떡해요. Also 어떡하지? (what should I do?).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "지갑을 놓고 왔어. 어떡해!",
+          "en": "I left my wallet behind. What do I do!"
+        },
+        {
+          "speaker": "B",
+          "ko": "괜찮아, 내가 낼게.",
+          "en": "It's fine, I'll pay."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE's narrator panics about whether to make the first move on someone she likes.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        },
+        {
+          "kind": "song",
+          "title": "OMG",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "NewJeans end their love song in a flustered state of disbelief.",
+          "citation": "https://music.bugs.co.kr/track/6186207"
+        },
+        {
+          "kind": "song",
+          "title": "Tick-Tack",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "ILLIT's song about a ticking crush has the narrator unsure what to do with her racing heart.",
+          "citation": "https://music.bugs.co.kr/track/33329629"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0011",
+      "hangul": "너무해",
+      "romanization": "neomuhae",
+      "meanings": [
+        "that's so unfair",
+        "you're being mean"
+      ],
+      "pos": "expression",
+      "rank": 11,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 너무해요. Often a playful complaint.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "마지막 케이크 내가 먹었어.",
+          "en": "I ate the last piece of cake."
+        },
+        {
+          "speaker": "B",
+          "ko": "너무해! 내 거였잖아.",
+          "en": "That's so mean! It was mine."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "TT",
+          "by": "TWICE",
+          "year": 2016,
+          "locator": "lyrics",
+          "context": "In TWICE's iconic hook, the narrator sulks that the person she likes is being unfair to her.",
+          "citation": "https://music.bugs.co.kr/track/30428038"
+        },
+        {
+          "kind": "song",
+          "title": "Dope",
+          "titleKo": "쩔어",
+          "by": "BTS",
+          "year": 2015,
+          "locator": "lyrics",
+          "context": "BTS fire it back at doubters in their hard-working breakout anthem.",
+          "citation": "https://music.bugs.co.kr/track/4315827"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0012",
+      "hangul": "그래",
+      "romanization": "geurae",
+      "meanings": [
+        "okay",
+        "sure",
+        "right",
+        "is that so?"
+      ],
+      "pos": "expression",
+      "rank": 12,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 그래요. As a question (그래?) it means 'really?'.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 영화 볼래?",
+          "en": "Want to see a film tomorrow?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그래, 좋아.",
+          "en": "Sure, sounds good."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FANCY",
+          "by": "TWICE",
+          "year": 2019,
+          "locator": "lyrics",
+          "context": "TWICE open the confident hook by simply agreeing with their own feelings.",
+          "citation": "https://music.bugs.co.kr/track/31559397"
+        },
+        {
+          "kind": "song",
+          "title": "Spring Day",
+          "titleKo": "봄날",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "BTS use it as a resigned 'right…' while thinking about time passing.",
+          "citation": "https://music.bugs.co.kr/track/30547148"
+        },
+        {
+          "kind": "song",
+          "title": "Talk that Talk",
+          "by": "TWICE",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "TWICE drop it near the end of a song asking someone to finally say the words.",
+          "citation": "https://music.bugs.co.kr/track/32629241"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0013",
+      "hangul": "싫어",
+      "romanization": "sireo",
+      "meanings": [
+        "no",
+        "I don't want to",
+        "I hate it"
+      ],
+      "pos": "expression",
+      "rank": 13,
+      "tags": [
+        "conflict",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 싫어요. Opposite: 좋아 (good / I like it).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 청소 좀 해.",
+          "en": "Do some cleaning today."
+        },
+        {
+          "speaker": "B",
+          "ko": "싫어! 나 피곤해.",
+          "en": "No! I'm tired."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "YES or YES",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "TWICE make it clear 'no' is simply not an option in their cheeky love song.",
+          "citation": "https://music.bugs.co.kr/track/31299324"
+        },
+        {
+          "kind": "song",
+          "title": "CHEER UP",
+          "by": "TWICE",
+          "year": 2016,
+          "locator": "lyrics",
+          "context": "TWICE's narrator says she doesn't want to seem too easy when someone is chasing her.",
+          "citation": "https://music.bugs.co.kr/track/30233414"
+        },
+        {
+          "kind": "song",
+          "title": "SET ME FREE",
+          "by": "TWICE",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "TWICE use it to push back against being held back from love.",
+          "citation": "https://music.bugs.co.kr/track/6192447"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0014",
+      "hangul": "궁금해",
+      "romanization": "gunggeumhae",
+      "meanings": [
+        "I'm curious",
+        "I wonder"
+      ],
+      "pos": "expression",
+      "rank": 14,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 궁금해요. Question: 궁금해? (are you curious?).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "선물 뭔지 궁금해?",
+          "en": "Are you curious what the present is?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 너무 궁금해!",
+          "en": "Yes, I'm dying to know!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Boy With Luv",
+          "titleKo": "작은 것들을 위한 시",
+          "by": "BTS",
+          "year": 2019,
+          "locator": "lyrics",
+          "context": "BTS's bright love song opens with the narrator wanting to know everything about the other person.",
+          "citation": "https://music.bugs.co.kr/track/5863181"
+        },
+        {
+          "kind": "song",
+          "title": "What is Love?",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "TWICE wonder what real love feels like in their curious, dreamy song.",
+          "citation": "https://music.bugs.co.kr/track/31022636"
+        },
+        {
+          "kind": "song",
+          "title": "Cherish (My Love)",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "ILLIT's narrator is curious whether her crush feels the same.",
+          "citation": "https://music.bugs.co.kr/track/33329626"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0015",
+      "hangul": "좋아해",
+      "romanization": "joahae",
+      "meanings": [
+        "I like you",
+        "I like it"
+      ],
+      "pos": "expression",
+      "rank": 15,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 좋아해요. Stronger: 사랑해.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "할 말이 뭐야?",
+          "en": "What did you want to say?"
+        },
+        {
+          "speaker": "B",
+          "ko": "나… 너 좋아해.",
+          "en": "I… like you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Cherish (My Love)",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "ILLIT's sweet confession song centres on simply saying she likes him.",
+          "citation": "https://music.bugs.co.kr/track/33329626"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0016",
+      "hangul": "행복해",
+      "romanization": "haengbokae",
+      "meanings": [
+        "I'm happy"
+      ],
+      "pos": "expression",
+      "rank": 16,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 행복해요. Let's be happy: 행복하자.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 어때?",
+          "en": "How are you these days?"
+        },
+        {
+          "speaker": "B",
+          "ko": "좋아. 진짜 행복해.",
+          "en": "Good. I'm really happy."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "IDOL",
+          "by": "BTS",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "BTS end their self-love anthem by declaring they're happy being who they are.",
+          "citation": "https://music.bugs.co.kr/track/31203512"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0017",
+      "hangul": "기다릴게",
+      "romanization": "gidarilge",
+      "meanings": [
+        "I'll wait"
+      ],
+      "pos": "expression",
+      "rank": 17,
+      "tags": [
+        "romance",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 기다릴게요. Wait for me: 기다려 줘.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "조금 늦을 것 같아.",
+          "en": "I think I'll be a bit late."
+        },
+        {
+          "speaker": "B",
+          "ko": "괜찮아, 기다릴게.",
+          "en": "It's fine, I'll wait."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "KNOCK KNOCK",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE promise to keep waiting for someone to come knocking at their door.",
+          "citation": "https://music.bugs.co.kr/track/30557790"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0018",
+      "hangul": "같이 가자",
+      "romanization": "gachi gaja",
+      "meanings": [
+        "let's go together"
+      ],
+      "pos": "expression",
+      "rank": 18,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 같이 가요. Formal suggestion: 같이 갑시다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 편의점 갈 거야.",
+          "en": "I'm going to the convenience store."
+        },
+        {
+          "speaker": "B",
+          "ko": "같이 가자!",
+          "en": "Let's go together!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "UNFORGIVEN",
+          "by": "LE SSERAFIM",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "LE SSERAFIM invite others to cross a line with them in their defiant, Nile Rodgers-backed anthem.",
+          "citation": "https://music.bugs.co.kr/track/6197837"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0019",
+      "hangul": "잊지 마",
+      "romanization": "itji ma",
+      "meanings": [
+        "don't forget"
+      ],
+      "pos": "expression",
+      "rank": 19,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 잊지 마세요. Remember: 기억해.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 아침 일곱 시야.",
+          "en": "Tomorrow is seven a.m."
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어. 너도 잊지 마.",
+          "en": "Got it. Don't you forget either."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ANTIFRAGILE",
+          "by": "LE SSERAFIM",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "LE SSERAFIM remind listeners not to forget the sacrifices they made to get here.",
+          "citation": "https://music.bugs.co.kr/track/6179181"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0020",
+      "hangul": "그만해",
+      "romanization": "geumanhae",
+      "meanings": [
+        "stop it",
+        "that's enough"
+      ],
+      "pos": "expression",
+      "rank": 20,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 그만하세요. Softer: 그만 좀 해.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "하하, 또 놀릴 거야.",
+          "en": "Haha, I'm going to tease you again."
+        },
+        {
+          "speaker": "B",
+          "ko": "그만해! 진짜 화낼 거야.",
+          "en": "Stop it! I'll really get mad."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "How Sweet",
+          "by": "NewJeans",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "NewJeans tell someone to stop playing games in their breezy 2024 single.",
+          "citation": "https://music.bugs.co.kr/track/6246205"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0021",
+      "hangul": "꿈 같아",
+      "romanization": "kkum gata",
+      "meanings": [
+        "it's like a dream"
+      ],
+      "pos": "expression",
+      "rank": 21,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 꿈 같아요. Past: 꿈 같았어.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 진짜 파리에 왔어!",
+          "en": "We're really in Paris!"
+        },
+        {
+          "speaker": "B",
+          "ko": "믿을 수 없어. 꿈 같아.",
+          "en": "I can't believe it. It's like a dream."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FANCY",
+          "by": "TWICE",
+          "year": 2019,
+          "locator": "lyrics",
+          "context": "TWICE describe the dreamy feeling of finally going after the person they fancy.",
+          "citation": "https://music.bugs.co.kr/track/31559397"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0022",
+      "hangul": "미쳤어?",
+      "romanization": "michyeosseo",
+      "meanings": [
+        "are you crazy?",
+        "have you lost it?"
+      ],
+      "pos": "expression",
+      "rank": 22,
+      "tags": [
+        "exclamation",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Very casual; only with close friends. As a statement, 미쳤어 can also mean 'that's insane (great)'.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 오늘 회사 그만둘 거야.",
+          "en": "I'm quitting my job today."
+        },
+        {
+          "speaker": "B",
+          "ko": "미쳤어? 진짜로?",
+          "en": "Are you crazy? Seriously?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE's narrator wonders if she's gone mad for considering a confession first.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0023",
+      "hangul": "뭐 어때",
+      "romanization": "mwo eottae",
+      "meanings": [
+        "so what?",
+        "what's the harm?"
+      ],
+      "pos": "expression",
+      "rank": 23,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 뭐 어때요? Shrugs off worry.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "옷이 좀 이상하지 않아?",
+          "en": "Isn't my outfit a bit odd?"
+        },
+        {
+          "speaker": "B",
+          "ko": "뭐 어때. 예뻐!",
+          "en": "So what? It's pretty!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE ask why a girl can't be the one to confess first.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0024",
+      "hangul": "너뿐이야",
+      "romanization": "neoppuniya",
+      "meanings": [
+        "it's only you",
+        "you're the only one"
+      ],
+      "pos": "expression",
+      "rank": 24,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 너뿐이에요 (rare). Also 너밖에 없어.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다른 사람 생각해?",
+          "en": "Are you thinking about someone else?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니. 나는 너뿐이야.",
+          "en": "No. For me it's only you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "OMG",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "NewJeans' hook repeats that there's only one person for them.",
+          "citation": "https://music.bugs.co.kr/track/6186207"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0025",
+      "hangul": "예뻐",
+      "romanization": "yeppeo",
+      "meanings": [
+        "pretty",
+        "you're pretty"
+      ],
+      "pos": "expression",
+      "rank": 25,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 예뻐요. Dictionary form: 예쁘다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 원피스 어때?",
+          "en": "How's this dress?"
+        },
+        {
+          "speaker": "B",
+          "ko": "완전 예뻐!",
+          "en": "It's so pretty!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LIKEY",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE get ready to look pretty for the person they want to impress.",
+          "citation": "https://music.bugs.co.kr/track/30826585"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0026",
+      "hangul": "날 봐",
+      "romanization": "nal bwa",
+      "meanings": [
+        "look at me"
+      ],
+      "pos": "expression",
+      "rank": 26,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Contraction of 나를 봐. Polite: 저를 보세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 계속 핸드폰만 봐?",
+          "en": "Why do you keep looking at your phone?"
+        },
+        {
+          "speaker": "B",
+          "ko": "미안. 이제 날 봐.",
+          "en": "Sorry. Look at me now."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Like OOH-AHH",
+          "titleKo": "OOH-AHH하게",
+          "by": "TWICE",
+          "year": 2015,
+          "locator": "lyrics",
+          "context": "TWICE's debut single asks for someone who will really look at them.",
+          "citation": "https://music.bugs.co.kr/track/30025213"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0027",
+      "hangul": "꽉 잡아",
+      "romanization": "kkwak jaba",
+      "meanings": [
+        "hold on tight"
+      ],
+      "pos": "expression",
+      "rank": 27,
+      "tags": [
+        "encouragement",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 꽉 잡으세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "자전거 처음 타 봐.",
+          "en": "It's my first time on a bike."
+        },
+        {
+          "speaker": "B",
+          "ko": "괜찮아. 꽉 잡아!",
+          "en": "It's fine. Hold on tight!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Boy In Luv",
+          "titleKo": "상남자",
+          "by": "BTS",
+          "year": 2014,
+          "locator": "lyrics",
+          "context": "BTS's brash early hit has the narrator telling the girl he likes to hold on tight.",
+          "citation": "https://music.bugs.co.kr/track/3387398"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0028",
+      "hangul": "안녕",
+      "romanization": "annyeong",
+      "meanings": [
+        "hi",
+        "bye"
+      ],
+      "pos": "expression",
+      "rank": 28,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 안녕하세요 (hi), 안녕히 가세요 / 계세요 (bye).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "안녕! 오랜만이야.",
+          "en": "Hi! Long time no see."
+        },
+        {
+          "speaker": "B",
+          "ko": "안녕! 잘 지냈어?",
+          "en": "Hi! Have you been well?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "lyrics",
+          "context": "BTS sing about saying goodbye to normal life while promising it will go on.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0029",
+      "hangul": "나야",
+      "romanization": "naya",
+      "meanings": [
+        "it's me"
+      ],
+      "pos": "expression",
+      "rank": 29,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 저예요. On the phone: 나야, 지민이.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "누구세요?",
+          "en": "Who is it?"
+        },
+        {
+          "speaker": "B",
+          "ko": "나야, 문 열어 줘.",
+          "en": "It's me, open the door."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "My World",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "ILLIT announce themselves with confidence in their self-assured track.",
+          "citation": "https://music.bugs.co.kr/track/33133207"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0030",
+      "hangul": "걱정하지 마",
+      "romanization": "geokjeonghaji ma",
+      "meanings": [
+        "don't worry"
+      ],
+      "pos": "expression",
+      "rank": 30,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Shorter: 걱정 마. Polite: 걱정하지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "면접 떨려.",
+          "en": "I'm nervous about the interview."
+        },
+        {
+          "speaker": "B",
+          "ko": "걱정하지 마. 잘할 거야.",
+          "en": "Don't worry. You'll do great."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "DNA",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "BTS reassure their destined love that there's nothing to worry about.",
+          "citation": "https://music.bugs.co.kr/track/30785785"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0031",
+      "hangul": "말해줘",
+      "romanization": "malhaejwo",
+      "meanings": [
+        "tell me"
+      ],
+      "pos": "expression",
+      "rank": 31,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Standard spelling: 말해 줘. Polite: 말해 주세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무슨 일 있어?",
+          "en": "Is something wrong?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니야…",
+          "en": "No…"
+        },
+        {
+          "speaker": "A",
+          "ko": "괜찮아, 말해줘.",
+          "en": "It's okay, tell me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Ditto",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "NewJeans ask the other person to say it back in their longing winter hit.",
+          "citation": "https://music.bugs.co.kr/track/6184997"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0032",
+      "hangul": "말해봐",
+      "romanization": "malhaebwa",
+      "meanings": [
+        "tell me",
+        "go on, say it"
+      ],
+      "pos": "expression",
+      "rank": 32,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Standard spelling: 말해 봐. Polite: 말해 보세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 비밀 있어.",
+          "en": "I have a secret."
+        },
+        {
+          "speaker": "B",
+          "ko": "뭔데? 빨리 말해봐!",
+          "en": "What is it? Tell me, quick!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Hype Boy",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "NewJeans urge someone to speak up in their breezy breakout song.",
+          "citation": "https://music.bugs.co.kr/track/6170217"
+        },
+        {
+          "kind": "song",
+          "title": "Talk that Talk",
+          "by": "TWICE",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "TWICE want the other person to just say it in their 2022 single.",
+          "citation": "https://music.bugs.co.kr/track/32629241"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0033",
+      "hangul": "망설이지 마",
+      "romanization": "mangseoriji ma",
+      "meanings": [
+        "don't hesitate"
+      ],
+      "pos": "expression",
+      "rank": 33,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 망설이지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람한테 연락할까?",
+          "en": "Should I message them?"
+        },
+        {
+          "speaker": "B",
+          "ko": "망설이지 마. 해 봐!",
+          "en": "Don't hesitate. Go for it!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE urge themselves to stop hesitating and confess.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0034",
+      "hangul": "어서 와",
+      "romanization": "eoseo wa",
+      "meanings": [
+        "welcome",
+        "come on in"
+      ],
+      "pos": "expression",
+      "rank": 34,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 어서 오세요 (shops use this to greet you).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 왔어!",
+          "en": "I'm here!"
+        },
+        {
+          "speaker": "B",
+          "ko": "어서 와! 들어와.",
+          "en": "Welcome! Come in."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Dope",
+          "titleKo": "쩔어",
+          "by": "BTS",
+          "year": 2015,
+          "locator": "lyrics",
+          "context": "BTS open their high-energy track by welcoming listeners in, like a host greeting guests.",
+          "citation": "https://music.bugs.co.kr/track/4315827"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0035",
+      "hangul": "처음이지?",
+      "romanization": "cheoeumiji",
+      "meanings": [
+        "first time, right?"
+      ],
+      "pos": "expression",
+      "rank": 35,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 처음이죠? / 처음이세요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "여기 처음이지?",
+          "en": "This is your first time here, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 처음이야.",
+          "en": "Yeah, it's my first time."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Dope",
+          "titleKo": "쩔어",
+          "by": "BTS",
+          "year": 2015,
+          "locator": "lyrics",
+          "context": "In BTS's intro, they playfully ask newcomers if this is their first time hearing them.",
+          "citation": "https://music.bugs.co.kr/track/4315827"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0036",
+      "hangul": "관심 없어",
+      "romanization": "gwansim eopseo",
+      "meanings": [
+        "I'm not interested",
+        "I don't care"
+      ],
+      "pos": "expression",
+      "rank": 36,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 관심 없어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 드라마 봤어?",
+          "en": "Have you seen this drama?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 관심 없어.",
+          "en": "No, I'm not interested."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FEARLESS",
+          "by": "LE SSERAFIM",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "LE SSERAFIM's debut shrugs off other people's opinions about their choices.",
+          "citation": "https://music.bugs.co.kr/track/6160273"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0037",
+      "hangul": "놀러 와",
+      "romanization": "nolleo wa",
+      "meanings": [
+        "come over",
+        "come hang out"
+      ],
+      "pos": "expression",
+      "rank": 37,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 놀러 오세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "주말에 뭐 해?",
+          "en": "What are you doing at the weekend?"
+        },
+        {
+          "speaker": "B",
+          "ko": "집에 있어. 놀러 와!",
+          "en": "Staying home. Come over!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Cookie",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "NewJeans invite someone to come over in their teasing early track.",
+          "citation": "https://music.bugs.co.kr/track/6171084"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0038",
+      "hangul": "이게 뭐지?",
+      "romanization": "ige mwoji",
+      "meanings": [
+        "what's this?",
+        "what is this feeling?"
+      ],
+      "pos": "expression",
+      "rank": 38,
+      "tags": [
+        "daily",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 이게 뭐예요? / 이게 뭐지요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "책상에 상자가 있네.",
+          "en": "There's a box on the desk."
+        },
+        {
+          "speaker": "B",
+          "ko": "이게 뭐지? 열어 보자.",
+          "en": "What's this? Let's open it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Magnetic",
+          "by": "ILLIT",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "ILLIT's debut hit starts with confusion at a sudden, magnetic pull towards someone.",
+          "citation": "https://music.bugs.co.kr/track/33133208"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0039",
+      "hangul": "니가 뭔데?",
+      "romanization": "niga mwonde",
+      "meanings": [
+        "who do you think you are?"
+      ],
+      "pos": "expression",
+      "rank": 39,
+      "tags": [
+        "conflict",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Standard spelling: 네가 뭔데? Rude; only in arguments or playfully.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그거 하지 마.",
+          "en": "Don't do that."
+        },
+        {
+          "speaker": "B",
+          "ko": "니가 뭔데? 내 맘이야.",
+          "en": "Who are you to say? It's my choice."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Boy In Luv",
+          "titleKo": "상남자",
+          "by": "BTS",
+          "year": 2014,
+          "locator": "lyrics",
+          "context": "BTS's cocky narrator challenges a rival with this blunt line.",
+          "citation": "https://music.bugs.co.kr/track/3387398"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0040",
+      "hangul": "쉿",
+      "romanization": "swit",
+      "meanings": [
+        "shh",
+        "hush"
+      ],
+      "pos": "expression",
+      "rank": 40,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Said with a finger on the lips.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "생일 파티 준비 다 됐어?",
+          "en": "Is the birthday party ready?"
+        },
+        {
+          "speaker": "B",
+          "ko": "쉿! 그 친구 온다.",
+          "en": "Shh! She's coming."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "CRAZY",
+          "by": "LE SSERAFIM",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "LE SSERAFIM hush the room in their wild, dance-floor single.",
+          "citation": "https://music.bugs.co.kr/track/6259924"
+        },
+        {
+          "kind": "song",
+          "title": "Smart",
+          "by": "LE SSERAFIM",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "LE SSERAFIM tell critics to hush in their cool, confident track.",
+          "citation": "https://music.bugs.co.kr/track/6234137"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0041",
+      "hangul": "잘 가",
+      "romanization": "jal ga",
+      "meanings": [
+        "bye",
+        "take care (to someone leaving)"
+      ],
+      "pos": "expression",
+      "rank": 41,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 안녕히 가세요. Also 잘 가요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 이제 갈게.",
+          "en": "I'm heading off now."
+        },
+        {
+          "speaker": "B",
+          "ko": "그래, 잘 가!",
+          "en": "Okay, bye!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Like OOH-AHH",
+          "titleKo": "OOH-AHH하게",
+          "by": "TWICE",
+          "year": 2015,
+          "locator": "lyrics",
+          "context": "TWICE wave goodbye to boys who aren't what they're looking for.",
+          "citation": "https://music.bugs.co.kr/track/30025213"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0042",
+      "hangul": "바보야",
+      "romanization": "baboya",
+      "meanings": [
+        "you fool",
+        "silly"
+      ],
+      "pos": "expression",
+      "rank": 42,
+      "tags": [
+        "romance",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Usually affectionate teasing. Noun: 바보 (fool).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "또 우산 잃어버렸어.",
+          "en": "I lost my umbrella again."
+        },
+        {
+          "speaker": "B",
+          "ko": "바보야, 내 거 같이 쓰자.",
+          "en": "Silly, let's share mine."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "SIGNAL",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE call a clueless crush a fool for missing their signals.",
+          "citation": "https://music.bugs.co.kr/track/30653453"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0043",
+      "hangul": "소리 질러",
+      "romanization": "sori jilleo",
+      "meanings": [
+        "make some noise",
+        "scream"
+      ],
+      "pos": "expression",
+      "rank": 43,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Concert shout. Polite: 소리 질러 주세요!",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "콘서트 시작한다!",
+          "en": "The concert's starting!"
+        },
+        {
+          "speaker": "B",
+          "ko": "다 같이 소리 질러!",
+          "en": "Everyone, make some noise!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Dance The Night Away",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "TWICE's summer party song calls for everyone to make some noise.",
+          "citation": "https://music.bugs.co.kr/track/31139769"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0044",
+      "hangul": "상관없어",
+      "romanization": "sanggwaneopseo",
+      "meanings": [
+        "I don't mind",
+        "it doesn't matter"
+      ],
+      "pos": "expression",
+      "rank": 44,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 상관없어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "피자 아니면 치킨?",
+          "en": "Pizza or chicken?"
+        },
+        {
+          "speaker": "B",
+          "ko": "상관없어. 다 좋아.",
+          "en": "I don't mind. Either's fine."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "SET ME FREE",
+          "by": "TWICE",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "TWICE say nothing else matters as they chase what they feel.",
+          "citation": "https://music.bugs.co.kr/track/6192447"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0045",
+      "hangul": "신경 안 써",
+      "romanization": "singyeong an sseo",
+      "meanings": [
+        "I don't care",
+        "I'm not bothered"
+      ],
+      "pos": "expression",
+      "rank": 45,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 신경 안 써요. Don't worry about it: 신경 쓰지 마.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사람들이 다 쳐다봐.",
+          "en": "Everyone's staring."
+        },
+        {
+          "speaker": "B",
+          "ko": "신경 안 써. 가자.",
+          "en": "I don't care. Let's go."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Smart",
+          "by": "LE SSERAFIM",
+          "year": 2024,
+          "locator": "lyrics",
+          "context": "LE SSERAFIM brush off the noise around them.",
+          "citation": "https://music.bugs.co.kr/track/6234137"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0046",
+      "hangul": "내 말 믿어",
+      "romanization": "nae mal mideo",
+      "meanings": [
+        "trust me",
+        "believe what I say"
+      ],
+      "pos": "expression",
+      "rank": 46,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 제 말 믿으세요. Also 믿어 줘 (believe me).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "진짜 맛있어?",
+          "en": "Is it really good?"
+        },
+        {
+          "speaker": "B",
+          "ko": "내 말 믿어. 최고야.",
+          "en": "Trust me. It's the best."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ETA",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "NewJeans tell a friend to trust them about a boyfriend who isn't good enough.",
+          "citation": "https://music.bugs.co.kr/track/6208880"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0047",
+      "hangul": "내가 도와줄게",
+      "romanization": "naega dowajulge",
+      "meanings": [
+        "I'll help you"
+      ],
+      "pos": "expression",
+      "rank": 47,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 제가 도와드릴게요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 상자 너무 무거워.",
+          "en": "This box is too heavy."
+        },
+        {
+          "speaker": "B",
+          "ko": "내가 도와줄게.",
+          "en": "I'll help you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "ETA",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "NewJeans offer to help a friend see the truth in their fast-paced track.",
+          "citation": "https://music.bugs.co.kr/track/6208880"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0048",
+      "hangul": "내 손 놓지 마",
+      "romanization": "nae son nochi ma",
+      "meanings": [
+        "don't let go of my hand"
+      ],
+      "pos": "expression",
+      "rank": 48,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 제 손 놓지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사람이 너무 많아.",
+          "en": "There are so many people."
+        },
+        {
+          "speaker": "B",
+          "ko": "내 손 놓지 마.",
+          "en": "Don't let go of my hand."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "OMG",
+          "by": "NewJeans",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "NewJeans ask their love not to let go.",
+          "citation": "https://music.bugs.co.kr/track/6186207"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0049",
+      "hangul": "눈을 감아",
+      "romanization": "nuneul gama",
+      "meanings": [
+        "close your eyes"
+      ],
+      "pos": "expression",
+      "rank": 49,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 눈을 감으세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "선물 있어. 눈을 감아.",
+          "en": "I have a present. Close your eyes."
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어. 감았어!",
+          "en": "Okay. They're closed!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Hype Boy",
+          "by": "NewJeans",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "NewJeans ask someone to close their eyes and feel it in their breakout hit.",
+          "citation": "https://music.bugs.co.kr/track/6170217"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0050",
+      "hangul": "필요 없어",
+      "romanization": "piryo eopseo",
+      "meanings": [
+        "I don't need it",
+        "no need"
+      ],
+      "pos": "expression",
+      "rank": 50,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 필요 없어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "봉투 드릴까요?",
+          "en": "Would you like a bag?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니요, 필요 없어요.",
+          "en": "No, I don't need one."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "KNOCK KNOCK",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE say they don't need anyone else while waiting for the right person.",
+          "citation": "https://music.bugs.co.kr/track/30557790"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0051",
+      "hangul": "딱 한 번만",
+      "romanization": "ttak han beonman",
+      "meanings": [
+        "just once",
+        "just this once"
+      ],
+      "pos": "expression",
+      "rank": 51,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Pleading phrase: 딱 한 번만 봐줘 (let it slide just once).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "게임 그만해.",
+          "en": "Stop playing games."
+        },
+        {
+          "speaker": "B",
+          "ko": "딱 한 번만 더!",
+          "en": "Just one more time!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "I CAN'T STOP ME",
+          "by": "TWICE",
+          "year": 2020,
+          "locator": "lyrics",
+          "context": "TWICE plead for one more chance as they struggle to stop themselves.",
+          "citation": "https://music.bugs.co.kr/track/32049967"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0052",
+      "hangul": "숨지 마",
+      "romanization": "sumji ma",
+      "meanings": [
+        "don't hide"
+      ],
+      "pos": "expression",
+      "rank": 52,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 숨지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사진 찍자!",
+          "en": "Let's take a photo!"
+        },
+        {
+          "speaker": "B",
+          "ko": "싫어, 나 못생겼어.",
+          "en": "No, I look ugly."
+        },
+        {
+          "speaker": "A",
+          "ko": "숨지 마. 예뻐!",
+          "en": "Don't hide. You look pretty!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Life Goes On",
+          "by": "BTS",
+          "year": 2020,
+          "locator": "lyrics",
+          "context": "BTS encourage listeners not to hide away during hard times.",
+          "citation": "https://music.bugs.co.kr/track/32075135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0053",
+      "hangul": "외로워 마",
+      "romanization": "oerowo ma",
+      "meanings": [
+        "don't be lonely"
+      ],
+      "pos": "expression",
+      "rank": 53,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Standard form: 외로워하지 마.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "혼자 이사 가서 좀 쓸쓸해.",
+          "en": "Moving out alone is a bit lonely."
+        },
+        {
+          "speaker": "B",
+          "ko": "외로워 마. 자주 놀러 갈게.",
+          "en": "Don't be lonely. I'll visit often."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Mikrokosmos",
+          "titleKo": "소우주",
+          "by": "BTS",
+          "year": 2019,
+          "locator": "lyrics",
+          "context": "BTS's starry anthem tells each listener they're not alone in the dark.",
+          "citation": "https://music.bugs.co.kr/track/31548669"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0054",
+      "hangul": "만나러 갈게",
+      "romanization": "mannareo galge",
+      "meanings": [
+        "I'll come to see you"
+      ],
+      "pos": "expression",
+      "rank": 54,
+      "tags": [
+        "romance",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 만나러 갈게요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "보고 싶어.",
+          "en": "I miss you."
+        },
+        {
+          "speaker": "B",
+          "ko": "주말에 만나러 갈게.",
+          "en": "I'll come to see you at the weekend."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Spring Day",
+          "titleKo": "봄날",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "BTS promise to go and meet the friend they miss once winter is over.",
+          "citation": "https://music.bugs.co.kr/track/30547148"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0055",
+      "hangul": "착각하지 마",
+      "romanization": "chakgakaji ma",
+      "meanings": [
+        "don't get the wrong idea"
+      ],
+      "pos": "expression",
+      "rank": 55,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 착각하지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 좋아해서 기다렸지?",
+          "en": "You waited because you like me, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "착각하지 마. 버스 기다렸어.",
+          "en": "Don't get the wrong idea. I was waiting for the bus."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Boy In Luv",
+          "titleKo": "상남자",
+          "by": "BTS",
+          "year": 2014,
+          "locator": "lyrics",
+          "context": "BTS's swaggering narrator warns a rival not to misunderstand.",
+          "citation": "https://music.bugs.co.kr/track/3387398"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0056",
+      "hangul": "내버려 둬",
+      "romanization": "naebeoryeo dwo",
+      "meanings": [
+        "leave me alone",
+        "let it be"
+      ],
+      "pos": "expression",
+      "rank": 56,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 내버려 두세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "방 좀 치워.",
+          "en": "Clean your room a bit."
+        },
+        {
+          "speaker": "B",
+          "ko": "내버려 둬. 내 방이야.",
+          "en": "Leave it. It's my room."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Go Go",
+          "titleKo": "고민보다 Go",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "BTS ask to be left alone to enjoy the moment instead of worrying.",
+          "citation": "https://music.bugs.co.kr/track/30785791"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0057",
+      "hangul": "가슴이 뛰어",
+      "romanization": "gaseumi ttwieo",
+      "meanings": [
+        "my heart is racing"
+      ],
+      "pos": "expression",
+      "rank": 57,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 가슴이 뛰어요. Also 심장이 뛰어.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 얼굴이 빨개?",
+          "en": "Why is your face red?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그 사람 봐서 가슴이 뛰어.",
+          "en": "My heart's racing because I saw him."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "What is Love?",
+          "by": "TWICE",
+          "year": 2018,
+          "locator": "lyrics",
+          "context": "TWICE describe their heart racing at the thought of love.",
+          "citation": "https://music.bugs.co.kr/track/31022636"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0058",
+      "hangul": "지금이야",
+      "romanization": "jigeumiya",
+      "meanings": [
+        "it's now",
+        "now's the time"
+      ],
+      "pos": "expression",
+      "rank": 58,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 지금이에요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "언제 말할까?",
+          "en": "When should I say it?"
+        },
+        {
+          "speaker": "B",
+          "ko": "지금이야! 빨리!",
+          "en": "Now's the time! Quick!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Heart Shaker",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE decide the moment to confess is right now.",
+          "citation": "https://music.bugs.co.kr/track/30877135"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0059",
+      "hangul": "안아 줘",
+      "romanization": "ana jwo",
+      "meanings": [
+        "hug me",
+        "hold me"
+      ],
+      "pos": "expression",
+      "rank": 59,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 안아 주세요. Dictionary form: 안다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 너무 힘들었어.",
+          "en": "Today was so hard."
+        },
+        {
+          "speaker": "B",
+          "ko": "이리 와. 내가 안아 줄게.",
+          "en": "Come here. I'll give you a hug."
+        },
+        {
+          "speaker": "A",
+          "ko": "응, 안아 줘.",
+          "en": "Yes, hold me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "SET ME FREE",
+          "by": "TWICE",
+          "year": 2023,
+          "locator": "lyrics",
+          "context": "TWICE ask to be held as they break free.",
+          "citation": "https://music.bugs.co.kr/track/6192447"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0060",
+      "hangul": "조금만 더",
+      "romanization": "jogeumman deo",
+      "meanings": [
+        "just a little more"
+      ],
+      "pos": "expression",
+      "rank": 60,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 조금만 더요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 자자.",
+          "en": "Let's sleep now."
+        },
+        {
+          "speaker": "B",
+          "ko": "조금만 더 볼래.",
+          "en": "I want to watch just a little more."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LIKEY",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "TWICE ask someone to come just a little closer.",
+          "citation": "https://music.bugs.co.kr/track/30826585"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0061",
+      "hangul": "연락할게",
+      "romanization": "yeollakalge",
+      "meanings": [
+        "I'll get in touch",
+        "I'll text you"
+      ],
+      "pos": "expression",
+      "rank": 61,
+      "tags": [
+        "friendship",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 연락할게요 / 연락드릴게요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "도착하면 말해 줘.",
+          "en": "Tell me when you arrive."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 연락할게.",
+          "en": "Yeah, I'll text you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "CHEER UP",
+          "by": "TWICE",
+          "year": 2016,
+          "locator": "lyrics",
+          "context": "TWICE's narrator tells a persistent boy she'll reply to him later.",
+          "citation": "https://music.bugs.co.kr/track/30233414"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0062",
+      "hangul": "힘을 내",
+      "romanization": "himeul nae",
+      "meanings": [
+        "cheer up",
+        "keep your strength up"
+      ],
+      "pos": "expression",
+      "rank": 62,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short form: 힘내! Polite: 힘내세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "또 떨어졌어.",
+          "en": "I failed again."
+        },
+        {
+          "speaker": "B",
+          "ko": "힘을 내. 다음엔 될 거야.",
+          "en": "Cheer up. Next time it'll work."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "CHEER UP",
+          "by": "TWICE",
+          "year": 2016,
+          "locator": "lyrics",
+          "context": "TWICE's famous hook cheers on a nervous suitor.",
+          "citation": "https://music.bugs.co.kr/track/30233414"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0063",
+      "hangul": "날이 좋아서",
+      "romanization": "nari joaseo",
+      "meanings": [
+        "because the weather was nice"
+      ],
+      "pos": "expression",
+      "rank": 63,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "날 = day, weather. 날씨가 좋아서 means the same in everyday speech.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 갑자기 산책해?",
+          "en": "Why the sudden walk?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그냥, 날이 좋아서.",
+          "en": "Just because the weather's nice."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Guardian: The Lonely and Great God",
+          "titleKo": "도깨비",
+          "by": "tvN",
+          "year": 2016,
+          "locator": "E6",
+          "context": "Gong Yoo's goblin tells Eun-tak that every day with her was good, whatever the weather; it became one of the drama's best-known lines.",
+          "citation": "https://www.tenasia.co.kr/article/2016122630514"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0064",
+      "hangul": "깐부",
+      "romanization": "kkanbu",
+      "meanings": [
+        "buddy",
+        "partner (same team)"
+      ],
+      "pos": "expression",
+      "rank": 64,
+      "tags": [
+        "friendship",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Childhood slang for a teammate who shares marbles or ddakji. Not in the standard dictionary.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 같은 팀 하자.",
+          "en": "Let's be on the same team."
+        },
+        {
+          "speaker": "B",
+          "ko": "좋아, 우리는 깐부야.",
+          "en": "Great, we're buddies."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Squid Game",
+          "titleKo": "오징어 게임",
+          "by": "Netflix",
+          "year": 2021,
+          "locator": "series",
+          "context": "Player 001 offers to become Gi-hun's partner during a childhood game, earning the actor the nickname 'Gganbu Grandpa'.",
+          "citation": "https://www.vogue.co.kr/2021/10/12/%ea%b9%90%eb%b6%80-%ed%95%a0%ec%95%84%eb%b2%84%ec%a7%80-%ec%98%a4%ec%98%81%ec%88%98-sns-%ec%8b%9c%ec%9e%91/"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0065",
+      "hangul": "멋지다!",
+      "romanization": "meotjida",
+      "meanings": [
+        "how cool!",
+        "awesome!"
+      ],
+      "pos": "expression",
+      "rank": 65,
+      "tags": [
+        "exclamation",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Plain form used as an exclamation. Polite: 멋져요! Often sarcastic in the meme '멋지다 ○○아'.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 마라톤 완주했어!",
+          "en": "I finished the marathon!"
+        },
+        {
+          "speaker": "B",
+          "ko": "와, 멋지다!",
+          "en": "Wow, how cool!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Glory",
+          "titleKo": "더 글로리",
+          "by": "Netflix",
+          "year": 2022,
+          "locator": "series",
+          "context": "Song Hye-kyo's Dong-eun cheers her tormentor with mock praise; the line became a nationwide meme.",
+          "citation": "https://v.daum.net/v/20230326192118444"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0066",
+      "hangul": "이게 최선입니까?",
+      "romanization": "ige choeseonimnikka",
+      "meanings": [
+        "is this the best you can do?"
+      ],
+      "pos": "expression",
+      "rank": 66,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Formal -ㅂ니까 question. Casual: 이게 최선이야?",
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "보고서 다 했습니다.",
+          "en": "I've finished the report."
+        },
+        {
+          "speaker": "B",
+          "ko": "이게 최선입니까?",
+          "en": "Is this the best you can do?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Secret Garden",
+          "titleKo": "시크릿 가든",
+          "by": "SBS",
+          "year": 2010,
+          "locator": "series",
+          "context": "Hyun Bin's demanding CEO Kim Joo-won keeps throwing this question at his executives; it became his catchphrase.",
+          "citation": "https://www.xportsnews.com/article/1388887"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0067",
+      "hangul": "폭싹 속았수다",
+      "romanization": "pokssak sogatsuda",
+      "meanings": [
+        "thank you for all your hard work (Jeju dialect)"
+      ],
+      "pos": "expression",
+      "rank": 67,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Jeju dialect. Standard Korean: 정말 수고 많으셨습니다.",
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "드디어 이사 끝났다.",
+          "en": "The move is finally done."
+        },
+        {
+          "speaker": "B",
+          "ko": "폭싹 속았수다!",
+          "en": "You've worked so hard!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "When Life Gives You Tangerines",
+          "titleKo": "폭싹 속았수다",
+          "by": "Netflix",
+          "year": 2025,
+          "locator": "title",
+          "context": "The series title is Jeju dialect for 'you've really worked hard', a tribute to a lifetime of effort.",
+          "citation": "https://www.hankyung.com/article/2025041152041"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0068",
+      "hangul": "고백할까요?",
+      "romanization": "gobaekalkkayo",
+      "meanings": [
+        "shall I confess?"
+      ],
+      "pos": "expression",
+      "rank": 68,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From 고백하다 (to confess one's feelings). Casual: 고백할까?",
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람 좋아하잖아.",
+          "en": "You like him, don't you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응… 고백할까요?",
+          "en": "Yeah… should I confess?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Descendants of the Sun",
+          "titleKo": "태양의 후예",
+          "by": "KBS2",
+          "year": 2016,
+          "locator": "E5",
+          "context": "Captain Yoo asks Dr Kang whether he should apologise or confess before leaving, a blunt confession that was widely parodied.",
+          "citation": "https://www.osen.co.kr/article/G1110392450"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0069",
+      "hangul": "오늘은 살아봐요",
+      "romanization": "oneureun sarabwayo",
+      "meanings": [
+        "just live for today"
+      ],
+      "pos": "expression",
+      "rank": 69,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Standard spelling: 살아 봐요. Casual: 오늘은 살아 봐.",
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 너무 지쳤어요.",
+          "en": "I've been so worn out lately."
+        },
+        {
+          "speaker": "B",
+          "ko": "오늘은 살아봐요. 같이 있을게요.",
+          "en": "Just get through today. I'll be with you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Lovely Runner",
+          "titleKo": "선재 업고 튀어",
+          "by": "tvN",
+          "year": 2024,
+          "locator": "series",
+          "context": "Seon-jae's gentle words to Im-sol, which lead actress Kim Hye-yoon named her favourite line of the drama.",
+          "citation": "https://sports.khan.co.kr/article/202405281433003"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0070",
+      "hangul": "무야호",
+      "romanization": "muyaho",
+      "meanings": [
+        "woo-hoo! (meme)"
+      ],
+      "pos": "expression",
+      "rank": 70,
+      "tags": [
+        "exclamation",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "A mispronunciation of 무한도전 that became a meme for over-the-top excitement.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 팀이 이겼어!",
+          "en": "Our team won!"
+        },
+        {
+          "speaker": "B",
+          "ko": "무야호!",
+          "en": "Woo-hoo!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "show",
+          "title": "Infinite Challenge",
+          "titleKo": "무한도전",
+          "by": "MBC",
+          "year": 2010,
+          "locator": "E195",
+          "context": "A Korean resident in Alaska mangled the show's name while cheering; a decade later the clip became a viral meme.",
+          "citation": "https://www.khan.co.kr/article/202103141850001"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0071",
+      "hangul": "화이팅",
+      "romanization": "hwaiting",
+      "meanings": [
+        "you can do it!",
+        "go for it!"
+      ],
+      "pos": "expression",
+      "rank": 71,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Also spelt 파이팅. Used to cheer someone on.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 시험이야.",
+          "en": "My exam is tomorrow."
+        },
+        {
+          "speaker": "B",
+          "ko": "화이팅! 잘할 거야.",
+          "en": "You can do it! You'll do well."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0072",
+      "hangul": "대박",
+      "romanization": "daebak",
+      "meanings": [
+        "awesome",
+        "no way!"
+      ],
+      "pos": "expression",
+      "rank": 72,
+      "tags": [
+        "exclamation",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Can be positive or shocked. 대박이다 = that's amazing.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "콘서트 표 구했어!",
+          "en": "I got concert tickets!"
+        },
+        {
+          "speaker": "B",
+          "ko": "대박! 어떻게?",
+          "en": "No way! How?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0073",
+      "hangul": "아이고",
+      "romanization": "aigo",
+      "meanings": [
+        "oh my",
+        "oh dear"
+      ],
+      "pos": "expression",
+      "rank": 73,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Used for surprise, pain, pity or tiredness, especially by older speakers.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "아이고, 허리야.",
+          "en": "Oh dear, my back."
+        },
+        {
+          "speaker": "B",
+          "ko": "할머니, 앉으세요.",
+          "en": "Grandma, sit down."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0074",
+      "hangul": "헐",
+      "romanization": "heol",
+      "meanings": [
+        "OMG",
+        "what?!"
+      ],
+      "pos": "expression",
+      "rank": 74,
+      "tags": [
+        "exclamation",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Internet slang for shock. Not for formal situations.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "민수 결혼한대.",
+          "en": "Apparently Minsu is getting married."
+        },
+        {
+          "speaker": "B",
+          "ko": "헐, 진짜?",
+          "en": "OMG, really?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0075",
+      "hangul": "잘 자",
+      "romanization": "jal ja",
+      "meanings": [
+        "good night",
+        "sleep well"
+      ],
+      "pos": "expression",
+      "rank": 75,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 잘 자요. Formal: 안녕히 주무세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 이제 잘게.",
+          "en": "I'm going to sleep now."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 잘 자!",
+          "en": "Okay, good night!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0076",
+      "hangul": "가지 마",
+      "romanization": "gaji ma",
+      "meanings": [
+        "don't go"
+      ],
+      "pos": "expression",
+      "rank": 76,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 가지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 가야 돼.",
+          "en": "I have to go now."
+        },
+        {
+          "speaker": "B",
+          "ko": "가지 마. 조금만 더 있어.",
+          "en": "Don't go. Stay a little longer."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0077",
+      "hangul": "약속해",
+      "romanization": "yaksokae",
+      "meanings": [
+        "I promise",
+        "promise me"
+      ],
+      "pos": "expression",
+      "rank": 77,
+      "tags": [
+        "friendship",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 약속해요. Pinky promise: 새끼손가락 걸고 약속해.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다음 주에 꼭 와.",
+          "en": "Make sure you come next week."
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어, 약속해.",
+          "en": "Okay, I promise."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0078",
+      "hangul": "믿어 줘",
+      "romanization": "mideo jwo",
+      "meanings": [
+        "believe me",
+        "trust me"
+      ],
+      "pos": "expression",
+      "rank": 78,
+      "tags": [
+        "conflict",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 믿어 주세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "거짓말이지?",
+          "en": "That's a lie, isn't it?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니야, 믿어 줘.",
+          "en": "No, believe me."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0079",
+      "hangul": "나만 믿어",
+      "romanization": "naman mideo",
+      "meanings": [
+        "just trust me",
+        "leave it to me"
+      ],
+      "pos": "expression",
+      "rank": 79,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 저만 믿으세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "길 알아?",
+          "en": "Do you know the way?"
+        },
+        {
+          "speaker": "B",
+          "ko": "당연하지. 나만 믿어.",
+          "en": "Of course. Just trust me."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0080",
+      "hangul": "걱정 마",
+      "romanization": "geokjeong ma",
+      "meanings": [
+        "don't worry"
+      ],
+      "pos": "expression",
+      "rank": 80,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Longer: 걱정하지 마. Polite: 걱정 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "비 오는데 우산 없어.",
+          "en": "It's raining and I have no umbrella."
+        },
+        {
+          "speaker": "B",
+          "ko": "걱정 마. 내 거 써.",
+          "en": "Don't worry. Use mine."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0081",
+      "hangul": "정신 차려",
+      "romanization": "jeongsin charyeo",
+      "meanings": [
+        "pull yourself together",
+        "snap out of it"
+      ],
+      "pos": "expression",
+      "rank": 81,
+      "tags": [
+        "conflict",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 정신 차리세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람한테 또 연락할까?",
+          "en": "Should I contact him again?"
+        },
+        {
+          "speaker": "B",
+          "ko": "정신 차려! 이제 그만해.",
+          "en": "Snap out of it! Stop now."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0082",
+      "hangul": "밥 먹었어?",
+      "romanization": "bap meogeosseo",
+      "meanings": [
+        "have you eaten?",
+        "how are you?"
+      ],
+      "pos": "expression",
+      "rank": 82,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "A caring greeting as much as a question. Polite: 식사하셨어요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "밥 먹었어?",
+          "en": "Have you eaten?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아직. 같이 먹자.",
+          "en": "Not yet. Let's eat together."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0083",
+      "hangul": "왜 이래?",
+      "romanization": "wae irae",
+      "meanings": [
+        "why are you acting like this?",
+        "what's wrong with you?"
+      ],
+      "pos": "expression",
+      "rank": 83,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 왜 이래요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "말 걸지 마.",
+          "en": "Don't talk to me."
+        },
+        {
+          "speaker": "B",
+          "ko": "갑자기 왜 이래?",
+          "en": "Why are you suddenly like this?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0084",
+      "hangul": "내 말 들어",
+      "romanization": "nae mal deureo",
+      "meanings": [
+        "listen to me"
+      ],
+      "pos": "expression",
+      "rank": 84,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 제 말 들어 보세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그냥 갈 거야.",
+          "en": "I'm just going."
+        },
+        {
+          "speaker": "B",
+          "ko": "잠깐, 내 말 들어.",
+          "en": "Wait, listen to me."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0085",
+      "hangul": "어디 가?",
+      "romanization": "eodi ga",
+      "meanings": [
+        "where are you going?"
+      ],
+      "pos": "expression",
+      "rank": 85,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 어디 가요? / 어디 가세요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어디 가?",
+          "en": "Where are you going?"
+        },
+        {
+          "speaker": "B",
+          "ko": "도서관. 같이 갈래?",
+          "en": "The library. Want to come?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0086",
+      "hangul": "보고 싶었어",
+      "romanization": "bogo sipeosseo",
+      "meanings": [
+        "I missed you"
+      ],
+      "pos": "expression",
+      "rank": 86,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 보고 싶었어요. Present: 보고 싶어.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 돌아왔어!",
+          "en": "I'm back!"
+        },
+        {
+          "speaker": "B",
+          "ko": "진짜 보고 싶었어!",
+          "en": "I really missed you!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0087",
+      "hangul": "우리 헤어지자",
+      "romanization": "uri heeojija",
+      "meanings": [
+        "let's break up"
+      ],
+      "pos": "expression",
+      "rank": 87,
+      "tags": [
+        "romance",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 우리 헤어져요. Dictionary form: 헤어지다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "할 말이 있어.",
+          "en": "I have something to say."
+        },
+        {
+          "speaker": "B",
+          "ko": "뭔데?",
+          "en": "What is it?"
+        },
+        {
+          "speaker": "A",
+          "ko": "우리 헤어지자.",
+          "en": "Let's break up."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0088",
+      "hangul": "첫눈에 반했어",
+      "romanization": "cheonnune banhaesseo",
+      "meanings": [
+        "I fell for you at first sight"
+      ],
+      "pos": "expression",
+      "rank": 88,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 첫눈에 반했어요. 반하다 = to fall for.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "언제부터 나 좋아했어?",
+          "en": "Since when did you like me?"
+        },
+        {
+          "speaker": "B",
+          "ko": "처음부터. 첫눈에 반했어.",
+          "en": "From the start. It was love at first sight."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0089",
+      "hangul": "사랑에 빠졌어",
+      "romanization": "sarange ppajyeosseo",
+      "meanings": [
+        "I fell in love"
+      ],
+      "pos": "expression",
+      "rank": 89,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 사랑에 빠졌어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 왜 이렇게 웃어?",
+          "en": "Why are you smiling so much lately?"
+        },
+        {
+          "speaker": "B",
+          "ko": "나 사랑에 빠졌어.",
+          "en": "I've fallen in love."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0090",
+      "hangul": "날 떠나지 마",
+      "romanization": "nal tteonaji ma",
+      "meanings": [
+        "don't leave me"
+      ],
+      "pos": "expression",
+      "rank": 90,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 저를 떠나지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 유학 가.",
+          "en": "I'm going to study abroad."
+        },
+        {
+          "speaker": "B",
+          "ko": "날 떠나지 마.",
+          "en": "Don't leave me."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0091",
+      "hangul": "내 거야",
+      "romanization": "nae geoya",
+      "meanings": [
+        "it's mine",
+        "you're mine"
+      ],
+      "pos": "expression",
+      "rank": 91,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 제 거예요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 과자 누구 거야?",
+          "en": "Whose snack is this?"
+        },
+        {
+          "speaker": "B",
+          "ko": "내 거야! 먹지 마.",
+          "en": "It's mine! Don't eat it."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0092",
+      "hangul": "영원히",
+      "romanization": "yeongwonhi",
+      "meanings": [
+        "forever"
+      ],
+      "pos": "expression",
+      "rank": 92,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Adverb. Forever together: 영원히 함께.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 계속 친구지?",
+          "en": "We'll always be friends, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "당연하지. 영원히!",
+          "en": "Of course. Forever!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0093",
+      "hangul": "거짓말",
+      "romanization": "geojitmal",
+      "meanings": [
+        "lie",
+        "liar!",
+        "no way!"
+      ],
+      "pos": "expression",
+      "rank": 93,
+      "tags": [
+        "conflict",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "As an exclamation: 거짓말! (you're lying!). To lie: 거짓말하다.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 어제 연예인 봤어.",
+          "en": "I saw a celebrity yesterday."
+        },
+        {
+          "speaker": "B",
+          "ko": "거짓말! 누구?",
+          "en": "No way! Who?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0094",
+      "hangul": "잘했어",
+      "romanization": "jalhaesseo",
+      "meanings": [
+        "well done",
+        "good job"
+      ],
+      "pos": "expression",
+      "rank": 94,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 잘했어요. Honorific: 잘하셨어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "발표 끝났어.",
+          "en": "My presentation's done."
+        },
+        {
+          "speaker": "B",
+          "ko": "잘했어! 멋있었어.",
+          "en": "Well done! You were great."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0095",
+      "hangul": "수고했어",
+      "romanization": "sugohaesseo",
+      "meanings": [
+        "good work",
+        "you've worked hard"
+      ],
+      "pos": "expression",
+      "rank": 95,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 수고했어요. Formal: 수고하셨습니다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "드디어 다 끝났다!",
+          "en": "It's finally all done!"
+        },
+        {
+          "speaker": "B",
+          "ko": "오늘 수고했어.",
+          "en": "Good work today."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0096",
+      "hangul": "오빠",
+      "romanization": "oppa",
+      "meanings": [
+        "older brother (said by a female)",
+        "affectionate term for an older man"
+      ],
+      "pos": "expression",
+      "rank": 96,
+      "tags": [
+        "address",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Used by women for older brothers, older male friends or a boyfriend. Men say 형.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오빠, 어디야?",
+          "en": "Oppa, where are you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "거의 다 왔어.",
+          "en": "I'm almost there."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0097",
+      "hangul": "언니",
+      "romanization": "eonni",
+      "meanings": [
+        "older sister (said by a female)",
+        "older female friend"
+      ],
+      "pos": "expression",
+      "rank": 97,
+      "tags": [
+        "address",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Used by women. Men say 누나.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "언니, 이거 같이 먹어요.",
+          "en": "Unnie, let's share this."
+        },
+        {
+          "speaker": "B",
+          "ko": "고마워!",
+          "en": "Thanks!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0098",
+      "hangul": "자기야",
+      "romanization": "jagiya",
+      "meanings": [
+        "honey",
+        "babe"
+      ],
+      "pos": "expression",
+      "rank": 98,
+      "tags": [
+        "address",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Between couples. Also 여보 (between spouses).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "자기야, 저녁 뭐 먹을까?",
+          "en": "Honey, what shall we have for dinner?"
+        },
+        {
+          "speaker": "B",
+          "ko": "떡볶이 어때?",
+          "en": "How about tteokbokki?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0099",
+      "hangul": "힘내",
+      "romanization": "himnae",
+      "meanings": [
+        "cheer up",
+        "hang in there"
+      ],
+      "pos": "expression",
+      "rank": 99,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 힘내세요. Longer: 힘을 내.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "일이 너무 많아.",
+          "en": "I have too much work."
+        },
+        {
+          "speaker": "B",
+          "ko": "힘내! 커피 사 줄게.",
+          "en": "Hang in there! I'll buy you a coffee."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0100",
+      "hangul": "울지 마",
+      "romanization": "ulji ma",
+      "meanings": [
+        "don't cry"
+      ],
+      "pos": "expression",
+      "rank": 100,
+      "tags": [
+        "encouragement",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 울지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "강아지가 아파.",
+          "en": "My puppy is sick."
+        },
+        {
+          "speaker": "B",
+          "ko": "울지 마. 괜찮을 거야.",
+          "en": "Don't cry. It'll be okay."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0101",
+      "hangul": "아프지 마",
+      "romanization": "apeuji ma",
+      "meanings": [
+        "don't get sick",
+        "take care of yourself"
+      ],
+      "pos": "expression",
+      "rank": 101,
+      "tags": [
+        "family",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "A caring phrase. Polite: 아프지 마세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "감기 걸렸어.",
+          "en": "I've caught a cold."
+        },
+        {
+          "speaker": "B",
+          "ko": "약 먹어. 아프지 마.",
+          "en": "Take some medicine. Don't get sick."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0102",
+      "hangul": "짜증 나",
+      "romanization": "jjajeung na",
+      "meanings": [
+        "it's so annoying",
+        "I'm irritated"
+      ],
+      "pos": "expression",
+      "rank": 102,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 짜증 나요. Spelt 짜증나 informally.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "버스 또 놓쳤어. 짜증 나!",
+          "en": "I missed the bus again. So annoying!"
+        },
+        {
+          "speaker": "B",
+          "ko": "택시 타자.",
+          "en": "Let's take a taxi."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0103",
+      "hangul": "오랜만이야",
+      "romanization": "oraenmaniya",
+      "meanings": [
+        "long time no see"
+      ],
+      "pos": "expression",
+      "rank": 103,
+      "tags": [
+        "friendship",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 오랜만이에요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어? 수진아!",
+          "en": "Oh? Sujin!"
+        },
+        {
+          "speaker": "B",
+          "ko": "와, 오랜만이야!",
+          "en": "Wow, long time no see!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0104",
+      "hangul": "잘 지냈어?",
+      "romanization": "jal jinaesseo",
+      "meanings": [
+        "how have you been?"
+      ],
+      "pos": "expression",
+      "rank": 104,
+      "tags": [
+        "friendship",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 잘 지냈어요? Reply: 응, 잘 지냈어.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "잘 지냈어?",
+          "en": "How have you been?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 너는?",
+          "en": "Good, you?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0105",
+      "hangul": "제발",
+      "romanization": "jebal",
+      "meanings": [
+        "please (begging)"
+      ],
+      "pos": "expression",
+      "rank": 105,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Stronger than 좀. Please, please: 제발요.",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "한 번만 도와줘. 제발!",
+          "en": "Help me just once. Please!"
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어, 알았어.",
+          "en": "Okay, okay."
+        }
+      ]
+    }
+  ]
+}
