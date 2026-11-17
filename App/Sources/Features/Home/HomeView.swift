@@ -107,9 +107,10 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 24)
             }
-            // Paused while the session cover is up: a fullScreenCover keeps Home alive, and its
-            // TimelineView kept drawing at 30 Hz underneath (R6-7a, measured). Resumes on dismiss.
-            .background { AuroraBackground(colors: [Theme.indigo, Theme.pink], animated: launch == nil) }
+            // Held while the session cover is up: a fullScreenCover keeps Home alive, and its
+            // TimelineView kept drawing at 30 Hz underneath (R6-7a, measured). Resumes on dismiss
+            // from the same frame; also holds while the deck list scrolls.
+            .auroraBackground(colors: [Theme.indigo, Theme.pink], running: launch == nil)
             .navigationTitle("Practice")
             .safeAreaInset(edge: .top, spacing: 0) {
                 if env.persistenceWarning != nil { persistenceBanner }

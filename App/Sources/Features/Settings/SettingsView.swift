@@ -190,7 +190,7 @@ struct SettingsView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background { AuroraBackground(colors: [Theme.violet, Theme.teal], intensity: 0.6) }
+            .auroraBackground(colors: [Theme.violet, Theme.teal], intensity: 0.6)
             .animation(Theme.spring, value: exportURLs)
             .navigationTitle("Settings")
             .onChange(of: env.dataVersion) { exportURLs = [] }

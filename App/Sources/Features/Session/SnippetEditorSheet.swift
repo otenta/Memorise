@@ -37,7 +37,7 @@ struct SnippetEditorSheet: View {
                 .padding(20)
             }
             .scrollDismissesKeyboard(.interactively)
-            .background { AuroraBackground(colors: [Theme.mint, Theme.teal], intensity: 0.55) }
+            .auroraBackground(colors: [Theme.mint, Theme.teal], intensity: 0.55)
             .navigationTitle(existing == nil ? "New snippet" : "My snippet")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

@@ -85,7 +85,7 @@ private struct SetupForm: View {
 
         }
         .scrollContentBackground(.hidden)
-        .background { AuroraBackground(colors: deck.subject.colors, intensity: 0.45) }
+        .auroraBackground(colors: deck.subject.colors, intensity: 0.45)
         .tint(deck.subject.accent)
     }
 }

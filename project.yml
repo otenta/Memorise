@@ -36,6 +36,8 @@ targets:
       path: App/Info.plist
       properties:
         CFBundleDisplayName: Memorise
+        # ProMotion: let SwiftUI animations, TimelineView and Canvas run up to 120 Hz on iPhone.
+        CADisableMinimumFrameDurationOnPhone: true
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         ITSAppUsesNonExemptEncryption: false

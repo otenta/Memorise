@@ -91,7 +91,7 @@ struct SummaryView: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .background { AuroraBackground(colors: colors, intensity: 0.7) }
+        .auroraBackground(colors: colors, intensity: 0.7)
         .navigationTitle(summary.status == .abandoned ? "Session ended" : "Summary")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: summary.sessionID) { buildLabels() }

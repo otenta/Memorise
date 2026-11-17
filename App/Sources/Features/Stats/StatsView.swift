@@ -75,7 +75,7 @@ struct StatsView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .background { AuroraBackground(colors: deck?.subject.colors ?? Subject.music.colors, intensity: 0.6) }
+            .auroraBackground(colors: deck?.subject.colors ?? Subject.music.colors, intensity: 0.6)
             .animation(Theme.softSpring, value: deck?.id)
             .navigationTitle("Stats")
             .navigationDestination(for: SessionRecord.self) { s in

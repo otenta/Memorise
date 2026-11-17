@@ -52,47 +52,116 @@ extension Subject {
 // MARK: - Aurora background
 
 /// Slowly drifting soft colour field behind content.
-/// Static (frame `t = 0`) when Reduce Motion is on, when `animated` is false (sessions, R3-2),
-/// or while the scene isn't active — so it never redraws at 30 Hz in the background.
+/// Static (frame `t = 0`) when Reduce Motion is on or `animated` is false (sessions, R3-2).
+/// Holds its current frame (no jump on resume) while `running` is false — scrolling, a covering
+/// session — or while the scene isn't active, so it never redraws when nobody benefits.
+/// Every aurora frame forces the glass materials above it to re-blur their backdrop, so pausing
+/// during scrolls keeps scroll frames inside the 8 ms ProMotion budget.
+///
+/// Performance: the field is pure blur, so it is drawn off the main thread into a bitmap
+/// `downscale`× smaller (at 1× scale) and stretched to fill. Bilinear upscaling of a blurred
+/// field is visually identical, but the per-frame blur touches ~140× fewer pixels than a
+/// full-resolution 3× canvas, which keeps scrolling and springs at full ProMotion rate.
 struct AuroraBackground: View {
     var colors: [Color] = Subject.music.colors
     var intensity: Double = 1
     /// `false` freezes the field on its rest frame (used in sessions to keep the GPU free for the prompt and mic).
     var animated: Bool = true
+    /// `false` pauses on the current frame; resuming continues smoothly from it.
+    var running: Bool = true
+
+    @State private var pausedAt: Date?
+    /// Total time spent paused, subtracted from the clock so the drift never jumps.
+    @State private var pausedTotal: TimeInterval = 0
 
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
 
+    private static let downscale: CGFloat = 4
+
     private var isStatic: Bool { reduceMotion || !animated }
+    private var isHeld: Bool { !running || scenePhase != .active }
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1 / 30, paused: isStatic || scenePhase != .active)) { ctx in
-            let t = isStatic ? 0 : ctx.date.timeIntervalSinceReferenceDate
-            Canvas { gc, size in
-                let base = scheme == .dark ? 0.32 : 0.22
-                let blobs: [(Color, Double, Double, Double)] = [
-                    (colors[0], 0.20, 0.15, 0.13),
-                    (colors[1 % colors.count], 0.85, 0.30, 0.09),
-                    (colors[0].opacity(0.8), 0.50, 0.90, 0.07),
-                ]
-                gc.addFilter(.blur(radius: min(size.width, size.height) * 0.18))
-                for (i, (c, bx, by, speed)) in blobs.enumerated() {
-                    let phase = t * speed + Double(i) * 2.1
-                    let x = size.width * (bx + 0.12 * sin(phase))
-                    let y = size.height * (by + 0.08 * cos(phase * 1.3))
-                    let r = max(size.width, size.height) * (0.42 + 0.05 * sin(phase * 0.7))
-                    gc.fill(
-                        Path(ellipseIn: CGRect(x: x - r / 2, y: y - r / 2, width: r, height: r)),
-                        with: .color(c.opacity(base * intensity))
-                    )
+        GeometryReader { geo in
+            let k = Self.downscale
+            TimelineView(.animation(minimumInterval: 1 / 30, paused: isStatic || isHeld)) { ctx in
+                let t = isStatic ? 0 : (pausedAt ?? ctx.date).timeIntervalSinceReferenceDate - pausedTotal
+                Canvas(rendersAsynchronously: true) { gc, size in
+                    draw(in: &gc, size: size, t: t)
                 }
+                .frame(width: max(1, geo.size.width / k), height: max(1, geo.size.height / k))
+                .environment(\.displayScale, 1)
+                .scaleEffect(k, anchor: .topLeading)
             }
         }
         .background(Color(uiColor: .systemBackground))
         .ignoresSafeArea()
         .allowsHitTesting(false)
         .accessibilityHidden(true)
+        .onChange(of: isHeld, initial: true) { _, held in
+            if held {
+                if pausedAt == nil { pausedAt = .now }
+            } else if let start = pausedAt {
+                pausedTotal += Date.now.timeIntervalSince(start)
+                pausedAt = nil
+            }
+        }
+    }
+
+    private func draw(in gc: inout GraphicsContext, size: CGSize, t: Double) {
+        let base = scheme == .dark ? 0.32 : 0.22
+        let blobs: [(Color, Double, Double, Double)] = [
+            (colors[0], 0.20, 0.15, 0.13),
+            (colors[1 % colors.count], 0.85, 0.30, 0.09),
+            (colors[0].opacity(0.8), 0.50, 0.90, 0.07),
+        ]
+        gc.addFilter(.blur(radius: min(size.width, size.height) * 0.18))
+        for (i, (c, bx, by, speed)) in blobs.enumerated() {
+            let phase = t * speed + Double(i) * 2.1
+            let x = size.width * (bx + 0.12 * sin(phase))
+            let y = size.height * (by + 0.08 * cos(phase * 1.3))
+            let r = max(size.width, size.height) * (0.42 + 0.05 * sin(phase * 0.7))
+            gc.fill(
+                Path(ellipseIn: CGRect(x: x - r / 2, y: y - r / 2, width: r, height: r)),
+                with: .color(c.opacity(base * intensity))
+            )
+        }
+    }
+}
+
+extension View {
+    /// Puts an `AuroraBackground` behind a scrolling screen and pauses its drift while the
+    /// screen's scroll view moves (iOS 18+), so scrolling gets the whole ProMotion frame budget.
+    func auroraBackground(colors: [Color] = Subject.music.colors, intensity: Double = 1,
+                          animated: Bool = true, running: Bool = true) -> some View {
+        modifier(ScrollAwareAurora(colors: colors, intensity: intensity, animated: animated, running: running))
+    }
+}
+
+private struct ScrollAwareAurora: ViewModifier {
+    let colors: [Color]
+    let intensity: Double
+    let animated: Bool
+    let running: Bool
+    @State private var scrolling = false
+
+    func body(content: Content) -> some View {
+        tracked(content)
+            .background {
+                AuroraBackground(colors: colors, intensity: intensity, animated: animated, running: running && !scrolling)
+            }
+    }
+
+    @ViewBuilder private func tracked(_ content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            content.onScrollPhaseChange { _, phase in
+                if scrolling != phase.isScrolling { scrolling = phase.isScrolling }
+            }
+        } else {
+            content
+        }
     }
 }
 

@@ -82,7 +82,7 @@ struct ScreenshotImportView: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .background { AuroraBackground(colors: [Theme.indigo, Theme.pink], intensity: 0.45) }
+        .auroraBackground(colors: [Theme.indigo, Theme.pink], intensity: 0.45)
         .tint(Theme.indigo)
         .animation(Theme.softSpring, value: phase)
         .navigationTitle("Add from screenshot")

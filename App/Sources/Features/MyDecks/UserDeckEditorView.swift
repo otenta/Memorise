@@ -85,7 +85,7 @@ struct UserDeckEditorView: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .background { AuroraBackground(colors: Subject.korean.colors, intensity: 0.45) }
+        .auroraBackground(colors: Subject.korean.colors, intensity: 0.45)
         .tint(Subject.korean.accent)
         .animation(Theme.spring, value: file?.entries.count)
         .navigationTitle(title.isEmpty ? "Deck" : title)
@@ -254,7 +254,7 @@ struct UserEntryEditorView: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .background { AuroraBackground(colors: Subject.korean.colors, intensity: 0.4) }
+        .auroraBackground(colors: Subject.korean.colors, intensity: 0.4)
         .tint(Subject.korean.accent)
         .animation(Theme.spring, value: problems)
         .navigationTitle(target == .new ? "New word" : "Edit word")
