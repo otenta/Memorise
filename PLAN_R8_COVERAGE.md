@@ -284,9 +284,11 @@
 
 ---
 
-## 4. Owner decisions (defaults the implementors use unless the owner says otherwise)
+## 4. Owner decisions
 
-| ID | Question | Default |
+**Confirmed by the owner on 2026-11-17: all defaults below apply.** Implementors should treat them as final.
+
+| ID | Question | Decision (confirmed) |
 |---|---|---|
 | D1 | How long does a wrong card wait? | A random **2–4 sessions** of the same deck (it never returns in the next session), stable per miss. It counts sessions, not days, so a long break doesn't flood the next session. |
 | D2 | What happens to the "New per session" setting? | **Hidden** for Korean decks. Sessions are filled with new material up to the session length. The stored value is kept (wire format) but ignored. |
