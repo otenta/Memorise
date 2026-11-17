@@ -237,7 +237,6 @@ struct VocabOptionsSection: View {
                 }
             }
             .accessibilityIdentifier("vocabDirectionPicker")
-            Stepper("New words per session: \(options.newPerSession)", value: $options.newPerSession, in: 0...30)
             Toggle("Auto-play pronunciation", isOn: $options.autoPlayAudio)
         } header: {
             Text("Words")

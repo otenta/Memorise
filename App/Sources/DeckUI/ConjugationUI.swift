@@ -127,8 +127,6 @@ struct ConjugationOptionsSection: View {
                 ForEach(ConjugationOptions.Source.allCases, id: \.self) { Text($0.title).tag($0) }
             }
             .accessibilityIdentifier("conjSourcePicker")
-            Stepper("New per session: \(options.newPerSession)", value: $options.newPerSession, in: 1...30)
-                .accessibilityIdentifier("conjNewPerSessionStepper")
         } footer: {
             Text("New words come in by frequency. Typed answers must be spelled exactly.")
         }

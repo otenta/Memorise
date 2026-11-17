@@ -304,7 +304,9 @@ struct RingGauge: View {
                 withAnimation(.spring(response: 1.1, dampingFraction: 0.8).delay(0.15)) { shown = value }
             }
         }
-        .onChange(of: value) { _, v in withAnimation(Theme.softSpring) { shown = v } }
+        .onChange(of: value) { _, v in
+            if reduceMotion { shown = v } else { withAnimation(Theme.softSpring) { shown = v } }
+        }
     }
 }
 

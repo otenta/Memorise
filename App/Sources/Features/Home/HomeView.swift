@@ -405,6 +405,32 @@ struct HomeView: View {
     }
 }
 
+/// White ring showing how much of a deck is covered; a checkmark once fully covered.
+private struct CoverageRing: View {
+    let coverage: Double
+    let lineWidth: CGFloat
+    let fontSize: CGFloat
+
+    var body: some View {
+        let done = coverage >= 0.9999
+        ZStack {
+            RingGauge(value: coverage, colors: [.white, .white.opacity(0.7)], lineWidth: lineWidth)
+            if done {
+                Image(systemName: "checkmark")
+                    .font(.system(size: fontSize + 3, weight: .heavy))
+                    .foregroundStyle(.white)
+            } else {
+                Text(Fmt.percent(coverage))
+                    .font(.system(size: fontSize, weight: .heavy).monospacedDigit())
+                    .foregroundStyle(.white)
+                    .minimumScaleFactor(0.6)
+                    .contentTransition(.numericText(value: coverage))
+            }
+        }
+        .accessibilityIdentifier("deckCoverageRing")
+    }
+}
+
 /// Gradient hero card for one deck.
 private struct DeckCard: View {
     let deck: any Deck
@@ -424,22 +450,23 @@ private struct DeckCard: View {
                         .lineLimit(2)
                 }
                 Spacer(minLength: 12)
-                if let accuracy = info?.accuracy {
-                    ZStack {
-                        RingGauge(value: accuracy, colors: [.white, .white.opacity(0.7)], lineWidth: 5)
-                        Text(Fmt.percent(accuracy))
-                            .font(.caption2.weight(.heavy).monospacedDigit())
-                            .foregroundStyle(.white)
+                if let info, let coverage = info.coverage {
+                    VStack(spacing: 2) {
+                        CoverageRing(coverage: coverage, lineWidth: 5, fontSize: 12)
+                            .frame(width: 50, height: 50)
+                        Text("covered")
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.8))
                     }
-                    .frame(width: 50, height: 50)
                 }
             }
             HStack(spacing: 8) {
                 if let info {
                     chip("rectangle.stack.fill", "\(info.cardCount)")
-                    if info.accuracy == nil {
+                    if info.coverage == nil {
                         chip("sparkles", "New")
                     }
+                    if let a = info.accuracy { chip("checkmark.circle", Fmt.percent(a)) }
                     if let m = info.medianMs { chip("timer", Fmt.seconds(m)) }
                     if let last = info.lastSeen { chip("clock.arrow.circlepath", Fmt.relative(last)) }
                 } else {
@@ -499,15 +526,9 @@ private struct DeckTile: View {
             HStack(alignment: .top) {
                 badge
                 Spacer(minLength: 4)
-                if let accuracy = info?.accuracy {
-                    ZStack {
-                        RingGauge(value: accuracy, colors: [.white, .white.opacity(0.7)], lineWidth: 3.5)
-                        Text(Fmt.percent(accuracy))
-                            .font(.system(size: 9, weight: .heavy).monospacedDigit())
-                            .foregroundStyle(.white)
-                            .minimumScaleFactor(0.6)
-                    }
-                    .frame(width: 34, height: 34)
+                if let coverage = info?.coverage {
+                    CoverageRing(coverage: coverage, lineWidth: 3.5, fontSize: 9)
+                        .frame(width: 34, height: 34)
                 }
             }
             Spacer(minLength: 10)
@@ -534,7 +555,7 @@ private struct DeckTile: View {
                         .font(.system(size: 78))
                         .foregroundStyle(.white.opacity(0.13))
                         .rotationEffect(.degrees(-14))
-                        .offset(x: 20, y: info?.accuracy == nil ? -6 : 34)
+                        .offset(x: 20, y: info?.coverage == nil ? -6 : 34)
                 }
                 .overlay {
                     shape.fill(LinearGradient(colors: [.white.opacity(0.25), .clear], startPoint: .top, endPoint: .center))
@@ -552,8 +573,8 @@ private struct DeckTile: View {
     @ViewBuilder private var badge: some View {
         if let info {
             HStack(spacing: 4) {
-                Image(systemName: info.accuracy == nil ? "sparkles" : "rectangle.stack.fill")
-                Text(info.accuracy == nil ? "New · \(info.cardCount)" : "\(info.cardCount)")
+                Image(systemName: info.coverage == nil ? "sparkles" : "rectangle.stack.fill")
+                Text(info.coverage == nil ? "New · \(info.cardCount)" : "\(info.cardCount)")
             }
             .font(.caption2.weight(.bold).monospacedDigit())
             .foregroundStyle(.white)
@@ -601,4 +622,25 @@ extension Subject {
 
 #Preview {
     HomeView().environment(AppEnvironment.preview())
+}
+
+#Preview("Coverage ring states") {
+    HStack(spacing: 20) {
+        ForEach([nil, 0.2, 1.0] as [Double?], id: \.self) { value in
+            ZStack {
+                LinearGradient(colors: [Theme.coral, Theme.pink], startPoint: .topLeading, endPoint: .bottomTrailing)
+                if let value {
+                    VStack(spacing: 2) {
+                        CoverageRing(coverage: value, lineWidth: 5, fontSize: 12).frame(width: 50, height: 50)
+                        Text("covered").font(.caption2).foregroundStyle(.white.opacity(0.8))
+                    }
+                } else {
+                    Label("New", systemImage: "sparkles").font(.caption.bold()).foregroundStyle(.white)
+                }
+            }
+            .frame(width: 90, height: 110)
+            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        }
+    }
+    .padding()
 }

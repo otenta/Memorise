@@ -183,8 +183,6 @@ struct HangulReadingOptionsSection: View {
                 }
                 .accessibilityIdentifier("hangulStage.\(stage.rawValue)")
             }
-            Stepper("New per session: \(options.newPerSession)", value: $options.newPerSession, in: 1...30)
-                .accessibilityIdentifier("hangulNewPerSessionStepper")
         } header: {
             Text("Stages")
         } footer: {
