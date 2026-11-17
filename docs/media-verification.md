@@ -2,6 +2,7 @@
 
 - **Entries:** 105 (`ko.media.0001`–`ko.media.0105`)
 - **R8-C1 (2026-11-17):** +121 K-pop chorus entries (`ko.media.0170`–`ko.media.0290`), 15 artists, every one with a `chorus` song reference. Rows are in the *R8-C1* section at the end of this file.
+- **R8-C2 (2026-11-17):** +104 everyday drama/show phrases (`ko.media.0291`–`ko.media.0394`): 60 with a verified drama or show reference, 44 dialogue-only; 29 are polite or formal. Rows are in the *R8-C2* section at the end of this file. `ko_media` now has 394 entries.
 - **Entries with ≥ 1 verified reference:** 69 (66 %). **Target missed:** the target is ≥ 70 %. The 36 entries without a reference include the PLAN_M5 §7 candidates (e.g. 화이팅, 대박, 헐) that no checked song or press article contained. They stay as dialogue-only cards rather than getting stretched references; songs for these phrases can be added in a K2b pass.
 - **Verified references:** 88 — songs 80 (91 %), shows 1 (1 %), dramas 7 (8 %). **Split target missed:** the target is ≈ 50 / 30 / 20. Songs could be checked line by line on lyrics pages, but dramas and shows have no public transcripts, so they rely on press that quotes the line. The split was not padded to hit the target.
 - **Verified by:** a web-capable content agent, 2026-11-17. Every row was checked by reading the cited page.
@@ -271,3 +272,74 @@
 | ko.media.0288 | 내가 질투 나잖아 | song | 만세 | SEVENTEEN | 2024 | chorus | https://music.bugs.co.kr/track/6243177 | agent | VERIFIED | 2026-11-17 |
 | ko.media.0289 | 미칠 것만 같아 | song | What is Love? | TWICE | 2018 | chorus | https://music.bugs.co.kr/track/31022636 | agent | VERIFIED | 2026-11-17 |
 | ko.media.0290 | 어쩌다 보니 | song | 청춘찬가 | SEVENTEEN | 2024 | chorus | https://music.bugs.co.kr/track/6243167 | agent | VERIFIED | 2026-11-17 |
+
+## R8-C2 · K-drama and show everyday phrases (ko.media.0291–0394)
+
+**How verified.** Dramas and shows have no public transcripts, so a reference is attached only when an **official channel** clip (KBS Drama, MBCdrama, SBS Catch/Drama, tvN D ENT/DRAMA, JTBC Drama, KBS Entertain, SBS Plus) on YouTube has the phrase in its **Korean title** and the title names the show. The search results were read and filtered by a script (title contains the phrase, Hangul only) and each was then checked by eye. The `citation` is the YouTube watch URL; the bundled text is the phrase only and the dialogues are original. A title such as `＂네 잘못이 아니야 준영아＂` counts for the phrase 네 잘못이 아니야. The clip was not watched, so the phrase's exact wording in the episode is as quoted in the official title. `locator` is `series`, since the clip title gives no episode.
+
+**Reality shows.** Two references come from reality shows: 나는 SOLO (손 잡아도 돼?), 슈퍼맨이 돌아왔다 (도와줘). **Not found / Not used** for reality shows: 대환장 기안장, 데블스 플랜, 지구오락실, 피지컬: 100, 런닝맨 and 나 혼자 산다 catchphrases. No official clip title or press line quoting an everyday phrase was found for these, so none was attached. Provide `citation: "owner"` if you heard one.
+
+**Not used / dropped:** titles where the phrase is the show or song title itself (어서 와, 다 잘될 거야, 잘 먹겠습니다); news, music-show and `KBS World` clips; clips whose title does not name the show (e.g. the SBS 굿파트너-era preview with 어디서 거짓말이야); phrases already in another `ko_*` deck (e.g. 같이 가자, 잘 자, 안녕히 가세요, 고마워요, 미안해요, 알겠습니다). Press round-ups checked and not matched: Hospital Playlist (TenAsia 2020-04-01, only 최선을 다하겠습니다 matched, and that phrase is attached from a different clip); Harper's Bazaar 폭싹 속았수다; Sports Khan 눈물의 여왕 and 응답하라 1988.
+
+| id | hangul | kind | title | by | year | locator | citation | verified-by | status | date |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ko.media.0292 | 나 버리지 마 | drama | That's How It Is (그래 그런거야) | SBS | 2016 | series | https://www.youtube.com/watch?v=3MEaBqlljKg | agent | VERIFIED | 2026-11-17 |
+| ko.media.0293 | 괜찮아질 거야 | drama | Beautiful Now (현재는 아름다워) | KBS | 2022 | series | https://www.youtube.com/watch?v=vLU6PnyTNfs | agent | VERIFIED | 2026-11-17 |
+| ko.media.0295 | 엄마 사랑해요 | drama | Mother (마더) | tvN | 2018 | series | https://www.youtube.com/watch?v=jaeJ-_XHenA | agent | VERIFIED | 2026-11-17 |
+| ko.media.0296 | 잠깐 얘기 좀 해 | drama | Kind Seon-ju (친절한 선주씨) | MBC | 2024 | series | https://www.youtube.com/watch?v=36Vb86cLt70 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0298 | 이럴 수가 | drama | The Left-handed Wife (왼손잡이 아내) | KBS | 2019 | series | https://www.youtube.com/watch?v=qtylTCWsl3U | agent | VERIFIED | 2026-11-17 |
+| ko.media.0300 | 같이 있고 싶어 | drama | Discovery of Romance (연애의 발견) | KBS | 2014 | series | https://www.youtube.com/watch?v=ISi4DVKYP5c | agent | VERIFIED | 2026-11-17 |
+| ko.media.0309 | 제정신이야? | drama | The Woman Who Swallowed the Sun (태양을 삼킨 여자) | MBC | 2025 | series | https://www.youtube.com/watch?v=wD2gMXc33nE | agent | VERIFIED | 2026-11-17 |
+| ko.media.0310 | 우리 집에 가자 | drama | Beautiful Now (현재는 아름다워) | KBS | 2022 | series | https://www.youtube.com/watch?v=9WmWRAGp7F8 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0311 | 회식하자 | drama | Naked Fireman (맨몸의 소방관) | KBS | 2017 | series | https://www.youtube.com/watch?v=G9OjXP1-FIw | agent | VERIFIED | 2026-11-17 |
+| ko.media.0313 | 어디 아파? | drama | Snow White's Revenge (스캔들) | KBS | 2024 | series | https://www.youtube.com/watch?v=r4CoZMcO9CY | agent | VERIFIED | 2026-11-17 |
+| ko.media.0314 | 믿을 수가 없어 | drama | Second Husband (두 번째 남편) | MBC | 2022 | series | https://www.youtube.com/watch?v=NUzIr3Oq5OU | agent | VERIFIED | 2026-11-17 |
+| ko.media.0316 | 최선을 다하겠습니다 | drama | Prescribing Love (사랑을 처방해 드립니다) | KBS | 2026 | series | https://www.youtube.com/watch?v=rIS3YoA6LrI | agent | VERIFIED | 2026-11-17 |
+| ko.media.0317 | 언제 철들래? | drama | Reply 1997 (응답하라 1997) | tvN | 2012 | series | https://www.youtube.com/watch?v=3-DJadLgEBY | agent | VERIFIED | 2026-11-17 |
+| ko.media.0318 | 정말 고마워요 | drama | My Only One (하나뿐인 내편) | KBS | 2019 | series | https://www.youtube.com/watch?v=O4oJkJpp-rU | agent | VERIFIED | 2026-11-17 |
+| ko.media.0319 | 안아줄게 | drama | Come Here and Hug Me (이리와 안아줘) | MBC | 2018 | series | https://www.youtube.com/watch?v=b_ph39Ts0zI | agent | VERIFIED | 2026-11-17 |
+| ko.media.0320 | 그게 말이 돼? | drama | Elegant Empire (우아한 제국) | KBS | 2023 | series | https://www.youtube.com/watch?v=i6-t16QTaUI | agent | VERIFIED | 2026-11-17 |
+| ko.media.0322 | 나랑 사귀자 | drama | Risky Romance (죽어도 좋아) | KBS | 2018 | series | https://www.youtube.com/watch?v=8Qz5nRDblzs | agent | VERIFIED | 2026-11-17 |
+| ko.media.0323 | 철 좀 들어라 | drama | Mother of Mine (세상에서 제일 예쁜 내 딸) | KBS | 2019 | series | https://www.youtube.com/watch?v=6I31aTF3kAc | agent | VERIFIED | 2026-11-17 |
+| ko.media.0324 | 네가 여기 웬일이야? | drama | Our Honey Pot (우리집 꿀단지) | KBS | 2015 | series | https://www.youtube.com/watch?v=ZS4qsDff-BU | agent | VERIFIED | 2026-11-17 |
+| ko.media.0326 | 빨리 일어나 | drama | The Penthouse 3 (펜트하우스3) | SBS | 2021 | series | https://www.youtube.com/watch?v=rnMcpPRn4F8 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0327 | 깜짝이야 | drama | Hwarang (화랑) | KBS | 2016 | series | https://www.youtube.com/watch?v=BtAoiyhzQUs | agent | VERIFIED | 2026-11-17 |
+| ko.media.0328 | 내가 잘못했어 | drama | Splendid Days (화려한 날들) | KBS | 2025 | series | https://www.youtube.com/watch?v=6MQ7qOiZ1cM | agent | VERIFIED | 2026-11-17 |
+| ko.media.0329 | 말 좀 해봐 | drama | The Lady in Dignity (품위있는 그녀) | JTBC | 2017 | series | https://www.youtube.com/watch?v=VoT6WQmlnHc | agent | VERIFIED | 2026-11-17 |
+| ko.media.0330 | 밥 먹고 가 | drama | Ugly Miss Young-Ae (막돼먹은 영애씨) | tvN | 2017 | series | https://www.youtube.com/watch?v=2DuXSLTLH2w | agent | VERIFIED | 2026-11-17 |
+| ko.media.0331 | 라면 먹고 갈래? | drama | What's Wrong with Secretary Kim (김비서가 왜 그럴까) | tvN | 2018 | series | https://www.youtube.com/watch?v=sFIONXAnIKg | agent | VERIFIED | 2026-11-17 |
+| ko.media.0332 | 떠나지 마 | drama | Goddess of Marriage (결혼의 여신) | SBS | 2013 | series | https://www.youtube.com/watch?v=rBKNLVbWrzs | agent | VERIFIED | 2026-11-17 |
+| ko.media.0333 | 내가 데려다줄게 | drama | Kind Seon-ju (친절한 선주씨) | MBC | 2025 | series | https://www.youtube.com/watch?v=isjQk6iKURk | agent | VERIFIED | 2026-11-17 |
+| ko.media.0334 | 잘 지냈어요? | drama | Clean with Passion for Now (일단 뜨겁게 청소하라) | JTBC | 2018 | series | https://www.youtube.com/watch?v=MmxzkJMWLAE | agent | VERIFIED | 2026-11-17 |
+| ko.media.0340 | 애썼어 | drama | Revolutionary Love (변혁의 사랑) | tvN | 2017 | series | https://www.youtube.com/watch?v=s_iQFK_Ku3U | agent | VERIFIED | 2026-11-17 |
+| ko.media.0341 | 오랜만이다 | drama | Happy Sisters (해피 시스터즈) | SBS | 2018 | series | https://www.youtube.com/watch?v=u5RF_peoW64 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0342 | 도와줘 | show | The Return of Superman (슈퍼맨이 돌아왔다) | KBS | 2020 | series | https://www.youtube.com/watch?v=XZSKJdXa2Mk | agent | VERIFIED | 2026-11-17 |
+| ko.media.0343 | 네 잘못이 아니야 | drama | Uncontrollably Fond (함부로 애틋하게) | KBS | 2016 | series | https://www.youtube.com/watch?v=n8_imrJhDpQ | agent | VERIFIED | 2026-11-17 |
+| ko.media.0345 | 또 보자 | drama | Go Back Couple (고백부부) | KBS | 2017 | series | https://www.youtube.com/watch?v=6w2sa8V-i88 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0347 | 술 한잔 하자 | drama | Jealousy Incarnate (질투의 화신) | SBS | 2016 | series | https://www.youtube.com/watch?v=Gp63UU13E2o | agent | VERIFIED | 2026-11-17 |
+| ko.media.0351 | 내 옆에 있어 | drama | Let's Get Married, Maengkkong! (결혼하자 맹꽁아!) | KBS | 2025 | series | https://www.youtube.com/watch?v=hdJKM2O0ETk | agent | VERIFIED | 2026-11-17 |
+| ko.media.0353 | 내가 있잖아 | drama | The Secret Man (비밀의 남자) | KBS | 2020 | series | https://www.youtube.com/watch?v=CvFQr7TtKnE | agent | VERIFIED | 2026-11-17 |
+| ko.media.0355 | 시간 좀 줘 | drama | My Golden Life (황금빛 내 인생) | KBS | 2017 | series | https://www.youtube.com/watch?v=EkPts4KX24o | agent | VERIFIED | 2026-11-17 |
+| ko.media.0356 | 한 번만 믿어 줘 | drama | Snow White's Revenge (스캔들) | KBS | 2024 | series | https://www.youtube.com/watch?v=qCB7UFpta5E | agent | VERIFIED | 2026-11-17 |
+| ko.media.0357 | 내 여자친구 해 | drama | Five Children (아이가 다섯) | KBS | 2016 | series | https://www.youtube.com/watch?v=JjciJsQh2oA | agent | VERIFIED | 2026-11-17 |
+| ko.media.0361 | 기회를 줘 | drama | Happy Sisters (해피 시스터즈) | SBS | 2018 | series | https://www.youtube.com/watch?v=Q184YWbOKxk | agent | VERIFIED | 2026-11-17 |
+| ko.media.0363 | 나랑 결혼해 줄래요? | drama | Young Lady and Gentleman (신사와 아가씨) | KBS | 2022 | series | https://www.youtube.com/watch?v=iJnM84MHk2M | agent | VERIFIED | 2026-11-17 |
+| ko.media.0364 | 네가 뭔데? | drama | Hello, My Twenties! (청춘시대) | JTBC | 2016 | series | https://www.youtube.com/watch?v=xhU-c4FY7lc | agent | VERIFIED | 2026-11-17 |
+| ko.media.0365 | 손 잡아도 돼? | show | I Am Solo (나는 SOLO) | SBS Plus | 2023 | series | https://www.youtube.com/watch?v=PRpSRImua7w | agent | VERIFIED | 2026-11-17 |
+| ko.media.0369 | 다 내 잘못이야 | drama | Another Kind of Romance (너 말고 다른 연애) | KBS | 2026 | series | https://www.youtube.com/watch?v=q_hkCl5XLw8 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0370 | 몸 조심해 | drama | Queen's House (여왕의 집) | KBS | 2025 | series | https://www.youtube.com/watch?v=DHeSI8c5RMo | agent | VERIFIED | 2026-11-17 |
+| ko.media.0372 | 보고드리겠습니다 | drama | Trap of Desire (욕망의 덫) | KBS | 2026 | series | https://www.youtube.com/watch?v=sI1VPViO24M | agent | VERIFIED | 2026-11-17 |
+| ko.media.0373 | 병원 가자 | drama | Love to the End (끝까지 사랑) | KBS | 2018 | series | https://www.youtube.com/watch?v=D2t_8GIAWtk | agent | VERIFIED | 2026-11-17 |
+| ko.media.0374 | 또 봬서 반갑습니다 | drama | Three Siblings Bravely (삼남매가 용감하게) | KBS | 2023 | series | https://www.youtube.com/watch?v=UeUhnfs2928 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0375 | 이게 어디서 거짓말이야? | drama | Mother of Mine (세상에서 제일 예쁜 내 딸) | KBS | 2019 | series | https://www.youtube.com/watch?v=NO6RzdxifPE | agent | VERIFIED | 2026-11-17 |
+| ko.media.0376 | 용서해 줘 | drama | Young Lady and Gentleman (신사와 아가씨) | KBS | 2022 | series | https://www.youtube.com/watch?v=8vxEsX_0koU | agent | VERIFIED | 2026-11-17 |
+| ko.media.0380 | 어이없다 | drama | Once Again (한 번 다녀왔습니다) | KBS | 2020 | series | https://www.youtube.com/watch?v=0eMuSmb6yoE | agent | VERIFIED | 2026-11-17 |
+| ko.media.0381 | 잘했다 | drama | Argon (아르곤) | tvN | 2017 | series | https://www.youtube.com/watch?v=nDnQkZJGY7I | agent | VERIFIED | 2026-11-17 |
+| ko.media.0382 | 나 좀 내버려 둬 | drama | My Perfect Stranger (어쩌다 마주친, 그대) | KBS | 2023 | series | https://www.youtube.com/watch?v=RWSzYQQc8-U | agent | VERIFIED | 2026-11-17 |
+| ko.media.0383 | 다 너 때문이야 | drama | Sun in the Sky (저 하늘에 태양이) | KBS | 2016 | series | https://www.youtube.com/watch?v=fye-gwaJ-Ls | agent | VERIFIED | 2026-11-17 |
+| ko.media.0385 | 무리하지 마 | drama | The Secret Man (비밀의 남자) | KBS | 2020 | series | https://www.youtube.com/watch?v=lBxaaDBbwrw | agent | VERIFIED | 2026-11-17 |
+| ko.media.0389 | 너 지금 뭐 하는 거야? | drama | Forbidden Marriage (금혼령, 조선 혼인 금지령) | MBC | 2022 | series | https://www.youtube.com/watch?v=uAmd8FVUoUA | agent | VERIFIED | 2026-11-17 |
+| ko.media.0391 | 나 좀 도와줄래? | drama | Healer (힐러) | KBS | 2014 | series | https://www.youtube.com/watch?v=j6YAhwMh-T0 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0392 | 푹 쉬어 | drama | National Team's Wife (국가대표 와이프) | KBS | 2022 | series | https://www.youtube.com/watch?v=Irm88z4N8WU | agent | VERIFIED | 2026-11-17 |
+| ko.media.0393 | 한 번만 도와줘 | drama | Golden Mask (황금가면) | KBS | 2022 | series | https://www.youtube.com/watch?v=Cb_OYwD62LE | agent | VERIFIED | 2026-11-17 |
+| ko.media.0394 | 천천히 와 | drama | Suspicious Partner (수상한 파트너) | SBS | 2017 | series | https://www.youtube.com/watch?v=g1BADyDD4mw | agent | VERIFIED | 2026-11-17 |

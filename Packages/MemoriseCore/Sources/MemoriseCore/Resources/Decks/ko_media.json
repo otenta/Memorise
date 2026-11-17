@@ -10871,6 +10871,3810 @@
           "citation": "https://music.bugs.co.kr/track/6243167"
         }
       ]
+    },
+    {
+      "id": "ko.media.0291",
+      "hangul": "많이 먹어",
+      "romanization": "mani meogeo",
+      "meanings": [
+        "Eat a lot"
+      ],
+      "pos": "expression",
+      "rank": 291,
+      "tags": [
+        "family",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마, 이거 맛있어요.",
+          "en": "Mom, this is delicious."
+        },
+        {
+          "speaker": "B",
+          "ko": "많이 먹어.",
+          "en": "Eat a lot."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0292",
+      "hangul": "나 버리지 마",
+      "romanization": "na beoriji ma",
+      "meanings": [
+        "Don't abandon me"
+      ],
+      "pos": "expression",
+      "rank": 292,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "널 생각하면 마음이 복잡해.",
+          "en": "Thinking of you makes me confused."
+        },
+        {
+          "speaker": "B",
+          "ko": "제발 나 버리지 마.",
+          "en": "Please don't abandon me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "That's How It Is",
+          "titleKo": "그래 그런거야",
+          "by": "SBS",
+          "year": 2016,
+          "locator": "series",
+          "context": "SBS's official clip is titled with a tearful plea to a cold partner.",
+          "citation": "https://www.youtube.com/watch?v=3MEaBqlljKg"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0293",
+      "hangul": "괜찮아질 거야",
+      "romanization": "gwaenchanajil geoya",
+      "meanings": [
+        "It'll get better"
+      ],
+      "pos": "expression",
+      "rank": 293,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 너무 힘들어.",
+          "en": "I'm having such a hard time."
+        },
+        {
+          "speaker": "B",
+          "ko": "괜찮아, 괜찮아질 거야.",
+          "en": "It's okay, it'll get better."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Beautiful Now",
+          "titleKo": "현재는 아름다워",
+          "by": "KBS",
+          "year": 2022,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a gentle reassurance to a wounded friend.",
+          "citation": "https://www.youtube.com/watch?v=vLU6PnyTNfs"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0294",
+      "hangul": "만나서 반가워요",
+      "romanization": "mannaseo bangawoyo",
+      "meanings": [
+        "Pleased to meet you"
+      ],
+      "pos": "expression",
+      "rank": 294,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "제 친구 지수예요.",
+          "en": "This is my friend Ji-su."
+        },
+        {
+          "speaker": "B",
+          "ko": "안녕하세요, 만나서 반가워요.",
+          "en": "Hello, nice to meet you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0295",
+      "hangul": "엄마 사랑해요",
+      "romanization": "eomma saranghaeyo",
+      "meanings": [
+        "Mom, I love you"
+      ],
+      "pos": "expression",
+      "rank": 295,
+      "tags": [
+        "family",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마, 항상 고마워요.",
+          "en": "Mom, thanks for everything."
+        },
+        {
+          "speaker": "B",
+          "ko": "엄마 사랑해요.",
+          "en": "Mom, I love you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Mother",
+          "titleKo": "마더",
+          "by": "tvN",
+          "year": 2018,
+          "locator": "series",
+          "context": "tvN's official clip is titled with a child's tender words.",
+          "citation": "https://www.youtube.com/watch?v=jaeJ-_XHenA"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0296",
+      "hangul": "잠깐 얘기 좀 해",
+      "romanization": "jamkkan yaegi jom hae",
+      "meanings": [
+        "Let's talk for a moment"
+      ],
+      "pos": "expression",
+      "rank": 296,
+      "tags": [
+        "daily",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "지금 바빠? 잠깐 얘기 좀 해.",
+          "en": "Busy now? Let's talk for a moment."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 들어올래?",
+          "en": "Sure, want to come in?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Kind Seon-ju",
+          "titleKo": "친절한 선주씨",
+          "by": "MBC",
+          "year": 2024,
+          "locator": "series",
+          "context": "MBC's official preview clip for episode 15 is titled with this line.",
+          "citation": "https://www.youtube.com/watch?v=36Vb86cLt70"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0297",
+      "hangul": "힘내세요",
+      "romanization": "himnaeseyo",
+      "meanings": [
+        "Cheer up (polite)"
+      ],
+      "pos": "expression",
+      "rank": 297,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 면접이 있어요.",
+          "en": "I have an interview today."
+        },
+        {
+          "speaker": "B",
+          "ko": "힘내세요!",
+          "en": "Cheer up!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0298",
+      "hangul": "이럴 수가",
+      "romanization": "ireol suga",
+      "meanings": [
+        "How can this be"
+      ],
+      "pos": "expression",
+      "rank": 298,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 집 열쇠가 없어졌어.",
+          "en": "Our house key is gone."
+        },
+        {
+          "speaker": "B",
+          "ko": "이럴 수가, 아까까지 있었는데.",
+          "en": "How can this be, it was here a moment ago."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Left-handed Wife",
+          "titleKo": "왼손잡이 아내",
+          "by": "KBS",
+          "year": 2019,
+          "locator": "series",
+          "context": "KBS's official clip is titled with this gasp after a character overhears a secret call.",
+          "citation": "https://www.youtube.com/watch?v=qtylTCWsl3U"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0299",
+      "hangul": "먼저 갈게요",
+      "romanization": "meonjeo galgeyo",
+      "meanings": [
+        "I'll get going first"
+      ],
+      "pos": "expression",
+      "rank": 299,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "저 오늘 약속이 있어서요.",
+          "en": "I have plans today."
+        },
+        {
+          "speaker": "B",
+          "ko": "그래요, 먼저 갈게요.",
+          "en": "Sure, I'll get going first."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0300",
+      "hangul": "같이 있고 싶어",
+      "romanization": "gachi itgo sipeo",
+      "meanings": [
+        "I want to be with you"
+      ],
+      "pos": "expression",
+      "rank": 300,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘은 여기까지만 하자.",
+          "en": "Let's end here for today."
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 너랑 같이 있고 싶어.",
+          "en": "No, I want to be with you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Discovery of Romance",
+          "titleKo": "연애의 발견",
+          "by": "KBS",
+          "year": 2014,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a man's honest wish.",
+          "citation": "https://www.youtube.com/watch?v=ISi4DVKYP5c"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0301",
+      "hangul": "계산해 주세요",
+      "romanization": "gyesanhae juseyo",
+      "meanings": [
+        "The bill, please"
+      ],
+      "pos": "expression",
+      "rank": 301,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다 드셨어요?",
+          "en": "Have you finished?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 계산해 주세요.",
+          "en": "Yes, the bill, please."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0302",
+      "hangul": "잘 다녀오세요",
+      "romanization": "jal danyeooseyo",
+      "meanings": [
+        "Have a good trip"
+      ],
+      "pos": "expression",
+      "rank": 302,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그럼 다녀오겠습니다.",
+          "en": "Then I'll be off."
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 잘 다녀오세요.",
+          "en": "Yes, have a good trip."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0303",
+      "hangul": "잠시만 기다려 주세요",
+      "romanization": "jamsiman gidaryeo juseyo",
+      "meanings": [
+        "Please wait a moment"
+      ],
+      "pos": "expression",
+      "rank": 303,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "사장님 계세요?",
+          "en": "Is the boss in?"
+        },
+        {
+          "speaker": "B",
+          "ko": "잠시만 기다려 주세요.",
+          "en": "Please wait a moment."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0304",
+      "hangul": "내가 옆에 있을게",
+      "romanization": "naega yeope isseulge",
+      "meanings": [
+        "I'll be by your side"
+      ],
+      "pos": "expression",
+      "rank": 304,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무서워서 잠이 안 와.",
+          "en": "I'm too scared to sleep."
+        },
+        {
+          "speaker": "B",
+          "ko": "걱정 마, 내가 옆에 있을게.",
+          "en": "Don't worry, I'll be by your side."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0305",
+      "hangul": "잘하고 있어",
+      "romanization": "jalhago isseo",
+      "meanings": [
+        "You're doing well"
+      ],
+      "pos": "expression",
+      "rank": 305,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "제가 잘하고 있는 걸까요?",
+          "en": "Am I doing okay?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그럼, 잘하고 있어.",
+          "en": "Of course, you're doing well."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0306",
+      "hangul": "시험 잘 봤어?",
+      "romanization": "siheom jal bwasseo?",
+      "meanings": [
+        "Did the exam go well?"
+      ],
+      "pos": "expression",
+      "rank": 306,
+      "tags": [
+        "family",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 시험 끝났어!",
+          "en": "My exam is over!"
+        },
+        {
+          "speaker": "B",
+          "ko": "시험 잘 봤어?",
+          "en": "Did the exam go well?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0307",
+      "hangul": "오늘은 내가 쏠게",
+      "romanization": "oneureun naega ssolge",
+      "meanings": [
+        "It's my treat today"
+      ],
+      "pos": "expression",
+      "rank": 307,
+      "tags": [
+        "slang",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "월급날이네!",
+          "en": "It's payday!"
+        },
+        {
+          "speaker": "B",
+          "ko": "오늘은 내가 쏠게.",
+          "en": "It's my treat today."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0308",
+      "hangul": "웃기고 있네",
+      "romanization": "utgigo inne",
+      "meanings": [
+        "Don't make me laugh"
+      ],
+      "pos": "expression",
+      "rank": 308,
+      "tags": [
+        "slang",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내가 다 알아서 할게.",
+          "en": "I'll handle everything."
+        },
+        {
+          "speaker": "B",
+          "ko": "웃기고 있네.",
+          "en": "Don't make me laugh."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0309",
+      "hangul": "제정신이야?",
+      "romanization": "jejeongsiniya?",
+      "meanings": [
+        "Are you out of your mind?"
+      ],
+      "pos": "expression",
+      "rank": 309,
+      "tags": [
+        "conflict",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 사표 냈어.",
+          "en": "I handed in my resignation."
+        },
+        {
+          "speaker": "B",
+          "ko": "너 지금 제정신이야?",
+          "en": "Are you out of your mind?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Woman Who Swallowed the Sun",
+          "titleKo": "태양을 삼킨 여자",
+          "by": "MBC",
+          "year": 2025,
+          "locator": "series",
+          "context": "MBC's official clip is titled with an enraged character confronting a rival.",
+          "citation": "https://www.youtube.com/watch?v=wD2gMXc33nE"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0310",
+      "hangul": "우리 집에 가자",
+      "romanization": "uri jibe gaja",
+      "meanings": [
+        "Let's go to our place"
+      ],
+      "pos": "expression",
+      "rank": 310,
+      "tags": [
+        "romance",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너무 늦었어.",
+          "en": "It's so late."
+        },
+        {
+          "speaker": "B",
+          "ko": "우리 집에 가자.",
+          "en": "Let's go to our place."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Beautiful Now",
+          "titleKo": "현재는 아름다워",
+          "by": "KBS",
+          "year": 2022,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a sweet invitation between two lovers.",
+          "citation": "https://www.youtube.com/watch?v=9WmWRAGp7F8"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0311",
+      "hangul": "회식하자",
+      "romanization": "hoesikaja",
+      "meanings": [
+        "Let's have a team dinner"
+      ],
+      "pos": "expression",
+      "rank": 311,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "프로젝트 드디어 끝났어요!",
+          "en": "The project is finally done!"
+        },
+        {
+          "speaker": "B",
+          "ko": "오늘 회식하자!",
+          "en": "Let's have a team dinner today!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Naked Fireman",
+          "titleKo": "맨몸의 소방관",
+          "by": "KBS",
+          "year": 2017,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a cheer for a team dinner.",
+          "citation": "https://www.youtube.com/watch?v=G9OjXP1-FIw"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0312",
+      "hangul": "장난 아니네",
+      "romanization": "jangnan anine",
+      "meanings": [
+        "That's no joke"
+      ],
+      "pos": "expression",
+      "rank": 312,
+      "tags": [
+        "slang",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "저 사람 달리기 속도 봐.",
+          "en": "Look at that guy's running speed."
+        },
+        {
+          "speaker": "B",
+          "ko": "와, 장난 아니네.",
+          "en": "Wow, that's no joke."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0313",
+      "hangul": "어디 아파?",
+      "romanization": "eodi apa?",
+      "meanings": [
+        "Are you hurt somewhere?"
+      ],
+      "pos": "expression",
+      "rank": 313,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 그래, 어디 아파?",
+          "en": "What's wrong, are you hurt somewhere?"
+        },
+        {
+          "speaker": "B",
+          "ko": "조금 머리가 아파.",
+          "en": "My head hurts a bit."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Snow White's Revenge",
+          "titleKo": "스캔들",
+          "by": "KBS",
+          "year": 2024,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a worried question to someone suffering.",
+          "citation": "https://www.youtube.com/watch?v=r4CoZMcO9CY"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0314",
+      "hangul": "믿을 수가 없어",
+      "romanization": "mideul suga eopseo",
+      "meanings": [
+        "I can't believe it"
+      ],
+      "pos": "expression",
+      "rank": 314,
+      "tags": [
+        "exclamation",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 팀이 이겼대!",
+          "en": "Our team won!"
+        },
+        {
+          "speaker": "B",
+          "ko": "정말? 믿을 수가 없어!",
+          "en": "Really? I can't believe it!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Second Husband",
+          "titleKo": "두 번째 남편",
+          "by": "MBC",
+          "year": 2022,
+          "locator": "series",
+          "context": "MBC's official clip is titled with a character's shock at a hidden secret.",
+          "citation": "https://www.youtube.com/watch?v=NUzIr3Oq5OU"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0315",
+      "hangul": "도와주세요",
+      "romanization": "dowajuseyo",
+      "meanings": [
+        "Please help me"
+      ],
+      "pos": "expression",
+      "rank": 315,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "여기 지갑이 떨어져 있어요. 도와주세요.",
+          "en": "There's a dropped wallet here. Please help me."
+        },
+        {
+          "speaker": "B",
+          "ko": "제가 경찰서에 가져다 드릴게요.",
+          "en": "I'll take it to the police station."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0316",
+      "hangul": "최선을 다하겠습니다",
+      "romanization": "choeseoneul dahagetseumnida",
+      "meanings": [
+        "I'll do my best"
+      ],
+      "pos": "expression",
+      "rank": 316,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이번 프로젝트, 맡아 주시겠어요?",
+          "en": "Will you take on this project?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 최선을 다하겠습니다.",
+          "en": "Yes, I'll do my best."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Prescribing Love",
+          "titleKo": "사랑을 처방해 드립니다",
+          "by": "KBS",
+          "year": 2026,
+          "locator": "series",
+          "context": "KBS's official clip is titled with this earnest promise that melts a colleague's anger.",
+          "citation": "https://www.youtube.com/watch?v=rIS3YoA6LrI"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0317",
+      "hangul": "언제 철들래?",
+      "romanization": "eonje cheoldeullae?",
+      "meanings": [
+        "When will you grow up?"
+      ],
+      "pos": "expression",
+      "rank": 317,
+      "tags": [
+        "family",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "또 게임했어?",
+          "en": "Were you gaming again?"
+        },
+        {
+          "speaker": "B",
+          "ko": "너 언제 철들래?",
+          "en": "When will you grow up?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Reply 1997",
+          "titleKo": "응답하라 1997",
+          "by": "tvN",
+          "year": 2012,
+          "locator": "series",
+          "context": "tvN Joy's official clip is titled with a mother's exasperated question.",
+          "citation": "https://www.youtube.com/watch?v=3-DJadLgEBY"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0318",
+      "hangul": "정말 고마워요",
+      "romanization": "jeongmal gomawoyo",
+      "meanings": [
+        "Thank you very much"
+      ],
+      "pos": "expression",
+      "rank": 318,
+      "tags": [
+        "daily",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "제가 도와드릴게요.",
+          "en": "I'll help you."
+        },
+        {
+          "speaker": "B",
+          "ko": "정말 고마워요.",
+          "en": "Thank you so much."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "My Only One",
+          "titleKo": "하나뿐인 내편",
+          "by": "KBS",
+          "year": 2019,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a woman sincerely thanking the man who stood by her.",
+          "citation": "https://www.youtube.com/watch?v=O4oJkJpp-rU"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0319",
+      "hangul": "안아줄게",
+      "romanization": "anajulge",
+      "meanings": [
+        "I'll hold you"
+      ],
+      "pos": "expression",
+      "rank": 319,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 너무 힘들었어.",
+          "en": "Today was so hard."
+        },
+        {
+          "speaker": "B",
+          "ko": "이리 와, 안아줄게.",
+          "en": "Come here, I'll hold you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Come Here and Hug Me",
+          "titleKo": "이리와 안아줘",
+          "by": "MBC",
+          "year": 2018,
+          "locator": "series",
+          "context": "MBC's official clip is titled with a warm embrace offered at the end of an episode.",
+          "citation": "https://www.youtube.com/watch?v=b_ph39Ts0zI"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0320",
+      "hangul": "그게 말이 돼?",
+      "romanization": "geuge mari dwae?",
+      "meanings": [
+        "Does that even make sense?"
+      ],
+      "pos": "expression",
+      "rank": 320,
+      "tags": [
+        "conflict",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "월급이 내려간대.",
+          "en": "They say our pay is going down."
+        },
+        {
+          "speaker": "B",
+          "ko": "그게 말이 돼?",
+          "en": "Does that even make sense?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Elegant Empire",
+          "titleKo": "우아한 제국",
+          "by": "KBS",
+          "year": 2023,
+          "locator": "series",
+          "context": "KBS's official clip is titled with an angry reaction to an absurd situation.",
+          "citation": "https://www.youtube.com/watch?v=i6-t16QTaUI"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0321",
+      "hangul": "편하게 앉으세요",
+      "romanization": "pyeonhage anjeuseyo",
+      "meanings": [
+        "Please sit comfortably"
+      ],
+      "pos": "expression",
+      "rank": 321,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "처음 와서 어색하네요.",
+          "en": "It's my first time here, so it's awkward."
+        },
+        {
+          "speaker": "B",
+          "ko": "편하게 앉으세요.",
+          "en": "Please sit comfortably."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0322",
+      "hangul": "나랑 사귀자",
+      "romanization": "narang sagwija",
+      "meanings": [
+        "Go out with me"
+      ],
+      "pos": "expression",
+      "rank": 322,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 요즘 너만 보여.",
+          "en": "Lately I only see you."
+        },
+        {
+          "speaker": "B",
+          "ko": "나랑 사귀자.",
+          "en": "Go out with me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Risky Romance",
+          "titleKo": "죽어도 좋아",
+          "by": "KBS",
+          "year": 2018,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a bold confession from a younger colleague.",
+          "citation": "https://www.youtube.com/watch?v=8Qz5nRDblzs"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0323",
+      "hangul": "철 좀 들어라",
+      "romanization": "cheol jom deureora",
+      "meanings": [
+        "Grow up already"
+      ],
+      "pos": "expression",
+      "rank": 323,
+      "tags": [
+        "family",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "용돈 좀 더 주세요.",
+          "en": "Give me more pocket money."
+        },
+        {
+          "speaker": "B",
+          "ko": "철 좀 들어라.",
+          "en": "Grow up already."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Mother of Mine",
+          "titleKo": "세상에서 제일 예쁜 내 딸",
+          "by": "KBS",
+          "year": 2019,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a scolding aimed at an immature son.",
+          "citation": "https://www.youtube.com/watch?v=6I31aTF3kAc"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0324",
+      "hangul": "네가 여기 웬일이야?",
+      "romanization": "nega yeogi wenirya?",
+      "meanings": [
+        "What brings you here?"
+      ],
+      "pos": "expression",
+      "rank": 324,
+      "tags": [
+        "daily",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어, 병문안 왔어.",
+          "en": "Hey, I came to visit you."
+        },
+        {
+          "speaker": "B",
+          "ko": "네가 여기 웬일이야?",
+          "en": "What brings you here?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Our Honey Pot",
+          "titleKo": "우리집 꿀단지",
+          "by": "KBS",
+          "year": 2015,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a flustered greeting to a surprise hospital visitor.",
+          "citation": "https://www.youtube.com/watch?v=ZS4qsDff-BU"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0325",
+      "hangul": "천천히 해도 돼",
+      "romanization": "cheoncheonhi haedo dwae",
+      "meanings": [
+        "You can take your time"
+      ],
+      "pos": "expression",
+      "rank": 325,
+      "tags": [
+        "encouragement",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "아직 다 못 했어.",
+          "en": "I haven't finished yet."
+        },
+        {
+          "speaker": "B",
+          "ko": "천천히 해도 돼.",
+          "en": "You can take your time."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0326",
+      "hangul": "빨리 일어나",
+      "romanization": "ppalli ireona",
+      "meanings": [
+        "Get up quickly"
+      ],
+      "pos": "expression",
+      "rank": 326,
+      "tags": [
+        "daily",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "벌써 일곱 시야.",
+          "en": "It's already seven."
+        },
+        {
+          "speaker": "B",
+          "ko": "빨리 일어나. 학교 늦겠다.",
+          "en": "Get up quickly. You'll be late for school."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Penthouse 3",
+          "titleKo": "펜트하우스3",
+          "by": "SBS",
+          "year": 2021,
+          "locator": "series",
+          "context": "SBS's official clip is titled with a tearful call to someone who isn't answering.",
+          "citation": "https://www.youtube.com/watch?v=rnMcpPRn4F8"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0327",
+      "hangul": "깜짝이야",
+      "romanization": "kkamjjagiya",
+      "meanings": [
+        "You startled me"
+      ],
+      "pos": "expression",
+      "rank": 327,
+      "tags": [
+        "exclamation",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "뭐 하고 있어?",
+          "en": "What are you doing?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아, 깜짝이야! 갑자기 나타나지 마.",
+          "en": "Ah, you startled me! Don't just appear."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Hwarang",
+          "titleKo": "화랑",
+          "by": "KBS",
+          "year": 2016,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a startled cry from a heroine caught off guard.",
+          "citation": "https://www.youtube.com/watch?v=BtAoiyhzQUs"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0328",
+      "hangul": "내가 잘못했어",
+      "romanization": "naega jalmotaesseo",
+      "meanings": [
+        "I was wrong"
+      ],
+      "pos": "expression",
+      "rank": 328,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마, 화 많이 났어?",
+          "en": "Mom, are you very angry?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 이제 괜찮아. 내가 잘못했어.",
+          "en": "No, I'm fine now. I was wrong."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Splendid Days",
+          "titleKo": "화려한 날들",
+          "by": "KBS",
+          "year": 2025,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a daughter's apology as she returns home.",
+          "citation": "https://www.youtube.com/watch?v=6MQ7qOiZ1cM"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0329",
+      "hangul": "말 좀 해봐",
+      "romanization": "mal jom haebwa",
+      "meanings": [
+        "Say something"
+      ],
+      "pos": "expression",
+      "rank": 329,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 아무 말도 안 해?",
+          "en": "Why aren't you saying anything?"
+        },
+        {
+          "speaker": "B",
+          "ko": "말 좀 해봐!",
+          "en": "Say something!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Lady in Dignity",
+          "titleKo": "품위있는 그녀",
+          "by": "JTBC",
+          "year": 2017,
+          "locator": "series",
+          "context": "JTBC's official clip is titled with a heated verbal fight between two women.",
+          "citation": "https://www.youtube.com/watch?v=VoT6WQmlnHc"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0330",
+      "hangul": "밥 먹고 가",
+      "romanization": "bap meokgo ga",
+      "meanings": [
+        "Stay and eat"
+      ],
+      "pos": "expression",
+      "rank": 330,
+      "tags": [
+        "family",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "저는 이만 가 보겠습니다.",
+          "en": "I'll be going now."
+        },
+        {
+          "speaker": "B",
+          "ko": "그러지 말고 밥 먹고 가.",
+          "en": "Don't go yet, stay and eat."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Ugly Miss Young-Ae",
+          "titleKo": "막돼먹은 영애씨",
+          "by": "tvN",
+          "year": 2017,
+          "locator": "series",
+          "context": "tvN DRAMA's official clip is titled with a father's warm invitation.",
+          "citation": "https://www.youtube.com/watch?v=2DuXSLTLH2w"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0331",
+      "hangul": "라면 먹고 갈래?",
+      "romanization": "ramyeon meokgo gallae?",
+      "meanings": [
+        "Want to eat ramyeon before you go?"
+      ],
+      "pos": "expression",
+      "rank": 331,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "벌써 시간이 이렇게 됐네.",
+          "en": "Look how late it is."
+        },
+        {
+          "speaker": "B",
+          "ko": "라면 먹고 갈래?",
+          "en": "Want to eat ramyeon before you go?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "What's Wrong with Secretary Kim",
+          "titleKo": "김비서가 왜 그럴까",
+          "by": "tvN",
+          "year": 2018,
+          "locator": "series",
+          "context": "tvN's official clip is titled with this line, whose double meaning stunned the secretary.",
+          "citation": "https://www.youtube.com/watch?v=sFIONXAnIKg"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0332",
+      "hangul": "떠나지 마",
+      "romanization": "tteonaji ma",
+      "meanings": [
+        "Please don't go away"
+      ],
+      "pos": "expression",
+      "rank": 332,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 정말 끝이야.",
+          "en": "This is really the end."
+        },
+        {
+          "speaker": "B",
+          "ko": "떠나지 마.",
+          "en": "Don't leave me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Goddess of Marriage",
+          "titleKo": "결혼의 여신",
+          "by": "SBS",
+          "year": 2013,
+          "locator": "series",
+          "context": "SBS's official clip is titled with a woman's desperate plea.",
+          "citation": "https://www.youtube.com/watch?v=rBKNLVbWrzs"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0333",
+      "hangul": "내가 데려다줄게",
+      "romanization": "naega deryeodajulge",
+      "meanings": [
+        "I'll take you there"
+      ],
+      "pos": "expression",
+      "rank": 333,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "차가 끊겼네.",
+          "en": "The last bus has gone."
+        },
+        {
+          "speaker": "B",
+          "ko": "내가 데려다줄게.",
+          "en": "I'll take you there."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Kind Seon-ju",
+          "titleKo": "친절한 선주씨",
+          "by": "MBC",
+          "year": 2025,
+          "locator": "series",
+          "context": "MBC's official clip is titled with a ruse to send a worried woman home.",
+          "citation": "https://www.youtube.com/watch?v=isjQk6iKURk"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0334",
+      "hangul": "잘 지냈어요?",
+      "romanization": "jal jinaesseoyo?",
+      "meanings": [
+        "Have you been doing well?"
+      ],
+      "pos": "expression",
+      "rank": 334,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어, 오랜만이에요! 잘 지냈어요?",
+          "en": "Oh, long time no see! How have you been?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 잘 지냈어요.",
+          "en": "Yes, I've been well."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Clean with Passion for Now",
+          "titleKo": "일단 뜨겁게 청소하라",
+          "by": "JTBC",
+          "year": 2018,
+          "locator": "series",
+          "context": "JTBC's official clip is titled with this greeting as a man asks about his old friend.",
+          "citation": "https://www.youtube.com/watch?v=MmxzkJMWLAE"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0335",
+      "hangul": "괜찮아 보여",
+      "romanization": "gwaenchana boyeo",
+      "meanings": [
+        "You look okay"
+      ],
+      "pos": "expression",
+      "rank": 335,
+      "tags": [
+        "daily",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 오늘 어때?",
+          "en": "How do I look today?"
+        },
+        {
+          "speaker": "B",
+          "ko": "괜찮아 보여.",
+          "en": "You look okay."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0336",
+      "hangul": "무슨 말씀이세요?",
+      "romanization": "museun malsseumiseyo?",
+      "meanings": [
+        "What do you mean?"
+      ],
+      "pos": "expression",
+      "rank": 336,
+      "tags": [
+        "daily",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이건 없던 일로 하죠.",
+          "en": "Let's pretend this never happened."
+        },
+        {
+          "speaker": "B",
+          "ko": "무슨 말씀이세요?",
+          "en": "What do you mean?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0337",
+      "hangul": "울어도 돼",
+      "romanization": "ureodo dwae",
+      "meanings": [
+        "It's okay to cry"
+      ],
+      "pos": "expression",
+      "rank": 337,
+      "tags": [
+        "encouragement",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "안 울려고 했는데.",
+          "en": "I tried not to cry."
+        },
+        {
+          "speaker": "B",
+          "ko": "울어도 돼. 내가 옆에 있을게.",
+          "en": "It's okay to cry. I'll stay by you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0338",
+      "hangul": "열심히 하겠습니다",
+      "romanization": "yeolsimhi hagetseumnida",
+      "meanings": [
+        "I'll work hard"
+      ],
+      "pos": "expression",
+      "rank": 338,
+      "tags": [
+        "daily",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 팀에 온 걸 환영해요.",
+          "en": "Welcome to our team."
+        },
+        {
+          "speaker": "B",
+          "ko": "감사합니다. 열심히 하겠습니다.",
+          "en": "Thank you. I'll work hard."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0339",
+      "hangul": "걱정하지 마세요",
+      "romanization": "geokjeonghaji maseyo",
+      "meanings": [
+        "Please don't worry"
+      ],
+      "pos": "expression",
+      "rank": 339,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "수술이 잘 될까요?",
+          "en": "Will the surgery go well?"
+        },
+        {
+          "speaker": "B",
+          "ko": "걱정하지 마세요.",
+          "en": "Please don't worry."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0340",
+      "hangul": "애썼어",
+      "romanization": "aesseosseo",
+      "meanings": [
+        "You worked hard"
+      ],
+      "pos": "expression",
+      "rank": 340,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "드디어 끝났다!",
+          "en": "It's finally over!"
+        },
+        {
+          "speaker": "B",
+          "ko": "애썼어, 정말 잘했어.",
+          "en": "You worked hard, you did great."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Revolutionary Love",
+          "titleKo": "변혁의 사랑",
+          "by": "tvN",
+          "year": 2017,
+          "locator": "series",
+          "context": "tvN's official clip is titled with the words friends most needed to hear in the finale.",
+          "citation": "https://www.youtube.com/watch?v=s_iQFK_Ku3U"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0341",
+      "hangul": "오랜만이다",
+      "romanization": "oraenmanida",
+      "meanings": [
+        "It's been a while"
+      ],
+      "pos": "expression",
+      "rank": 341,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어, 너 맞지? 오랜만이다!",
+          "en": "Hey, it's you, right? Long time no see!"
+        },
+        {
+          "speaker": "B",
+          "ko": "잘 지냈어?",
+          "en": "Have you been well?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Happy Sisters",
+          "titleKo": "해피 시스터즈",
+          "by": "SBS",
+          "year": 2018,
+          "locator": "series",
+          "context": "SBS's official clip is titled with a barbed greeting from a longtime rival.",
+          "citation": "https://www.youtube.com/watch?v=u5RF_peoW64"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0342",
+      "hangul": "도와줘",
+      "romanization": "dowajwo",
+      "meanings": [
+        "Help me"
+      ],
+      "pos": "expression",
+      "rank": 342,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 상자 너무 무거워.",
+          "en": "This box is too heavy."
+        },
+        {
+          "speaker": "B",
+          "ko": "내가 들게. 아니, 같이 들자. 도와줘!",
+          "en": "I'll lift it. No, let's lift together. Help me!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "show",
+          "title": "The Return of Superman",
+          "titleKo": "슈퍼맨이 돌아왔다",
+          "by": "KBS",
+          "year": 2020,
+          "locator": "series",
+          "context": "KBS Entertain's official clip is titled with a dad's playful call for help.",
+          "citation": "https://www.youtube.com/watch?v=XZSKJdXa2Mk"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0343",
+      "hangul": "네 잘못이 아니야",
+      "romanization": "ne jalmosi aniya",
+      "meanings": [
+        "It's not your fault"
+      ],
+      "pos": "expression",
+      "rank": 343,
+      "tags": [
+        "encouragement",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "제가 다 망친 것 같아요.",
+          "en": "I think I ruined everything."
+        },
+        {
+          "speaker": "B",
+          "ko": "네 잘못이 아니야.",
+          "en": "It's not your fault."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Uncontrollably Fond",
+          "titleKo": "함부로 애틋하게",
+          "by": "KBS",
+          "year": 2016,
+          "locator": "series",
+          "context": "KBS's official clip is titled with the comforting line a character has longed to hear.",
+          "citation": "https://www.youtube.com/watch?v=n8_imrJhDpQ"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0344",
+      "hangul": "제가 도와드릴까요?",
+      "romanization": "jega dowadeurilkkayo?",
+      "meanings": [
+        "Shall I help you?"
+      ],
+      "pos": "expression",
+      "rank": 344,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "짐이 너무 무겁네요.",
+          "en": "The bags are so heavy."
+        },
+        {
+          "speaker": "B",
+          "ko": "제가 도와드릴까요?",
+          "en": "Shall I help you?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0345",
+      "hangul": "또 보자",
+      "romanization": "tto boja",
+      "meanings": [
+        "See you again"
+      ],
+      "pos": "expression",
+      "rank": 345,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 즐거웠어.",
+          "en": "I had a good time today."
+        },
+        {
+          "speaker": "B",
+          "ko": "나도. 또 보자!",
+          "en": "Me too. See you again!"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Go Back Couple",
+          "titleKo": "고백부부",
+          "by": "KBS",
+          "year": 2017,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a cheeky goodbye that hints at more to come.",
+          "citation": "https://www.youtube.com/watch?v=6w2sa8V-i88"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0346",
+      "hangul": "고생 많으셨어요",
+      "romanization": "gosaeng maneusyeosseoyo",
+      "meanings": [
+        "You've gone through a lot"
+      ],
+      "pos": "expression",
+      "rank": 346,
+      "tags": [
+        "encouragement",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 행사 잘 끝났어요.",
+          "en": "Today's event ended well."
+        },
+        {
+          "speaker": "B",
+          "ko": "고생 많으셨어요.",
+          "en": "You've gone through a lot."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0347",
+      "hangul": "술 한잔 하자",
+      "romanization": "sul hanjan haja",
+      "meanings": [
+        "Let's have a drink"
+      ],
+      "pos": "expression",
+      "rank": 347,
+      "tags": [
+        "friendship",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 일 힘들었지?",
+          "en": "Was work hard today?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응. 술 한잔 하자.",
+          "en": "Yeah. Let's have a drink."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Jealousy Incarnate",
+          "titleKo": "질투의 화신",
+          "by": "SBS",
+          "year": 2016,
+          "locator": "series",
+          "context": "SBS Catch's official compilation is titled with this casual drinking invitation.",
+          "citation": "https://www.youtube.com/watch?v=Gp63UU13E2o"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0348",
+      "hangul": "먼저 퇴근하겠습니다",
+      "romanization": "meonjeo toegeunhagetseumnida",
+      "meanings": [
+        "I'll head home from work first"
+      ],
+      "pos": "expression",
+      "rank": 348,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 야근 없죠?",
+          "en": "No overtime today, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 먼저 퇴근하겠습니다.",
+          "en": "Right, I'll head home first."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0349",
+      "hangul": "효도할게요",
+      "romanization": "hyodohalgeyo",
+      "meanings": [
+        "I'll be a good child to you"
+      ],
+      "pos": "expression",
+      "rank": 349,
+      "tags": [
+        "family",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마, 나중에 꼭 효도할게요.",
+          "en": "Mom, I'll definitely repay you someday."
+        },
+        {
+          "speaker": "B",
+          "ko": "지금도 충분해.",
+          "en": "You already do enough."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0350",
+      "hangul": "확인해 보겠습니다",
+      "romanization": "hwaginhae bogetseumnida",
+      "meanings": [
+        "I'll check on it"
+      ],
+      "pos": "expression",
+      "rank": 350,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 주문, 아직 안 왔어요.",
+          "en": "This order hasn't arrived yet."
+        },
+        {
+          "speaker": "B",
+          "ko": "확인해 보겠습니다.",
+          "en": "I'll check on it."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0351",
+      "hangul": "내 옆에 있어",
+      "romanization": "nae yeope isseo",
+      "meanings": [
+        "Stay by my side"
+      ],
+      "pos": "expression",
+      "rank": 351,
+      "tags": [
+        "romance",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "건강하게 오래 내 옆에 있어.",
+          "en": "Stay healthy and by my side for a long time."
+        },
+        {
+          "speaker": "B",
+          "ko": "그럼, 걱정하지 마.",
+          "en": "Of course, don't worry."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Let's Get Married, Maengkkong!",
+          "titleKo": "결혼하자 맹꽁아!",
+          "by": "KBS",
+          "year": 2025,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a son's wish that his mother stay by him.",
+          "citation": "https://www.youtube.com/watch?v=hdJKM2O0ETk"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0352",
+      "hangul": "설마",
+      "romanization": "seolma",
+      "meanings": [
+        "No way"
+      ],
+      "pos": "expression",
+      "rank": 352,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 어제 복권 샀어.",
+          "en": "I bought a lottery ticket yesterday."
+        },
+        {
+          "speaker": "B",
+          "ko": "설마, 당첨됐어?",
+          "en": "No way, did you win?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0353",
+      "hangul": "내가 있잖아",
+      "romanization": "naega itjanha",
+      "meanings": [
+        "I'm here for you"
+      ],
+      "pos": "expression",
+      "rank": 353,
+      "tags": [
+        "encouragement",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마 울지 마.",
+          "en": "Mom, don't cry."
+        },
+        {
+          "speaker": "B",
+          "ko": "내가 있잖아.",
+          "en": "I'm here for you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Secret Man",
+          "titleKo": "비밀의 남자",
+          "by": "KBS",
+          "year": 2020,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a son's words to a mother in tears.",
+          "citation": "https://www.youtube.com/watch?v=CvFQr7TtKnE"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0354",
+      "hangul": "제가 살게요",
+      "romanization": "jega salgeyo",
+      "meanings": [
+        "I'll treat you"
+      ],
+      "pos": "expression",
+      "rank": 354,
+      "tags": [
+        "daily",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 저녁은 뭘 먹을까요?",
+          "en": "What shall we eat tonight?"
+        },
+        {
+          "speaker": "B",
+          "ko": "제가 살게요. 마음껏 드세요.",
+          "en": "I'll treat you. Order whatever you like."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0355",
+      "hangul": "시간 좀 줘",
+      "romanization": "sigan jom jwo",
+      "meanings": [
+        "Give me some time"
+      ],
+      "pos": "expression",
+      "rank": 355,
+      "tags": [
+        "daily",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "대답은 언제 해 줄 거야?",
+          "en": "When will you give me an answer?"
+        },
+        {
+          "speaker": "B",
+          "ko": "시간 좀 줘.",
+          "en": "Give me some time."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "My Golden Life",
+          "titleKo": "황금빛 내 인생",
+          "by": "KBS",
+          "year": 2017,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a heroine asking a man for time while drawing a line.",
+          "citation": "https://www.youtube.com/watch?v=EkPts4KX24o"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0356",
+      "hangul": "한 번만 믿어 줘",
+      "romanization": "han beonman mideo jwo",
+      "meanings": [
+        "Trust me just once"
+      ],
+      "pos": "expression",
+      "rank": 356,
+      "tags": [
+        "conflict",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "또 거짓말하려는 거지?",
+          "en": "You're going to lie again, aren't you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니야, 한 번만 믿어 줘.",
+          "en": "No, trust me just once."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Snow White's Revenge",
+          "titleKo": "스캔들",
+          "by": "KBS",
+          "year": 2024,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a false-tearful plea to a former friend.",
+          "citation": "https://www.youtube.com/watch?v=qCB7UFpta5E"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0357",
+      "hangul": "내 여자친구 해",
+      "romanization": "nae yeojachingu hae",
+      "meanings": [
+        "Be my girlfriend"
+      ],
+      "pos": "expression",
+      "rank": 357,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "진심이야?",
+          "en": "Are you serious?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 오늘부터 내 여자친구 해.",
+          "en": "Yes, from today, be my girlfriend."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Five Children",
+          "titleKo": "아이가 다섯",
+          "by": "KBS",
+          "year": 2016,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a playful request for a girlfriend.",
+          "citation": "https://www.youtube.com/watch?v=JjciJsQh2oA"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0358",
+      "hangul": "편히 쉬세요",
+      "romanization": "pyeonhi swiseyo",
+      "meanings": [
+        "Please rest well"
+      ],
+      "pos": "expression",
+      "rank": 358,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그럼 저 먼저 들어가 볼게요.",
+          "en": "Then I'll go in first."
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 편히 쉬세요.",
+          "en": "Yes, please rest well."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0359",
+      "hangul": "숙제했어?",
+      "romanization": "sukjehaesseo?",
+      "meanings": [
+        "Did you do your homework?"
+      ],
+      "pos": "expression",
+      "rank": 359,
+      "tags": [
+        "family",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마, 나 놀러 가도 돼요?",
+          "en": "Mom, can I go play?"
+        },
+        {
+          "speaker": "B",
+          "ko": "숙제했어?",
+          "en": "Did you do your homework?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0360",
+      "hangul": "진짜 대박이다",
+      "romanization": "jinjja daebagida",
+      "meanings": [
+        "That's totally amazing"
+      ],
+      "pos": "expression",
+      "rank": 360,
+      "tags": [
+        "slang",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 반 1등 했어!",
+          "en": "Our class came first!"
+        },
+        {
+          "speaker": "B",
+          "ko": "진짜 대박이다!",
+          "en": "That's totally amazing!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0361",
+      "hangul": "기회를 줘",
+      "romanization": "gihoereul jwo",
+      "meanings": [
+        "Give me a chance"
+      ],
+      "pos": "expression",
+      "rank": 361,
+      "tags": [
+        "romance",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다시는 안 그럴게.",
+          "en": "I won't do that ever again."
+        },
+        {
+          "speaker": "B",
+          "ko": "기회를 줘.",
+          "en": "Give me a chance."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Happy Sisters",
+          "titleKo": "해피 시스터즈",
+          "by": "SBS",
+          "year": 2018,
+          "locator": "series",
+          "context": "SBS's official clip is titled with a stubborn request for another chance.",
+          "citation": "https://www.youtube.com/watch?v=Q184YWbOKxk"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0362",
+      "hangul": "날 뭘로 보는 거야?",
+      "romanization": "nal mwollo boneun geoya?",
+      "meanings": [
+        "What do you take me for?"
+      ],
+      "pos": "expression",
+      "rank": 362,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그냥 부탁 하나만 하자.",
+          "en": "Just do me one favor."
+        },
+        {
+          "speaker": "B",
+          "ko": "날 뭘로 보는 거야?",
+          "en": "What do you take me for?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0363",
+      "hangul": "나랑 결혼해 줄래요?",
+      "romanization": "narang gyeolhonhae jullaeyo?",
+      "meanings": [
+        "Will you marry me?"
+      ],
+      "pos": "expression",
+      "rank": 363,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "저, 드릴 말씀이 있어요.",
+          "en": "I have something to say."
+        },
+        {
+          "speaker": "B",
+          "ko": "나랑 결혼해 줄래요?",
+          "en": "Will you marry me?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Young Lady and Gentleman",
+          "titleKo": "신사와 아가씨",
+          "by": "KBS",
+          "year": 2022,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a heartfelt proposal.",
+          "citation": "https://www.youtube.com/watch?v=iJnM84MHk2M"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0364",
+      "hangul": "네가 뭔데?",
+      "romanization": "nega mwonde?",
+      "meanings": [
+        "Who are you to say that?"
+      ],
+      "pos": "expression",
+      "rank": 364,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내 일에 신경 꺼.",
+          "en": "Stay out of my business."
+        },
+        {
+          "speaker": "B",
+          "ko": "네가 뭔데 나한테 그래?",
+          "en": "Who do you think you are to say that to me?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Hello, My Twenties!",
+          "titleKo": "청춘시대",
+          "by": "JTBC",
+          "year": 2016,
+          "locator": "series",
+          "context": "JTBC's official clip is titled with a bitter retort to a former love.",
+          "citation": "https://www.youtube.com/watch?v=xhU-c4FY7lc"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0365",
+      "hangul": "손 잡아도 돼?",
+      "romanization": "son jabado dwae?",
+      "meanings": [
+        "Can I hold your hand?"
+      ],
+      "pos": "expression",
+      "rank": 365,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "밤길이 좀 춥네.",
+          "en": "The night road is a bit cold."
+        },
+        {
+          "speaker": "B",
+          "ko": "손 잡아도 돼?",
+          "en": "Can I hold your hand?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "show",
+          "title": "I Am Solo",
+          "titleKo": "나는 SOLO",
+          "by": "SBS Plus",
+          "year": 2023,
+          "locator": "series",
+          "context": "SBS Plus's official clip from this dating reality show is titled with this flirty question.",
+          "citation": "https://www.youtube.com/watch?v=PRpSRImua7w"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0366",
+      "hangul": "조심해서 가세요",
+      "romanization": "josimhaeseo gaseyo",
+      "meanings": [
+        "Please go carefully"
+      ],
+      "pos": "expression",
+      "rank": 366,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "비가 오니까 조심해서 가세요.",
+          "en": "It's raining, so please go carefully."
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 감사합니다.",
+          "en": "Yes, thank you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0367",
+      "hangul": "그만하자",
+      "romanization": "geumanhaja",
+      "meanings": [
+        "Let's stop"
+      ],
+      "pos": "expression",
+      "rank": 367,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 계속 이렇게 싸울 거야?",
+          "en": "Are we going to keep fighting like this?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그만하자.",
+          "en": "Let's stop."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0368",
+      "hangul": "한 번만 봐주세요",
+      "romanization": "han beonman bwajuseyo",
+      "meanings": [
+        "Please cut me some slack just once"
+      ],
+      "pos": "expression",
+      "rank": 368,
+      "tags": [
+        "daily",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이번엔 규칙을 어기셨어요.",
+          "en": "You broke the rules this time."
+        },
+        {
+          "speaker": "B",
+          "ko": "한 번만 봐주세요.",
+          "en": "Please cut me some slack just once."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0369",
+      "hangul": "다 내 잘못이야",
+      "romanization": "da nae jalmosiya",
+      "meanings": [
+        "It's all my fault"
+      ],
+      "pos": "expression",
+      "rank": 369,
+      "tags": [
+        "feelings",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너무 자책하지 마.",
+          "en": "Don't blame yourself so much."
+        },
+        {
+          "speaker": "B",
+          "ko": "아니야, 다 내 잘못이야.",
+          "en": "No, it's all my fault."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Another Kind of Romance",
+          "titleKo": "너 말고 다른 연애",
+          "by": "KBS",
+          "year": 2026,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a line from a man who takes the blame.",
+          "citation": "https://www.youtube.com/watch?v=q_hkCl5XLw8"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0370",
+      "hangul": "몸 조심해",
+      "romanization": "mom josimhae",
+      "meanings": [
+        "Look after your health"
+      ],
+      "pos": "expression",
+      "rank": 370,
+      "tags": [
+        "encouragement",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 이제 출장 다녀올게.",
+          "en": "I'm off on my business trip now."
+        },
+        {
+          "speaker": "B",
+          "ko": "그래, 몸 조심해.",
+          "en": "Okay, take care of yourself."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Queen's House",
+          "titleKo": "여왕의 집",
+          "by": "KBS",
+          "year": 2025,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a warning given between two rivals.",
+          "citation": "https://www.youtube.com/watch?v=DHeSI8c5RMo"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0371",
+      "hangul": "식사하셨어요?",
+      "romanization": "siksahasyeosseoyo?",
+      "meanings": [
+        "Have you had your meal?"
+      ],
+      "pos": "expression",
+      "rank": 371,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "할머니, 식사하셨어요?",
+          "en": "Grandma, have you had your meal?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그래, 먹었다. 너도 먹었니?",
+          "en": "Yes, I did. Did you eat too?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0372",
+      "hangul": "보고드리겠습니다",
+      "romanization": "bogodeurigetseumnida",
+      "meanings": [
+        "I will report back"
+      ],
+      "pos": "expression",
+      "rank": 372,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "결과는 언제 알 수 있죠?",
+          "en": "When can I learn the results?"
+        },
+        {
+          "speaker": "B",
+          "ko": "마무리하고 보고드리겠습니다.",
+          "en": "I'll finish up and report back."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Trap of Desire",
+          "titleKo": "욕망의 덫",
+          "by": "KBS",
+          "year": 2026,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a formal reply that irritates a coworker.",
+          "citation": "https://www.youtube.com/watch?v=sI1VPViO24M"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0373",
+      "hangul": "병원 가자",
+      "romanization": "byeongwon gaja",
+      "meanings": [
+        "Let's go to the hospital"
+      ],
+      "pos": "expression",
+      "rank": 373,
+      "tags": [
+        "daily",
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다리를 다쳤어.",
+          "en": "I hurt my leg."
+        },
+        {
+          "speaker": "B",
+          "ko": "병원 가자. 업혀.",
+          "en": "Let's go to the hospital. Get on my back."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Love to the End",
+          "titleKo": "끝까지 사랑",
+          "by": "KBS",
+          "year": 2018,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a man helping an injured woman up.",
+          "citation": "https://www.youtube.com/watch?v=D2t_8GIAWtk"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0374",
+      "hangul": "또 봬서 반갑습니다",
+      "romanization": "tto bwaeseo bangapseumnida",
+      "meanings": [
+        "Nice to see you again"
+      ],
+      "pos": "expression",
+      "rank": 374,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "formal",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "안녕하세요, 대표님.",
+          "en": "Hello, sir."
+        },
+        {
+          "speaker": "B",
+          "ko": "또 봬서 반갑습니다.",
+          "en": "Nice to see you again."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Three Siblings Bravely",
+          "titleKo": "삼남매가 용감하게",
+          "by": "KBS",
+          "year": 2023,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a courteous greeting before a revenge twist.",
+          "citation": "https://www.youtube.com/watch?v=UeUhnfs2928"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0375",
+      "hangul": "이게 어디서 거짓말이야?",
+      "romanization": "ige eodiseo geojinmariya?",
+      "meanings": [
+        "How dare you lie to me?"
+      ],
+      "pos": "expression",
+      "rank": 375,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "정말이야, 나 안 갔어.",
+          "en": "It's true, I didn't go."
+        },
+        {
+          "speaker": "B",
+          "ko": "이게 어디서 거짓말이야?",
+          "en": "How dare you lie to me?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Mother of Mine",
+          "titleKo": "세상에서 제일 예쁜 내 딸",
+          "by": "KBS",
+          "year": 2019,
+          "locator": "series",
+          "context": "KBS's official clip is titled with an angry accusation as a man sneaks out.",
+          "citation": "https://www.youtube.com/watch?v=NO6RzdxifPE"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0376",
+      "hangul": "용서해 줘",
+      "romanization": "yongseohae jwo",
+      "meanings": [
+        "Forgive me"
+      ],
+      "pos": "expression",
+      "rank": 376,
+      "tags": [
+        "feelings",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "정말 미안해. 한 번만 용서해 줘.",
+          "en": "I'm really sorry. Forgive me just once."
+        },
+        {
+          "speaker": "B",
+          "ko": "생각해 볼게.",
+          "en": "I'll think about it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Young Lady and Gentleman",
+          "titleKo": "신사와 아가씨",
+          "by": "KBS",
+          "year": 2022,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a plea for forgiveness.",
+          "citation": "https://www.youtube.com/watch?v=8vxEsX_0koU"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0377",
+      "hangul": "배고파 죽겠어",
+      "romanization": "baegopa jukgesseo",
+      "meanings": [
+        "I'm starving to death"
+      ],
+      "pos": "expression",
+      "rank": 377,
+      "tags": [
+        "daily",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "점심 안 먹었어?",
+          "en": "Didn't you eat lunch?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 배고파 죽겠어.",
+          "en": "No, I'm starving."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0378",
+      "hangul": "어떻게 이럴 수가 있어?",
+      "romanization": "eotteoke ireol suga isseo?",
+      "meanings": [
+        "How could you do this?"
+      ],
+      "pos": "expression",
+      "rank": 378,
+      "tags": [
+        "conflict",
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "미안, 내가 깜빡했어.",
+          "en": "Sorry, I forgot."
+        },
+        {
+          "speaker": "B",
+          "ko": "어떻게 이럴 수가 있어?",
+          "en": "How could you do this?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0379",
+      "hangul": "기다리고 있었어",
+      "romanization": "gidarigo isseosseo",
+      "meanings": [
+        "I've been waiting for you"
+      ],
+      "pos": "expression",
+      "rank": 379,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "미안, 많이 늦었지?",
+          "en": "Sorry, I'm very late, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니야, 기다리고 있었어.",
+          "en": "No, I've been waiting for you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0380",
+      "hangul": "어이없다",
+      "romanization": "eoieopda",
+      "meanings": [
+        "That's absurd"
+      ],
+      "pos": "expression",
+      "rank": 380,
+      "tags": [
+        "exclamation",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람이 또 약속을 잊어버렸대.",
+          "en": "They forgot the appointment again."
+        },
+        {
+          "speaker": "B",
+          "ko": "진짜 어이없다.",
+          "en": "That's really absurd."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Once Again",
+          "titleKo": "한 번 다녀왔습니다",
+          "by": "KBS",
+          "year": 2020,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a heroine who is baffled yet suddenly hungry.",
+          "citation": "https://www.youtube.com/watch?v=0eMuSmb6yoE"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0381",
+      "hangul": "잘했다",
+      "romanization": "jalhaetda",
+      "meanings": [
+        "Good job"
+      ],
+      "pos": "expression",
+      "rank": 381,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "보고서 제출했어요!",
+          "en": "I submitted the report!"
+        },
+        {
+          "speaker": "B",
+          "ko": "잘했다.",
+          "en": "Well done."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Argon",
+          "titleKo": "아르곤",
+          "by": "tvN",
+          "year": 2017,
+          "locator": "series",
+          "context": "tvN's official clip is titled with a sincere compliment from a boss.",
+          "citation": "https://www.youtube.com/watch?v=nDnQkZJGY7I"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0382",
+      "hangul": "나 좀 내버려 둬",
+      "romanization": "na jom naebeoryeo dwo",
+      "meanings": [
+        "Just leave me alone"
+      ],
+      "pos": "expression",
+      "rank": 382,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무슨 일 있어? 얘기해 봐.",
+          "en": "What's wrong? Talk to me."
+        },
+        {
+          "speaker": "B",
+          "ko": "나 좀 내버려 둬.",
+          "en": "Just leave me alone."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "My Perfect Stranger",
+          "titleKo": "어쩌다 마주친, 그대",
+          "by": "KBS",
+          "year": 2023,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a battered character begging to be left alone.",
+          "citation": "https://www.youtube.com/watch?v=RWSzYQQc8-U"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0383",
+      "hangul": "다 너 때문이야",
+      "romanization": "da neo ttaemuniya",
+      "meanings": [
+        "It's all because of you"
+      ],
+      "pos": "expression",
+      "rank": 383,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 이렇게 됐어?",
+          "en": "How did this happen?"
+        },
+        {
+          "speaker": "B",
+          "ko": "다 너 때문이야.",
+          "en": "It's all because of you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Sun in the Sky",
+          "titleKo": "저 하늘에 태양이",
+          "by": "KBS",
+          "year": 2016,
+          "locator": "series",
+          "context": "KBS's official clip is titled with an angry accusation.",
+          "citation": "https://www.youtube.com/watch?v=fye-gwaJ-Ls"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0384",
+      "hangul": "좀 앉아",
+      "romanization": "jom anja",
+      "meanings": [
+        "Sit down a moment"
+      ],
+      "pos": "expression",
+      "rank": 384,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "계속 서 있으면 다리 아파.",
+          "en": "Your legs will ache if you keep standing."
+        },
+        {
+          "speaker": "B",
+          "ko": "좀 앉아.",
+          "en": "Sit down a moment."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0385",
+      "hangul": "무리하지 마",
+      "romanization": "murihaji ma",
+      "meanings": [
+        "Don't overdo it"
+      ],
+      "pos": "expression",
+      "rank": 385,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "밤새 일할 거야.",
+          "en": "I'll work all night."
+        },
+        {
+          "speaker": "B",
+          "ko": "무리하지 마.",
+          "en": "Don't overdo it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "The Secret Man",
+          "titleKo": "비밀의 남자",
+          "by": "KBS",
+          "year": 2020,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a reassuring request not to push too hard.",
+          "citation": "https://www.youtube.com/watch?v=lBxaaDBbwrw"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0386",
+      "hangul": "한 번만 봐줘",
+      "romanization": "han beonman bwajwo",
+      "meanings": [
+        "Cut me some slack just once"
+      ],
+      "pos": "expression",
+      "rank": 386,
+      "tags": [
+        "daily",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "숙제 못 했어. 한 번만 봐줘.",
+          "en": "I didn't do my homework. Cut me some slack just once."
+        },
+        {
+          "speaker": "B",
+          "ko": "이번만이야.",
+          "en": "Just this once."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0387",
+      "hangul": "집에 데려다줄게",
+      "romanization": "jibe deryeodajulge",
+      "meanings": [
+        "I'll take you home"
+      ],
+      "pos": "expression",
+      "rank": 387,
+      "tags": [
+        "romance",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "비가 많이 오네.",
+          "en": "It's raining hard."
+        },
+        {
+          "speaker": "B",
+          "ko": "집에 데려다줄게.",
+          "en": "I'll take you home."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0388",
+      "hangul": "이쪽으로 오세요",
+      "romanization": "ijjogeuro oseyo",
+      "meanings": [
+        "Please come this way"
+      ],
+      "pos": "expression",
+      "rank": 388,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "예약한 김민수입니다.",
+          "en": "I'm Kim Min-su, I have a reservation."
+        },
+        {
+          "speaker": "B",
+          "ko": "네, 이쪽으로 오세요.",
+          "en": "Yes, please come this way."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0389",
+      "hangul": "너 지금 뭐 하는 거야?",
+      "romanization": "neo jigeum mwo haneun geoya?",
+      "meanings": [
+        "What do you think you're doing?"
+      ],
+      "pos": "expression",
+      "rank": 389,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 서류, 내가 좀 고쳤어.",
+          "en": "I changed this paperwork a bit."
+        },
+        {
+          "speaker": "B",
+          "ko": "너 지금 뭐 하는 거야?",
+          "en": "What do you think you're doing?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Forbidden Marriage",
+          "titleKo": "금혼령, 조선 혼인 금지령",
+          "by": "MBC",
+          "year": 2022,
+          "locator": "series",
+          "context": "MBC's official clip is titled with this angry question after a character witnesses a scam.",
+          "citation": "https://www.youtube.com/watch?v=uAmd8FVUoUA"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0390",
+      "hangul": "소름 돋았어",
+      "romanization": "soreum dodasseo",
+      "meanings": [
+        "I got goosebumps"
+      ],
+      "pos": "expression",
+      "rank": 390,
+      "tags": [
+        "exclamation",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 노래 들었어?",
+          "en": "Did you hear that song?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 소름 돋았어.",
+          "en": "Yeah, I got goosebumps."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0391",
+      "hangul": "나 좀 도와줄래?",
+      "romanization": "na jom dowajullae?",
+      "meanings": [
+        "Could you help me?"
+      ],
+      "pos": "expression",
+      "rank": 391,
+      "tags": [
+        "daily",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "뭐든지 말해.",
+          "en": "Name it."
+        },
+        {
+          "speaker": "B",
+          "ko": "나 좀 도와줄래?",
+          "en": "Could you help me?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Healer",
+          "titleKo": "힐러",
+          "by": "KBS",
+          "year": 2014,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a hero's quiet request for help before a hug.",
+          "citation": "https://www.youtube.com/watch?v=j6YAhwMh-T0"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0392",
+      "hangul": "푹 쉬어",
+      "romanization": "puk swieo",
+      "meanings": [
+        "Get a good rest"
+      ],
+      "pos": "expression",
+      "rank": 392,
+      "tags": [
+        "encouragement",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "오늘 너무 피곤해.",
+          "en": "I'm so tired today."
+        },
+        {
+          "speaker": "B",
+          "ko": "집에 가서 푹 쉬어.",
+          "en": "Go home and get a good rest."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "National Team's Wife",
+          "titleKo": "국가대표 와이프",
+          "by": "KBS",
+          "year": 2022,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a friend's advice to rest while he can.",
+          "citation": "https://www.youtube.com/watch?v=Irm88z4N8WU"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0393",
+      "hangul": "한 번만 도와줘",
+      "romanization": "han beonman dowajwo",
+      "meanings": [
+        "Help me just this once"
+      ],
+      "pos": "expression",
+      "rank": 393,
+      "tags": [
+        "daily",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "무슨 일이야?",
+          "en": "What's going on?"
+        },
+        {
+          "speaker": "B",
+          "ko": "부탁이야, 한 번만 도와줘.",
+          "en": "Please, help me just this once."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Golden Mask",
+          "titleKo": "황금가면",
+          "by": "KBS",
+          "year": 2022,
+          "locator": "series",
+          "context": "KBS's official clip is titled with a desperate plea made on bended knee.",
+          "citation": "https://www.youtube.com/watch?v=Cb_OYwD62LE"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0394",
+      "hangul": "천천히 와",
+      "romanization": "cheoncheonhi wa",
+      "meanings": [
+        "Take your time coming"
+      ],
+      "pos": "expression",
+      "rank": 394,
+      "tags": [
+        "romance",
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "조금 늦을 것 같아.",
+          "en": "I'm going to be a bit late."
+        },
+        {
+          "speaker": "B",
+          "ko": "기다릴게, 천천히 와.",
+          "en": "I'll wait, take your time."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Suspicious Partner",
+          "titleKo": "수상한 파트너",
+          "by": "SBS",
+          "year": 2017,
+          "locator": "series",
+          "context": "SBS's official clip is titled with a confession made as a man says he will wait.",
+          "citation": "https://www.youtube.com/watch?v=g1BADyDD4mw"
+        }
+      ]
     }
   ]
 }
