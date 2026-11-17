@@ -23,9 +23,9 @@
 | R6-2 Polite 요 form graded wrong; shared glosses | **T3** (matcher), **T4** (glosses) | implementor |
 | R6-3 Stale ring audio answers the next card at 0 ms | **T5** | implementor |
 | R6-7a Home aurora may tick under the session cover | **T6** (measure first) | frontend agent |
-| R6-4 284 new entries unplanned / unverified | T2 (commit) + P2 (planner §17) + content rows | planner, content agent, owner |
+| R6-4 284 new entries unplanned / unverified | T2 (commit), **C1** (verification rows), P2 (planner §17 ☑) | implementor, **content agent**, owner (spot-check) |
 | R6-5 K2 misses its targets; spot-check | none (owner) | owner, D2 |
-| R6-6 PLAN still contradicts the code; K5 unscheduled | P1, P3 | planner |
+| R6-6 PLAN still contradicts the code; K5 unscheduled | P1 ☑, P3 ☑, **T7** (K5) | planner, implementor |
 | R6-8a/b CI runs no tests; hard-coded counts | none | tester |
 | R6-7b Saved-config decode per Home load | none | no action unless G5 timing shows it |
 | R6-8c Media entries with no `register` | none | no action (intended) |
@@ -34,6 +34,7 @@
 1. **T1 and T2 come first.** They make `HEAD` green and the media deck visible.
 2. After that, **T3, T4 and T5** are independent and touch disjoint files. They can run in parallel. T4 edits `ko_media.json`, so it must start **after** T1 is committed.
 3. **T6** is independent and can run at any time.
+4. **C1** (content agent) runs after T2. **T7** (K5) runs after T1, preferably after T3 and T4.
 
 ## 2. Tracker
 
@@ -45,6 +46,8 @@
 | T4 Make the media deck's glosses unique | R6-2 | ☐ | After T1 is committed |
 | T5 Ignore pre-arm audio; no 0 ms mic answers | R6-3 | ☐ | App + one core line |
 | T6 Home aurora under the session cover | R6-7a | ☐ | Frontend agent; measure first |
+| C1 Verification rows: Core 5 226–450 + AION 2 | R6-4 | ☐ | Content agent, after T2; owner spot-checks 15 per deck |
+| T7 K5 integration + README QA | R6-6, PLAN_M5 K5 | ☐ | After T1 (ideally after T3/T4) |
 
 ---
 
@@ -276,6 +279,74 @@
 
 ---
 
+### C1 · R6-4 · Verification rows for the Core 5 and AION 2 extensions (content agent)
+
+**Prerequisite:** T2 is committed, so the rows describe committed content.
+
+**Problem:**
+- The 225 new Core 5 entries (`ko.core.1095`–`ko.core.1319`) have no rows in `docs/core-verification.md`, and its Core 5 header still says "225 entries".
+- AION 2 has no verification table at all, for any of its 140 entries.
+
+**File:** `docs/core-verification.md`. This is the only file C1 touches. No deck JSON changes.
+
+**Steps:**
+1. **Generate the rows from the JSON, not by hand.** Use a throwaway Python script that is not committed, so the `hangul`, `romanization`, `meaning` and `pos` columns match the deck exactly. `meaning` is the entry's `meanings` joined with "; ", the same as the existing rows.
+2. **Core 5:**
+   - Change the heading `## Korean Core 5 (225 entries)` to `## Korean Core 5 (450 entries)`.
+   - Append one row per entry for `ko.core.1095` to `ko.core.1319`, in id order, after the `ko.core.1094` row. Use the existing columns: `id | hangul | romanization | meaning | pos | conj | dictionary | Checked`.
+   - `dictionary` is the KRDict search link, built exactly like the existing rows: `https://krdict.korean.go.kr/eng/dicSearch/search?nation=eng&nationCode=6&mainSearchWord=<percent-encoded hangul>`.
+   - `Checked` is `☐`.
+3. **Change the title line** to `# Korean Core 2–5 and AION 2 verification table (M4-1, M4-1b)`.
+4. **New section at the end: `## AION 2 (140 entries)`.**
+   - Columns: `id | hangul | romanization | meaning | pos | kind | evidence | Checked`. Fill in every entry from `ko.aion2.0001` to `ko.aion2.0140`.
+   - `kind` is `dictionary` when the word is ordinary Korean that KRDict covers (e.g. 인벤토리, 장비). Otherwise it is `game` (game terms and community slang such as 장판 and 기믹).
+   - `evidence`:
+     - for `dictionary` rows, the KRDict link, as for Core 5;
+     - for `game` rows, leave it **empty**, unless the agent is web-capable and finds the term on an official AION 2 page (NCSOFT site, patch notes or guide). In that case the cell holds that URL. Community wikis or forums alone do not count.
+   - `Checked` is `☐` for every row. Only the owner ticks `game` rows, after confirming the term in game.
+   - Add a two-line note under the heading: "`game` rows need the owner's in-game confirmation. Ids 0082–0140 were added in M4-1b (R6-4)."
+5. **Tick nothing yourself** unless you are web-capable and have opened the linked entry. That follows the existing header rule: meaning, RR, and the irregular class for predicates.
+6. **Commit:** `M4-1b: verification rows for Core 5 (226–450) and AION 2`. Stage only `docs/core-verification.md`.
+
+**Acceptance:**
+- **Core 5:** the section has exactly 450 rows. Every id from `ko.core.0870` to `ko.core.1319` appears once.
+- **AION 2:** the section has exactly 140 rows, `ko.aion2.0001` to `ko.aion2.0140`.
+- For every row, `hangul` and `meaning` equal the JSON. Check with the same script.
+- Every `dictionary` link opens a KRDict search for that word.
+- **Owner follow-up (R6-4, PLAN_M4 M4-1 Accept):** spot-check 15 random new entries per deck and tick them. Two or more errors in a deck send that deck back for a full dictionary pass.
+
+---
+
+### T7 · R6-6 · PLAN_M5 K5: integration and QA for the media deck
+
+**Prerequisite:** T1 is committed. It is best done after T3 and T4 too, so the QA lines can be checked in one pass.
+
+**Already met:** K5 step 2's direction default (`VocabOptions.direction = .koToEn`), and step 4's PLAN.md tracker row, which the planner added on 2026-11-17.
+
+**Files:** `README.md` (the manual QA checklist). No Swift changes are expected. If a check below fails, fix it in the file that owns that behaviour and list the fix in the commit body.
+
+**Steps:**
+1. **Home placement (K5 step 1).** Run the app. The Korean section shows the media deck titled "Korean · K-pop & K-drama" with the subtitle "Phrases you'll hear in songs and shows". It sits after Patterns and before AION 2. If it doesn't, check `HomeView`'s Korean ordering against PLAN.md §11.5d ("other bundled decks, AION 2") and fix it there.
+2. **Setup (K5 step 2).** Open Session Setup for the media deck:
+   - the direction defaults to ko→en;
+   - the topic filter lists the media deck's own tags only, not Core tags. If it shows other decks' tags, fix the tag source in Setup and note it.
+3. **README (K5 step 3).** Append these three lines to `## Manual QA checklist`, after the last M4 line:
+   ```
+   - [ ] M5 media deck: Home lists "Korean · K-pop & K-drama" between Patterns and AION 2; Setup defaults to ko→en; a reveal shows "In a scene" (each line has 🔊), "Heard in" (names only, no links; songs end in "· lyrics") and "My snippet"; long reveals scroll and Wrong/Correct stay reachable
+   - [ ] M5 my snippet: on any vocab reveal (Core, AION, user decks, listening), "Add your own snippet" opens the editor and pauses the timer; the saved text shows on the next reveal of that card; Export contains `personalSnippets`; Reset all asks "Also delete my snippets?"
+   - [ ] M5 typed media (en→ko): 미안해요 for 미안해 → Close; 사랑 for 사랑해 → Wrong; the prompt "cheer up (short)" expects 힘내 and "cheer up (lit. find strength)" expects 힘을 내
+   ```
+4. Run the three new checklist lines on the simulator or a device. Tick them in the README only if they pass. Otherwise leave them `[ ]` and list the failures in the commit body.
+5. **Commit:** `K5: media deck integration + README QA checks`. Stage `README.md`, plus any file fixed in steps 1–2.
+6. **Do not tick K5 in PLAN_M5 §6 yourself.** Report to the planner, who ticks K2 and K5 together after the owner's spot-check (D2).
+
+**Acceptance:**
+- Steps 1–2 hold on a fresh install and after an upgrade from an existing install. Existing stats are kept.
+- The README has the three M5 lines.
+- No new build warnings.
+
+---
+
 ## 4. Planner follow-ups (not implementor work)
 
 - **P1 · R6-6 (carried over from PLAN_R5_FIXES P1). ☑ Done 2026-11-17.** The trigger has been met (`9339c46`). Fold the R4/R5/R6 decisions into the normative sections:
@@ -286,10 +357,10 @@
   - the definition of "close" for vocab (R4-2, R5-1, R6-2);
   - remove `undoLastGrade` from §9.3, §12 S6 and the §17 tracker (D2);
   - README.md:24 and :31 (R3-7).
-- **P2 · R6-4.** Add a §17 entry and a tracker line for "M4-1b: Core 5 extension (226–450) + AION 2 extension (82–140)". Mention the six phrases shared with core decks (어떡해, 안녕, 화이팅, 거짓말, 오빠, 언니) and that they have separate stats. Also assign the content agent to:
+- **P2 · R6-4. ☑ Done 2026-11-17** (§17 entry, PLAN_M4 tracker row M4-1b, content work scheduled as C1). Add a §17 entry and a tracker line for "M4-1b: Core 5 extension (226–450) + AION 2 extension (82–140)". Mention the six phrases shared with core decks (어떡해, 안녕, 화이팅, 거짓말, 오빠, 언니) and that they have separate stats. Also assign the content agent to:
   - add verification rows for `ko.core.1095`–`1319` in `docs/core-verification.md`, and fix its "225 entries" header;
   - create an AION table.
-- **P3 · R6-6.** Schedule **K5** (integration and QA) after T1. Step 2 (ko→en default) is already met. Steps 1, 3 and 4 remain: Home placement, the README QA checks for K3/K4, and an M5 tracker row in PLAN.md §17.
+- **P3 · R6-6. ☑ Done 2026-11-17** (K5 scheduled as T7; PLAN.md tracker row for M5 added; PLAN_M5 §6 notes updated). Schedule **K5** (integration and QA) after T1. Step 2 (ko→en default) is already met. Steps 1, 3 and 4 remain: Home placement, the README QA checks for K3/K4, and an M5 tracker row in PLAN.md §17.
 
 ## 5. Owner decisions
 

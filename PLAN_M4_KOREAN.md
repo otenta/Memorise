@@ -253,6 +253,7 @@ User decks (M4-8) have relaxed rules; see §M4-8.
 |---|---|---|
 | M4-0 Infrastructure | ☑ | schema v2; choice/typed reveal via ok→grade (see PLAN §17) |
 | M4-1 Core 2–5 content (~800) | ☑ (content) | Core 2 (218), Core 3 (229), Core 4 (217), Core 5 (225) = 889; not yet dictionary-checked (`docs/core-verification.md`) |
+| M4-1b Core 5 + AION 2 extension | ☑ (content) | Core 5 225 → 450 (`ko.core.1095`–`1319`), AION 2 81 → 140 (`ko.aion2.0082`–`0140`); added without a plan segment, recorded in PLAN §17 (R6-4); commit = PLAN_R6_FIXES T2; verification rows = PLAN_R6_FIXES C1; owner 15-entry spot-check per deck pending |
 | M4-2 Hangul reading | ☑ (code) | includes `realWords` stage |
 | M4-3 Listening mode | ☑ | timer starts at end of TTS |
 | M4-4 Typed answers + fuzzy | ☑ | vocab, Hangul reading and conjugation all support `typed` |

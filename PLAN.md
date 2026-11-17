@@ -994,6 +994,16 @@ M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §1
 
 **M1.1 review fixes:** tracked in [PLAN_M1_FIXES.md](PLAN_M1_FIXES.md): §4 for Round 1 (F0–F10) and §8 for Round 2 (G1–G6).
 
+**Milestones after M1:**
+
+| Milestone | Status | Tracker / notes |
+|---|---|---|
+| M2 Music | ☑ (code) | [PLAN_M2_MUSIC.md](PLAN_M2_MUSIC.md); on-device mic QA pending |
+| M3 Harmony | ☑ (code) | [PLAN_M3_HARMONY.md](PLAN_M3_HARMONY.md) |
+| M4 Korean | ☑ (code + content) | [PLAN_M4_KOREAN.md](PLAN_M4_KOREAN.md) §5; M4-1b extension added (R6-4); dictionary verification open |
+| M5 K-pop & K-drama phrases | 🟡 | [PLAN_M5_KOREAN_MEDIA.md](PLAN_M5_KOREAN_MEDIA.md) §6. K1, K3, K4 in code; K2 content wired by PLAN_R6_FIXES T1 (pending owner spot-check D2); K5 = PLAN_R6_FIXES T7 |
+| Review fixes | — | Round 5: [PLAN_R5_FIXES.md](PLAN_R5_FIXES.md) (S7 = K2 open); Round 6: [PLAN_R6_FIXES.md](PLAN_R6_FIXES.md) |
+
 ### Decision log
 _(Agents append dated entries here: decision, reason, segment.)_
 
@@ -1089,3 +1099,5 @@ _(Agents append dated entries here: decision, reason, segment.)_
   - **R3-2 (S4):** `AuroraBackground(animated:)`. `false` pauses the `TimelineView` and draws the static `t = 0` frame, the same frame Reduce Motion uses. `SessionView` passes `animated: false`. The optional step is also done: every aurora pauses while `scenePhase != .active`. Other screens still animate.
   - **R5-5 b (S6):** `VocabUI` always embeds `MediaSnippetView`. `shouldShow(for:)` is renamed to `hasMedia(for:)`. A plain entry with no saved snippet shows only a lifted `AddSnippetButton`: no section header, identifier `addSnippetButton`, VoiceOver label "Add your own snippet for <hangul>". On reveal it plays one dash-crawl and icon bounce, which is skipped under Reduce Motion. When a snippet is saved, the button blur-morphs into the full "My snippet" section. Entry ids can't collide: bundled ids are `ko.*` with no duplicates across the 7 decks, and user ids are `user.<8hex>.NNNN`.
 - 2026-11-17 · Planner · P1 (R5-4, R6-6, R3-7) spec alignment. §9.2: the `choice` row is "time EWMA: no", and time is decided per answer (touch reveal counts, including a touch fallback; typed, choice and mic-timeout reveals don't; an onset before the prompt is untimed, R6-3); added the normative definition of "close" (R4-2, R5-1, R6-2). §9.3, §12 S6 and the §17 tracker: `undoLastGrade` removed (owner D2). §11.5b/§11.5d updated for mic timing and choice timing. §15 M4 status: Core 2–5 in, Core 5 at 450. PLAN_M4 §3.1 and M4-0 step 2 now say `countsTime` is per answer. README: "OK" → "Reveal" (R3-7). Owner decision D1 (PLAN_R6_FIXES): commit the Core 5 / AION 2 extension before its verification rows exist.
+- 2026-11-17 · Planner · P2 (R6-4): **M4-1b**, unplanned content recorded after the fact. Core 5 grew from 225 to 450 entries (`ko.core.1095`–`1319`, ranks 226–450; new POS mix: noun 67, verb 55, adverb 38, adjective 18, other 47) and AION 2 from 81 to 140 (`ko.aion2.0082`–`0140`, all nouns, some community slang such as 장판 and 기믹 that needs in-game confirmation). The reviewer verified the change is additive only: no existing id changed or was removed, ids are contiguous, and every predicate has `conj`. The owner chose (D1) to commit it before verification (PLAN_R6_FIXES T2). Verification rows are C1 (content agent), plus an owner spot-check of 15 entries per deck. Six phrases also exist in `ko.media` (어떡해, 안녕, 화이팅, 거짓말, 오빠, 언니). This is allowed, because the duplicate-Hangul check is limited to `ko.core.*`; they are separate items with separate stats. Process rule going forward: new content needs a plan segment **before** it is written.
+- 2026-11-17 · Planner · P3 (R6-6): K5 is scheduled as PLAN_R6_FIXES T7, after T1. Step 2's direction default (`.koToEn`) is already met. Added a milestone table (M2–M5 and the review-fix plans) under the §17 tracker; this covers K5 step 4's tracker row.

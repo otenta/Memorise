@@ -204,10 +204,10 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 | Segment | Status | Notes |
 |---|---|---|
 | K1 Schema v2 + validator | ☑ (code) | `ko_media` list entry commented out until K2; see PLAN §17 2026-11-17 |
-| K2 Content `ko_media.json` | ☐ | **Scheduled next (owner, 2026-11-17)** as PLAN_R5_FIXES **S7**; needs web-capable agent; verification table in `docs/media-verification.md` |
+| K2 Content `ko_media.json` | ☐ | Content written (105 entries, 88 verified refs; misses the 70 % and 50/30/20 targets, see CODE_REVIEW R6-5). Wired + committed by PLAN_R6_FIXES **T1**; glosses made unique by **T4**. Tick after the owner's 10-reference spot-check (R6 D2) |
 | K3 Reveal snippet panel | ☑ (code) | `Components/MediaSnippetView.swift`; device check pending (needs K2 content) |
 | K4 My snippet (on-device) | ☑ (code) | plumbing + `SnippetEditorSheet` + reset-all "Also delete my snippets?" prompt; device check pending |
-| K5 Integration & QA | ☐ | |
+| K5 Integration & QA | ☐ | Scheduled as PLAN_R6_FIXES **T7** (after T1). Step 2 direction default already met; step 4 PLAN.md tracker row added 2026-11-17 |
 
 ## 7. Candidate phrases for K2 (no media claims; references are found and verified in K2)
 
