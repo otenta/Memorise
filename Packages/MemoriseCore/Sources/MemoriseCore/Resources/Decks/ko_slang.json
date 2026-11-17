@@ -1,0 +1,924 @@
+{
+  "schemaVersion": 2,
+  "deckId": "ko.slang",
+  "title": "Korean · Slang & Internet",
+  "subtitle": "53 words from texts, memes and fandoms",
+  "subject": "korean",
+  "entries": [
+    {
+      "id": "ko.slang.0001",
+      "hangul": "갑분싸",
+      "romanization": "gapbunssa",
+      "meanings": [
+        "sudden awkward silence",
+        "mood killer"
+      ],
+      "pos": "noun",
+      "rank": 1,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 갑자기 분위기 싸해짐 (the mood suddenly turned cold).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0002",
+      "hangul": "꿀잼",
+      "romanization": "kkuljaem",
+      "meanings": [
+        "super fun",
+        "really entertaining"
+      ],
+      "pos": "noun",
+      "rank": 2,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "꿀 (honey) + 재미 (fun).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0003",
+      "hangul": "노잼",
+      "romanization": "nojaem",
+      "meanings": [
+        "boring (no fun)"
+      ],
+      "pos": "noun",
+      "rank": 3,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "No + 재미 (fun). Opposite of 꿀잼.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0004",
+      "hangul": "인싸",
+      "romanization": "inssa",
+      "meanings": [
+        "insider (social butterfly)"
+      ],
+      "pos": "noun",
+      "rank": 4,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From English 'insider'.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0005",
+      "hangul": "아싸",
+      "romanization": "assa",
+      "meanings": [
+        "outsider (loner)"
+      ],
+      "pos": "noun",
+      "rank": 5,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From English 'outsider'. As an interjection, 아싸! also means 'yay!'.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0006",
+      "hangul": "꿀팁",
+      "romanization": "kkultip",
+      "meanings": [
+        "great tip",
+        "life hack"
+      ],
+      "pos": "noun",
+      "rank": 6,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0007",
+      "hangul": "꿀잠",
+      "romanization": "kkuljam",
+      "meanings": [
+        "sweet sleep",
+        "a great nap"
+      ],
+      "pos": "noun",
+      "rank": 7,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0008",
+      "hangul": "갓생",
+      "romanization": "gatsaeng",
+      "meanings": [
+        "model life (productive, disciplined)"
+      ],
+      "pos": "noun",
+      "rank": 8,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "God + 인생 (life).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0009",
+      "hangul": "오운완",
+      "romanization": "oununwan",
+      "meanings": [
+        "today's workout: done"
+      ],
+      "pos": "expression",
+      "rank": 9,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 오늘 운동 완료. A common social-media hashtag.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0010",
+      "hangul": "소확행",
+      "romanization": "sohwakaeng",
+      "meanings": [
+        "small but certain happiness"
+      ],
+      "pos": "noun",
+      "rank": 10,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 소소하지만 확실한 행복.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0011",
+      "hangul": "워라밸",
+      "romanization": "worabael",
+      "meanings": [
+        "work-life balance"
+      ],
+      "pos": "noun",
+      "rank": 11,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0012",
+      "hangul": "혼밥",
+      "romanization": "honbap",
+      "meanings": [
+        "eating alone"
+      ],
+      "pos": "noun",
+      "rank": 12,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "혼자 (alone) + 밥 (meal).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0013",
+      "hangul": "혼술",
+      "romanization": "honsul",
+      "meanings": [
+        "drinking alone"
+      ],
+      "pos": "noun",
+      "rank": 13,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0014",
+      "hangul": "먹방",
+      "romanization": "meokbang",
+      "meanings": [
+        "mukbang (eating show)"
+      ],
+      "pos": "noun",
+      "rank": 14,
+      "tags": [
+        "food",
+        "media"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "먹는 방송 (eating broadcast).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0015",
+      "hangul": "치맥",
+      "romanization": "chimaek",
+      "meanings": [
+        "chicken and beer"
+      ],
+      "pos": "noun",
+      "rank": 15,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "치킨 + 맥주.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0016",
+      "hangul": "꿀맛",
+      "romanization": "kkulmat",
+      "meanings": [
+        "delicious (tastes like honey)"
+      ],
+      "pos": "noun",
+      "rank": 16,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0017",
+      "hangul": "불금",
+      "romanization": "bulgeum",
+      "meanings": [
+        "TGIF (fiery Friday night)"
+      ],
+      "pos": "noun",
+      "rank": 17,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "불타는 금요일.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0018",
+      "hangul": "월요병",
+      "romanization": "woryobyeong",
+      "meanings": [
+        "Monday blues"
+      ],
+      "pos": "noun",
+      "rank": 18,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0019",
+      "hangul": "금사빠",
+      "romanization": "geumsappa",
+      "meanings": [
+        "someone who falls in love fast"
+      ],
+      "pos": "noun",
+      "rank": 19,
+      "tags": [
+        "dating"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 금방 사랑에 빠지는 사람.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0020",
+      "hangul": "모솔",
+      "romanization": "mosol",
+      "meanings": [
+        "never dated (single since birth)"
+      ],
+      "pos": "noun",
+      "rank": 20,
+      "tags": [
+        "dating"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 모태솔로.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0021",
+      "hangul": "남사친",
+      "romanization": "namsachin",
+      "meanings": [
+        "guy friend (platonic)"
+      ],
+      "pos": "noun",
+      "rank": 21,
+      "tags": [
+        "dating"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "남자 사람 친구.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0022",
+      "hangul": "여사친",
+      "romanization": "yeosachin",
+      "meanings": [
+        "girl friend (platonic)"
+      ],
+      "pos": "noun",
+      "rank": 22,
+      "tags": [
+        "dating"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "여자 사람 친구.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0023",
+      "hangul": "남친",
+      "romanization": "namchin",
+      "meanings": [
+        "boyfriend (bf, short form)"
+      ],
+      "pos": "noun",
+      "rank": 23,
+      "tags": [
+        "dating"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 남자친구.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0024",
+      "hangul": "여친",
+      "romanization": "yeochin",
+      "meanings": [
+        "girlfriend (gf, short form)"
+      ],
+      "pos": "noun",
+      "rank": 24,
+      "tags": [
+        "dating"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 여자친구.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0025",
+      "hangul": "베프",
+      "romanization": "bepeu",
+      "meanings": [
+        "best friend (BFF)"
+      ],
+      "pos": "noun",
+      "rank": 25,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0026",
+      "hangul": "찐친",
+      "romanization": "jjinchin",
+      "meanings": [
+        "true friend",
+        "real bestie"
+      ],
+      "pos": "noun",
+      "rank": 26,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0027",
+      "hangul": "찐",
+      "romanization": "jjin",
+      "meanings": [
+        "the real deal",
+        "genuine"
+      ],
+      "pos": "noun",
+      "rank": 27,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From 진짜 (real).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0028",
+      "hangul": "최애",
+      "romanization": "choeae",
+      "meanings": [
+        "bias (favourite member)"
+      ],
+      "pos": "noun",
+      "rank": 28,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "너 최애 누구야?",
+        "en": "Who's your bias?"
+      },
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0029",
+      "hangul": "덕질",
+      "romanization": "deokjil",
+      "meanings": [
+        "fan activities (stanning)"
+      ],
+      "pos": "noun",
+      "rank": 29,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From 오덕 (otaku).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0030",
+      "hangul": "입덕",
+      "romanization": "ipdeok",
+      "meanings": [
+        "becoming a fan"
+      ],
+      "pos": "noun",
+      "rank": 30,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0031",
+      "hangul": "탈덕",
+      "romanization": "taldeok",
+      "meanings": [
+        "quitting a fandom"
+      ],
+      "pos": "noun",
+      "rank": 31,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0032",
+      "hangul": "성덕",
+      "romanization": "seongdeok",
+      "meanings": [
+        "fan who met their idol (fan success)"
+      ],
+      "pos": "noun",
+      "rank": 32,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "성공한 덕후.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0033",
+      "hangul": "본방사수",
+      "romanization": "bonbangsasu",
+      "meanings": [
+        "watching the first broadcast live"
+      ],
+      "pos": "noun",
+      "rank": 33,
+      "tags": [
+        "fandom",
+        "media"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0034",
+      "hangul": "컴백",
+      "romanization": "keombaek",
+      "meanings": [
+        "comeback (new release)"
+      ],
+      "pos": "noun",
+      "rank": 34,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0035",
+      "hangul": "직캠",
+      "romanization": "jikkaem",
+      "meanings": [
+        "fancam"
+      ],
+      "pos": "noun",
+      "rank": 35,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0036",
+      "hangul": "비주얼",
+      "romanization": "bijueol",
+      "meanings": [
+        "visual (the group's looks member)"
+      ],
+      "pos": "noun",
+      "rank": 36,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0037",
+      "hangul": "솔까말",
+      "romanization": "solkkamal",
+      "meanings": [
+        "to be honest (TBH)"
+      ],
+      "pos": "expression",
+      "rank": 37,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 솔직히 까놓고 말해서.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0038",
+      "hangul": "안물안궁",
+      "romanization": "anmuranggung",
+      "meanings": [
+        "didn't ask, don't care"
+      ],
+      "pos": "expression",
+      "rank": 38,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "안 물어봤고 안 궁금해.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0039",
+      "hangul": "어쩔티비",
+      "romanization": "eojjeoltibi",
+      "meanings": [
+        "so what? (whatever)"
+      ],
+      "pos": "expression",
+      "rank": 39,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Playground comeback built on 어쩌라고 (so what?).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0040",
+      "hangul": "현타",
+      "romanization": "hyeonta",
+      "meanings": [
+        "reality check (sudden emptiness)"
+      ],
+      "pos": "noun",
+      "rank": 40,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 현자 타임.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0041",
+      "hangul": "멘붕",
+      "romanization": "menbung",
+      "meanings": [
+        "mental breakdown (total panic)"
+      ],
+      "pos": "noun",
+      "rank": 41,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Mental + 붕괴 (collapse).",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0042",
+      "hangul": "꾸안꾸",
+      "romanization": "kkuankku",
+      "meanings": [
+        "effortlessly stylish"
+      ],
+      "pos": "noun",
+      "rank": 42,
+      "tags": [
+        "fashion"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "꾸민 듯 안 꾸민 듯.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0043",
+      "hangul": "얼죽아",
+      "romanization": "eoljuga",
+      "meanings": [
+        "iced Americano, even if freezing"
+      ],
+      "pos": "noun",
+      "rank": 43,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "얼어 죽어도 아이스 아메리카노.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0044",
+      "hangul": "짤",
+      "romanization": "jjal",
+      "meanings": [
+        "meme image",
+        "reaction pic"
+      ],
+      "pos": "noun",
+      "rank": 44,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0045",
+      "hangul": "악플",
+      "romanization": "akpeul",
+      "meanings": [
+        "hateful comment"
+      ],
+      "pos": "noun",
+      "rank": 45,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "악 (evil) + reply.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0046",
+      "hangul": "선플",
+      "romanization": "seonpeul",
+      "meanings": [
+        "kind comment"
+      ],
+      "pos": "noun",
+      "rank": 46,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0047",
+      "hangul": "가성비",
+      "romanization": "gaseongbi",
+      "meanings": [
+        "value for money"
+      ],
+      "pos": "noun",
+      "rank": 47,
+      "tags": [
+        "shopping"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "가격 대비 성능.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0048",
+      "hangul": "플렉스",
+      "romanization": "peullekseu",
+      "meanings": [
+        "flex (splurging to show off)"
+      ],
+      "pos": "noun",
+      "rank": 48,
+      "tags": [
+        "shopping"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0049",
+      "hangul": "킹받다",
+      "romanization": "kingbatda",
+      "meanings": [
+        "to be super annoyed"
+      ],
+      "pos": "verb",
+      "rank": 49,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "King + 열받다 (to get angry).",
+      "register": "casual",
+      "conj": "regular"
+    },
+    {
+      "id": "ko.slang.0050",
+      "hangul": "레알",
+      "romanization": "re-al",
+      "meanings": [
+        "for real",
+        "seriously"
+      ],
+      "pos": "adverb",
+      "rank": 50,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0051",
+      "hangul": "낄끼빠빠",
+      "romanization": "kkilkkippappa",
+      "meanings": [
+        "know when to join in and when to leave"
+      ],
+      "pos": "expression",
+      "rank": 51,
+      "tags": [
+        "internet"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "낄 때 끼고 빠질 때 빠져라.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0052",
+      "hangul": "케미",
+      "romanization": "kemi",
+      "meanings": [
+        "chemistry (between people)"
+      ],
+      "pos": "noun",
+      "rank": 52,
+      "tags": [
+        "media"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.slang.0053",
+      "hangul": "심멎",
+      "romanization": "simmeot",
+      "meanings": [
+        "heart-stopping (so attractive)"
+      ],
+      "pos": "noun",
+      "rank": 53,
+      "tags": [
+        "fandom"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "심장이 멎다.",
+      "register": "casual"
+    }
+  ]
+}

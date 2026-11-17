@@ -5468,6 +5468,511 @@
           "en": "How is that even possible?"
         }
       ]
+    },
+    {
+      "id": "ko.media.0147",
+      "hangul": "피 땀 눈물",
+      "romanization": "pi ttam nunmul",
+      "meanings": [
+        "blood, sweat and tears"
+      ],
+      "pos": "expression",
+      "rank": 147,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Blood Sweat & Tears",
+          "titleKo": "피 땀 눈물",
+          "by": "BTS",
+          "year": 2016,
+          "locator": "title",
+          "context": "Title track of BTS's second full album WINGS, which topped every major Korean chart on release.",
+          "citation": "https://www.tenasia.co.kr/article/2016101006134"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0148",
+      "hangul": "불타오르네",
+      "romanization": "bultaoreune",
+      "meanings": [
+        "it's burning up"
+      ],
+      "pos": "expression",
+      "rank": 148,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-네 adds surprise: 'look, it's on fire!'",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "song",
+          "title": "FIRE",
+          "titleKo": "불타오르네",
+          "by": "BTS",
+          "year": 2016,
+          "locator": "title",
+          "context": "Korean title of the electro-trap lead single from The Most Beautiful Moment in Life: Young Forever.",
+          "citation": "https://en.wikipedia.org/wiki/Fire_(BTS_song)"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0149",
+      "hangul": "작은 것들을 위한 시",
+      "romanization": "jageun geotdeureul wihan si",
+      "meanings": [
+        "a poem for small things"
+      ],
+      "pos": "expression",
+      "rank": 149,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Fans shorten it to 작은 시.",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Boy With Luv",
+          "titleKo": "작은 것들을 위한 시",
+          "by": "BTS",
+          "year": 2019,
+          "locator": "title",
+          "context": "Funk-pop title track of Map of the Soul: Persona about the small joys of love, featuring Halsey.",
+          "citation": "https://m.seoul.co.kr/news/2019/04/15/20190415025006"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0150",
+      "hangul": "봄날",
+      "romanization": "bomnal",
+      "meanings": [
+        "spring day"
+      ],
+      "pos": "expression",
+      "rank": 150,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Used for a bright, longed-for time.",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Spring Day",
+          "titleKo": "봄날",
+          "by": "BTS",
+          "year": 2017,
+          "locator": "title",
+          "context": "Title track of the WINGS repackage You Never Walk Alone, a song of missing someone until spring returns.",
+          "citation": "https://www.busan.com/view/bstoday/view.php?code=20170223000064"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0151",
+      "hangul": "선재 업고 튀어",
+      "romanization": "seonjae eopgo twieo",
+      "meanings": [
+        "grab Seon-jae and run"
+      ],
+      "pos": "expression",
+      "rank": 151,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "업다 = carry on your back; 튀다 = run for it (slang). Fans call it 선업튀.",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Lovely Runner",
+          "titleKo": "선재 업고 튀어",
+          "by": "tvN",
+          "year": 2024,
+          "locator": "title",
+          "context": "A devoted fan travels back to 2008 to save her favourite idol in this time-slip romance.",
+          "citation": "https://lady.khan.co.kr/issue/article/202405230947001"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0152",
+      "hangul": "눈물의 여왕",
+      "romanization": "nunmurui yeowang",
+      "meanings": [
+        "queen of tears"
+      ],
+      "pos": "expression",
+      "rank": 152,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Queen of Tears",
+          "titleKo": "눈물의 여왕",
+          "by": "tvN",
+          "year": 2024,
+          "locator": "title",
+          "context": "A chaebol heiress and her husband face divorce and then fall back in love; it became tvN's highest-rated drama.",
+          "citation": "https://news.tf.co.kr/read/ogmeta/2082134.htm"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0153",
+      "hangul": "사랑의 불시착",
+      "romanization": "sarangui bulsichak",
+      "meanings": [
+        "love's crash landing"
+      ],
+      "pos": "expression",
+      "rank": 153,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "불시착 = emergency landing.",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "drama",
+          "title": "Crash Landing on You",
+          "titleKo": "사랑의 불시착",
+          "by": "tvN",
+          "year": 2019,
+          "locator": "title",
+          "context": "A South Korean heiress paraglides into North Korea and is hidden by an army officer.",
+          "citation": "https://news.mtn.co.kr/news-detail/2019122214271630362"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0154",
+      "hangul": "나 혼자 산다",
+      "romanization": "na honja sanda",
+      "meanings": [
+        "I live alone"
+      ],
+      "pos": "expression",
+      "rank": 154,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Plain present tense: a statement of fact.",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "show",
+          "title": "I Live Alone",
+          "titleKo": "나 혼자 산다",
+          "by": "MBC",
+          "year": 2013,
+          "locator": "title",
+          "context": "Long-running MBC reality show following celebrities who live on their own.",
+          "citation": "https://www.khan.co.kr/article/202312041842001"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0155",
+      "hangul": "대환장",
+      "romanization": "daehwanjang",
+      "meanings": [
+        "total chaos",
+        "utter madness"
+      ],
+      "pos": "expression",
+      "rank": 155,
+      "tags": [
+        "exclamation",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "대 (great) + 환장 (going crazy). Used for situations that get wildly out of hand.",
+      "register": "casual",
+      "sources": [
+        {
+          "kind": "show",
+          "title": "Kian's Bizarre B&B",
+          "titleKo": "대환장 기안장",
+          "by": "Netflix",
+          "year": 2025,
+          "locator": "title",
+          "context": "Kian84, BTS's Jin and Ji Ye-eun run a deliberately inconvenient guesthouse on Ulleungdo.",
+          "citation": "https://www.newsis.com/view/NISX20250318_0003102712"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0156",
+      "hangul": "눈치 챙겨",
+      "romanization": "nunchi chaenggyeo",
+      "meanings": [
+        "read the room"
+      ],
+      "pos": "expression",
+      "rank": 156,
+      "tags": [
+        "conflict",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "눈치 = the knack of sensing the mood.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0157",
+      "hangul": "내 스타일이야",
+      "romanization": "nae seutairiya",
+      "meanings": [
+        "you're my type"
+      ],
+      "pos": "expression",
+      "rank": 157,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0158",
+      "hangul": "선 넘지 마",
+      "romanization": "seon neomji ma",
+      "meanings": [
+        "don't cross the line"
+      ],
+      "pos": "expression",
+      "rank": 158,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0159",
+      "hangul": "뭘 봐?",
+      "romanization": "mwol bwa?",
+      "meanings": [
+        "what are you looking at?"
+      ],
+      "pos": "expression",
+      "rank": 159,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0160",
+      "hangul": "얘기 좀 해",
+      "romanization": "yaegi jom hae",
+      "meanings": [
+        "we need to talk"
+      ],
+      "pos": "expression",
+      "rank": 160,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0161",
+      "hangul": "나한테 왜 그래?",
+      "romanization": "nahante wae geurae?",
+      "meanings": [
+        "why are you doing this to me?"
+      ],
+      "pos": "expression",
+      "rank": 161,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0162",
+      "hangul": "질투하는 거야?",
+      "romanization": "jiltuhaneun geoya?",
+      "meanings": [
+        "are you jealous?"
+      ],
+      "pos": "expression",
+      "rank": 162,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0163",
+      "hangul": "나 화났어",
+      "romanization": "na hwanasseo",
+      "meanings": [
+        "I'm angry",
+        "I'm mad at you"
+      ],
+      "pos": "expression",
+      "rank": 163,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0164",
+      "hangul": "다시 만나자",
+      "romanization": "dasi mannaja",
+      "meanings": [
+        "let's meet again"
+      ],
+      "pos": "expression",
+      "rank": 164,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0165",
+      "hangul": "내가 쏠게",
+      "romanization": "naega ssolge",
+      "meanings": [
+        "it's on me",
+        "my treat"
+      ],
+      "pos": "expression",
+      "rank": 165,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "쏘다 = to shoot; slang for paying for everyone.",
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0166",
+      "hangul": "한잔할래?",
+      "romanization": "hanjanhallae?",
+      "meanings": [
+        "want to grab a drink?"
+      ],
+      "pos": "expression",
+      "rank": 166,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0167",
+      "hangul": "오글거려",
+      "romanization": "ogeulgeoryeo",
+      "meanings": [
+        "that's so cringe"
+      ],
+      "pos": "expression",
+      "rank": 167,
+      "tags": [
+        "exclamation",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0168",
+      "hangul": "눈감아 줄게",
+      "romanization": "nungama julge",
+      "meanings": [
+        "I'll let it slide this time"
+      ],
+      "pos": "expression",
+      "rank": 168,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
+    },
+    {
+      "id": "ko.media.0169",
+      "hangul": "보고 있어도 보고 싶어",
+      "romanization": "bogo isseodo bogo sipeo",
+      "meanings": [
+        "I miss you even when I'm looking at you"
+      ],
+      "pos": "expression",
+      "rank": 169,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual"
     }
   ]
 }

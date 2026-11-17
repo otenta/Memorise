@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "deckId": "ko.aion2",
   "title": "Korean · AION 2",
-  "subtitle": "192 in-game words",
+  "subtitle": "232 in-game words",
   "subject": "korean",
   "entries": [
     {
@@ -3180,6 +3180,646 @@
       "hanja": null,
       "example": null,
       "notes": null
+    },
+    {
+      "id": "ko.aion2.0193",
+      "hangul": "데바 패스",
+      "romanization": "deba paeseu",
+      "meanings": [
+        "Deva Pass (season reward track)"
+      ],
+      "pos": "noun",
+      "rank": 193,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0194",
+      "hangul": "구독",
+      "romanization": "gudok",
+      "meanings": [
+        "subscription"
+      ],
+      "pos": "noun",
+      "rank": 194,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0195",
+      "hangul": "멤버십",
+      "romanization": "membeosip",
+      "meanings": [
+        "membership"
+      ],
+      "pos": "noun",
+      "rank": 195,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0196",
+      "hangul": "큐나",
+      "romanization": "kyuna",
+      "meanings": [
+        "Cuna (premium currency)"
+      ],
+      "pos": "noun",
+      "rank": 196,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0197",
+      "hangul": "어비스 포인트",
+      "romanization": "eobiseu pointeu",
+      "meanings": [
+        "Abyss Points"
+      ],
+      "pos": "noun",
+      "rank": 197,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0198",
+      "hangul": "스티그마",
+      "romanization": "seutigeuma",
+      "meanings": [
+        "Stigma (special skill system)"
+      ],
+      "pos": "noun",
+      "rank": 198,
+      "tags": [
+        "class"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0199",
+      "hangul": "스티그마 샤드",
+      "romanization": "seutigeuma syadeu",
+      "meanings": [
+        "Stigma Shard"
+      ],
+      "pos": "noun",
+      "rank": 199,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0200",
+      "hangul": "주화",
+      "romanization": "juhwa",
+      "meanings": [
+        "coin (event token)"
+      ],
+      "pos": "noun",
+      "rank": 200,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0201",
+      "hangul": "조율석",
+      "romanization": "joyulseok",
+      "meanings": [
+        "tuning stone"
+      ],
+      "pos": "noun",
+      "rank": 201,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Re-rolls gear options."
+    },
+    {
+      "id": "ko.aion2.0202",
+      "hangul": "생명의 결정",
+      "romanization": "saengmyeongui gyeoljeong",
+      "meanings": [
+        "Crystal of Life"
+      ],
+      "pos": "noun",
+      "rank": 202,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0203",
+      "hangul": "영혼결정",
+      "romanization": "yeonghongyeoljeong",
+      "meanings": [
+        "soul crystal"
+      ],
+      "pos": "noun",
+      "rank": 203,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0204",
+      "hangul": "물질변환",
+      "romanization": "muljilbyeonhwan",
+      "meanings": [
+        "material conversion"
+      ],
+      "pos": "noun",
+      "rank": 204,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0205",
+      "hangul": "히든 큐브",
+      "romanization": "hideun kyubeu",
+      "meanings": [
+        "Hidden Cube (reward box)"
+      ],
+      "pos": "noun",
+      "rank": 205,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0206",
+      "hangul": "주문서",
+      "romanization": "jumunseo",
+      "meanings": [
+        "scroll (consumable)"
+      ],
+      "pos": "noun",
+      "rank": 206,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0207",
+      "hangul": "즉시 완료권",
+      "romanization": "jeuksi wallyogwon",
+      "meanings": [
+        "instant-clear ticket"
+      ],
+      "pos": "noun",
+      "rank": 207,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0208",
+      "hangul": "장비 레벨",
+      "romanization": "jangbi rebel",
+      "meanings": [
+        "gear level"
+      ],
+      "pos": "noun",
+      "rank": 208,
+      "tags": [
+        "character"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0209",
+      "hangul": "조율",
+      "romanization": "joyul",
+      "meanings": [
+        "tuning (re-rolling gear options)"
+      ],
+      "pos": "noun",
+      "rank": 209,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0210",
+      "hangul": "돌파",
+      "romanization": "dolpa",
+      "meanings": [
+        "breakthrough (gear)"
+      ],
+      "pos": "noun",
+      "rank": 210,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0211",
+      "hangul": "펫 이해도",
+      "romanization": "pet ihaedo",
+      "meanings": [
+        "pet understanding level"
+      ],
+      "pos": "noun",
+      "rank": 211,
+      "tags": [
+        "character"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0212",
+      "hangul": "잡템",
+      "romanization": "japtem",
+      "meanings": [
+        "junk loot"
+      ],
+      "pos": "noun",
+      "rank": 212,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 잡다한 아이템."
+    },
+    {
+      "id": "ko.aion2.0213",
+      "hangul": "원정",
+      "romanization": "wonjeong",
+      "meanings": [
+        "Expedition (dungeon tier)"
+      ],
+      "pos": "noun",
+      "rank": 213,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0214",
+      "hangul": "일일 던전",
+      "romanization": "iril deonjeon",
+      "meanings": [
+        "daily dungeon"
+      ],
+      "pos": "noun",
+      "rank": 214,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0215",
+      "hangul": "각성전",
+      "romanization": "gakseongjeon",
+      "meanings": [
+        "Awakening Battle"
+      ],
+      "pos": "noun",
+      "rank": 215,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0216",
+      "hangul": "슈고페스타",
+      "romanization": "syugopeseuta",
+      "meanings": [
+        "Shugo Festa (event)"
+      ],
+      "pos": "noun",
+      "rank": 216,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0217",
+      "hangul": "차원 침공",
+      "romanization": "chawon chimgong",
+      "meanings": [
+        "Dimensional Invasion"
+      ],
+      "pos": "noun",
+      "rank": 217,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0218",
+      "hangul": "어비스 회랑",
+      "romanization": "eobiseu hoerang",
+      "meanings": [
+        "Abyss Corridor"
+      ],
+      "pos": "noun",
+      "rank": 218,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0219",
+      "hangul": "시공의 균열",
+      "romanization": "sigongui gyunyeol",
+      "meanings": [
+        "Spacetime Rift"
+      ],
+      "pos": "noun",
+      "rank": 219,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0220",
+      "hangul": "사명 퀘스트",
+      "romanization": "samyeong kweseuteu",
+      "meanings": [
+        "mission quest"
+      ],
+      "pos": "noun",
+      "rank": 220,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0221",
+      "hangul": "지령서",
+      "romanization": "jiryeongseo",
+      "meanings": [
+        "dispatch orders (quest item)"
+      ],
+      "pos": "noun",
+      "rank": 221,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0222",
+      "hangul": "보급 의뢰",
+      "romanization": "bogeup uiroe",
+      "meanings": [
+        "supply request"
+      ],
+      "pos": "noun",
+      "rank": 222,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0223",
+      "hangul": "불의 신전",
+      "romanization": "burui sinjeon",
+      "meanings": [
+        "Temple of Fire"
+      ],
+      "pos": "noun",
+      "rank": 223,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0224",
+      "hangul": "크라오 동굴",
+      "romanization": "keurao donggul",
+      "meanings": [
+        "Krao Cave"
+      ],
+      "pos": "noun",
+      "rank": 224,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0225",
+      "hangul": "루드라",
+      "romanization": "rudeura",
+      "meanings": [
+        "Rudra (endgame raid)"
+      ],
+      "pos": "noun",
+      "rank": 225,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0226",
+      "hangul": "비탄",
+      "romanization": "bitan",
+      "meanings": [
+        "Bitan (sanctuary content)"
+      ],
+      "pos": "noun",
+      "rank": 226,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0227",
+      "hangul": "새싹",
+      "romanization": "saessak",
+      "meanings": [
+        "sprout (new-player status)"
+      ],
+      "pos": "noun",
+      "rank": 227,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Literally 'sprout'."
+    },
+    {
+      "id": "ko.aion2.0228",
+      "hangul": "무료 버스",
+      "romanization": "muryo beoseu",
+      "meanings": [
+        "free carry (free bus)"
+      ],
+      "pos": "noun",
+      "rank": 228,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "A strong party carries newer players through content."
+    },
+    {
+      "id": "ko.aion2.0229",
+      "hangul": "트라이팟",
+      "romanization": "teuraipat",
+      "meanings": [
+        "try party (boss attempt group)"
+      ],
+      "pos": "noun",
+      "rank": 229,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0230",
+      "hangul": "공팟",
+      "romanization": "gongpat",
+      "meanings": [
+        "public party (random group)"
+      ],
+      "pos": "noun",
+      "rank": 230,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0231",
+      "hangul": "부캐팟",
+      "romanization": "bukaepat",
+      "meanings": [
+        "alt-character party"
+      ],
+      "pos": "noun",
+      "rank": 231,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0232",
+      "hangul": "점핑",
+      "romanization": "jeomping",
+      "meanings": [
+        "jumping (skipping progression)"
+      ],
+      "pos": "noun",
+      "rank": 232,
+      "tags": [
+        "character"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Spending currency to jump levels or gear."
     }
   ]
 }

@@ -69,8 +69,9 @@ public struct DeckCatalog: Sendable {
 
     /// Bundled vocab files in display order. The media deck (M5 K2) sits before AION 2.
     public static let bundledVocabFiles = [
-        "ko_core_1", "ko_core_2", "ko_core_3", "ko_core_4", "ko_core_5", "ko_patterns",
+        "ko_core_1", "ko_core_2", "ko_core_3", "ko_core_4", "ko_core_5", "ko_core_6", "ko_patterns",
         "ko_media",
+        "ko_slang",
         "ko_aion2",
     ]
 
@@ -105,7 +106,7 @@ public struct DeckCatalog: Sendable {
     /// Which deck owns a shared headword (R7-F7, owner D3): the earliest in this list wins.
     /// Bundled Korean decks not listed come after, in file order.
     public static let headwordOwnershipOrder = [
-        "ko.core.1", "ko.core.2", "ko.core.3", "ko.core.4", "ko.core.5", "ko.patterns", "ko.aion2", "ko.media",
+        "ko.core.1", "ko.core.2", "ko.core.3", "ko.core.4", "ko.core.5", "ko.core.6", "ko.patterns", "ko.aion2", "ko.media", "ko.slang",
     ]
 
     /// Entry ids each bundled deck hides because an earlier deck (ownership order) has the same
