@@ -46,6 +46,14 @@ public struct VocabDeck: Deck {
 
     public func newPerSession(options: DeckOptions) -> Int? { options.vocab?.newPerSession }
 
+    /// The entry's other directions (R7-F1).
+    public func siblingKeys(of card: Card) -> [ItemKey] {
+        guard let v = card.vocab else { return [] }
+        return VocabDirection.allCases.compactMap {
+            $0 == v.direction ? nil : Self.itemKey(entryID: v.entry.id, direction: $0)
+        }
+    }
+
     /// Same entry (other direction) as previous ×0.1; tag shared with both of the previous 2 cards ×0.7.
     public func patternPenalty(candidate: Card, recent: ArraySlice<Card>) -> Double {
         guard let c = candidate.vocab else { return 1 }

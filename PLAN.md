@@ -657,7 +657,8 @@ Floor: `w = max(w, 0.05)` so every eligible card can still appear.
 ### 10.3 In-session adjustments
 
 - **Cooldown**: a card that is among the last `K` shown is ineligible (`w = 0`), `K = min(3, pool.count - 1)`.
-- **Already shown this session** (and not a pending retry): `w *= 0.2` — approximates sampling without replacement while still allowing repeats in long sessions/small pools.
+- **Rounds** _(R7-F1, replaces the former "already shown ×0.2" factor; `alreadyShownFactor` is kept but unused)_: a non-retry card is shown again only after every other *allowed* card has been shown once in the current round. The scheduler picks in tiers: (1) cards not shown this round and not resting; (2) if none, cards shown this round that aren't resting — this starts a new round; (3) only then resting cards (tiny pools); (4) the uniform fallback (§10.6). Each tier applies the cooldown, relaxed once to `K-1`.
+- **Correct cards rest**: a card answered correctly (non-retry) sits out the rest of its round and `correctRestRounds` (1) further rounds. A deck's `siblingKeys(of:)` (vocab: the entry's other directions) are marked shown and resting together with the card, so one entry appears once per round.
 - Retries are injected by the engine's retry queue, not by the scheduler, but the scheduler's cooldown still applies (if a retry would violate cooldown, the engine delays it by one card).
 
 ### 10.4 Anti-pattern penalty
@@ -672,6 +673,7 @@ To avoid throwing 200 unseen words at the user:
 - Unseen cards are introduced in `introductionRank` order (frequency rank).
 - Only the **next `newPerSession`** unseen cards (by rank) are eligible in a session; others have `w = 0`.
 - If the eligible seen pool is too small to fill the session, the engine may exceed `newPerSession` to fill (log nothing special).
+- **Fill target (R7-F1):** whole ranks are added in order until seen + eligible *entries* (ranks, not cards) reach `min(entries in pool, max(minEligiblePool, targetDistinct))`. `targetDistinct` = `n` for `.cards(n)`, `m × cardsPerMinuteEstimate` (8) for `.minutes(m)`. So a session never has to repeat a word to fill its length.
 - Fretboard deck returns `nil` rank → no gating (all 42/72 cards are eligible from day one).
 
 ### 10.6 Selection
@@ -1122,3 +1124,4 @@ _(Agents append dated entries here: decision, reason, segment.)_
   - C2: distinct glosses. The owner waived the append-only content rule for this.
   - Defaults D1–D5 are listed in PLAN_R7_FIXES §4.
 - 2026-11-17 · Owner confirmed PLAN_R7_FIXES §4 defaults D1–D5 as final.
+- 2026-11-17 · R7-F1 (implementor, core). Card selection by rounds: `Scheduler.select(…blocked:resting:)` returns the card plus `startsNewRound`; `nextCard` wraps it and keeps its old call shape. `SessionEngine` tracks `round`, `shownThisRound` and `restUntilRound`; a correct non-retry grade rests the card and its `Deck.siblingKeys` (new hook, default `[]`; vocab returns the other directions) until `round + 1 + correctRestRounds`, a wrong grade clears its rest. Siblings are also marked shown when a card is shown, so a two-direction session shows each entry once per round. `IntroductionPolicy.eligibleNewKeys(…targetDistinct:)` counts entries (ranks) for the fill rule. New constants `correctRestRounds = 1`, `cardsPerMinuteEstimate = 8`; `alreadyShownFactor` unused. No persisted-format change. **Deviation:** the plan's single `blocked:` parameter is split into `blocked` (shown ∪ resting) and `resting`, because the tiers need to tell the two apart. Note for the tester: the fill floor `minEligiblePool` now counts entries, so a two-direction pool admits up to twice as many cards as before.

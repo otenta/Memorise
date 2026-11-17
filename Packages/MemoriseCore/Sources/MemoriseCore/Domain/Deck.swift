@@ -236,6 +236,9 @@ public protocol Deck: Sendable {
     /// Final presentation step right before a card is shown (random spelling, root fret…).
     /// Must not change the card's key.
     func present(_ card: Card, options: DeckOptions, using rng: inout SplitMix64) -> Card
+    /// Other cards that test the same thing (e.g. a vocab entry's other directions). The engine
+    /// treats them as shown / resting together with `card` (R7-F1). Default: none.
+    func siblingKeys(of card: Card) -> [ItemKey]
 }
 
 public extension Deck {
@@ -247,6 +250,7 @@ public extension Deck {
     func introductionRank(of card: Card) -> Int? { nil }
     func newPerSession(options: DeckOptions) -> Int? { nil }
     func present(_ card: Card, options: DeckOptions, using rng: inout SplitMix64) -> Card { card }
+    func siblingKeys(of card: Card) -> [ItemKey] { [] }
 }
 
 extension ArraySlice {

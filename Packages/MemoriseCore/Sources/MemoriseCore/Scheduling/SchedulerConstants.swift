@@ -12,8 +12,13 @@ public struct SchedulerConstants: Sendable, Hashable {
     public var newCardWeight = 1.5
     public var weightFloor = 0.05
     public var staleDays = 14.0
-    /// Multiplier for cards already shown this session.
+    /// Unused since R7-F1 (in-session repeats are governed by rounds; see `correctRestRounds`).
+    /// Kept so defaults and any stored constant sets stay unchanged.
     public var alreadyShownFactor = 0.2
+    /// Extra rounds a card answered correctly sits out before it may be picked again (R7-F1).
+    public var correctRestRounds = 1
+    /// Cards shown per minute, used to size minute-based sessions for introduction gating (R7-F1).
+    public var cardsPerMinuteEstimate = 8
     /// Max cooldown window (`K = min(maxCooldown, pool.count - 1)`).
     public var maxCooldown = 3
     /// Retry re-appears after this many further cards.

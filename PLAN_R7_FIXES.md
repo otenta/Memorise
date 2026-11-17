@@ -40,7 +40,7 @@
 
 | Segment | Covers | Status | Notes |
 |---|---|---|---|
-| F1 No repeats until the pool is used up; correct cards stay away; top up new cards | #1, #6 | ☐ | Core. Update PLAN.md §10.3 and §10.5. |
+| F1 No repeats until the pool is used up; correct cards stay away; top up new cards | #1, #6 | ☑ | Core. Update PLAN.md §10.3 and §10.5. |
 | F2 Ending a session early discards it | #5 | ☐ | Core + app. One new `SessionEffect` case and one new `StatsStore` requirement. |
 | F3 Mic answer: "Correct" / "Try again", then move on | #2 | ☐ | App only. One new `AppSettings` field. |
 | F4 Fretboard redesign | #3 | ☐ | Frontend. The owner checks it on device. |

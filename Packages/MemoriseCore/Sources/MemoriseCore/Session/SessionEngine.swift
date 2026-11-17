@@ -63,6 +63,12 @@ public final class SessionEngine {
     private var pendingRetries: [(card: Card, dueAt: Int)] = []
     private var retriedKeys = Set<ItemKey>()
     private var presentationCounter = 0
+    // Rounds (R7-F1): a non-retry card repeats only once every other allowed card has been shown.
+    private var round = 0
+    /// Non-retry cards (and their siblings) shown in the current round.
+    private var shownThisRound = Set<ItemKey>()
+    /// Correctly answered keys (and siblings) → first round in which they may be picked again.
+    private var restUntilRound: [ItemKey: Int] = [:]
 
     // Timing (monotonic).
     private var sessionStart: Duration = .zero
@@ -97,12 +103,17 @@ public final class SessionEngine {
 
         let pool = deck.cards(options: config.options)
         let newPerSession = deck.newPerSession(options: config.options) ?? .max
+        let targetDistinct = switch config.length {
+        case let .cards(n): max(0, n)
+        case let .minutes(m): max(0, m) * constants.cardsPerMinuteEstimate
+        }
         self.scheduler = Scheduler(
             deck: deck,
             pool: pool,
             focus: config.focus,
             eligibleNew: IntroductionPolicy.eligibleNewKeys(
-                pool: pool, stats: stats, deck: deck, newPerSession: newPerSession, constants: constants
+                pool: pool, stats: stats, deck: deck, newPerSession: newPerSession,
+                targetDistinct: targetDistinct, constants: constants
             ),
             constants: constants
         )
@@ -201,6 +212,15 @@ public final class SessionEngine {
             stats[key] = updated
             effects.append(.saveStats(updated))
 
+            // R7-F1: a correct card (and its siblings) sits out the next `correctRestRounds` rounds.
+            if correct {
+                let until = round + 1 + constants.correctRestRounds
+                restUntilRound[key] = until
+                for sibling in deck.siblingKeys(of: p.card) { restUntilRound[sibling] = until }
+            } else {
+                restUntilRound[key] = nil
+            }
+
             if !correct, config.retryWrongCards, retriedKeys.insert(key).inserted {
                 let delay = Int.random(in: constants.retryDelay, using: &rng)
                 pendingRetries.append((p.card, history.count + delay))
@@ -296,9 +316,14 @@ public final class SessionEngine {
         }
         let excluded = Set(pendingRetries.map(\.card.key))
         let wallNow = wallClock()
-        // 1. Regular weighted pick within cooldown rules.
-        if let picked = scheduler.nextCard(history: history, stats: stats, excluded: excluded, now: wallNow, allowFallback: false, rng: &rng) {
-            show(deck.present(picked, options: config.options, using: &rng), isRetry: false, at: now)
+        let resting = Set(restUntilRound.lazy.filter { $0.value > self.round }.map(\.key))
+        let blocked = shownThisRound.union(resting)
+        // 1. Regular weighted pick (fresh this round, else a new round) within cooldown rules.
+        if let picked = scheduler.select(
+            history: history, stats: stats, excluded: excluded, blocked: blocked, resting: resting,
+            now: wallNow, allowFallback: false, rng: &rng
+        ) {
+            showPicked(picked, at: now)
             return true
         }
         // 2. Prefer an early pending retry (not back-to-back) over a cooldown-breaking pick.
@@ -307,8 +332,11 @@ public final class SessionEngine {
             return true
         }
         // 3. Uniform fallback over the allowed set.
-        if let picked = scheduler.nextCard(history: history, stats: stats, excluded: excluded, now: wallNow, allowFallback: true, rng: &rng) {
-            show(deck.present(picked, options: config.options, using: &rng), isRetry: false, at: now)
+        if let picked = scheduler.select(
+            history: history, stats: stats, excluded: excluded, blocked: blocked, resting: resting,
+            now: wallNow, allowFallback: true, rng: &rng
+        ) {
+            showPicked(picked, at: now)
             return true
         }
         // 4. Flush any remaining retry, even back-to-back, rather than ending the session.
@@ -317,6 +345,18 @@ public final class SessionEngine {
             return true
         }
         return false
+    }
+
+    /// Shows a scheduler pick and records it in the current round (starting a new one if needed).
+    private func showPicked(_ picked: Scheduler.Selection, at now: Duration) {
+        if picked.startsNewRound {
+            round += 1
+            shownThisRound.removeAll(keepingCapacity: true)
+            restUntilRound = restUntilRound.filter { $0.value > round }
+        }
+        shownThisRound.insert(picked.card.key)
+        shownThisRound.formUnion(deck.siblingKeys(of: picked.card))
+        show(deck.present(picked.card, options: config.options, using: &rng), isRetry: false, at: now)
     }
 
     /// Pending retry with the smallest `dueAt` whose key differs from `key`.
