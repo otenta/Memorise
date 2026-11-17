@@ -40,6 +40,8 @@ final class SessionViewModel {
     private(set) var typedSpec: TypedAnswerSpec?
     /// Set when a typed/choice answer has been checked (shown on the reveal).
     private(set) var autoAnswer: AutoAnswer?
+    /// M5 K4: the entry whose "My snippet" sheet is open (the session is paused meanwhile).
+    var snippetTarget: SnippetEditTarget?
 
     @ObservationIgnored let ui: any DeckUI
     @ObservationIgnored private let env: AppEnvironment
@@ -85,7 +87,8 @@ final class SessionViewModel {
             promptDidAppear: { [weak self] in self?.promptDidAppear() },
             requestVoiceHint: { [weak self] in self?.showVoiceHint = true },
             pauseSession: { [weak self] in self?.pause() },
-            resumeSession: { [weak self] in self?.resume() }
+            resumeSession: { [weak self] in self?.resume() },
+            editSnippet: { [weak self] entry in self?.editSnippet(entry) }
         )
     }
 
@@ -152,6 +155,18 @@ final class SessionViewModel {
         guard let engine else { return }
         engine.resume()
         syncState()
+    }
+
+    /// Opens the snippet sheet; the session pauses (same path as ✕) so grade time isn't inflated.
+    func editSnippet(_ entry: VocabEntry) {
+        pause()
+        snippetTarget = SnippetEditTarget(entry: entry)
+    }
+
+    /// Sheet dismissed: resume where we left off.
+    func snippetSheetDismissed() {
+        snippetTarget = nil
+        resume()
     }
 
     func quit() {
@@ -309,4 +324,10 @@ extension Duration {
         let (s, atto) = components
         return Double(s) + Double(atto) / 1e18
     }
+}
+
+/// Identifies the vocab entry being annotated in the snippet sheet.
+struct SnippetEditTarget: Identifiable, Hashable {
+    let entry: VocabEntry
+    var id: String { entry.id }
 }

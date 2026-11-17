@@ -48,7 +48,7 @@ private struct SessionContent: View {
         Group {
             if case let .finished(summary) = vm.state {
                 NavigationStack {
-                    SummaryView(summary: summary, deck: vm.deck, saveFailures: vm.saveFailures)
+                    SummaryView(summary: summary, deck: vm.deck, saveFailures: vm.saveFailures, celebrate: true)
                         .toolbar {
                             ToolbarItem(placement: .confirmationAction) {
                                 Button("Done", action: onDone).accessibilityIdentifier("doneButton")
@@ -81,22 +81,25 @@ private struct SessionContent: View {
         VStack(spacing: 0) {
             topBar
             ZStack {
-                switch vm.state {
-                case let .prompting(p):
-                    promptState(p)
-                        // Instant: the response timer starts on appear, so no entry animation.
-                        .transition(.identity)
-                case let .revealed(p, ms):
-                    revealState(p, responseMs: ms)
+                // One branch for "revealed" and "paused under the snippet sheet" so the reveal keeps its scroll position.
+                if let shown = shownReveal {
+                    revealState(shown.card, responseMs: shown.ms)
                         .transition(.asymmetric(
                             insertion: reduceMotion ? .opacity : .modifier(active: FlipIn(progress: 0), identity: FlipIn(progress: 1)),
                             removal: .identity
                         ))
-                case let .paused(p, _):
-                    pausedOverlay(p)
-                        .transition(.opacity.combined(with: .scale(scale: 0.94)))
-                default:
-                    ProgressView()
+                } else {
+                    switch vm.state {
+                    case let .prompting(p):
+                        promptState(p)
+                            // Instant: the response timer starts on appear, so no entry animation.
+                            .transition(.identity)
+                    case let .paused(p, _):
+                        pausedOverlay(p)
+                            .transition(.opacity.combined(with: .scale(scale: 0.94)))
+                    default:
+                        ProgressView()
+                    }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -110,6 +113,14 @@ private struct SessionContent: View {
         .focusEffectDisabled()
         .onKeyPress(phases: .down) { handleKey($0.key) }
         .onAppear { if !vm.usesTextField { keyboardFocused = true } }
+        #if DEBUG && targetEnvironment(simulator)
+        // `-uiReveal YES` reveals the first card (UI screenshots).
+        .task {
+            guard UserDefaults.standard.bool(forKey: "uiReveal") else { return }
+            try? await Task.sleep(for: .seconds(1))
+            vm.ok()
+        }
+        #endif
         .onChange(of: phaseKey) { if !vm.usesTextField { keyboardFocused = true }; dragOffset = 0 }
         .onChange(of: confirmQuit) { _, shown in if !shown, !vm.usesTextField { keyboardFocused = true } }
         .onChange(of: vm.showVoiceHint) { _, shown in if !shown, !vm.usesTextField { keyboardFocused = true } }
@@ -123,6 +134,9 @@ private struct SessionContent: View {
             Button("Keep going", role: .cancel) { vm.resume() }
         } message: {
             Text("You'll see a summary of the cards answered so far.")
+        }
+        .sheet(item: $vm.snippetTarget, onDismiss: { vm.snippetSheetDismissed() }) { target in
+            SnippetEditorSheet(entry: target.entry)
         }
         .alert("No Korean voice installed", isPresented: $vm.showVoiceHint) {
             Button("OK", role: .cancel) {}
@@ -180,7 +194,7 @@ private struct SessionContent: View {
         switch vm.state {
         case let .prompting(p): p.presentationID * 4
         case let .revealed(p, _): p.presentationID * 4 + 1
-        case let .paused(p, _): p.presentationID * 4 + 2
+        case let .paused(p, ms): p.presentationID * 4 + (ms != nil && vm.snippetTarget != nil ? 1 : 2)
         default: -1
         }
     }
@@ -230,6 +244,15 @@ private struct SessionContent: View {
         }
     }
 
+    /// The reveal to show: while revealed, or while paused for the snippet sheet.
+    private var shownReveal: (card: PresentedCard, ms: Int)? {
+        switch vm.state {
+        case let .revealed(p, ms): (p, ms)
+        case let .paused(p, ms?) where vm.snippetTarget != nil: (p, ms)
+        default: nil
+        }
+    }
+
     private var isPaused: Bool {
         if case .paused = vm.state { return true }
         return false
@@ -238,10 +261,38 @@ private struct SessionContent: View {
     // MARK: States
 
     /// The flashcard surface.
-    private func cardSurface(@ViewBuilder _ content: () -> some View) -> some View {
+    private func cardSurface(stacked: Bool = true, @ViewBuilder _ content: () -> some View) -> some View {
         content()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(alignment: .bottomTrailing) {
+                // Faint subject watermark for depth.
+                vm.deck.subject.glyph
+                    .font(.system(size: 150))
+                    .foregroundStyle(subjectColors[0].opacity(0.06))
+                    .rotationEffect(.degrees(-14))
+                    .offset(x: 30, y: 30)
+                    .accessibilityHidden(true)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
             .glassCard(radius: 32, tint: subjectColors[0])
+            .background(alignment: .bottom) { if stacked { deckStack } }
+    }
+
+    /// Two cards peeking out below the current one, so it reads as a deck.
+    private var deckStack: some View {
+        ZStack(alignment: .bottom) {
+            ForEach([2, 1], id: \.self) { i in
+                RoundedRectangle(cornerRadius: 32, style: .continuous)
+                    .fill(.regularMaterial)
+                    .overlay(RoundedRectangle(cornerRadius: 32, style: .continuous).fill(subjectColors[i % subjectColors.count].opacity(0.18)))
+                    .overlay(RoundedRectangle(cornerRadius: 32, style: .continuous).strokeBorder(.white.opacity(0.35), lineWidth: 1))
+                    .shadow(color: subjectColors[0].opacity(0.12), radius: 6, y: 3)
+                    .scaleEffect(x: 1 - 0.06 * Double(i), y: 1, anchor: .bottom)
+                    .offset(y: 9 * Double(i))
+                    .opacity(1 - 0.25 * Double(i))
+            }
+        }
+        .accessibilityHidden(true)
     }
 
     private func promptState(_ p: PresentedCard) -> some View {
@@ -288,7 +339,8 @@ private struct SessionContent: View {
     private func revealState(_ p: PresentedCard, responseMs: Int) -> some View {
         let swipe = max(-1, min(1, dragOffset / 140))
         return layout {
-            cardSurface {
+            cardSurface(stacked: false) {
+                GeometryReader { geo in
                 ScrollView {
                     VStack(spacing: 16) {
                         if p.isRetry { retryBadge }
@@ -304,13 +356,18 @@ private struct SessionContent: View {
                     }
                     .padding(24)
                     .frame(maxWidth: .infinity)
+                    // Short answers sit centred; long ones scroll from the top.
+                    .frame(minHeight: geo.size.height)
                 }
                 .scrollBounceBehavior(.basedOnSize)
+                }
             }
             .overlay { swipeTint(swipe) }
             .offset(x: dragOffset)
             .rotationEffect(.degrees(reduceMotion ? 0 : Double(swipe) * 8), anchor: .bottom)
             .gesture(swipeToGrade, isEnabled: vm.autoAnswer == nil)
+            // The deck stays put while the top card is swiped.
+            .background(alignment: .bottom) { deckStack }
         } controls: {
             if let auto = vm.autoAnswer {
                 autoControls(auto)

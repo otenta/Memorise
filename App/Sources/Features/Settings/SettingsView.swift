@@ -8,6 +8,8 @@ struct SettingsView: View {
     @State private var exporting = false
     @State private var exportError: String?
     @State private var resetTarget: ResetTarget?
+    /// M5 K4: after reset-all, asked separately when the user has snippets.
+    @State private var askDeleteSnippets = false
     #if DEBUG && targetEnvironment(simulator)
     @State private var seeding = false
     #endif
@@ -200,6 +202,19 @@ struct SettingsView: View {
             } message: { _ in
                 Text("This permanently deletes the history and statistics. It cannot be undone.")
             }
+            .confirmationDialog("Also delete my snippets?", isPresented: $askDeleteSnippets, titleVisibility: .visible) {
+                Button("Delete \(env.personalSnippets.count) snippet\(env.personalSnippets.count == 1 ? "" : "s")", role: .destructive) {
+                    Task {
+                        do { try await env.deleteAllPersonalSnippets() } catch {
+                            AppEnvironment.log.error("Snippet delete failed: \(error.localizedDescription, privacy: .public)")
+                        }
+                        env.dataDidChange()
+                    }
+                }
+                Button("Keep my snippets", role: .cancel) {}
+            } message: {
+                Text("Stats are reset. Your own snippets are separate; keep them or delete them too.")
+            }
         }
     }
 
@@ -267,6 +282,11 @@ struct SettingsView: View {
         }
         resetTarget = nil
         env.dataDidChange()
+        if case .all = target, !env.personalSnippets.isEmpty {
+            // Let the first dialog finish dismissing before the second appears.
+            try? await Task.sleep(for: .milliseconds(350))
+            askDeleteSnippets = true
+        }
     }
 }
 

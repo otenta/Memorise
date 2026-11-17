@@ -8,6 +8,8 @@ struct SummaryView: View {
     let deck: (any Deck)?
     /// Answers that couldn't be persisted (live sessions only).
     var saveFailures = 0
+    /// Live session end: confetti for a strong run.
+    var celebrate = false
 
     @Environment(AppEnvironment.self) private var env
     @State private var showAll = false
@@ -93,6 +95,11 @@ struct SummaryView: View {
         .navigationTitle(summary.status == .abandoned ? "Session ended" : "Summary")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: summary.sessionID) { buildLabels() }
+        .overlay {
+            if celebrate, (summary.accuracy ?? 0) >= 0.8, !summary.rows.isEmpty {
+                ConfettiBurst(colors: colors + [Theme.mint, Theme.amber, Theme.pink])
+            }
+        }
         .accessibilityIdentifier("summaryView")
     }
 

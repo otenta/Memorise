@@ -30,16 +30,27 @@ struct ScreenshotImportView: View {
     var body: some View {
         Form {
             Section {
+                if phase != .review {
+                    ScanHero(reading: phase == .reading)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
+                }
+            }
+            Section {
                 PhotosPicker(selection: $pick, matching: .images, photoLibrary: .shared()) {
-                    Label(phase == .idle ? "Choose a screenshot" : "Choose another screenshot", systemImage: "photo.on.rectangle")
+                    Label(phase == .idle ? "Choose a screenshot" : "Choose another screenshot", systemImage: "photo.on.rectangle.angled")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .background(LinearGradient(colors: [Theme.indigo, Theme.violet], startPoint: .leading, endPoint: .trailing),
+                                    in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .shadow(color: Theme.violet.opacity(0.35), radius: 8, y: 4)
                 }
+                .buttonStyle(PressableStyle())
+                .disabled(phase == .reading)
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
                 .accessibilityIdentifier("screenshotPicker")
-                if phase == .reading {
-                    HStack(spacing: 10) {
-                        ProgressView()
-                        Text("Reading Korean text…").foregroundStyle(.secondary)
-                    }
-                }
             } footer: {
                 Text("Text is recognised on this device. The screenshot isn't saved; only the words you keep are.")
             }
@@ -68,6 +79,10 @@ struct ScreenshotImportView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .background { AuroraBackground(colors: [Theme.indigo, Theme.pink], intensity: 0.45) }
+        .tint(Theme.indigo)
+        .animation(Theme.softSpring, value: phase)
         .navigationTitle("Add from screenshot")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -129,13 +144,74 @@ struct ScreenshotImportView: View {
     }
 }
 
+/// Illustration: a phone frame with Hangul lines; a scan beam sweeps while reading.
+private struct ScanHero: View {
+    let reading: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var sweep = false
+
+    var body: some View {
+        VStack(spacing: 14) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .fill(.regularMaterial)
+                    .frame(width: 120, height: 160)
+                    .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Theme.violet.opacity(0.35), lineWidth: 1.5))
+                VStack(alignment: .leading, spacing: 9) {
+                    ForEach(["퀘스트 완료", "보상 받기", "인벤토리", "장비 강화"], id: \.self) { t in
+                        Text(t)
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundStyle(Subject.korean.gradient)
+                    }
+                }
+                .frame(width: 96, alignment: .leading)
+                if reading && !reduceMotion {
+                    LinearGradient(colors: [.clear, Theme.mint.opacity(0.55), .clear], startPoint: .top, endPoint: .bottom)
+                        .frame(width: 120, height: 28)
+                        .offset(y: sweep ? 66 : -66)
+                        .blendMode(.plusLighter)
+                        .onAppear {
+                            sweep = false
+                            withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { sweep = true }
+                        }
+                        .transition(.opacity)
+                }
+                Image(systemName: "text.viewfinder")
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 52, height: 52)
+                    .background(LinearGradient(colors: [Theme.indigo, Theme.violet], startPoint: .topLeading, endPoint: .bottomTrailing), in: Circle())
+                    .shadow(color: Theme.violet.opacity(0.4), radius: 8, y: 4)
+                    .symbolEffect(.pulse, options: .repeating, isActive: reading && !reduceMotion)
+                    .offset(x: 62, y: 72)
+            }
+            .padding(.bottom, 14)
+            Text(reading ? "Reading Korean text…" : "Turn a game screenshot into words")
+                .font(.headline)
+                .contentTransition(.opacity)
+            if !reading {
+                Text("Pick an AION 2 screenshot. New words show up here for you to keep.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .padding(.vertical, 18)
+        .padding(.horizontal, 20)
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+    }
+}
+
 private struct CandidateRow: View {
     @Binding var candidate: ScreenshotImportView.Candidate
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Toggle(isOn: $candidate.selected) {
-                Text(candidate.hangul).font(.title3.weight(.semibold))
+            Toggle(isOn: $candidate.selected.animation(Theme.spring)) {
+                Text(candidate.hangul)
+                    .font(.title3.weight(.bold))
+                    .foregroundStyle(candidate.selected ? AnyShapeStyle(Subject.korean.gradient) : AnyShapeStyle(.secondary))
             }
             .accessibilityIdentifier("screenshotWordToggle.\(candidate.hangul)")
             if candidate.selected {

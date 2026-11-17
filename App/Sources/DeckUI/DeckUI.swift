@@ -17,6 +17,8 @@ struct DeckUIContext {
     var pauseSession: @MainActor () -> Void = {}
     /// Resumes after `pauseSession`.
     var resumeSession: @MainActor () -> Void = {}
+    /// Opens the "My snippet" editor hosted by the session (it pauses while open). `nil` = the view hosts its own sheet.
+    var editSnippet: (@MainActor (VocabEntry) -> Void)?
 
     var settings: AppSettings { env.settings }
 }

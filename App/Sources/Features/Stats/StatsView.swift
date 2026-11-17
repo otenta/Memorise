@@ -54,16 +54,19 @@ struct StatsView: View {
         NavigationStack {
             List {
                 Section {
-                    Picker("Deck", selection: Binding(
-                        get: { deck?.id },
-                        set: { selectedDeck = $0 }
-                    )) {
-                        ForEach(env.catalog.decks, id: \.id) { Text($0.title).tag(Optional($0.id)) }
+                    DeckChipCarousel(decks: env.catalog.decks, selected: deck?.id) { id in
+                        withAnimation(Theme.spring) { selectedDeck = id }
                     }
-                    .accessibilityIdentifier("statsDeckPicker")
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
                 }
 
                 if let deck {
+                    Section {
+                        StatsOverview(deck: deck, data: data)
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
+                    }
                     trendSection
                     if let section = env.deckUI(for: deck).statsSection(deck: deck, stats: data.stats) {
                         section
@@ -106,8 +109,22 @@ struct StatsView: View {
     @ViewBuilder private var trendSection: some View {
         Section {
             if data.points.count < 2 {
-                Text(data.points.isEmpty ? "Complete a session to see your trend." : "Complete one more session to see a trend.")
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 14) {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .font(.system(size: 26, weight: .semibold))
+                        .foregroundStyle(deck?.subject.gradient ?? Subject.music.gradient)
+                        .symbolEffect(.pulse, options: .repeating.speed(0.4))
+                        .frame(width: 52, height: 52)
+                        .background((deck?.subject.accent ?? Theme.indigo).opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(data.points.isEmpty ? "No trend yet" : "Almost there")
+                            .font(.headline)
+                        Text(data.points.isEmpty ? "Complete a session to see your trend." : "Complete one more session to see a trend.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.vertical, 6)
             } else {
                 Picker("Metric", selection: $showAccuracy) {
                     Text("Median time").tag(false)
@@ -164,9 +181,36 @@ struct StatsView: View {
 
     private func historyRow(_ s: SessionRecord) -> some View {
         let point = data.pointsByID[s.id]
-        return VStack(alignment: .leading, spacing: 2) {
+        let accuracy = point?.baseline.accuracy
+        return HStack(spacing: 12) {
+            ZStack {
+                if let accuracy {
+                    RingGauge(value: accuracy, colors: accuracyColors(accuracy), lineWidth: 4)
+                    Text(Fmt.percent(accuracy))
+                        .font(.system(size: 10, weight: .heavy).monospacedDigit())
+                        .minimumScaleFactor(0.6)
+                } else {
+                    Circle().fill(.primary.opacity(0.06))
+                    Image(systemName: s.status == .abandoned ? "xmark" : "hourglass")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .frame(width: 40, height: 40)
+            .accessibilityHidden(true)
+            historyText(s, point: point)
+        }
+    }
+
+    private func accuracyColors(_ a: Double) -> [Color] {
+        a >= 0.85 ? [Theme.mint, Theme.teal] : a >= 0.6 ? [Theme.amber, .orange] : [Theme.rose, Theme.coral]
+    }
+
+    private func historyText(_ s: SessionRecord, point: SessionTrendPoint?) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 6) {
                 Text(s.startedAt, format: .dateTime.day().month().hour().minute())
+                    .font(.subheadline.weight(.semibold))
                 if s.config.inputMode != .touch {
                     Image(systemName: s.config.inputMode.systemImage).font(.caption).foregroundStyle(.secondary)
                         .accessibilityLabel(s.config.inputMode.title)
@@ -186,6 +230,132 @@ struct StatsView: View {
             }
             .font(.caption.monospacedDigit())
             .foregroundStyle(.secondary)
+        }
+    }
+}
+
+// MARK: - Deck carousel
+
+/// Horizontally scrolling deck chips; the selected one is filled with its subject gradient.
+private struct DeckChipCarousel: View {
+    let decks: [any Deck]
+    let selected: DeckID?
+    let select: (DeckID) -> Void
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(decks, id: \.id) { deck in
+                        chip(deck)
+                            .id(deck.id)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 6)
+            }
+            .scrollClipDisabled()
+            .onAppear { if let selected { proxy.scrollTo(selected, anchor: .center) } }
+            .onChange(of: selected) { _, id in
+                guard let id else { return }
+                withAnimation(Theme.softSpring) { proxy.scrollTo(id, anchor: .center) }
+            }
+        }
+        .accessibilityIdentifier("statsDeckPicker")
+    }
+
+    private func chip(_ deck: any Deck) -> some View {
+        let isOn = deck.id == selected
+        return Button { select(deck.id) } label: {
+            HStack(spacing: 6) {
+                deck.subject.glyph
+                    .font(.caption.weight(.bold))
+                Text(deck.title)
+                    .font(.subheadline.weight(.semibold))
+                    .lineLimit(1)
+            }
+            .foregroundStyle(isOn ? AnyShapeStyle(.white) : AnyShapeStyle(.primary))
+            .padding(.horizontal, 14).padding(.vertical, 9)
+            .background {
+                if isOn {
+                    Capsule().fill(deck.subject.gradient)
+                        .shadow(color: deck.subject.accent.opacity(0.4), radius: 8, y: 4)
+                } else {
+                    Capsule().fill(.regularMaterial)
+                        .overlay(Capsule().strokeBorder(.primary.opacity(0.08), lineWidth: 1))
+                }
+            }
+            .scaleEffect(isOn ? 1 : 0.96)
+        }
+        .buttonStyle(PressableStyle(scale: 0.92))
+        .accessibilityAddTraits(isOn ? .isSelected : [])
+    }
+}
+
+// MARK: - Overview
+
+/// Three headline tiles: accuracy ring, median time, cards seen.
+private struct StatsOverview: View {
+    let deck: any Deck
+    let data: DeckStatsData
+
+    var body: some View {
+        let info = DeckRowInfo.make(cardCount: data.stats.count, stats: data.stats.values)
+        let seen = data.stats.values.filter { $0.attempts > 0 }.count
+        let sessions = data.points.count
+        HStack(spacing: 10) {
+            tile(title: "Accuracy") {
+                ZStack {
+                    RingGauge(value: info.accuracy ?? 0, colors: [Theme.mint, Theme.teal], lineWidth: 6)
+                    Text(info.accuracy.map { Fmt.percent($0) } ?? "–")
+                        .font(.system(.caption, design: .rounded, weight: .heavy).monospacedDigit())
+                        .contentTransition(.numericText())
+                }
+                .frame(width: 54, height: 54)
+            }
+            tile(title: "Median") {
+                metric(info.medianMs.map { Fmt.seconds($0) } ?? "–", icon: "timer", colors: deck.subject.colors)
+            }
+            tile(title: sessions == 1 ? "Session" : "Sessions") {
+                metric("\(sessions)", icon: "flame.fill", colors: [Theme.amber, Theme.coral])
+            }
+            tile(title: "Seen") {
+                metric("\(seen)", icon: "eye.fill", colors: [Theme.violet, Theme.indigo])
+            }
+        }
+        .padding(.horizontal, 16)
+        .animation(Theme.softSpring, value: info)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func tile(title: String, @ViewBuilder content: () -> some View) -> some View {
+        VStack(spacing: 6) {
+            content()
+                .frame(height: 54)
+            Text(title.uppercased())
+                .font(.system(size: 10, weight: .heavy, design: .rounded))
+                .tracking(0.8)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(.white.opacity(0.35), lineWidth: 1))
+        .shadow(color: deck.subject.accent.opacity(0.10), radius: 6, y: 3)
+    }
+
+    private func metric(_ value: String, icon: String, colors: [Color]) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing))
+            Text(value)
+                .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .contentTransition(.numericText())
         }
     }
 }

@@ -11,7 +11,7 @@ struct VocabUI: DeckUI {
 
     func answer(_ card: Card, ctx: DeckUIContext) -> AnyView {
         guard let p = card.vocab else { return AnyView(EmptyView()) }
-        return AnyView(VocabAnswerView(prompt: p))
+        return AnyView(VocabAnswerView(prompt: p, onEditSnippet: ctx.editSnippet))
     }
 
     func label(_ card: Card, settings: AppSettings) -> String {
@@ -93,6 +93,7 @@ struct VocabPromptView: View {
                     .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
                     .lineLimit(2).minimumScaleFactor(0.4)
                     .multilineTextAlignment(.center)
+                if prompt.direction == .koToEn, let register = e.register { RegisterChip(register: register) }
             case .enToKo where e.partOfSpeech == .pattern && !e.allExamples.isEmpty:
                 // Sentence practice: say the first example in Korean.
                 PromptCaption(text: "SAY IT IN KOREAN · \(e.hangul)")
@@ -105,7 +106,10 @@ struct VocabPromptView: View {
                     .font(.system(size: 40, weight: .semibold))
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.5)
-                Text(e.pos).font(.title3).foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    Text(e.pos).font(.title3).foregroundStyle(.secondary)
+                    if let register = e.register { RegisterChip(register: register) }
+                }
             }
         }
         .accessibilityElement(children: .combine)
@@ -155,6 +159,8 @@ struct ListeningPromptView: View {
 
 struct VocabAnswerView: View {
     let prompt: VocabPrompt
+    /// Session-hosted snippet editor (M5 K4); `nil` outside sessions.
+    var onEditSnippet: (@MainActor (VocabEntry) -> Void)?
     @Environment(AppEnvironment.self) private var env
 
     var body: some View {
@@ -168,8 +174,12 @@ struct VocabAnswerView: View {
                 // Patterns: each example has its own 🔊; the headword itself isn't speakable.
                 if e.partOfSpeech != .pattern { speakButton(e.hangul, label: "Play pronunciation") }
             }
-            if settings.showRomanization, !e.romanization.isEmpty {
-                Text(e.romanization).font(.title3).foregroundStyle(.secondary)
+            let showRoman = settings.showRomanization && !e.romanization.isEmpty
+            if showRoman || e.register != nil {
+                HStack(spacing: 8) {
+                    if showRoman { Text(e.romanization).font(.title3).foregroundStyle(.secondary) }
+                    if let register = e.register { RegisterChip(register: register) }
+                }
             }
             Text(e.meaningText).font(.title2.weight(.semibold)).multilineTextAlignment(.center)
             Text(e.pos).font(.subheadline).foregroundStyle(.secondary)
@@ -187,6 +197,11 @@ struct VocabAnswerView: View {
             }
             if let notes = e.notes {
                 Text(notes).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
+            }
+            // M5: only media phrases get the panel, so other decks look unchanged.
+            if MediaSnippetView.shouldShow(for: e) {
+                MediaSnippetView(entry: e, onEditSnippet: onEditSnippet)
+                    .padding(.top, 8)
             }
         }
     }
@@ -266,6 +281,17 @@ private let previewEntry = VocabEntry(
         VocabAnswerView(prompt: VocabPrompt(entry: previewEntry, direction: .koToEn))
     }
     .padding()
+    .environment(AppEnvironment.preview())
+}
+
+#Preview("Vocab media phrase") {
+    ScrollView {
+        VStack(spacing: 40) {
+            VocabPromptView(prompt: VocabPrompt(entry: .previewMedia, direction: .koToEn))
+            VocabAnswerView(prompt: VocabPrompt(entry: .previewMedia, direction: .koToEn))
+        }
+        .padding()
+    }
     .environment(AppEnvironment.preview())
 }
 

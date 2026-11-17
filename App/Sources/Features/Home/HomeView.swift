@@ -77,22 +77,28 @@ struct HomeView: View {
                         ) { withAnimation(Theme.spring) { loadFailuresDismissed = true } }
                         .transition(.scale(scale: 0.9).combined(with: .opacity))
                     }
+                    if let recent = recentDeck {
+                        continueCard(recent).appearAnimation(index: 1)
+                    }
                     ForEach(Array(Subject.allCases.enumerated()), id: \.element) { sIndex, subject in
                         // User decks get their own "My decks" section below.
-                        let decks = env.catalog.decks(for: subject).filter { !UserDecks.isUserDeckID($0.id) }
-                        if !decks.isEmpty {
-                            sectionHeader(subject).appearAnimation(index: sIndex * 3 + 1)
-                            ForEach(Array(decks.enumerated()), id: \.element.id) { i, deck in
-                                // Sub-header when the display group changes (empty groups are hidden).
-                                if !deck.group.isEmpty, i == 0 || decks[i - 1].group != deck.group {
-                                    groupHeader(deck.group).appearAnimation(index: sIndex * 3 + 2 + i)
+                        let groups = deckGroups(for: subject)
+                        if !groups.isEmpty {
+                            sectionHeader(subject).appearAnimation(index: sIndex * 3 + 2)
+                            ForEach(Array(groups.enumerated()), id: \.offset) { gIndex, group in
+                                if !group.title.isEmpty {
+                                    groupHeader(group.title).appearAnimation(index: sIndex * 3 + 3 + gIndex)
                                 }
-                                Button { setupDeck = DeckBox(deck: deck) } label: {
-                                    DeckCard(deck: deck, info: info[deck.id])
+                                LazyVGrid(columns: gridColumns, spacing: 12) {
+                                    ForEach(Array(group.decks.enumerated()), id: \.element.id) { i, deck in
+                                        Button { setupDeck = DeckBox(deck: deck) } label: {
+                                            DeckTile(deck: deck, info: info[deck.id], colors: subject.palette(gIndex))
+                                        }
+                                        .buttonStyle(PressableStyle(scale: 0.95))
+                                        .accessibilityIdentifier("deck.\(deck.id.raw)")
+                                        .appearAnimation(index: sIndex * 3 + 3 + gIndex + i / 2)
+                                    }
                                 }
-                                .buttonStyle(PressableStyle())
-                                .accessibilityIdentifier("deck.\(deck.id.raw)")
-                                .appearAnimation(index: sIndex * 3 + 2 + i)
                             }
                         }
                     }
@@ -107,6 +113,23 @@ struct HomeView: View {
                 if env.persistenceWarning != nil { persistenceBanner }
             }
             .task(id: env.dataVersion) { await load() }
+            #if DEBUG && targetEnvironment(simulator)
+            // `-uiSetupDeck <id>` opens that deck's Setup sheet (UI screenshots).
+            .task {
+                if let id = UserDefaults.standard.string(forKey: "uiSetupDeck"), let deck = env.catalog.deck(id: DeckID(id)) {
+                    setupDeck = DeckBox(deck: deck)
+                }
+                // `-uiSession <id>` starts a session straight away.
+                if let id = UserDefaults.standard.string(forKey: "uiSession"), let deck = env.catalog.deck(id: DeckID(id)) {
+                    launch = SessionLaunch(deck: deck, config: env.initialConfig(for: deck))
+                }
+                // `-uiImport YES` opens the AION screenshot import; `-uiEditAion YES` its deck editor.
+                if UserDefaults.standard.bool(forKey: "uiImport") { await openAionImport() }
+                if UserDefaults.standard.bool(forKey: "uiEditAion"), let id = try? await env.ensureAionDeck() {
+                    editingDeck = id
+                }
+            }
+            #endif
             .sheet(item: $setupDeck, onDismiss: {
                 // Present the session only once the sheet is fully gone.
                 launch = pendingLaunch
@@ -210,6 +233,46 @@ struct HomeView: View {
         } catch {
             AppEnvironment.log.error("Create deck failed: \(error.localizedDescription, privacy: .public)")
         }
+    }
+
+    private var gridColumns: [GridItem] {
+        [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+    }
+
+    /// Built-in decks of a subject, split into display groups (order kept, empty group names allowed).
+    private func deckGroups(for subject: Subject) -> [(title: String, decks: [any Deck])] {
+        var out: [(title: String, decks: [any Deck])] = []
+        for deck in env.catalog.decks(for: subject) where !UserDecks.isUserDeckID(deck.id) {
+            if let last = out.indices.last, out[last].title == deck.group {
+                out[last].decks.append(deck)
+            } else {
+                out.append((deck.group, [deck]))
+            }
+        }
+        return out
+    }
+
+    /// The most recently practised deck, if any.
+    private var recentDeck: (any Deck)? {
+        let best = info.compactMap { id, i in i.lastSeen.map { (id, $0) } }.max { $0.1 < $1.1 }
+        return best.flatMap { env.catalog.deck(id: $0.0) }
+    }
+
+    private func continueCard(_ deck: any Deck) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Jump back in", systemImage: "arrow.clockwise.circle.fill")
+                .font(.system(.caption, design: .rounded, weight: .heavy))
+                .tracking(1.2)
+                .textCase(.uppercase)
+                .foregroundStyle(deck.subject.accent)
+                .padding(.leading, 4)
+            Button { setupDeck = DeckBox(deck: deck) } label: {
+                DeckCard(deck: deck, info: info[deck.id])
+            }
+            .buttonStyle(PressableStyle())
+            .accessibilityIdentifier("continueDeck")
+        }
+        .transition(.scale(scale: 0.95).combined(with: .opacity))
     }
 
     private var greeting: some View {
@@ -381,6 +444,97 @@ private struct DeckCard: View {
             .lineLimit(1)
             .padding(.horizontal, 9).padding(.vertical, 5)
             .background(.white.opacity(0.2), in: Capsule())
+    }
+}
+
+/// Compact gradient tile used in the Home grid.
+private struct DeckTile: View {
+    let deck: any Deck
+    let info: DeckRowInfo?
+    let colors: [Color]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .top) {
+                badge
+                Spacer(minLength: 4)
+                if let accuracy = info?.accuracy {
+                    ZStack {
+                        RingGauge(value: accuracy, colors: [.white, .white.opacity(0.7)], lineWidth: 3.5)
+                        Text(Fmt.percent(accuracy))
+                            .font(.system(size: 9, weight: .heavy).monospacedDigit())
+                            .foregroundStyle(.white)
+                            .minimumScaleFactor(0.6)
+                    }
+                    .frame(width: 34, height: 34)
+                }
+            }
+            Spacer(minLength: 10)
+            Text(deck.title)
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .foregroundStyle(.white)
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
+                .multilineTextAlignment(.leading)
+            Text(deck.subtitle)
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.85))
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .padding(.top, 2)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, minHeight: 150, alignment: .topLeading)
+        .background {
+            let shape = RoundedRectangle(cornerRadius: 22, style: .continuous)
+            shape.fill(LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .overlay(alignment: .topTrailing) {
+                    deck.subject.glyph
+                        .font(.system(size: 78))
+                        .foregroundStyle(.white.opacity(0.13))
+                        .rotationEffect(.degrees(-14))
+                        .offset(x: 20, y: info?.accuracy == nil ? -6 : 34)
+                }
+                .overlay {
+                    shape.fill(LinearGradient(colors: [.white.opacity(0.25), .clear], startPoint: .top, endPoint: .center))
+                }
+                .overlay { shape.strokeBorder(.white.opacity(0.18), lineWidth: 1) }
+                .clipShape(shape)
+                .shadow(color: colors[0].opacity(0.35), radius: 12, y: 7)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(deck.title). \(deck.subtitle). \(info?.text ?? "")")
+        .accessibilityAddTraits(.isButton)
+    }
+
+    /// Card count, or "New" for never-practised decks.
+    @ViewBuilder private var badge: some View {
+        if let info {
+            HStack(spacing: 4) {
+                Image(systemName: info.accuracy == nil ? "sparkles" : "rectangle.stack.fill")
+                Text(info.accuracy == nil ? "New · \(info.cardCount)" : "\(info.cardCount)")
+            }
+            .font(.caption2.weight(.bold).monospacedDigit())
+            .foregroundStyle(.white)
+            .padding(.horizontal, 8).padding(.vertical, 4)
+            .background(.white.opacity(0.22), in: Capsule())
+        } else {
+            Text("00 cards")
+                .font(.caption2.weight(.bold))
+                .padding(.horizontal, 8).padding(.vertical, 4)
+                .redacted(reason: .placeholder)
+        }
+    }
+}
+
+extension Subject {
+    /// Per-group gradient pairs so display groups read as distinct families.
+    func palette(_ index: Int) -> [Color] {
+        let sets: [[Color]] = switch self {
+        case .music: [[Theme.indigo, Theme.violet], [Theme.violet, Theme.pink], [Theme.teal, Theme.indigo], [Theme.indigo, Theme.teal]]
+        case .korean: [[Theme.coral, Theme.pink], [Theme.pink, Theme.violet], [Theme.amber, Theme.coral], [Theme.rose, Theme.pink]]
+        }
+        return sets[index % sets.count]
     }
 }
 

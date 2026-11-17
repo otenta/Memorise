@@ -54,6 +54,11 @@ private struct SetupForm: View {
 
     var body: some View {
         Form {
+            Section {
+                SetupBanner(deck: deck, poolCount: poolCount)
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+            }
             LengthSection(length: $config.length)
 
             Section {
@@ -78,16 +83,65 @@ private struct SetupForm: View {
                 AnswerBySection(config: $config, modes: modes)
             }
 
-            Section {
-                LabeledContent("Cards available") {
+        }
+        .scrollContentBackground(.hidden)
+        .background { AuroraBackground(colors: deck.subject.colors, intensity: 0.45) }
+        .tint(deck.subject.accent)
+    }
+}
+
+/// Gradient header: deck title, subtitle and a live "cards available" counter.
+private struct SetupBanner: View {
+    let deck: any Deck
+    let poolCount: Int
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 16) {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(deck.subtitle)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white.opacity(0.9))
+                    .lineLimit(2)
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text("\(poolCount)")
-                        .font(.system(.body, design: .rounded, weight: .bold).monospacedDigit())
-                        .foregroundStyle(poolCount == 0 ? AnyShapeStyle(.red) : AnyShapeStyle(deck.subject.gradient))
-                        .contentTransition(.numericText())
-                        .animation(Theme.spring, value: poolCount)
+                        .font(.system(size: 40, weight: .heavy, design: .rounded).monospacedDigit())
+                        .contentTransition(.numericText(value: Double(poolCount)))
+                    Text(poolCount == 1 ? "card available" : "cards available")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.white.opacity(0.85))
+                }
+                .foregroundStyle(.white)
+                .animation(Theme.spring, value: poolCount)
+                if poolCount == 0 {
+                    Label("Change the options to include some cards", systemImage: "exclamationmark.circle.fill")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(Theme.rose.opacity(0.7), in: Capsule())
+                        .transition(.scale.combined(with: .opacity))
                 }
             }
+            Spacer(minLength: 0)
         }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            let shape = RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous)
+            shape.fill(deck.subject.gradient)
+                .overlay(alignment: .trailing) {
+                    deck.subject.glyph
+                        .font(.system(size: 96))
+                        .foregroundStyle(.white.opacity(0.16))
+                        .rotationEffect(.degrees(-12))
+                        .offset(x: 14)
+                }
+                .overlay { shape.fill(LinearGradient(colors: [.white.opacity(0.22), .clear], startPoint: .top, endPoint: .center)) }
+                .clipShape(shape)
+                .shadow(color: deck.subject.accent.opacity(0.35), radius: 14, y: 8)
+        }
+        .animation(Theme.spring, value: poolCount == 0)
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("cardsAvailable")
     }
 }
 
