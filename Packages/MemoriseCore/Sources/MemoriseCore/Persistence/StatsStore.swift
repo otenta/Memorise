@@ -131,3 +131,10 @@ public final class SessionRecorder: Sendable {
 
     deinit { continuation.finish() }
 }
+
+public extension StatsStore {
+    /// Start times of the deck's completed sessions (R8-S1/S2).
+    func deckHistory(for deck: DeckID) async throws -> DeckHistory {
+        DeckHistory(completedSessionStarts: try await sessions(for: deck).filter { $0.status == .completed }.map(\.startedAt))
+    }
+}

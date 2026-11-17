@@ -128,6 +128,8 @@ public struct ConjugationDeck: Deck {
 
     public func introductionRank(of card: Card) -> Int? { card.conjugation?.rank }
 
+    public var usesCoverageSessions: Bool { true }
+
     public func newPerSession(options: DeckOptions) -> Int? { options.conjugation?.newPerSession }
 
     /// Same word ×0.4; same form ×0.7.

@@ -54,7 +54,10 @@ public final class SessionEngine {
     /// Counted graded cards so far.
     public private(set) var countedGraded = 0
 
-    private let scheduler: Scheduler
+    private var scheduler: Scheduler
+    /// Entries beyond the session's first `targetEntries`, drawn on when the allowed set runs out (R8-S1).
+    private var topUpQueue: [[ItemKey]] = []
+    private var topUpIndex = 0
     private let clock: any MonotonicClock
     private let wallClock: @Sendable () -> Date
     private var rng: SplitMix64
@@ -95,14 +98,14 @@ public final class SessionEngine {
         rng: SplitMix64 = SplitMix64(),
         sessionID: UUID = UUID(),
         wallClock: @escaping @Sendable () -> Date = { Date() },
-        constants: SchedulerConstants = .standard
+        constants: SchedulerConstants = .standard,
+        history deckHistory: DeckHistory? = nil
     ) {
         self.deck = deck
         self.config = config
         self.constants = constants
         self.clock = clock
         self.wallClock = wallClock
-        self.rng = rng
         self.previous = previous
         self.stats = stats
         self.initialStats = stats
@@ -113,16 +116,30 @@ public final class SessionEngine {
         case let .cards(n): max(0, n)
         case let .minutes(m): max(0, m) * constants.cardsPerMinuteEstimate
         }
-        self.scheduler = Scheduler(
-            deck: deck,
-            pool: pool,
-            focus: config.focus,
-            eligibleNew: IntroductionPolicy.eligibleNewKeys(
-                pool: pool, stats: stats, deck: deck, newPerSession: newPerSession,
-                targetDistinct: targetDistinct, constants: constants
-            ),
-            constants: constants
-        )
+        var localRng = rng
+        if let queue = SessionComposer.queue(
+            pool: pool, stats: stats, deck: deck, history: deckHistory,
+            targetEntries: max(targetDistinct, 1), constants: constants, rng: &localRng
+        ) {
+            let first = min(queue.count, max(targetDistinct, 1))
+            self.scheduler = Scheduler(
+                deck: deck, pool: pool, focus: config.focus, eligibleNew: nil,
+                allowed: Set(queue[..<first].joined()), constants: constants
+            )
+            self.topUpQueue = Array(queue[first...])
+        } else {
+            self.scheduler = Scheduler(
+                deck: deck,
+                pool: pool,
+                focus: config.focus,
+                eligibleNew: IntroductionPolicy.eligibleNewKeys(
+                    pool: pool, stats: stats, deck: deck, newPerSession: newPerSession,
+                    targetDistinct: targetDistinct, constants: constants
+                ),
+                constants: constants
+            )
+        }
+        self.rng = localRng
         var prior: [ItemKey: Double] = [:]
         for card in pool { if let e = stats[card.key]?.ewmaResponseMs { prior[card.key] = e } }
         self.priorEwma = prior
@@ -349,10 +366,20 @@ public final class SessionEngine {
         let resting = Set(restUntilRound.lazy.filter { $0.value > self.round }.map(\.key))
         let blocked = shownThisRound.union(resting)
         // 1. Regular weighted pick (fresh this round, else a new round) within cooldown rules.
-        if let picked = scheduler.select(
+        //    R8-S1: when the round's cards are used up, top up with the next composed entry instead.
+        var picked = scheduler.select(
             history: history, stats: stats, excluded: excluded, blocked: blocked, resting: resting,
             now: wallNow, allowFallback: false, rng: &rng
-        ) {
+        )
+        while topUpIndex < topUpQueue.count, picked?.startsNewRound ?? true {
+            scheduler.extendAllowed(topUpQueue[topUpIndex])
+            topUpIndex += 1
+            picked = scheduler.select(
+                history: history, stats: stats, excluded: excluded, blocked: blocked, resting: resting,
+                now: wallNow, allowFallback: false, rng: &rng
+            )
+        }
+        if let picked {
             showPicked(picked, at: now)
             return true
         }

@@ -10,19 +10,29 @@ public struct Scheduler: Sendable {
     public let constants: SchedulerConstants
     /// Unseen cards allowed this session (`nil` = no gating).
     public let eligibleNew: Set<ItemKey>?
+    /// Cards selectable this session (R8-S1). When non-nil it replaces the `eligibleNew`/seen test:
+    /// a card is selectable iff its key is in this set. Grown by `extendAllowed`.
+    public private(set) var allowed: Set<ItemKey>?
 
     public init(
         deck: any Deck,
         pool: [Card],
         focus: FocusLevel,
         eligibleNew: Set<ItemKey>?,
+        allowed: Set<ItemKey>? = nil,
         constants: SchedulerConstants = .standard
     ) {
+        self.allowed = allowed
         self.deck = deck
         self.pool = pool
         self.focus = focus
         self.eligibleNew = eligibleNew
         self.constants = constants
+    }
+
+    /// Adds keys to the allowed set (top-up, R8-S1). No effect when the scheduler isn't using `allowed`.
+    public mutating func extendAllowed(_ keys: [ItemKey]) {
+        allowed?.formUnion(keys)
     }
 
     /// Cooldown window `K`.
@@ -92,7 +102,9 @@ public struct Scheduler: Sendable {
         for (i, card) in pool.enumerated() where !excluded.contains(card.key) {
             let s = stats[card.key]
             let unseen = (s?.attempts ?? 0) == 0
-            if unseen, let eligibleNew, !eligibleNew.contains(card.key) { continue }
+            if let allowed {
+                if !allowed.contains(card.key) { continue }
+            } else if unseen, let eligibleNew, !eligibleNew.contains(card.key) { continue }
             tier[i] = resting.contains(card.key) ? 3 : blocked.contains(card.key) ? 2 : 1
             weights[i] = calc.baseWeight(s) * deck.patternPenalty(candidate: card, recent: recent)
         }

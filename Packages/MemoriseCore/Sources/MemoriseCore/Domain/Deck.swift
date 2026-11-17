@@ -239,6 +239,9 @@ public protocol Deck: Sendable {
     /// Other cards that test the same thing (e.g. a vocab entry's other directions). The engine
     /// treats them as shown / resting together with `card` (R7-F1). Default: none.
     func siblingKeys(of card: Card) -> [ItemKey]
+    /// Whether sessions work through the deck in order of new material (R8-S1 `SessionComposer`).
+    /// Default `false`: the deck keeps the adaptive weighting and `IntroductionPolicy` gating.
+    var usesCoverageSessions: Bool { get }
 }
 
 public extension Deck {
@@ -251,6 +254,7 @@ public extension Deck {
     func newPerSession(options: DeckOptions) -> Int? { nil }
     func present(_ card: Card, options: DeckOptions, using rng: inout SplitMix64) -> Card { card }
     func siblingKeys(of card: Card) -> [ItemKey] { [] }
+    var usesCoverageSessions: Bool { false }
 }
 
 extension ArraySlice {

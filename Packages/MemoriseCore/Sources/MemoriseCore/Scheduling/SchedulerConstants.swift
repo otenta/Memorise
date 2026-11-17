@@ -23,6 +23,11 @@ public struct SchedulerConstants: Sendable, Hashable {
     public var maxCooldown = 3
     /// Retry re-appears after this many further cards.
     public var retryDelay = 3...5
+    /// A missed card waits a random number of this deck's completed sessions in this range before
+    /// it may return (R8-S1; the gap is stable per miss).
+    public var wrongGapSessions = 2...4
+    /// Max fraction of a session's entries that are returning wrong cards while new material remains (R8-S1).
+    public var reviewShare = 0.3
     /// Minimum eligible pool size before introduction gating is relaxed.
     public var minEligiblePool = 6
     /// Grades arriving sooner than this after the reveal are ignored (guards against double-taps).

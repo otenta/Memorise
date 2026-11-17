@@ -238,6 +238,8 @@ public struct HangulReadingDeck: Deck {
 
     public func introductionRank(of card: Card) -> Int? { card.hangulReading?.rank }
 
+    public var usesCoverageSessions: Bool { true }
+
     public func newPerSession(options: DeckOptions) -> Int? { options.hangulReading?.newPerSession }
 
     /// Same text ×0.1 (e.g. 아 as ㅏ and as ㅇ); same initial ×0.6; same vowel ×0.7.

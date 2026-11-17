@@ -1,4 +1,7 @@
 /// Decides which unseen cards may be introduced in a session (§10.5).
+///
+/// Unused since R8-S1 for decks with `usesCoverageSessions` (see `SessionComposer`); still used by
+/// every other ranked deck (music) and kept for API compatibility.
 public enum IntroductionPolicy {
     /// Keys of unseen cards eligible this session, or `nil` when the deck has no gating.
     ///

@@ -123,6 +123,13 @@ public struct ItemStats: Codable, Sendable, Equatable, Hashable {
         ItemStats(itemKey: key, deckID: deck)
     }
 
+    /// True when the last counted answer was wrong (R8): `StatsUpdater` sets `lastWrongAt` and
+    /// `lastSeenAt` from the same `now`, so they are equal exactly then. Retries are not counted,
+    /// so a card missed and then retried correctly stays wrong. Derived; no wire change.
+    public var lastAnswerWasWrong: Bool {
+        attempts > 0 && lastWrongAt != nil && lastWrongAt == lastSeenAt
+    }
+
     /// Lifetime accuracy, `nil` when never attempted.
     public var accuracy: Double? {
         attempts > 0 ? Double(correctCount) / Double(attempts) : nil

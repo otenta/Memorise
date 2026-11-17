@@ -52,6 +52,8 @@ public struct VocabDeck: Deck {
 
     public func introductionRank(of card: Card) -> Int? { card.vocab?.entry.rank }
 
+    public var usesCoverageSessions: Bool { true }
+
     public func newPerSession(options: DeckOptions) -> Int? { options.vocab?.newPerSession }
 
     /// The entry's other directions (R7-F1).
