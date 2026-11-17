@@ -4122,6 +4122,1208 @@
           "en": "Okay, okay."
         }
       ]
+    },
+    {
+      "id": "ko.media.0106",
+      "hangul": "괜찮을 거야",
+      "romanization": "gwaenchaneul geoya",
+      "meanings": [
+        "it'll be okay"
+      ],
+      "pos": "expression",
+      "rank": 106,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 괜찮을 거예요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 발표 너무 떨려.",
+          "en": "I'm so nervous about tomorrow's presentation."
+        },
+        {
+          "speaker": "B",
+          "ko": "넌 준비 많이 했잖아. 괜찮을 거야.",
+          "en": "You prepared a lot. It'll be okay."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0107",
+      "hangul": "다 잘될 거야",
+      "romanization": "da jaldoel geoya",
+      "meanings": [
+        "everything will work out"
+      ],
+      "pos": "expression",
+      "rank": 107,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 다 잘될 거예요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 되는 일이 하나도 없어.",
+          "en": "Nothing's going right lately."
+        },
+        {
+          "speaker": "B",
+          "ko": "힘내. 다 잘될 거야.",
+          "en": "Cheer up. Everything will work out."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0108",
+      "hangul": "너밖에 없어",
+      "romanization": "neobakke eopseo",
+      "meanings": [
+        "you're the only one (I have)"
+      ],
+      "pos": "expression",
+      "rank": 108,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-밖에 + negative = 'only'. Polite: 당신밖에 없어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 맨날 나한테만 전화해?",
+          "en": "Why do you always call only me?"
+        },
+        {
+          "speaker": "B",
+          "ko": "내 얘기 들어줄 사람이 너밖에 없어.",
+          "en": "You're the only one who listens to me."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0109",
+      "hangul": "나랑 사귈래?",
+      "romanization": "narang sagwillae",
+      "meanings": [
+        "will you go out with me?"
+      ],
+      "pos": "expression",
+      "rank": 109,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-ㄹ래? asks what the listener wants to do.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "할 말이 있어. 나랑 사귈래?",
+          "en": "I have something to say. Will you go out with me?"
+        },
+        {
+          "speaker": "B",
+          "ko": "...진짜? 좋아!",
+          "en": "...Really? Yes!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0110",
+      "hangul": "데려다줄게",
+      "romanization": "deryeodajulge",
+      "meanings": [
+        "I'll take you (home)"
+      ],
+      "pos": "expression",
+      "rank": 110,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 데려다줄게요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "벌써 열두 시네. 가야겠다.",
+          "en": "It's already midnight. I should go."
+        },
+        {
+          "speaker": "B",
+          "ko": "늦었으니까 집까지 데려다줄게.",
+          "en": "It's late, so I'll take you home."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0111",
+      "hangul": "왜 이제 왔어?",
+      "romanization": "wae ije wasseo",
+      "meanings": [
+        "why are you only here now?",
+        "what took you so long?"
+      ],
+      "pos": "expression",
+      "rank": 111,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 왜 이제 왔어요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "미안, 많이 기다렸지?",
+          "en": "Sorry, did you wait long?"
+        },
+        {
+          "speaker": "B",
+          "ko": "왜 이제 왔어? 한 시간이나 기다렸잖아.",
+          "en": "What took you so long? I waited a whole hour."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0112",
+      "hangul": "기억나?",
+      "romanization": "gieongna",
+      "meanings": [
+        "do you remember?"
+      ],
+      "pos": "expression",
+      "rank": 112,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 기억나요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 처음 만난 날 기억나?",
+          "en": "Do you remember the day we first met?"
+        },
+        {
+          "speaker": "B",
+          "ko": "당연하지. 비가 엄청 왔잖아.",
+          "en": "Of course. It was pouring."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0113",
+      "hangul": "미치겠다",
+      "romanization": "michigetda",
+      "meanings": [
+        "it's driving me crazy"
+      ],
+      "pos": "expression",
+      "rank": 113,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Can be good or bad: 좋아서 미치겠다 = so happy I could burst.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "시험이 내일인데 아무것도 몰라.",
+          "en": "The exam is tomorrow and I don't know anything."
+        },
+        {
+          "speaker": "B",
+          "ko": "나도 미치겠다, 진짜.",
+          "en": "It's driving me crazy too, seriously."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0114",
+      "hangul": "설렌다",
+      "romanization": "seollenda",
+      "meanings": [
+        "my heart is fluttering",
+        "I'm so excited"
+      ],
+      "pos": "expression",
+      "rank": 114,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From 설레다. Polite: 설레요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내일 첫 데이트지?",
+          "en": "Your first date is tomorrow, right?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 생각만 해도 설렌다.",
+          "en": "Yeah, just thinking about it makes my heart flutter."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0115",
+      "hangul": "심쿵",
+      "romanization": "simkung",
+      "meanings": [
+        "heart-throb moment",
+        "my heart skipped a beat"
+      ],
+      "pos": "expression",
+      "rank": 115,
+      "tags": [
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Short for 심장이 쿵 (heart goes thump).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 배우가 웃는 거 봤어?",
+          "en": "Did you see that actor smile?"
+        },
+        {
+          "speaker": "B",
+          "ko": "봤지. 완전 심쿵했어.",
+          "en": "I did. My heart totally skipped a beat."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0116",
+      "hangul": "어이없어",
+      "romanization": "eoieopseo",
+      "meanings": [
+        "unbelievable",
+        "that's ridiculous"
+      ],
+      "pos": "expression",
+      "rank": 116,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 어이없어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "걔가 네 케이크 다 먹었대.",
+          "en": "They say he ate your whole cake."
+        },
+        {
+          "speaker": "B",
+          "ko": "뭐? 진짜 어이없어.",
+          "en": "What? That's ridiculous."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0117",
+      "hangul": "됐거든",
+      "romanization": "dwaetgeodeun",
+      "meanings": [
+        "forget it",
+        "no thanks (annoyed)"
+      ],
+      "pos": "expression",
+      "rank": 117,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Sharper than 됐어. Polite: 됐거든요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "내가 도와줄까?",
+          "en": "Shall I help you?"
+        },
+        {
+          "speaker": "B",
+          "ko": "됐거든. 혼자 할 수 있어.",
+          "en": "No thanks. I can do it on my own."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0118",
+      "hangul": "너 때문이야",
+      "romanization": "neo ttaemuniya",
+      "meanings": [
+        "it's because of you"
+      ],
+      "pos": "expression",
+      "rank": 118,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Also romantic: 웃는 건 너 때문이야 (I smile because of you).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 그렇게 화가 났어?",
+          "en": "Why are you so angry?"
+        },
+        {
+          "speaker": "B",
+          "ko": "몰라서 물어? 다 너 때문이야.",
+          "en": "You really have to ask? It's all because of you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0119",
+      "hangul": "뭐라고?",
+      "romanization": "mworago",
+      "meanings": [
+        "what did you say?",
+        "what?!"
+      ],
+      "pos": "expression",
+      "rank": 119,
+      "tags": [
+        "exclamation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 뭐라고요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 다음 달에 결혼해.",
+          "en": "I'm getting married next month."
+        },
+        {
+          "speaker": "B",
+          "ko": "뭐라고? 언제부터 만났는데?",
+          "en": "What?! Since when were you dating?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0120",
+      "hangul": "장난해?",
+      "romanization": "jangnanhae",
+      "meanings": [
+        "are you kidding me?"
+      ],
+      "pos": "expression",
+      "rank": 120,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 장난하세요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "미안, 지갑 두고 왔어.",
+          "en": "Sorry, I left my wallet at home."
+        },
+        {
+          "speaker": "B",
+          "ko": "장난해? 또?",
+          "en": "Are you kidding me? Again?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0121",
+      "hangul": "꺼져",
+      "romanization": "kkeojyeo",
+      "meanings": [
+        "get lost",
+        "go away (rude)"
+      ],
+      "pos": "expression",
+      "rank": 121,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Very rude; heard in drama fights. Never use it to strangers.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "잠깐만, 내 얘기 좀 들어 봐.",
+          "en": "Wait, just hear me out."
+        },
+        {
+          "speaker": "B",
+          "ko": "듣기 싫어. 꺼져!",
+          "en": "I don't want to hear it. Get lost!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0122",
+      "hangul": "가만 안 둬",
+      "romanization": "gaman an dwo",
+      "meanings": [
+        "I won't let you get away with it"
+      ],
+      "pos": "expression",
+      "rank": 122,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 가만두지 않을 거예요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "한 번만 더 그러면 가만 안 둬.",
+          "en": "Do that once more and you won't get away with it."
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어, 안 그럴게.",
+          "en": "Okay, I won't."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0123",
+      "hangul": "두고 봐",
+      "romanization": "dugo bwa",
+      "meanings": [
+        "just you wait",
+        "you'll see"
+      ],
+      "pos": "expression",
+      "rank": 123,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 두고 보세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "네가 이길 수 있을 것 같아?",
+          "en": "You think you can win?"
+        },
+        {
+          "speaker": "B",
+          "ko": "두고 봐. 꼭 이길 거야.",
+          "en": "Just you wait. I'll definitely win."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0124",
+      "hangul": "끝났어",
+      "romanization": "kkeunnasseo",
+      "meanings": [
+        "it's over"
+      ],
+      "pos": "expression",
+      "rank": 124,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 끝났어요. Breakup line: 우리 끝났어.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 다시 시작하면 안 돼?",
+          "en": "Can't we start again?"
+        },
+        {
+          "speaker": "B",
+          "ko": "미안해. 우리 끝났어.",
+          "en": "I'm sorry. We're over."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0125",
+      "hangul": "우리 결혼하자",
+      "romanization": "uri gyeolhonhaja",
+      "meanings": [
+        "let's get married"
+      ],
+      "pos": "expression",
+      "rank": 125,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-자 = let's (casual).",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "평생 너랑 같이 있고 싶어. 우리 결혼하자.",
+          "en": "I want to be with you forever. Let's get married."
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 좋아.",
+          "en": "Yes, okay."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0126",
+      "hangul": "내 편",
+      "romanization": "nae pyeon",
+      "meanings": [
+        "on my side",
+        "someone in my corner"
+      ],
+      "pos": "expression",
+      "rank": 126,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "넌 항상 내 편이야 = you're always on my side.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "다들 날 믿지 않아. 내 편은 아무도 없어.",
+          "en": "Nobody believes me. No one's on my side."
+        },
+        {
+          "speaker": "B",
+          "ko": "무슨 소리야. 난 항상 네 편이야.",
+          "en": "What are you talking about? I'm always on your side."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0127",
+      "hangul": "같이 있어 줘",
+      "romanization": "gachi isseo jwo",
+      "meanings": [
+        "stay with me"
+      ],
+      "pos": "expression",
+      "rank": 127,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-아/어 줘 = do it for me. Polite: 같이 있어 주세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 가야 해.",
+          "en": "I have to go now."
+        },
+        {
+          "speaker": "B",
+          "ko": "조금만 더 같이 있어 줘.",
+          "en": "Stay with me a little longer."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0128",
+      "hangul": "시간이 없어",
+      "romanization": "sigani eopseo",
+      "meanings": [
+        "there's no time"
+      ],
+      "pos": "expression",
+      "rank": 128,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 시간이 없어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "천천히 해도 돼.",
+          "en": "You can take it slow."
+        },
+        {
+          "speaker": "B",
+          "ko": "아니야, 시간이 없어. 빨리 가자.",
+          "en": "No, there's no time. Let's hurry."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0129",
+      "hangul": "너무 좋아",
+      "romanization": "neomu joa",
+      "meanings": [
+        "I love it",
+        "it's so good"
+      ],
+      "pos": "expression",
+      "rank": 129,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 너무 좋아요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "선물 마음에 들어?",
+          "en": "Do you like the present?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 너무 좋아!",
+          "en": "Yes, I love it!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0130",
+      "hangul": "말 놓을게",
+      "romanization": "mal noeulge",
+      "meanings": [
+        "I'll talk casually (drop the formal speech)"
+      ],
+      "pos": "expression",
+      "rank": 130,
+      "tags": [
+        "address"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Asking first: 말 놓아도 돼요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 동갑이네요.",
+          "en": "We're the same age."
+        },
+        {
+          "speaker": "B",
+          "ko": "그럼 이제 말 놓을게. 괜찮지?",
+          "en": "Then I'll drop the formal speech now. Okay?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0131",
+      "hangul": "배고파",
+      "romanization": "baegopa",
+      "meanings": [
+        "I'm hungry"
+      ],
+      "pos": "expression",
+      "rank": 131,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "From 배고프다. Polite: 배고파요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "점심 안 먹었어?",
+          "en": "Didn't you have lunch?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 너무 배고파.",
+          "en": "No, I'm so hungry."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0132",
+      "hangul": "맛있겠다",
+      "romanization": "masitgetda",
+      "meanings": [
+        "that looks delicious"
+      ],
+      "pos": "expression",
+      "rank": 132,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-겠다 = guess from what you see. Polite: 맛있겠어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마가 떡볶이 만들었어.",
+          "en": "Mum made tteokbokki."
+        },
+        {
+          "speaker": "B",
+          "ko": "와, 맛있겠다!",
+          "en": "Wow, that looks delicious!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0133",
+      "hangul": "실화야?",
+      "romanization": "silhwaya",
+      "meanings": [
+        "is this for real?"
+      ],
+      "pos": "expression",
+      "rank": 133,
+      "tags": [
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Literally 'is this a true story?'. Polite: 실화예요?",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "콘서트 티켓 두 장 생겼어.",
+          "en": "I got two concert tickets."
+        },
+        {
+          "speaker": "B",
+          "ko": "실화야? 대박!",
+          "en": "For real? Amazing!"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0134",
+      "hangul": "레전드",
+      "romanization": "rejeondeu",
+      "meanings": [
+        "legendary",
+        "epic"
+      ],
+      "pos": "expression",
+      "rank": 134,
+      "tags": [
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Used for great moments: 이 무대 레전드다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어제 무대 봤어?",
+          "en": "Did you see yesterday's stage?"
+        },
+        {
+          "speaker": "B",
+          "ko": "봤지. 완전 레전드였어.",
+          "en": "I did. It was totally legendary."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0135",
+      "hangul": "너답지 않아",
+      "romanization": "neodapji ana",
+      "meanings": [
+        "that's not like you"
+      ],
+      "pos": "expression",
+      "rank": 135,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-답다 = be like. Polite: 당신답지 않아요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그냥 포기할래.",
+          "en": "I'm just going to give up."
+        },
+        {
+          "speaker": "B",
+          "ko": "포기라니, 너답지 않아.",
+          "en": "Giving up? That's not like you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0136",
+      "hangul": "비밀이야",
+      "romanization": "bimiriya",
+      "meanings": [
+        "it's a secret"
+      ],
+      "pos": "expression",
+      "rank": 136,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 비밀이에요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "어디 가는데?",
+          "en": "Where are you going?"
+        },
+        {
+          "speaker": "B",
+          "ko": "비밀이야. 나중에 알려 줄게.",
+          "en": "It's a secret. I'll tell you later."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0137",
+      "hangul": "약속 지킬게",
+      "romanization": "yaksok jikilge",
+      "meanings": [
+        "I'll keep my promise"
+      ],
+      "pos": "expression",
+      "rank": 137,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 약속 지킬게요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "꼭 돌아와야 해.",
+          "en": "You have to come back."
+        },
+        {
+          "speaker": "B",
+          "ko": "걱정 마. 약속 지킬게.",
+          "en": "Don't worry. I'll keep my promise."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0138",
+      "hangul": "다녀올게",
+      "romanization": "danyeoolge",
+      "meanings": [
+        "I'll be back",
+        "see you later (leaving home)"
+      ],
+      "pos": "expression",
+      "rank": 138,
+      "tags": [
+        "family"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 다녀오겠습니다. Reply: 잘 다녀와.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "엄마, 학교 다녀올게!",
+          "en": "Mum, I'm off to school!"
+        },
+        {
+          "speaker": "B",
+          "ko": "그래, 잘 다녀와.",
+          "en": "Okay, have a good day."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0139",
+      "hangul": "행복하자",
+      "romanization": "haengbokaja",
+      "meanings": [
+        "let's be happy"
+      ],
+      "pos": "expression",
+      "rank": 139,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "-자 = let's. Often: 우리 행복하자.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "힘든 일도 많았지?",
+          "en": "We went through a lot, didn't we?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응. 이제 우리 행복하자.",
+          "en": "Yes. Let's be happy now."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0140",
+      "hangul": "사랑한다",
+      "romanization": "saranghanda",
+      "meanings": [
+        "I love you (plain, deep)"
+      ],
+      "pos": "expression",
+      "rank": 140,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Plain style; sounds heavier than 사랑해. Common in dramas.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 아무 말도 안 해?",
+          "en": "Why aren't you saying anything?"
+        },
+        {
+          "speaker": "B",
+          "ko": "말 안 해도 알잖아. 사랑한다.",
+          "en": "You know without me saying it. I love you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0141",
+      "hangul": "썸 타는 중이야",
+      "romanization": "sseom taneun jungiya",
+      "meanings": [
+        "we're in a 'some' phase (flirting, not dating yet)"
+      ],
+      "pos": "expression",
+      "rank": 141,
+      "tags": [
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "썸 = from English 'something'. 썸 타다 = to be in a will-they-won't-they phase.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "너 그 사람이랑 사귀어?",
+          "en": "Are you dating that person?"
+        },
+        {
+          "speaker": "B",
+          "ko": "아니, 아직 썸 타는 중이야.",
+          "en": "No, we're still in the 'some' phase."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0142",
+      "hangul": "정말 고마워",
+      "romanization": "jeongmal gomawo",
+      "meanings": [
+        "thank you so much"
+      ],
+      "pos": "expression",
+      "rank": 142,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 정말 고마워요. Formal: 정말 감사합니다.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이사 도와줘서 정말 고마워.",
+          "en": "Thank you so much for helping me move."
+        },
+        {
+          "speaker": "B",
+          "ko": "친구끼리 뭘.",
+          "en": "What are friends for."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0143",
+      "hangul": "나 좀 도와줘",
+      "romanization": "na jom dowajwo",
+      "meanings": [
+        "help me out"
+      ],
+      "pos": "expression",
+      "rank": 143,
+      "tags": [
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 저 좀 도와주세요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이거 너무 무거워. 나 좀 도와줘.",
+          "en": "This is too heavy. Help me out."
+        },
+        {
+          "speaker": "B",
+          "ko": "알았어, 같이 들자.",
+          "en": "Okay, let's lift it together."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0144",
+      "hangul": "너무 보고 싶었어",
+      "romanization": "neomu bogo sipeosseo",
+      "meanings": [
+        "I missed you so much"
+      ],
+      "pos": "expression",
+      "rank": 144,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 너무 보고 싶었어요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 왔어!",
+          "en": "I'm here!"
+        },
+        {
+          "speaker": "B",
+          "ko": "너무 보고 싶었어. 왜 이렇게 늦었어?",
+          "en": "I missed you so much. Why were you so late?"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0145",
+      "hangul": "내가 지켜 줄게",
+      "romanization": "naega jikyeo julge",
+      "meanings": [
+        "I'll protect you"
+      ],
+      "pos": "expression",
+      "rank": 145,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 제가 지켜 드릴게요.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "혼자 있는 게 무서워.",
+          "en": "I'm scared to be alone."
+        },
+        {
+          "speaker": "B",
+          "ko": "걱정 마. 내가 지켜 줄게.",
+          "en": "Don't worry. I'll protect you."
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0146",
+      "hangul": "말이 돼?",
+      "romanization": "mari dwae",
+      "meanings": [
+        "does that make sense?",
+        "how is that possible?"
+      ],
+      "pos": "expression",
+      "rank": 146,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": "Polite: 말이 돼요? Negative: 말도 안 돼.",
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "걔가 하루 만에 10킬로 뺐대.",
+          "en": "They say she lost 10 kilos in a day."
+        },
+        {
+          "speaker": "B",
+          "ko": "그게 말이 돼?",
+          "en": "How is that even possible?"
+        }
+      ]
     }
   ]
 }

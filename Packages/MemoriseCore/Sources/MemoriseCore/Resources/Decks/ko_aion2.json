@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "deckId": "ko.aion2",
   "title": "Korean · AION 2",
-  "subtitle": "140 in-game words",
+  "subtitle": "192 in-game words",
   "subject": "korean",
   "entries": [
     {
@@ -2324,6 +2324,856 @@
       ],
       "pos": "noun",
       "rank": 140,
+      "tags": [
+        "lore"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0141",
+      "hangul": "출석",
+      "romanization": "chulseok",
+      "meanings": [
+        "attendance (daily log-in reward)"
+      ],
+      "pos": "noun",
+      "rank": 141,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0142",
+      "hangul": "이벤트",
+      "romanization": "ibenteu",
+      "meanings": [
+        "event"
+      ],
+      "pos": "noun",
+      "rank": 142,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0143",
+      "hangul": "업적",
+      "romanization": "eopjeok",
+      "meanings": [
+        "achievement"
+      ],
+      "pos": "noun",
+      "rank": 143,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0144",
+      "hangul": "칭호",
+      "romanization": "chingho",
+      "meanings": [
+        "title (character title)"
+      ],
+      "pos": "noun",
+      "rank": 144,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0145",
+      "hangul": "도감",
+      "romanization": "dogam",
+      "meanings": [
+        "collection codex"
+      ],
+      "pos": "noun",
+      "rank": 145,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0146",
+      "hangul": "창고",
+      "romanization": "changgo",
+      "meanings": [
+        "warehouse",
+        "storage"
+      ],
+      "pos": "noun",
+      "rank": 146,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0147",
+      "hangul": "랭킹",
+      "romanization": "raengking",
+      "meanings": [
+        "ranking",
+        "leaderboard"
+      ],
+      "pos": "noun",
+      "rank": 147,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0148",
+      "hangul": "채널",
+      "romanization": "chaeneol",
+      "meanings": [
+        "channel (server instance)"
+      ],
+      "pos": "noun",
+      "rank": 148,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0149",
+      "hangul": "접속",
+      "romanization": "jeopsok",
+      "meanings": [
+        "log-in",
+        "connection"
+      ],
+      "pos": "noun",
+      "rank": 149,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0150",
+      "hangul": "입장",
+      "romanization": "ipjang",
+      "meanings": [
+        "entry",
+        "enter (a dungeon)"
+      ],
+      "pos": "noun",
+      "rank": 150,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0151",
+      "hangul": "초기화",
+      "romanization": "chogihwa",
+      "meanings": [
+        "reset"
+      ],
+      "pos": "noun",
+      "rank": 151,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0152",
+      "hangul": "대기열",
+      "romanization": "daegiyeol",
+      "meanings": [
+        "queue"
+      ],
+      "pos": "noun",
+      "rank": 152,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0153",
+      "hangul": "생성",
+      "romanization": "saengseong",
+      "meanings": [
+        "create (character creation)"
+      ],
+      "pos": "noun",
+      "rank": 153,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0154",
+      "hangul": "삭제",
+      "romanization": "sakje",
+      "meanings": [
+        "delete"
+      ],
+      "pos": "noun",
+      "rank": 154,
+      "tags": [
+        "ui"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0155",
+      "hangul": "자동 사냥",
+      "romanization": "jadong sanyang",
+      "meanings": [
+        "auto-hunt",
+        "auto-combat"
+      ],
+      "pos": "noun",
+      "rank": 155,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0156",
+      "hangul": "분해",
+      "romanization": "bunhae",
+      "meanings": [
+        "dismantle",
+        "salvage"
+      ],
+      "pos": "noun",
+      "rank": 156,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0157",
+      "hangul": "합성",
+      "romanization": "hapseong",
+      "meanings": [
+        "fusion",
+        "combine"
+      ],
+      "pos": "noun",
+      "rank": 157,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0158",
+      "hangul": "각성",
+      "romanization": "gakseong",
+      "meanings": [
+        "awakening"
+      ],
+      "pos": "noun",
+      "rank": 158,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0159",
+      "hangul": "제련",
+      "romanization": "jeryeon",
+      "meanings": [
+        "refining"
+      ],
+      "pos": "noun",
+      "rank": 159,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0160",
+      "hangul": "계승",
+      "romanization": "gyeseung",
+      "meanings": [
+        "inheritance",
+        "transfer (of enhancement)"
+      ],
+      "pos": "noun",
+      "rank": 160,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0161",
+      "hangul": "귀속",
+      "romanization": "gwisok",
+      "meanings": [
+        "bound (soulbound item)"
+      ],
+      "pos": "noun",
+      "rank": 161,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0162",
+      "hangul": "외형",
+      "romanization": "oehyeong",
+      "meanings": [
+        "appearance",
+        "cosmetic skin"
+      ],
+      "pos": "noun",
+      "rank": 162,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0163",
+      "hangul": "펫",
+      "romanization": "pet",
+      "meanings": [
+        "pet"
+      ],
+      "pos": "noun",
+      "rank": 163,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0164",
+      "hangul": "탈것",
+      "romanization": "talgeot",
+      "meanings": [
+        "mount",
+        "ride"
+      ],
+      "pos": "noun",
+      "rank": 164,
+      "tags": [
+        "items"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0165",
+      "hangul": "경매장",
+      "romanization": "gyeongmaejang",
+      "meanings": [
+        "auction house"
+      ],
+      "pos": "noun",
+      "rank": 165,
+      "tags": [
+        "economy"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0166",
+      "hangul": "버프",
+      "romanization": "beopeu",
+      "meanings": [
+        "buff"
+      ],
+      "pos": "noun",
+      "rank": 166,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0167",
+      "hangul": "디버프",
+      "romanization": "dibeopeu",
+      "meanings": [
+        "debuff"
+      ],
+      "pos": "noun",
+      "rank": 167,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0168",
+      "hangul": "기절",
+      "romanization": "gijeol",
+      "meanings": [
+        "stun"
+      ],
+      "pos": "noun",
+      "rank": 168,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0169",
+      "hangul": "속박",
+      "romanization": "sokbak",
+      "meanings": [
+        "root",
+        "bind (crowd control)"
+      ],
+      "pos": "noun",
+      "rank": 169,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0170",
+      "hangul": "침묵",
+      "romanization": "chimmuk",
+      "meanings": [
+        "silence (crowd control)"
+      ],
+      "pos": "noun",
+      "rank": 170,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0171",
+      "hangul": "시전",
+      "romanization": "sijeon",
+      "meanings": [
+        "cast (a skill)"
+      ],
+      "pos": "noun",
+      "rank": 171,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0172",
+      "hangul": "쿨타임",
+      "romanization": "kultaim",
+      "meanings": [
+        "cooldown (slang)"
+      ],
+      "pos": "noun",
+      "rank": 172,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0173",
+      "hangul": "어그로",
+      "romanization": "eogeuro",
+      "meanings": [
+        "aggro",
+        "threat"
+      ],
+      "pos": "noun",
+      "rank": 173,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0174",
+      "hangul": "막타",
+      "romanization": "makta",
+      "meanings": [
+        "last hit",
+        "killing blow (slang)"
+      ],
+      "pos": "noun",
+      "rank": 174,
+      "tags": [
+        "combat"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0175",
+      "hangul": "공격 속도",
+      "romanization": "gonggyeok sokdo",
+      "meanings": [
+        "attack speed"
+      ],
+      "pos": "noun",
+      "rank": 175,
+      "tags": [
+        "character"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0176",
+      "hangul": "이동 속도",
+      "romanization": "idong sokdo",
+      "meanings": [
+        "movement speed"
+      ],
+      "pos": "noun",
+      "rank": 176,
+      "tags": [
+        "character"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0177",
+      "hangul": "사냥",
+      "romanization": "sanyang",
+      "meanings": [
+        "hunting (killing mobs)"
+      ],
+      "pos": "noun",
+      "rank": 177,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0178",
+      "hangul": "사냥터",
+      "romanization": "sanyangteo",
+      "meanings": [
+        "hunting ground",
+        "farming spot"
+      ],
+      "pos": "noun",
+      "rank": 178,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0179",
+      "hangul": "정예",
+      "romanization": "jeongye",
+      "meanings": [
+        "elite (monster)"
+      ],
+      "pos": "noun",
+      "rank": 179,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0180",
+      "hangul": "네임드",
+      "romanization": "neimdeu",
+      "meanings": [
+        "named monster",
+        "mini-boss"
+      ],
+      "pos": "noun",
+      "rank": 180,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0181",
+      "hangul": "레이드",
+      "romanization": "reideu",
+      "meanings": [
+        "raid"
+      ],
+      "pos": "noun",
+      "rank": 181,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0182",
+      "hangul": "요새전",
+      "romanization": "yosaejeon",
+      "meanings": [
+        "fortress siege"
+      ],
+      "pos": "noun",
+      "rank": 182,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0183",
+      "hangul": "전장",
+      "romanization": "jeonjang",
+      "meanings": [
+        "battlefield",
+        "battleground"
+      ],
+      "pos": "noun",
+      "rank": 183,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0184",
+      "hangul": "투기장",
+      "romanization": "tugijang",
+      "meanings": [
+        "arena"
+      ],
+      "pos": "noun",
+      "rank": 184,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0185",
+      "hangul": "결투",
+      "romanization": "gyeoltu",
+      "meanings": [
+        "duel"
+      ],
+      "pos": "noun",
+      "rank": 185,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0186",
+      "hangul": "공략",
+      "romanization": "gongnyak",
+      "meanings": [
+        "strategy",
+        "guide (how to clear)"
+      ],
+      "pos": "noun",
+      "rank": 186,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0187",
+      "hangul": "파밍",
+      "romanization": "paming",
+      "meanings": [
+        "farming (grinding for loot)"
+      ],
+      "pos": "noun",
+      "rank": 187,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0188",
+      "hangul": "득템",
+      "romanization": "deuktem",
+      "meanings": [
+        "scoring an item",
+        "lucky drop (slang)"
+      ],
+      "pos": "noun",
+      "rank": 188,
+      "tags": [
+        "social"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0189",
+      "hangul": "용족",
+      "romanization": "yongjok",
+      "meanings": [
+        "Balaur (dragon race)"
+      ],
+      "pos": "noun",
+      "rank": 189,
+      "tags": [
+        "lore"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0190",
+      "hangul": "아트레이아",
+      "romanization": "ateureia",
+      "meanings": [
+        "Atreia (the world)"
+      ],
+      "pos": "noun",
+      "rank": 190,
+      "tags": [
+        "lore"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0191",
+      "hangul": "영원의 탑",
+      "romanization": "yeongwonui tap",
+      "meanings": [
+        "Tower of Eternity"
+      ],
+      "pos": "noun",
+      "rank": 191,
+      "tags": [
+        "lore"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.aion2.0192",
+      "hangul": "오드",
+      "romanization": "odeu",
+      "meanings": [
+        "Aether"
+      ],
+      "pos": "noun",
+      "rank": 192,
       "tags": [
         "lore"
       ],
