@@ -205,7 +205,7 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
 | K1 Schema v2 + validator | ☑ (code) | `ko_media` list entry commented out until K2; see PLAN §17 2026-11-17 |
 | K2 Content `ko_media.json` | ☐ | needs web-capable agent or owner; verification table |
 | K3 Reveal snippet panel | ☐ | |
-| K4 My snippet (on-device) | ☐ | |
+| K4 My snippet (on-device) | ◐ | core/storage/export/pause plumbing ☑; sheet UI + reset-all "Also delete my snippets?" prompt → UI engineer |
 | K5 Integration & QA | ☐ | |
 
 ## 7. Candidate phrases for K2 (no media claims; references are found and verified in K2)

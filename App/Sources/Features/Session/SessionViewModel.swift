@@ -83,7 +83,9 @@ final class SessionViewModel {
         DeckUIContext(
             env: env, deck: deck, options: config.options, presentationID: presentationID,
             promptDidAppear: { [weak self] in self?.promptDidAppear() },
-            requestVoiceHint: { [weak self] in self?.showVoiceHint = true }
+            requestVoiceHint: { [weak self] in self?.showVoiceHint = true },
+            pauseSession: { [weak self] in self?.pause() },
+            resumeSession: { [weak self] in self?.resume() }
         )
     }
 

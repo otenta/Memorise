@@ -1044,4 +1044,10 @@ _(Agents append dated entries here: decision, reason, segment.)_
   - **Deviation:** a source with an unknown `kind` is reported through the validator's error list (the catalog shows it as a validation warning and still loads the deck), because the validator has no separate warning channel. A non-encoded `droppedSourceCount` on `VocabEntry` carries the count.
   - **Deviation:** `"ko_media"` sits commented out in `bundledVocabFiles` (before `ko_aion2`) until K2 adds the file.
   - K3 (reveal snippet panel) is UI work and is left for the UI engineer.
+- 2026-11-17 · M5 · K4 (code part): `PersonalSnippet` and `PersonalSnippetFile` (core, lenient decoding, text trimmed and capped at 500, blank snippets dropped). `actor PersonalSnippetStore` (app) keeps `Application Support/personal_snippets.json` with atomic writes; no SwiftData change.
+  - `AppEnvironment` loads snippets at launch and offers `personalSnippet(for:)`, `savePersonalSnippet` (empty text deletes), `deletePersonalSnippet` and `deleteAllPersonalSnippets`.
+  - `ExportSnapshot.personalSnippets` is an optional key. The schema stays at 2, because M4-8 already bumped it.
+  - `DeckUIContext.pauseSession` / `resumeSession` call the same engine pause path as ✕. Pausing while revealed shifts `revealedAt`, so grade time isn't inflated.
+  - **Deviation:** the file is wrapped as `{schemaVersion, snippets}` rather than a bare map, so it can evolve. An unreadable file is renamed to `personal_snippets.unreadable-<ts>.json` and never overwritten; if renaming fails, writes are refused.
+  - Left for the UI engineer: the add/edit sheet in `MediaSnippetView`, and the "Also delete my snippets?" prompt in reset-all, which calls `env.deleteAllPersonalSnippets()`.
 

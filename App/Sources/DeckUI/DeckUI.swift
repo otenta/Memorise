@@ -13,6 +13,10 @@ struct DeckUIContext {
     var promptDidAppear: @MainActor () -> Void = {}
     /// Shown once when Korean TTS is unavailable.
     var requestVoiceHint: @MainActor () -> Void = {}
+    /// Pauses the session timer (same path as ✕), e.g. while the "My snippet" sheet is open (M5 K4).
+    var pauseSession: @MainActor () -> Void = {}
+    /// Resumes after `pauseSession`.
+    var resumeSession: @MainActor () -> Void = {}
 
     var settings: AppSettings { env.settings }
 }

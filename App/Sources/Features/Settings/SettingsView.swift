@@ -238,6 +238,8 @@ struct SettingsView: View {
             var snapshot = try await env.store.exportSnapshot()
             // M4-8: user decks are included as data (backup only).
             snapshot.userDecks = env.userDeckFiles.isEmpty ? nil : env.userDeckFiles
+            // M5 K4: the user's own snippets, only through their own export.
+            snapshot.personalSnippets = env.personalSnippets.isEmpty ? nil : env.personalSnippets
             exportURLs = try await Task.detached(priority: .userInitiated) {
                 let dir = FileManager.default.temporaryDirectory.appendingPathComponent("export", isDirectory: true)
                 try? FileManager.default.removeItem(at: dir)

@@ -70,7 +70,7 @@ public struct SessionTrendPoint: Sendable, Identifiable, Hashable {
 
 /// Everything stored, for export.
 public struct ExportSnapshot: Codable, Sendable {
-    /// 2 = optional `userDecks` (M4-8).
+    /// 2 = optional `userDecks` (M4-8) and `personalSnippets` (M5 K4).
     public var schemaVersion = 2
     public let exportedAt: Date
     public let sessions: [SessionRecord]
@@ -78,6 +78,8 @@ public struct ExportSnapshot: Codable, Sendable {
     public let itemStats: [ItemStats]
     /// User-created decks, as data (backup only; there is no import).
     public var userDecks: [VocabDeckFile]?
+    /// The user's own snippets keyed by entry id (M5 K4). Leave `nil` when there are none.
+    public var personalSnippets: [String: PersonalSnippet]?
 
     public init(exportedAt: Date, sessions: [SessionRecord], attempts: [Attempt], itemStats: [ItemStats]) {
         self.exportedAt = exportedAt

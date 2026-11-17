@@ -15,6 +15,11 @@ final class AppEnvironment {
     @ObservationIgnored let userDeckStore: UserDeckStore
     /// User deck files that couldn't be read this launch.
     private(set) var userDeckFailures: [String] = []
+    /// "My snippet" notes keyed by vocab entry id (M5 K4). On-device only.
+    private(set) var personalSnippets: [String: PersonalSnippet] = [:]
+    @ObservationIgnored let snippetStore: PersonalSnippetStore
+    /// Non-nil when the snippets file couldn't be read this launch.
+    private(set) var snippetLoadFailure: String?
     @ObservationIgnored let store: any StatsStore
     @ObservationIgnored let audio: AudioSessionCoordinator
     @ObservationIgnored let speech: SpeechService
@@ -39,9 +44,11 @@ final class AppEnvironment {
         settings: AppSettings = AppSettings(),
         configStore: SessionConfigStore = SessionConfigStore(),
         deckReport: DeckLoadReport = DeckLoadReport(),
-        userDeckStore: UserDeckStore = UserDeckStore(directory: nil)
+        userDeckStore: UserDeckStore = UserDeckStore(directory: nil),
+        snippetStore: PersonalSnippetStore = PersonalSnippetStore(fileURL: nil)
     ) {
         self.userDeckStore = userDeckStore
+        self.snippetStore = snippetStore
         self.catalog = catalog
         self.bundledVocab = catalog.vocabDecks
         self.store = store
@@ -68,8 +75,12 @@ final class AppEnvironment {
         for f in report.loadFailures { log.error("Deck load failure: \(f, privacy: .public)") }
         for w in report.validationWarnings { log.error("Deck validation: \(w, privacy: .public)") }
         let store = DeferredStatsStore()
-        let env = AppEnvironment(catalog: catalog, store: store, deckReport: report, userDeckStore: UserDeckStore())
+        let env = AppEnvironment(
+            catalog: catalog, store: store, deckReport: report,
+            userDeckStore: UserDeckStore(), snippetStore: PersonalSnippetStore()
+        )
         Task { [weak env] in await env?.loadUserDecks() }
+        Task { [weak env] in await env?.loadPersonalSnippets() }
         Task { [weak env] in
             let status = await store.status
             guard !status.persistent else { return }
@@ -142,6 +153,35 @@ final class AppEnvironment {
         try await store.reset(deck: id)
         setUserDecks(userDeckFiles.filter { $0.deckId != id.raw })
         dataDidChange()
+    }
+
+    // MARK: Personal snippets (M5 K4)
+
+    /// Reads snippets from disk (launch).
+    func loadPersonalSnippets() async {
+        let (snippets, failure) = await snippetStore.loadAll()
+        if let failure { Self.log.error("Snippet load failure: \(failure, privacy: .public)") }
+        snippetLoadFailure = failure
+        personalSnippets = snippets
+    }
+
+    func personalSnippet(for entryID: String) -> PersonalSnippet? { personalSnippets[entryID] }
+
+    /// Saves the snippet for an entry; an empty (after trimming) text deletes it.
+    func savePersonalSnippet(entryID: String, text: String, source: String?) async throws {
+        let saved = try await snippetStore.save(entryID: entryID, text: text, source: source)
+        personalSnippets[entryID] = saved
+    }
+
+    func deletePersonalSnippet(entryID: String) async throws {
+        try await snippetStore.delete(entryID: entryID)
+        personalSnippets[entryID] = nil
+    }
+
+    /// Reset-all, when the user also chose "Also delete my snippets?".
+    func deleteAllPersonalSnippets() async throws {
+        try await snippetStore.deleteAll()
+        personalSnippets = [:]
     }
 
     /// UI provider for a deck.
