@@ -343,3 +343,34 @@
 | ko.media.0392 | 푹 쉬어 | drama | National Team's Wife (국가대표 와이프) | KBS | 2022 | series | https://www.youtube.com/watch?v=Irm88z4N8WU | agent | VERIFIED | 2026-11-17 |
 | ko.media.0393 | 한 번만 도와줘 | drama | Golden Mask (황금가면) | KBS | 2022 | series | https://www.youtube.com/watch?v=Cb_OYwD62LE | agent | VERIFIED | 2026-11-17 |
 | ko.media.0394 | 천천히 와 | drama | Suspicious Partner (수상한 파트너) | SBS | 2017 | series | https://www.youtube.com/watch?v=g1BADyDD4mw | agent | VERIFIED | 2026-11-17 |
+
+## R8-C1b · more K-pop chorus phrases (ko.media.0395–0418)
+
+Same method as R8-C1 (phrase found at least twice on the cited Bugs page). Adds Stray Kids, TXT, (G)I-DLE and IU, so the song references now cover 19 artists.
+
+| id | hangul | kind | title | by | year | locator | citation | verified-by | status | date |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ko.media.0395 | 이젠 지쳤어 | song | LO$ER=LO♡ER | TXT | 2021 | chorus | https://music.bugs.co.kr/track/6125817 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0396 | 사랑이 잘 안 돼 | song | 사랑이 잘 (With 오혁) | IU | 2017 | chorus | https://music.bugs.co.kr/track/30614215 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0397 | 널 위해 부를게 | song | Love poem | IU | 2019 | chorus | https://music.bugs.co.kr/track/31740348 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0398 | 예의 없어 | song | Uh-Oh | (G)I-DLE | 2019 | chorus | https://music.bugs.co.kr/track/31634356 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0399 | 시간 따윈 없어 | song | Back Door | Stray Kids | 2020 | chorus | https://music.bugs.co.kr/track/32016871 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0400 | 시간아 멈춰줘 | song | 5시 53분의 하늘에서 발견한 너와 나 | TXT | 2020 | chorus | https://music.bugs.co.kr/track/32050273 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0401 | 날 좋아하는 거 알아 | song | 팔레트 (Palette) (Feat. G-DRAGON) | IU | 2017 | chorus | https://music.bugs.co.kr/track/30632853 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0402 | 그냥 지나치는 게 나을 것 같아 | song | 나는 아픈 건 딱 질색이니까 | (G)I-DLE | 2024 | chorus | https://music.bugs.co.kr/track/6230392 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0403 | 절대 뒤돌아보지 마 | song | LO$ER=LO♡ER | TXT | 2021 | chorus | https://music.bugs.co.kr/track/6125817 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0404 | 나 좀 봐줘 | song | 클락션 (Klaxon) | (G)I-DLE | 2024 | chorus | https://music.bugs.co.kr/track/6252063 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0405 | 도대체 뭐야 | song | 금요일에 만나요 (feat. 장이정 Of HISTORY) | IU | 2013 | chorus | https://music.bugs.co.kr/track/3322699 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0406 | 저리 가 오지 마 | song | 한(一) | (G)I-DLE | 2018 | chorus | https://music.bugs.co.kr/track/31189322 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0407 | 늦어져도 돼 | song | 내일에서 기다릴게 (I'll See You There Tomorrow) | TXT | 2024 | chorus | https://music.bugs.co.kr/track/6239656 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0408 | 같이 놀자 | song | Sugar Rush Ride | TXT | 2023 | chorus | https://music.bugs.co.kr/track/6188549 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0409 | 못 배기겠어 | song | 금요일에 만나요 (feat. 장이정 Of HISTORY) | IU | 2013 | chorus | https://music.bugs.co.kr/track/3322699 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0410 | 금요일에 시간 어때요? | song | 금요일에 만나요 (feat. 장이정 Of HISTORY) | IU | 2013 | chorus | https://music.bugs.co.kr/track/3322699 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0411 | 변명할 생각 없어 | song | 충돌 (Collision) | Stray Kids | 2023 | chorus | https://music.bugs.co.kr/track/32868895 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0412 | 헤어질 수 없어 | song | 하루에 하루만 더 (Stick With You) | TXT | 2026 | chorus | https://music.bugs.co.kr/track/6452786 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0413 | 다가와 줘요 | song | Senorita | (G)I-DLE | 2019 | chorus | https://music.bugs.co.kr/track/31476927 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0414 | 난 이제 너를 몰라 | song | 한(一) | (G)I-DLE | 2018 | chorus | https://music.bugs.co.kr/track/31189322 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0415 | 그날이 오면 그땐 말할게 | song | 그날이 오면 | TXT | 2025 | chorus | https://music.bugs.co.kr/track/33530906 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0416 | 생각대로 되지 않아 | song | 사랑이 잘 (With 오혁) | IU | 2017 | chorus | https://music.bugs.co.kr/track/30614215 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0417 | 이제 조금 알 것 같아 | song | 팔레트 (Palette) (Feat. G-DRAGON) | IU | 2017 | chorus | https://music.bugs.co.kr/track/30632853 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0418 | 너를 더 알고 싶어 | song | Love Language | TXT | 2025 | chorus | https://music.bugs.co.kr/track/6303144 | agent | VERIFIED | 2026-11-17 |

@@ -14675,6 +14675,983 @@
           "citation": "https://www.youtube.com/watch?v=g1BADyDD4mw"
         }
       ]
+    },
+    {
+      "id": "ko.media.0395",
+      "hangul": "이젠 지쳤어",
+      "romanization": "ijen jichyeosseo",
+      "meanings": [
+        "I'm worn out now"
+      ],
+      "pos": "expression",
+      "rank": 395,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그만 좀 싸우자.",
+          "en": "Let's stop fighting."
+        },
+        {
+          "speaker": "B",
+          "ko": "이젠 지쳤어.",
+          "en": "I'm worn out now."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LO$ER=LO♡ER",
+          "by": "TXT",
+          "year": 2021,
+          "locator": "chorus",
+          "context": "An emotional song about being tired of being hurt.",
+          "citation": "https://music.bugs.co.kr/track/6125817"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0396",
+      "hangul": "사랑이 잘 안 돼",
+      "romanization": "sarangi jal an dwae",
+      "meanings": [
+        "Love isn't going well"
+      ],
+      "pos": "expression",
+      "rank": 396,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "요즘 연애는 어때?",
+          "en": "How's your love life lately?"
+        },
+        {
+          "speaker": "B",
+          "ko": "사랑이 잘 안 돼.",
+          "en": "Love isn't going well."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "사랑이 잘 (With 오혁)",
+          "by": "IU",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A wry duet about the difficulty of trying love again.",
+          "citation": "https://music.bugs.co.kr/track/30614215"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0397",
+      "hangul": "널 위해 부를게",
+      "romanization": "neol wihae bureulge",
+      "meanings": [
+        "I'll sing for you"
+      ],
+      "pos": "expression",
+      "rank": 397,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "노래 한 곡만 불러 줘.",
+          "en": "Sing me just one song."
+        },
+        {
+          "speaker": "B",
+          "ko": "널 위해 부를게.",
+          "en": "I'll sing for you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Love poem",
+          "by": "IU",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "A tender song of devotion.",
+          "citation": "https://music.bugs.co.kr/track/31740348"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0398",
+      "hangul": "예의 없어",
+      "romanization": "yeui eopseo",
+      "meanings": [
+        "You have no manners"
+      ],
+      "pos": "expression",
+      "rank": 398,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이 자리에서 담배 피워도 돼?",
+          "en": "Can I smoke here?"
+        },
+        {
+          "speaker": "B",
+          "ko": "예의 없어.",
+          "en": "You have no manners."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Uh-Oh",
+          "by": "(G)I-DLE",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "A sharp song that calls out rudeness.",
+          "citation": "https://music.bugs.co.kr/track/31634356"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0399",
+      "hangul": "시간 따윈 없어",
+      "romanization": "sigan ttawin eopseo",
+      "meanings": [
+        "There's no time for that"
+      ],
+      "pos": "expression",
+      "rank": 399,
+      "tags": [
+        "daily",
+        "slang"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "잠깐 쉬었다 가자.",
+          "en": "Let's rest a moment."
+        },
+        {
+          "speaker": "B",
+          "ko": "시간 따윈 없어.",
+          "en": "There's no time for that."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Back Door",
+          "by": "Stray Kids",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A heavy, fast-paced track about pushing ahead without pause.",
+          "citation": "https://music.bugs.co.kr/track/32016871"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0400",
+      "hangul": "시간아 멈춰줘",
+      "romanization": "sigana meomchwojwo",
+      "meanings": [
+        "Time, please stop"
+      ],
+      "pos": "expression",
+      "rank": 400,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "벌써 노을이 지네.",
+          "en": "The sunset's already here."
+        },
+        {
+          "speaker": "B",
+          "ko": "시간아 멈춰줘.",
+          "en": "Time, please stop."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "5시 53분의 하늘에서 발견한 너와 나",
+          "by": "TXT",
+          "year": 2020,
+          "locator": "chorus",
+          "context": "A dreamy song about wanting a perfect moment to last.",
+          "citation": "https://music.bugs.co.kr/track/32050273"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0401",
+      "hangul": "날 좋아하는 거 알아",
+      "romanization": "nal joahaneun geo ara",
+      "meanings": [
+        "I know you like me"
+      ],
+      "pos": "expression",
+      "rank": 401,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "나 티 안 냈는데?",
+          "en": "I wasn't obvious, was I?"
+        },
+        {
+          "speaker": "B",
+          "ko": "날 좋아하는 거 알아.",
+          "en": "I know you like me."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "팔레트 (Palette) (Feat. G-DRAGON)",
+          "by": "IU",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A reflective song about knowing more than you say.",
+          "citation": "https://music.bugs.co.kr/track/30632853"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0402",
+      "hangul": "그냥 지나치는 게 나을 것 같아",
+      "romanization": "geunyang jinachineun ge naeul geot gata",
+      "meanings": [
+        "It might be better to just let it pass"
+      ],
+      "pos": "expression",
+      "rank": 402,
+      "tags": [
+        "feelings",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "그 사람한테 말 걸어 볼까?",
+          "en": "Should I talk to that person?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그냥 지나치는 게 나을 것 같아.",
+          "en": "It might be better to just let it pass."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "나는 아픈 건 딱 질색이니까",
+          "by": "(G)I-DLE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A cool, wary song about avoiding pain.",
+          "citation": "https://music.bugs.co.kr/track/6230392"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0403",
+      "hangul": "절대 뒤돌아보지 마",
+      "romanization": "jeoldae dwidoraboji ma",
+      "meanings": [
+        "Never look back"
+      ],
+      "pos": "expression",
+      "rank": 403,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "과거가 자꾸 생각나.",
+          "en": "I keep thinking of the past."
+        },
+        {
+          "speaker": "B",
+          "ko": "절대 뒤돌아보지 마.",
+          "en": "Never look back."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LO$ER=LO♡ER",
+          "by": "TXT",
+          "year": 2021,
+          "locator": "chorus",
+          "context": "A defiant song about moving forward.",
+          "citation": "https://music.bugs.co.kr/track/6125817"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0404",
+      "hangul": "나 좀 봐줘",
+      "romanization": "na jom bwajwo",
+      "meanings": [
+        "Look at me for a moment"
+      ],
+      "pos": "expression",
+      "rank": 404,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 내 얼굴을 안 봐?",
+          "en": "Why aren't you looking at my face?"
+        },
+        {
+          "speaker": "B",
+          "ko": "나 좀 봐줘.",
+          "en": "Look at me for a moment."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "클락션 (Klaxon)",
+          "by": "(G)I-DLE",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A loud, attention-grabbing song about demanding to be seen.",
+          "citation": "https://music.bugs.co.kr/track/6252063"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0405",
+      "hangul": "도대체 뭐야",
+      "romanization": "dodaeche mwoya",
+      "meanings": [
+        "What on earth is this?"
+      ],
+      "pos": "expression",
+      "rank": 405,
+      "tags": [
+        "exclamation",
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이거 네가 한 거야?",
+          "en": "Did you do this?"
+        },
+        {
+          "speaker": "B",
+          "ko": "도대체 뭐야 이게?",
+          "en": "What on earth is this?"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "금요일에 만나요 (feat. 장이정 Of HISTORY)",
+          "by": "IU",
+          "year": 2013,
+          "locator": "chorus",
+          "context": "A playful song full of a surprised crush.",
+          "citation": "https://music.bugs.co.kr/track/3322699"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0406",
+      "hangul": "저리 가 오지 마",
+      "romanization": "jeori ga oji ma",
+      "meanings": [
+        "Go away, don't come near"
+      ],
+      "pos": "expression",
+      "rank": 406,
+      "tags": [
+        "conflict"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "잠깐만 얘기하자.",
+          "en": "Let's talk for a moment."
+        },
+        {
+          "speaker": "B",
+          "ko": "저리 가, 오지 마.",
+          "en": "Go away, don't come near."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "한(一)",
+          "by": "(G)I-DLE",
+          "year": 2018,
+          "locator": "chorus",
+          "context": "A dark, intense song about pushing someone away.",
+          "citation": "https://music.bugs.co.kr/track/31189322"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0407",
+      "hangul": "늦어져도 돼",
+      "romanization": "neujeojyeodo dwae",
+      "meanings": [
+        "It's okay to be late"
+      ],
+      "pos": "expression",
+      "rank": 407,
+      "tags": [
+        "encouragement"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "약속 시간에 못 갈 것 같아.",
+          "en": "I might not make it on time."
+        },
+        {
+          "speaker": "B",
+          "ko": "늦어져도 돼. 기다릴게.",
+          "en": "It's okay to be late. I'll wait."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "내일에서 기다릴게 (I'll See You There Tomorrow)",
+          "by": "TXT",
+          "year": 2024,
+          "locator": "chorus",
+          "context": "A hopeful song about waiting for tomorrow.",
+          "citation": "https://music.bugs.co.kr/track/6239656"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0408",
+      "hangul": "같이 놀자",
+      "romanization": "gachi nolja",
+      "meanings": [
+        "Let's hang out together"
+      ],
+      "pos": "expression",
+      "rank": 408,
+      "tags": [
+        "friendship",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "주말에 뭐 해?",
+          "en": "What are you doing this weekend?"
+        },
+        {
+          "speaker": "B",
+          "ko": "없어. 같이 놀자.",
+          "en": "Nothing. Let's hang out together."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Sugar Rush Ride",
+          "by": "TXT",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A bouncy summer song about playing together.",
+          "citation": "https://music.bugs.co.kr/track/6188549"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0409",
+      "hangul": "못 배기겠어",
+      "romanization": "mot baegigesseo",
+      "meanings": [
+        "I can't help it"
+      ],
+      "pos": "expression",
+      "rank": 409,
+      "tags": [
+        "feelings",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 자꾸 그 가게에 가?",
+          "en": "Why do you keep going to that shop?"
+        },
+        {
+          "speaker": "B",
+          "ko": "맛있어서 못 배기겠어.",
+          "en": "It's so good I can't help it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "금요일에 만나요 (feat. 장이정 Of HISTORY)",
+          "by": "IU",
+          "year": 2013,
+          "locator": "chorus",
+          "context": "A bouncy song about being unable to resist a crush.",
+          "citation": "https://music.bugs.co.kr/track/3322699"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0410",
+      "hangul": "금요일에 시간 어때요?",
+      "romanization": "geumyoire sigan eottaeyo?",
+      "meanings": [
+        "How does your Friday look?"
+      ],
+      "pos": "expression",
+      "rank": 410,
+      "tags": [
+        "daily",
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "저, 금요일에 시간 어때요?",
+          "en": "Um, how does your Friday look?"
+        },
+        {
+          "speaker": "B",
+          "ko": "좋아요, 저녁에 만나요.",
+          "en": "Sounds good, let's meet in the evening."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "금요일에 만나요 (feat. 장이정 Of HISTORY)",
+          "by": "IU",
+          "year": 2013,
+          "locator": "chorus",
+          "context": "A playful song about asking someone out on a Friday.",
+          "citation": "https://music.bugs.co.kr/track/3322699"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0411",
+      "hangul": "변명할 생각 없어",
+      "romanization": "byeonmyeonghal saenggak eopseo",
+      "meanings": [
+        "I have no intention of making excuses"
+      ],
+      "pos": "expression",
+      "rank": 411,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "왜 늦었는지 설명해 봐.",
+          "en": "Explain why you were late."
+        },
+        {
+          "speaker": "B",
+          "ko": "변명할 생각 없어. 내 잘못이야.",
+          "en": "I have no intention of making excuses. It's my fault."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "충돌 (Collision)",
+          "by": "Stray Kids",
+          "year": 2023,
+          "locator": "chorus",
+          "context": "A tense song about owning a mistake in a broken relationship.",
+          "citation": "https://music.bugs.co.kr/track/32868895"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0412",
+      "hangul": "헤어질 수 없어",
+      "romanization": "heeojil su eopseo",
+      "meanings": [
+        "I can't bear to part"
+      ],
+      "pos": "expression",
+      "rank": 412,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "이제 집에 가야 해.",
+          "en": "I have to go home now."
+        },
+        {
+          "speaker": "B",
+          "ko": "아직 헤어질 수 없어.",
+          "en": "I can't bear to part yet."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "하루에 하루만 더 (Stick With You)",
+          "by": "TXT",
+          "year": 2026,
+          "locator": "chorus",
+          "context": "A warm song about wanting one more day together.",
+          "citation": "https://music.bugs.co.kr/track/6452786"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0413",
+      "hangul": "다가와 줘요",
+      "romanization": "dagawa jwoyo",
+      "meanings": [
+        "Please come closer"
+      ],
+      "pos": "expression",
+      "rank": 413,
+      "tags": [
+        "romance"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "polite",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "조금 멀리 서 있네요.",
+          "en": "You're standing a bit far."
+        },
+        {
+          "speaker": "B",
+          "ko": "다가와 줘요.",
+          "en": "Please come closer."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Senorita",
+          "by": "(G)I-DLE",
+          "year": 2019,
+          "locator": "chorus",
+          "context": "A sultry song inviting someone closer.",
+          "citation": "https://music.bugs.co.kr/track/31476927"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0414",
+      "hangul": "난 이제 너를 몰라",
+      "romanization": "nan ije neoreul molla",
+      "meanings": [
+        "I don't know you any more"
+      ],
+      "pos": "expression",
+      "rank": 414,
+      "tags": [
+        "conflict",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 예전엔 친했잖아.",
+          "en": "We used to be close."
+        },
+        {
+          "speaker": "B",
+          "ko": "난 이제 너를 몰라.",
+          "en": "I don't know you any more."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "한(一)",
+          "by": "(G)I-DLE",
+          "year": 2018,
+          "locator": "chorus",
+          "context": "A moody song about someone who changed.",
+          "citation": "https://music.bugs.co.kr/track/31189322"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0415",
+      "hangul": "그날이 오면 그땐 말할게",
+      "romanization": "geunari omyeon geuttaen malhalge",
+      "meanings": [
+        "When that day comes, I'll tell you then"
+      ],
+      "pos": "expression",
+      "rank": 415,
+      "tags": [
+        "romance",
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "아직도 비밀이야?",
+          "en": "Is it still a secret?"
+        },
+        {
+          "speaker": "B",
+          "ko": "그날이 오면 그땐 말할게.",
+          "en": "When that day comes, I'll tell you then."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "그날이 오면",
+          "by": "TXT",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A hopeful song about a confession saved for the right day.",
+          "citation": "https://music.bugs.co.kr/track/33530906"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0416",
+      "hangul": "생각대로 되지 않아",
+      "romanization": "saenggakdaero doeji ana",
+      "meanings": [
+        "Things don't go as I imagined"
+      ],
+      "pos": "expression",
+      "rank": 416,
+      "tags": [
+        "feelings",
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "계획대로 잘 되고 있어?",
+          "en": "Is it going to plan?"
+        },
+        {
+          "speaker": "B",
+          "ko": "생각대로 되지 않아.",
+          "en": "Things don't go as I imagined."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "사랑이 잘 (With 오혁)",
+          "by": "IU",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A wry duet about how things never go as planned.",
+          "citation": "https://music.bugs.co.kr/track/30614215"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0417",
+      "hangul": "이제 조금 알 것 같아",
+      "romanization": "ije jogeum al geot gata",
+      "meanings": [
+        "I think I'm starting to get it"
+      ],
+      "pos": "expression",
+      "rank": 417,
+      "tags": [
+        "feelings"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "수학 문제 이해했어?",
+          "en": "Did you understand the math problem?"
+        },
+        {
+          "speaker": "B",
+          "ko": "응, 이제 조금 알 것 같아.",
+          "en": "Yeah, I think I'm starting to get it."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "팔레트 (Palette) (Feat. G-DRAGON)",
+          "by": "IU",
+          "year": 2017,
+          "locator": "chorus",
+          "context": "A reflective song about growing into who you are.",
+          "citation": "https://music.bugs.co.kr/track/30632853"
+        }
+      ]
+    },
+    {
+      "id": "ko.media.0418",
+      "hangul": "너를 더 알고 싶어",
+      "romanization": "neoreul deo algo sipeo",
+      "meanings": [
+        "I want to know you better"
+      ],
+      "pos": "expression",
+      "rank": 418,
+      "tags": [
+        "romance",
+        "friendship"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "register": "casual",
+      "dialogue": [
+        {
+          "speaker": "A",
+          "ko": "우리 아직 서로 잘 모르잖아.",
+          "en": "We still don't know each other well."
+        },
+        {
+          "speaker": "B",
+          "ko": "너를 더 알고 싶어.",
+          "en": "I want to know you better."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Love Language",
+          "by": "TXT",
+          "year": 2025,
+          "locator": "chorus",
+          "context": "A warm song about wanting to understand someone.",
+          "citation": "https://music.bugs.co.kr/track/6303144"
+        }
+      ]
     }
   ]
 }
