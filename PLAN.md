@@ -1103,3 +1103,4 @@ _(Agents append dated entries here: decision, reason, segment.)_
 - 2026-11-17 · Planner · P3 (R6-6): K5 is scheduled as PLAN_R6_FIXES T7, after T1. Step 2's direction default (`.koToEn`) is already met. Added a milestone table (M2–M5 and the review-fix plans) under the §17 tracker; this covers K5 step 4's tracker row.
 - 2026-11-17 · Code Review Round 6 fixes (PLAN_R6_FIXES; code only).
   - **R6-2 (T3):** for non-predicate Hangul, ±요 is close (typed vocab). Exact-required modes (conjugation drill) still grade close as wrong.
+  - **R6-2 (T4):** seven gloss collisions in `ko.media` resolved with parentheticals (`stripParentheticals` keeps ko→en grading on the plain gloss). Media-deck gloss uniqueness is a content test, not a validator rule.

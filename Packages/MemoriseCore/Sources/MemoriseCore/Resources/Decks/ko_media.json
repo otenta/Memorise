@@ -1273,8 +1273,8 @@
       "hangul": "안녕",
       "romanization": "annyeong",
       "meanings": [
-        "hi",
-        "bye"
+        "hi (casual)",
+        "bye (casual)"
       ],
       "pos": "expression",
       "rank": 28,
@@ -1355,7 +1355,7 @@
       "hangul": "걱정하지 마",
       "romanization": "geokjeonghaji ma",
       "meanings": [
-        "don't worry"
+        "don't worry (full form)"
       ],
       "pos": "expression",
       "rank": 30,
@@ -1395,7 +1395,7 @@
       "hangul": "말해줘",
       "romanization": "malhaejwo",
       "meanings": [
-        "tell me"
+        "tell me (please)"
       ],
       "pos": "expression",
       "rank": 31,
@@ -1441,7 +1441,7 @@
       "hangul": "말해봐",
       "romanization": "malhaebwa",
       "meanings": [
-        "tell me",
+        "tell me (go ahead)",
         "go on, say it"
       ],
       "pos": "expression",
@@ -1615,7 +1615,7 @@
       "romanization": "gwansim eopseo",
       "meanings": [
         "I'm not interested",
-        "I don't care"
+        "I don't care (no interest)"
       ],
       "pos": "expression",
       "rank": 36,
@@ -1829,7 +1829,7 @@
       "hangul": "잘 가",
       "romanization": "jal ga",
       "meanings": [
-        "bye",
+        "bye (to someone leaving)",
         "take care (to someone leaving)"
       ],
       "pos": "expression",
@@ -1996,7 +1996,7 @@
       "hangul": "신경 안 써",
       "romanization": "singyeong an sseo",
       "meanings": [
-        "I don't care",
+        "I don't care (not bothered)",
         "I'm not bothered"
       ],
       "pos": "expression",
@@ -2037,7 +2037,7 @@
       "hangul": "내 말 믿어",
       "romanization": "nae mal mideo",
       "meanings": [
-        "trust me",
+        "trust me (take my word)",
         "believe what I say"
       ],
       "pos": "expression",
@@ -2702,7 +2702,7 @@
       "hangul": "힘을 내",
       "romanization": "himeul nae",
       "meanings": [
-        "cheer up",
+        "cheer up (lit. find strength)",
         "keep your strength up"
       ],
       "pos": "expression",
@@ -3104,7 +3104,7 @@
       "romanization": "daebak",
       "meanings": [
         "awesome",
-        "no way!"
+        "no way! (amazed)"
       ],
       "pos": "expression",
       "rank": 72,
@@ -3286,7 +3286,7 @@
       "romanization": "mideo jwo",
       "meanings": [
         "believe me",
-        "trust me"
+        "trust me (please)"
       ],
       "pos": "expression",
       "rank": 78,
@@ -3346,7 +3346,7 @@
       "hangul": "걱정 마",
       "romanization": "geokjeong ma",
       "meanings": [
-        "don't worry"
+        "don't worry (short)"
       ],
       "pos": "expression",
       "rank": 80,
@@ -3738,7 +3738,7 @@
       "meanings": [
         "lie",
         "liar!",
-        "no way!"
+        "no way! (disbelief)"
       ],
       "pos": "expression",
       "rank": 93,
@@ -3918,7 +3918,7 @@
       "hangul": "힘내",
       "romanization": "himnae",
       "meanings": [
-        "cheer up",
+        "cheer up (short)",
         "hang in there"
       ],
       "pos": "expression",
