@@ -23,7 +23,9 @@ struct WeakestWordsSection: View {
 
     /// Learned = ≥ 3 attempts and error EWMA < 0.2.
     private static func makeModel(deck: VocabDeck, stats: [ItemKey: ItemStats]) -> Model {
-        let pool = deck.cards(options: .vocab(VocabOptions(direction: .both)))
+        // Listening cards count only once the user has practised them.
+        let listened = stats.keys.contains { $0.raw.hasSuffix("#\(VocabDirection.listen.rawValue)") }
+        let pool = deck.cards(options: .vocab(VocabOptions(direction: listened ? .allThree : .both)))
         let calc = WeightCalculator(pool: pool, stats: stats, focus: .normal, now: .now)
         var m = Model()
         var scored: [(Weak, Double)] = []
@@ -130,7 +132,7 @@ private struct WeakRow: View {
                     Text(prompt.entry.hangul)
                         .font(.system(.headline, weight: .bold))
                         .foregroundStyle(Subject.korean.gradient)
-                    Text(prompt.direction == .koToEn ? "KO→EN" : "EN→KO")
+                    Text(prompt.direction.shortLabel)
                         .font(.system(size: 9, weight: .heavy))
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, 5).padding(.vertical, 2)

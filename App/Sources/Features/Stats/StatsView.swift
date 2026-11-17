@@ -65,12 +65,8 @@ struct StatsView: View {
 
                 if let deck {
                     trendSection
-                    if deck is FretboardNotesDeck {
-                        Section("Fretboard heatmap") {
-                            FretboardHeatmap(stats: data.stats)
-                        }
-                    } else if let vocab = deck as? VocabDeck {
-                        WeakestWordsSection(deck: vocab, stats: data.stats)
+                    if let section = env.deckUI(for: deck).statsSection(deck: deck, stats: data.stats) {
+                        section
                     }
                     historySection
                 }
@@ -169,7 +165,16 @@ struct StatsView: View {
     private func historyRow(_ s: SessionRecord) -> some View {
         let point = data.pointsByID[s.id]
         return VStack(alignment: .leading, spacing: 2) {
-            Text(s.startedAt, format: .dateTime.day().month().hour().minute())
+            HStack(spacing: 6) {
+                Text(s.startedAt, format: .dateTime.day().month().hour().minute())
+                if s.config.inputMode != .touch {
+                    Image(systemName: s.config.inputMode.systemImage).font(.caption).foregroundStyle(.secondary)
+                        .accessibilityLabel(s.config.inputMode.title)
+                }
+                if let t = s.config.options.tuning, t != .standard {
+                    Text(Tuning.preset(t).name).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
+                }
+            }
             HStack(spacing: 8) {
                 if let point {
                     Text("\(point.graded) cards")

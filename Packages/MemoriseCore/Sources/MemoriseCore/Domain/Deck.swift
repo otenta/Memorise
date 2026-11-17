@@ -3,16 +3,63 @@ public enum Subject: String, Codable, Sendable, CaseIterable {
     case music, korean
 }
 
+/// The kind of a deck: selects its UI provider. Several decks may share a kind (e.g. vocab).
+public struct DeckKind: Hashable, Sendable, RawRepresentable {
+    public let rawValue: String
+    public init(rawValue: String) { self.rawValue = rawValue }
+
+    public static let fretboardNotes = DeckKind(rawValue: "fretboardNotes")
+    public static let vocab = DeckKind(rawValue: "vocab")
+    public static let fretboardNames = DeckKind(rawValue: "fretboardNames")
+    public static let fretboardFindAll = DeckKind(rawValue: "fretboardFindAll")
+    public static let fretboardIntervals = DeckKind(rawValue: "fretboardIntervals")
+    public static let earIntervals = DeckKind(rawValue: "earIntervals")
+    public static let chordsPlay = DeckKind(rawValue: "chordsPlay")
+    public static let chordsName = DeckKind(rawValue: "chordsName")
+    public static let triads = DeckKind(rawValue: "triads")
+    public static let arpeggios = DeckKind(rawValue: "arpeggios")
+    public static let scales = DeckKind(rawValue: "scales")
+    public static let keySignatures = DeckKind(rawValue: "keySignatures")
+    public static let diatonic = DeckKind(rawValue: "diatonic")
+    public static let progressions = DeckKind(rawValue: "progressions")
+    public static let circleOfFifths = DeckKind(rawValue: "circleOfFifths")
+    public static let hangulReading = DeckKind(rawValue: "hangulReading")
+    public static let koreanParticles = DeckKind(rawValue: "koreanParticles")
+    public static let koreanConjugation = DeckKind(rawValue: "koreanConjugation")
+}
+
+/// Display-only Home sub-headers (PLAN_M3 §3.4). Not persisted.
+public enum DeckGroup {
+    public static let fretboard = "Fretboard"
+    public static let ear = "Ear"
+    public static let chords = "Chords & shapes"
+    public static let scales = "Scales"
+    public static let theory = "Theory"
+}
+
 /// Deck-specific options. Each deck accepts exactly one case.
 ///
-/// **Persisted format — frozen.** Wire shape: `{"fretboard":{"_0":{…}}}` / `{"vocab":{"_0":{…}}}`
-/// (the legacy synthesised shape, now hand-written). Do not rename cases or change payloads without
-/// adding a legacy decode path and updating `PersistedFormatCheck`. New cases are fine.
+/// **Persisted format — frozen.** Wire shape: `{"<case>":{"_0":{…}}}` (the legacy synthesised
+/// shape, now hand-written). Do not rename cases or change payloads without adding a legacy decode
+/// path and updating `PersistedFormatCheck`. New cases are fine.
 public enum DeckOptions: Hashable, Codable, Sendable {
     case fretboard(FretboardOptions)
     case vocab(VocabOptions)
+    case intervals(IntervalOptions)
+    case earIntervals(EarIntervalOptions)
+    case chords(ChordOptions)
+    case triads(TriadOptions)
+    case arpeggios(ArpeggioOptions)
+    case scales(ScaleOptions)
+    case keySignatures(KeySigOptions)
+    case diatonic(DiatonicOptions)
+    case progressions(ProgressionOptions)
+    case circle(CircleOptions)
+    case hangulReading(HangulReadingOptions)
+    case particles(ParticleOptions)
+    case conjugation(ConjugationOptions)
 
-    private enum CodingKeys: String, CodingKey { case fretboard, vocab }
+    private enum CodingKeys: String, CodingKey { case fretboard, vocab, intervals, earIntervals, chords, triads, arpeggios, scales, keySignatures, diatonic, progressions, circle, hangulReading, particles, conjugation }
     private enum PayloadKeys: String, CodingKey { case _0 }
 
     public init(from decoder: any Decoder) throws {
@@ -24,6 +71,19 @@ public enum DeckOptions: Hashable, Codable, Sendable {
         switch key {
         case .fretboard: self = .fretboard(try payload.decode(FretboardOptions.self, forKey: ._0))
         case .vocab: self = .vocab(try payload.decode(VocabOptions.self, forKey: ._0))
+        case .intervals: self = .intervals(try payload.decode(IntervalOptions.self, forKey: ._0))
+        case .earIntervals: self = .earIntervals(try payload.decode(EarIntervalOptions.self, forKey: ._0))
+        case .chords: self = .chords(try payload.decode(ChordOptions.self, forKey: ._0))
+        case .triads: self = .triads(try payload.decode(TriadOptions.self, forKey: ._0))
+        case .arpeggios: self = .arpeggios(try payload.decode(ArpeggioOptions.self, forKey: ._0))
+        case .scales: self = .scales(try payload.decode(ScaleOptions.self, forKey: ._0))
+        case .keySignatures: self = .keySignatures(try payload.decode(KeySigOptions.self, forKey: ._0))
+        case .diatonic: self = .diatonic(try payload.decode(DiatonicOptions.self, forKey: ._0))
+        case .progressions: self = .progressions(try payload.decode(ProgressionOptions.self, forKey: ._0))
+        case .circle: self = .circle(try payload.decode(CircleOptions.self, forKey: ._0))
+        case .hangulReading: self = .hangulReading(try payload.decode(HangulReadingOptions.self, forKey: ._0))
+        case .particles: self = .particles(try payload.decode(ParticleOptions.self, forKey: ._0))
+        case .conjugation: self = .conjugation(try payload.decode(ConjugationOptions.self, forKey: ._0))
         }
     }
 
@@ -35,6 +95,45 @@ public enum DeckOptions: Hashable, Codable, Sendable {
             try p.encode(o, forKey: ._0)
         case let .vocab(o):
             var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .vocab)
+            try p.encode(o, forKey: ._0)
+        case let .intervals(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .intervals)
+            try p.encode(o, forKey: ._0)
+        case let .earIntervals(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .earIntervals)
+            try p.encode(o, forKey: ._0)
+        case let .chords(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .chords)
+            try p.encode(o, forKey: ._0)
+        case let .triads(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .triads)
+            try p.encode(o, forKey: ._0)
+        case let .arpeggios(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .arpeggios)
+            try p.encode(o, forKey: ._0)
+        case let .scales(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .scales)
+            try p.encode(o, forKey: ._0)
+        case let .keySignatures(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .keySignatures)
+            try p.encode(o, forKey: ._0)
+        case let .diatonic(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .diatonic)
+            try p.encode(o, forKey: ._0)
+        case let .progressions(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .progressions)
+            try p.encode(o, forKey: ._0)
+        case let .circle(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .circle)
+            try p.encode(o, forKey: ._0)
+        case let .hangulReading(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .hangulReading)
+            try p.encode(o, forKey: ._0)
+        case let .particles(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .particles)
+            try p.encode(o, forKey: ._0)
+        case let .conjugation(o):
+            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .conjugation)
             try p.encode(o, forKey: ._0)
         }
     }
@@ -49,19 +148,118 @@ public enum DeckOptions: Hashable, Codable, Sendable {
         return nil
     }
 
+    public var intervals: IntervalOptions? {
+        if case let .intervals(o) = self { return o }
+        return nil
+    }
+
+    public var earIntervals: EarIntervalOptions? {
+        if case let .earIntervals(o) = self { return o }
+        return nil
+    }
+
+    public var chords: ChordOptions? {
+        if case let .chords(o) = self { return o }
+        return nil
+    }
+
+    public var triads: TriadOptions? {
+        if case let .triads(o) = self { return o }
+        return nil
+    }
+
+    public var arpeggios: ArpeggioOptions? {
+        if case let .arpeggios(o) = self { return o }
+        return nil
+    }
+
+    public var scales: ScaleOptions? {
+        if case let .scales(o) = self { return o }
+        return nil
+    }
+
+    public var keySignatures: KeySigOptions? {
+        if case let .keySignatures(o) = self { return o }
+        return nil
+    }
+
+    public var diatonic: DiatonicOptions? {
+        if case let .diatonic(o) = self { return o }
+        return nil
+    }
+
+    public var progressions: ProgressionOptions? {
+        if case let .progressions(o) = self { return o }
+        return nil
+    }
+
+    public var circle: CircleOptions? {
+        if case let .circle(o) = self { return o }
+        return nil
+    }
+
+    public var hangulReading: HangulReadingOptions? {
+        if case let .hangulReading(o) = self { return o }
+        return nil
+    }
+
+    public var particles: ParticleOptions? {
+        if case let .particles(o) = self { return o }
+        return nil
+    }
+
+    public var conjugation: ConjugationOptions? {
+        if case let .conjugation(o) = self { return o }
+        return nil
+    }
+
+    private var caseKey: CodingKeys {
+        switch self {
+        case .fretboard: .fretboard
+        case .vocab: .vocab
+        case .intervals: .intervals
+        case .earIntervals: .earIntervals
+        case .chords: .chords
+        case .triads: .triads
+        case .arpeggios: .arpeggios
+        case .scales: .scales
+        case .keySignatures: .keySignatures
+        case .diatonic: .diatonic
+        case .progressions: .progressions
+        case .circle: .circle
+        case .hangulReading: .hangulReading
+        case .particles: .particles
+        case .conjugation: .conjugation
+        }
+    }
+
+    /// Whether both values are the same case (payloads ignored).
+    public func sameCase(as other: DeckOptions) -> Bool { caseKey == other.caseKey }
+
+    /// Tuning of fretboard-based options, if any.
+    public var tuning: TuningID? {
+        switch self {
+        case let .fretboard(o): o.tuning
+        case let .intervals(o): o.tuning
+        default: nil
+        }
+    }
+
     /// Default options for a deck id, used when persisted options can't be decoded.
-    /// Temporary closed switch; replaced by a deck registry in M2 (F10).
     public static func fallback(for id: DeckID) -> DeckOptions {
-        id == FretboardNotesDeck.deckID ? .fretboard(FretboardOptions()) : .vocab(VocabOptions())
+        BuiltInDecks.defaultOptions(for: id)
     }
 }
 
 /// A source of cards. Generators (fretboard) and loaders (vocab JSON) both conform.
 public protocol Deck: Sendable {
     var id: DeckID { get }
+    var kind: DeckKind { get }
     var title: String { get }
     var subtitle: String { get }
     var subject: Subject { get }
+    /// Home sub-header (display only; `""` = none).
+    var group: String { get }
     /// Options used when the user has never configured this deck.
     var defaultOptions: DeckOptions { get }
     /// All cards available under the given options.
@@ -70,11 +268,23 @@ public protocol Deck: Sendable {
     func patternPenalty(candidate: Card, recent: ArraySlice<Card>) -> Double
     /// Introduction ordering for unseen cards (lower first). `nil` = no gating.
     func introductionRank(of card: Card) -> Int?
-    /// Final presentation tweak right before a card is shown (e.g. random accidental spelling).
-    func present(_ card: Card, using rng: inout SplitMix64) -> Card
+    /// Unseen cards allowed per session (`nil` = no limit).
+    func newPerSession(options: DeckOptions) -> Int?
+    /// Final presentation step right before a card is shown (random spelling, root fret…).
+    /// Must not change the card's key.
+    func present(_ card: Card, options: DeckOptions, using rng: inout SplitMix64) -> Card
 }
 
 public extension Deck {
+    var group: String { "" }
     func introductionRank(of card: Card) -> Int? { nil }
-    func present(_ card: Card, using rng: inout SplitMix64) -> Card { card }
+    func newPerSession(options: DeckOptions) -> Int? { nil }
+    func present(_ card: Card, options: DeckOptions, using rng: inout SplitMix64) -> Card { card }
+}
+
+extension ArraySlice {
+    /// Element `n` positions before the last (0 = last), if present.
+    @inlinable func back(_ n: Int) -> Element? {
+        count > n ? self[index(endIndex, offsetBy: -1 - n)] : nil
+    }
 }

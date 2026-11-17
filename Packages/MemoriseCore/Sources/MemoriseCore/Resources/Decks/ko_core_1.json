@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "deckId": "ko.core.1",
   "title": "Korean Core 1",
   "subtitle": "205 most common words",
@@ -519,7 +519,8 @@
         "ko": "뭐 해요?",
         "en": "What are you doing?"
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0030",
@@ -540,7 +541,8 @@
         "ko": "시간 있어요?",
         "en": "Do you have time?"
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0031",
@@ -560,7 +562,8 @@
         "ko": "돈이 없어요.",
         "en": "I have no money."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0032",
@@ -580,7 +583,8 @@
         "ko": "의사가 되고 싶어요.",
         "en": "I want to become a doctor."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0033",
@@ -599,7 +603,8 @@
         "ko": "어디 가요?",
         "en": "Where are you going?"
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0034",
@@ -618,7 +623,8 @@
         "ko": "비가 와요.",
         "en": "It's raining."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0035",
@@ -639,7 +645,8 @@
         "ko": "영화를 봐요.",
         "en": "I'm watching a movie."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0036",
@@ -659,7 +666,8 @@
         "ko": "밥 먹었어요?",
         "en": "Have you eaten?"
       },
-      "notes": "A common greeting too."
+      "notes": "A common greeting too.",
+      "conj": "regular"
     },
     {
       "id": "ko.core.0037",
@@ -679,7 +687,8 @@
         "ko": "커피를 마셔요.",
         "en": "I drink coffee."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0038",
@@ -698,7 +707,8 @@
         "ko": "알아요.",
         "en": "I know."
       },
-      "notes": null
+      "notes": null,
+      "conj": "l"
     },
     {
       "id": "ko.core.0039",
@@ -717,7 +727,8 @@
         "ko": "잘 모르겠어요.",
         "en": "I'm not sure."
       },
-      "notes": null
+      "notes": null,
+      "conj": "reu"
     },
     {
       "id": "ko.core.0040",
@@ -733,7 +744,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0041",
@@ -753,7 +765,8 @@
         "ko": "선물을 받았어요.",
         "en": "I got a present."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0042",
@@ -774,7 +787,8 @@
         "ko": "천천히 말해 주세요.",
         "en": "Please speak slowly."
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0043",
@@ -794,7 +808,8 @@
         "ko": "음악을 들어요.",
         "en": "I listen to music."
       },
-      "notes": "Irregular: 들어요."
+      "notes": "Irregular: 들어요.",
+      "conj": "d"
     },
     {
       "id": "ko.core.0044",
@@ -813,7 +828,8 @@
         "ko": "책을 읽어요.",
         "en": "I read a book."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0045",
@@ -833,7 +849,8 @@
         "ko": "이름을 써 주세요.",
         "en": "Please write your name."
       },
-      "notes": null
+      "notes": null,
+      "conj": "eu"
     },
     {
       "id": "ko.core.0046",
@@ -852,7 +869,8 @@
         "ko": "뭐 샀어요?",
         "en": "What did you buy?"
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0047",
@@ -868,7 +886,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "l"
     },
     {
       "id": "ko.core.0048",
@@ -888,7 +907,8 @@
         "ko": "저는 커피를 좋아해요.",
         "en": "I like coffee."
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0049",
@@ -906,7 +926,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0050",
@@ -926,7 +947,8 @@
         "ko": "사랑해요.",
         "en": "I love you."
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0051",
@@ -945,7 +967,8 @@
         "ko": "서울에 살아요.",
         "en": "I live in Seoul."
       },
-      "notes": null
+      "notes": null,
+      "conj": "l"
     },
     {
       "id": "ko.core.0052",
@@ -964,7 +987,8 @@
         "ko": "잘 자요.",
         "en": "Sleep well."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0053",
@@ -983,7 +1007,8 @@
         "ko": "회사에서 일해요.",
         "en": "I work at a company."
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0054",
@@ -1002,7 +1027,8 @@
         "ko": "한국어를 공부해요.",
         "en": "I study Korean."
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0055",
@@ -1021,7 +1047,8 @@
         "ko": "잠깐 기다려 주세요.",
         "en": "Please wait a moment."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0056",
@@ -1040,7 +1067,8 @@
         "ko": "만나서 반가워요.",
         "en": "Nice to meet you."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0057",
@@ -1059,7 +1087,8 @@
         "ko": "여기 앉으세요.",
         "en": "Please sit here."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0058",
@@ -1076,7 +1105,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0059",
@@ -1095,7 +1125,8 @@
         "ko": "문 좀 열어 주세요.",
         "en": "Please open the door."
       },
-      "notes": null
+      "notes": null,
+      "conj": "l"
     },
     {
       "id": "ko.core.0060",
@@ -1112,7 +1143,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0061",
@@ -1129,7 +1161,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0062",
@@ -1149,7 +1182,8 @@
         "ko": "수업이 끝났어요.",
         "en": "Class is over."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0063",
@@ -1169,7 +1203,8 @@
         "ko": "열쇠를 찾고 있어요.",
         "en": "I'm looking for my keys."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0064",
@@ -1186,7 +1221,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "l"
     },
     {
       "id": "ko.core.0065",
@@ -1205,7 +1241,8 @@
         "ko": "기타를 배워요.",
         "en": "I'm learning guitar."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0066",
@@ -1221,7 +1258,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0067",
@@ -1237,7 +1275,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0068",
@@ -1254,7 +1293,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0069",
@@ -1274,7 +1314,8 @@
         "ko": "우리가 이겼어요!",
         "en": "We won!"
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0070",
@@ -1294,7 +1335,8 @@
         "ko": "버스를 타요.",
         "en": "I take the bus."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0071",
@@ -1310,7 +1352,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": "Irregular: 걸어요."
+      "notes": "Irregular: 걸어요.",
+      "conj": "d"
     },
     {
       "id": "ko.core.0072",
@@ -1329,7 +1372,8 @@
         "ko": "도와 주세요!",
         "en": "Please help me!"
       },
-      "notes": "Irregular: 도와요."
+      "notes": "Irregular: 도와요.",
+      "conj": "b"
     },
     {
       "id": "ko.core.0073",
@@ -1346,7 +1390,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0074",
@@ -1366,7 +1411,8 @@
         "ko": "날씨가 좋아요.",
         "en": "The weather is nice."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0075",
@@ -1382,7 +1428,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "eu"
     },
     {
       "id": "ko.core.0076",
@@ -1399,7 +1446,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "eu"
     },
     {
       "id": "ko.core.0077",
@@ -1416,7 +1464,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0078",
@@ -1437,7 +1486,8 @@
         "ko": "사람이 많아요.",
         "en": "There are a lot of people."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0079",
@@ -1454,7 +1504,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0080",
@@ -1470,7 +1521,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "l"
     },
     {
       "id": "ko.core.0081",
@@ -1486,7 +1538,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0082",
@@ -1503,7 +1556,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "reu"
     },
     {
       "id": "ko.core.0083",
@@ -1519,7 +1573,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0084",
@@ -1538,7 +1593,8 @@
         "ko": "한글은 쉬워요.",
         "en": "Hangul is easy."
       },
-      "notes": "Irregular: 쉬워요."
+      "notes": "Irregular: 쉬워요.",
+      "conj": "b"
     },
     {
       "id": "ko.core.0085",
@@ -1558,7 +1614,8 @@
         "ko": "한국어는 어려워요.",
         "en": "Korean is difficult."
       },
-      "notes": "Irregular: 어려워요."
+      "notes": "Irregular: 어려워요.",
+      "conj": "b"
     },
     {
       "id": "ko.core.0086",
@@ -1579,7 +1636,8 @@
         "ko": "정말 맛있어요!",
         "en": "It's really delicious!"
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0087",
@@ -1599,7 +1657,8 @@
         "ko": "이 게임 재미있어요.",
         "en": "This game is fun."
       },
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0088",
@@ -1615,7 +1674,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0089",
@@ -1631,7 +1691,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0090",
@@ -1648,7 +1709,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0091",
@@ -1664,7 +1726,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0092",
@@ -1681,7 +1744,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": "Irregular: 새로워요."
+      "notes": "Irregular: 새로워요.",
+      "conj": "b"
     },
     {
       "id": "ko.core.0093",
@@ -1698,7 +1762,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "regular"
     },
     {
       "id": "ko.core.0094",
@@ -1714,7 +1779,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "reu"
     },
     {
       "id": "ko.core.0095",
@@ -1730,7 +1796,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": null
+      "notes": null,
+      "conj": "eu"
     },
     {
       "id": "ko.core.0096",
@@ -1750,7 +1817,8 @@
         "ko": "오늘 너무 더워요.",
         "en": "It's so hot today."
       },
-      "notes": "Irregular: 더워요."
+      "notes": "Irregular: 더워요.",
+      "conj": "b"
     },
     {
       "id": "ko.core.0097",
@@ -1767,7 +1835,8 @@
       ],
       "hanja": null,
       "example": null,
-      "notes": "Irregular: 추워요."
+      "notes": "Irregular: 추워요.",
+      "conj": "b"
     },
     {
       "id": "ko.core.0098",
@@ -1786,7 +1855,8 @@
         "ko": "요즘 바빠요.",
         "en": "I'm busy these days."
       },
-      "notes": null
+      "notes": null,
+      "conj": "eu"
     },
     {
       "id": "ko.core.0099",
@@ -1806,7 +1876,8 @@
         "ko": "머리가 아파요.",
         "en": "I have a headache."
       },
-      "notes": null
+      "notes": null,
+      "conj": "eu"
     },
     {
       "id": "ko.core.0100",
@@ -1826,7 +1897,8 @@
         "ko": "도움이 필요해요.",
         "en": "I need help."
       },
-      "notes": null
+      "notes": null,
+      "conj": "ha"
     },
     {
       "id": "ko.core.0101",

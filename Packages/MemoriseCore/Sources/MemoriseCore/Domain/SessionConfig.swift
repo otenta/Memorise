@@ -62,6 +62,30 @@ public enum FocusLevel: String, Codable, Sendable, CaseIterable {
     }
 }
 
+/// How the user answers prompts. Raw values are persisted — never change them.
+public enum InputMode: String, Codable, Sendable, CaseIterable {
+    /// OK → reveal → self-grade.
+    case touch
+    /// Play the answer; pitch detection grades correct answers automatically.
+    case microphone
+    /// Tap one of 2–4 options; graded automatically.
+    case choice
+    /// Type the answer; graded automatically with a manual override.
+    case typed
+
+    /// Whether the response time updates the time EWMA. Typing speed isn't recall speed.
+    public var countsTime: Bool { self != .typed }
+
+    public var title: String {
+        switch self {
+        case .touch: "Touch"
+        case .microphone: "Play"
+        case .choice: "Choice"
+        case .typed: "Type"
+        }
+    }
+}
+
 /// Everything needed to run (and later describe) a session.
 public struct SessionConfig: Codable, Hashable, Sendable {
     public var deckID: DeckID
@@ -69,6 +93,9 @@ public struct SessionConfig: Codable, Hashable, Sendable {
     public var length: SessionLength
     public var focus: FocusLevel
     public var retryWrongCards: Bool
+    public var inputMode: InputMode
+    /// Microphone mode: seconds before the card reveals for manual grading.
+    public var micTimeoutSeconds: Int
     /// Fields that were present on disk but couldn't be decoded and fell back to defaults.
     /// Never encoded; excluded from equality.
     public private(set) var recoveredFields: Set<String> = []
@@ -78,17 +105,23 @@ public struct SessionConfig: Codable, Hashable, Sendable {
         options: DeckOptions,
         length: SessionLength = .default,
         focus: FocusLevel = .normal,
-        retryWrongCards: Bool = true
+        retryWrongCards: Bool = true,
+        inputMode: InputMode = .touch,
+        micTimeoutSeconds: Int = 10
     ) {
         self.deckID = deckID
         self.options = options
         self.length = length
         self.focus = focus
         self.retryWrongCards = retryWrongCards
+        self.inputMode = inputMode
+        self.micTimeoutSeconds = micTimeoutSeconds
     }
 
+    public static let micTimeoutPresets = [5, 10, 20]
+
     private enum CodingKeys: String, CodingKey {
-        case deckID, options, length, focus, retryWrongCards
+        case deckID, options, length, focus, retryWrongCards, inputMode, micTimeoutSeconds
     }
 
     /// Tolerant decoding: only `deckID` is required; missing or unknown values fall back to defaults.
@@ -107,6 +140,8 @@ public struct SessionConfig: Codable, Hashable, Sendable {
         length = value(SessionLength.self, .length, .default)
         focus = value(FocusLevel.self, .focus, .normal)
         retryWrongCards = value(Bool.self, .retryWrongCards, true)
+        inputMode = value(InputMode.self, .inputMode, .touch)
+        micTimeoutSeconds = value(Int.self, .micTimeoutSeconds, 10)
         recoveredFields = recovered
     }
 
@@ -117,11 +152,14 @@ public struct SessionConfig: Codable, Hashable, Sendable {
         try c.encode(length, forKey: .length)
         try c.encode(focus, forKey: .focus)
         try c.encode(retryWrongCards, forKey: .retryWrongCards)
+        try c.encode(inputMode, forKey: .inputMode)
+        try c.encode(micTimeoutSeconds, forKey: .micTimeoutSeconds)
     }
 
     public static func == (lhs: SessionConfig, rhs: SessionConfig) -> Bool {
         lhs.deckID == rhs.deckID && lhs.options == rhs.options && lhs.length == rhs.length
             && lhs.focus == rhs.focus && lhs.retryWrongCards == rhs.retryWrongCards
+            && lhs.inputMode == rhs.inputMode && lhs.micTimeoutSeconds == rhs.micTimeoutSeconds
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -130,6 +168,8 @@ public struct SessionConfig: Codable, Hashable, Sendable {
         hasher.combine(length)
         hasher.combine(focus)
         hasher.combine(retryWrongCards)
+        hasher.combine(inputMode)
+        hasher.combine(micTimeoutSeconds)
     }
 
     /// Default configuration for a deck.

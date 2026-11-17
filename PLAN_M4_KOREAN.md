@@ -251,17 +251,17 @@ User decks (M4-8) have relaxed rules; see §M4-8.
 
 | Segment | Status | Notes |
 |---|---|---|
-| M4-0 Infrastructure | ☐ | needs M2-0a/0b |
-| M4-1 Core 2–5 content (~800) | ☐ | web-capable agent; 4 PRs; verification table |
-| M4-2 Hangul reading | ☐ | includes `realWords` stage |
-| M4-3 Listening mode | ☐ | timer starts at end of TTS |
-| M4-4 Typed answers + fuzzy | ☐ | |
-| M4-5 Particles | ☐ | noun pool = all Korean decks |
-| M4-6 Conjugation | ☐ | `conj` content + reference table for the tester |
-| M4-7 Patterns content (~80) | ☐ | web-capable agent |
-| M4-8 Custom decks (no import) | ☐ | |
-| M4-9 AION screenshot → cards | ☐ | |
-| M4-10 Integration & QA | ☐ | |
+| M4-0 Infrastructure | ☑ | schema v2; choice/typed reveal via ok→grade (see PLAN §17) |
+| M4-1 Core 2–5 content (~800) | ☑ (content) | Core 2 (218), Core 3 (229), Core 4 (217), Core 5 (225) = 889; not yet dictionary-checked (`docs/core-verification.md`) |
+| M4-2 Hangul reading | ☑ (code) | includes `realWords` stage |
+| M4-3 Listening mode | ☑ | timer starts at end of TTS |
+| M4-4 Typed answers + fuzzy | ☑ | vocab, Hangul reading and conjugation all support `typed` |
+| M4-5 Particles | ☑ (code) | noun pool = all Korean decks |
+| M4-6 Conjugation | ☑ (code) | Core 1 `conj` tagged; reference table not dictionary-verified |
+| M4-7 Patterns content (~80) | ☑ (content) | 87 patterns × 3 examples; owner spot-check of 10 pending |
+| M4-8 Custom decks (no import) | ☑ (code) | own Home section "My decks" |
+| M4-9 AION screenshot → cards | ☑ (code) | needs a real-screenshot check on device |
+| M4-10 Integration & QA | ☑ | Korean display order, PLAN §6.1/8.3b/9.2/11.5d/15, README QA checklist |
 
 ## 6. Key and format rules introduced by M4
 

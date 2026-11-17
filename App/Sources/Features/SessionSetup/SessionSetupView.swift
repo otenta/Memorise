@@ -50,6 +50,7 @@ private struct SetupForm: View {
     let deck: any Deck
     @Binding var config: SessionConfig
     let poolCount: Int
+    @Environment(AppEnvironment.self) private var env
 
     var body: some View {
         Form {
@@ -69,17 +70,12 @@ private struct SetupForm: View {
                 Text("Slow and missed cards show up more often. Off = uniform random.")
             }
 
-            switch config.options {
-            case let .fretboard(o):
-                FretboardOptionsSection(options: Binding(
-                    get: { o },
-                    set: { config.options = .fretboard($0) }
-                ))
-            case let .vocab(o):
-                VocabOptionsSection(
-                    options: Binding(get: { o }, set: { config.options = .vocab($0) }),
-                    allTags: (deck as? VocabDeck)?.allTags ?? []
-                )
+            let ui = env.deckUI(for: deck)
+            ui.setupSection($config.options, deck: deck)
+
+            let modes = ui.supportedInputModes(deck: deck)
+            if modes.count > 1 {
+                AnswerBySection(config: $config, modes: modes)
             }
 
             Section {
@@ -91,6 +87,72 @@ private struct SetupForm: View {
                         .animation(Theme.spring, value: poolCount)
                 }
             }
+        }
+    }
+}
+
+/// "Answer by" picker; requests mic permission when the microphone is chosen.
+private struct AnswerBySection: View {
+    @Binding var config: SessionConfig
+    let modes: [InputMode]
+    @State private var denied = MicAnswerController.permission == .denied
+
+    var body: some View {
+        Section {
+            Picker("Answer by", selection: Binding(
+                get: { config.inputMode },
+                set: { mode in
+                    guard mode == .microphone else { config.inputMode = mode; return }
+                    Task {
+                        let granted = await MicAnswerController.requestPermission()
+                        denied = !granted
+                        config.inputMode = granted ? .microphone : .touch
+                    }
+                }
+            )) {
+                ForEach(modes, id: \.self) { mode in
+                    Text(mode.title).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .accessibilityIdentifier("answerByPicker")
+            if config.inputMode == .microphone {
+                Picker("Reveal after", selection: $config.micTimeoutSeconds) {
+                    ForEach(SessionConfig.micTimeoutPresets, id: \.self) { Text("\($0) s").tag($0) }
+                }
+                .pickerStyle(.segmented)
+            }
+        } header: {
+            Text("Answer by")
+        } footer: {
+            footer
+        }
+    }
+
+    @ViewBuilder private var footer: some View {
+        switch config.inputMode {
+        case .microphone where denied:
+            Text("Microphone access is off. Enable it in Settings → Privacy & Security → Microphone → Memorise.")
+                .foregroundStyle(.red)
+        case .microphone:
+            Text("Play the note on your guitar: a correct note is graded automatically from the moment you play it. If nothing is heard, the answer is revealed for you to grade.")
+        case .typed:
+            Text("Type the answer and press Return. Small typos count as close; you can always override the verdict. Typing time doesn't affect your speed stats.")
+        case .choice:
+            Text("Tap the right option; it's graded straight away.")
+        case .touch:
+            Text("Think of the answer, reveal it, then grade yourself.")
+        }
+    }
+}
+
+extension InputMode {
+    var systemImage: String {
+        switch self {
+        case .touch: "hand.tap.fill"
+        case .microphone: "mic.fill"
+        case .choice: "square.grid.2x2.fill"
+        case .typed: "keyboard.fill"
         }
     }
 }
@@ -123,90 +185,6 @@ private struct LengthSection: View {
                     ForEach(SessionLength.minutePresets, id: \.self) { Text("\($0) min").tag($0) }
                 }
                 .pickerStyle(.segmented)
-            }
-        }
-    }
-}
-
-private struct FretboardOptionsSection: View {
-    @Binding var options: FretboardOptions
-
-    var body: some View {
-        Section("Strings") {
-            HStack(spacing: 8) {
-                ForEach([6, 5, 4, 3, 2, 1], id: \.self) { s in
-                    let on = options.strings.contains(s)
-                    Button {
-                        withAnimation(Theme.spring) {
-                            if on { if options.strings.count > 1 { options.strings.remove(s) } } else { options.strings.insert(s) }
-                        }
-                    } label: {
-                        Text("\(s)")
-                            .font(.system(.headline, design: .rounded, weight: .bold).monospacedDigit())
-                            .frame(maxWidth: .infinity, minHeight: 44)
-                            .background {
-                                Capsule().fill(on ? AnyShapeStyle(Subject.music.gradient) : AnyShapeStyle(Color.secondary.opacity(0.15)))
-                                    .shadow(color: on ? Theme.indigo.opacity(0.35) : .clear, radius: 5, y: 3)
-                            }
-                            .foregroundStyle(on ? Color.white : Color.primary)
-                            .scaleEffect(on ? 1 : 0.92)
-                    }
-                    .buttonStyle(PressableStyle(scale: 0.88))
-                    .accessibilityLabel("String \(s)")
-                    .accessibilityAddTraits(on ? .isSelected : [])
-                }
-            }
-        }
-        Section("Notes") {
-            Picker("Notes", selection: $options.noteSet) {
-                Text("Naturals").tag(FretboardOptions.NoteSet.naturals)
-                Text("All notes").tag(FretboardOptions.NoteSet.all)
-            }
-            .pickerStyle(.segmented)
-            if options.noteSet == .all {
-                Picker("Accidentals", selection: $options.accidentalSpelling) {
-                    Text("Sharps").tag(FretboardOptions.AccidentalSpelling.sharps)
-                    Text("Flats").tag(FretboardOptions.AccidentalSpelling.flats)
-                    Text("Mixed").tag(FretboardOptions.AccidentalSpelling.mixed)
-                }
-                .pickerStyle(.segmented)
-            }
-            Picker("Max fret", selection: Binding(
-                get: { options.fretRange.upperBound },
-                set: { options.fretRange = options.fretRange.lowerBound...$0 }
-            )) {
-                ForEach(FretboardOptions.maxFretPresets, id: \.self) { Text("\($0)").tag($0) }
-            }
-        }
-    }
-}
-
-private struct VocabOptionsSection: View {
-    @Binding var options: VocabOptions
-    let allTags: [String]
-
-    var body: some View {
-        Section("Words") {
-            Picker("Direction", selection: $options.direction) {
-                Text("Korean → English").tag(VocabOptions.DirectionOption.koToEn)
-                Text("English → Korean").tag(VocabOptions.DirectionOption.enToKo)
-                Text("Both").tag(VocabOptions.DirectionOption.both)
-            }
-            Stepper("New words per session: \(options.newPerSession)", value: $options.newPerSession, in: 0...30)
-            Toggle("Auto-play pronunciation", isOn: $options.autoPlayAudio)
-        }
-        if !allTags.isEmpty {
-            Section {
-                ForEach(allTags, id: \.self) { tag in
-                    Toggle(tag.capitalized, isOn: Binding(
-                        get: { options.tags.contains(tag) },
-                        set: { if $0 { options.tags.insert(tag) } else { options.tags.remove(tag) } }
-                    ))
-                }
-            } header: {
-                Text("Topics")
-            } footer: {
-                Text(options.tags.isEmpty ? "No topic selected: all words are included." : "Only words with a selected topic are included.")
             }
         }
     }

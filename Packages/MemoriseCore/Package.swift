@@ -11,7 +11,7 @@ let package = Package(
         .target(
             name: "MemoriseCore",
             // `.copy` keeps the `Decks/` sub-directory intact inside the bundle.
-            resources: [.copy("Resources/Decks")]
+            resources: [.copy("Resources/Decks"), .copy("Resources/Shapes")]
         ),
         .testTarget(name: "MemoriseCoreTests", dependencies: ["MemoriseCore"]),
     ],

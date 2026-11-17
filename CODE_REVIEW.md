@@ -1,6 +1,152 @@
 # Memorise — Code Review (M1)
 
-> **Round 2 (re-review after fixes F2–F9)** is directly below. **Round 1** (the original review) follows it unchanged, as the audit trail. Item IDs (P1-1 …) refer to Round 1.
+> Newest first: **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3.
+
+---
+
+# Round 3 — G1–G5 fixes and the UI visual pass
+
+- **Date:** 2026-11-16
+- **Scope:**
+  - **G1–G5** (the Round 2 fixes). They are inside baseline commit `4383483`, so no separate diff exists; I read the affected files in full.
+  - **UI pass** `b269937` (12 app files, +1040/−221), reviewed as a diff.
+- **Verification actually run:**
+  - `swift build` for `MemoriseCore`: passes.
+  - `swift test`: **fails to compile** (R3-1). In a scratch copy with 3 test lines patched, **127/127 tests pass** in 11 suites. The repo itself was not modified.
+  - The iOS app was not built or run in this round.
+
+## Verdict
+
+**The G1–G5 fixes are correct and close every Round 2 finding.** G1 in particular is done well: it uses a hand-written legacy wire shape, a DEBUG format self-check, and `recoveredFields`, which is excluded from encoding and equality.
+
+The UI pass is careful about response timing in the places that matter:
+- prompts still appear instantly
+- the lockout and the engine guards are untouched
+- Reduce Motion is respected in most places
+
+It does add a **continuous rendering cost on every screen, including the timed prompt** (R3-2), and a few contrast and accuracy-of-display issues.
+
+There's also a surprise: **a 127-test suite now exists, but it doesn't compile, and CI doesn't run it** (R3-1).
+
+## Status of Round 2 findings
+
+| ID | Status | Evidence |
+|---|---|---|
+| N1 · outer-enum coding unpinned | ✅ Fixed | Hand-written `DeckOptions` (`Domain/Deck.swift`) and `SessionLength` (`Domain/SessionConfig.swift`) coding, with the legacy `_0` shape and "frozen" doc comments. `PersistedFormatCheck` asserts the decoded value and byte-identical re-encoding at DEBUG launch (`AppEnvironment.swift:41-44`). The `Set` fields are encoded sorted, so the bytes are deterministic. `recoveredFields` is surfaced in the log (`SwiftDataModels.swift:138`), on the Summary (`SummaryView.swift:26`), and ignored for last-used configs (`AppEnvironment.swift:71`). See R3-6 for one gap. |
+| N2 · deck-issue wording | ✅ Fixed | `DeckLoadReport` splits `loadFailures` from `validationWarnings`; Home shows them as separate rows, with validation first. |
+| N3 · lockout feedback | ✅ Fixed | `gradeLockoutRemaining`, dimming plus `allowsHitTesting`, and `.ignored` for rejected keys. See R3-5 for a one-frame flicker. |
+| N4 · zero-delta format/colour | ✅ Fixed | `Fmt.isZeroDelta`, "= 0 ms" / "= 0 pt", and `Palette.deltaColor` returns `.secondary` for zero. |
+| N5 · `trendPoints` loads everything | 🟡 Instrumented, decision pending | The timing log is in `StatsView.swift:95-99`, and a DEBUG-simulator seeder is in `Support/DevSeeder.swift`. **No numbers are recorded yet**, so the Phase B decision is still open. |
+| N6 · history error state | ✅ Fixed | Error view with Retry. |
+| N7 · PLAN wording | ✅ Fixed | §9.3 / S6 updated by the planner. |
+
+## New findings (Round 3)
+
+### R3-1 · P1 (High) · The committed test target doesn't compile; CI doesn't run it; PLAN says it doesn't exist
+**Files:**
+- `Packages/MemoriseCore/Tests/MemoriseCoreTests/DeckContentTests.swift:37, 48, 49`
+- `Packages/MemoriseCore/Package.swift` (`.testTarget`)
+- `.github/workflows/core-tests.yml` (`swift build -c release` only)
+- `PLAN_M1_FIXES.md` §4 ("F1 skipped, D1 = No")
+
+**What's wrong:**
+- Baseline `4383483` adds `MemoriseCoreTests`: 12 files, about 1,750 lines.
+- G3 changed `DeckCatalog.builtIn()` to return `DeckLoadReport` instead of `[String]`, but this test file was not updated. So `swift test`, the plan's own Definition-of-Done command, **fails to build**: "binary operator '==' cannot be applied to 'DeckLoadReport' and '[Any]'", plus "no member 'count'" and "no member 'first'".
+- Because CI only builds the library, nobody saw it.
+- The plan documents still say tests were skipped, so the repo and the docs disagree about whether a safety net exists.
+
+**Verified:** with the three assertions changed to `issues.isEmpty`, `issues.loadFailures.count == 1` and `issues.loadFailures.first?…` in a scratch copy, **all 127 tests in 11 suites pass in about 1 s**. These include the starved-pool scheduler, the gated vocab session, the retry timing, the launch sweep, and Codable tolerance.
+
+**Fix direction:**
+- Fix the three lines.
+- Change the CI step to `swift test`, keeping `swift build -c release` as a second step.
+- Update the D1 / F1 tracker rows to say what actually exists.
+
+This is the cheapest high-value change left in the project. The suite already exists and is green.
+
+### R3-2 · P2 (Medium) · The animated aurora renders continuously on every screen, including during timed prompts
+**Files:**
+- `App/Sources/Components/Theme.swift:62-89`
+- used at `SessionView.swift:105`, `HomeView.swift:92`, `StatsView.swift:79`, `SummaryView.swift:75` and `SettingsView.swift:169`
+
+`AuroraBackground` is a `TimelineView(.animation(minimumInterval: 1/30))` around a full-screen `Canvas` with a blur filter of radius ≈ 18 % of the short side (about 70 pt on a phone). It is paused only for Reduce Motion. On top of it sit `.regularMaterial` glass cards, which must re-blur every frame because the content behind them is moving. During a session that means:
+- **About 30 view updates per second for as long as the session screen is visible**, including while `.prompting`. SwiftUI drives `TimelineView` body updates and `Canvas` drawing from the main thread. Main-thread work during the prompt competes with touch delivery for OK and with the `.task` that calls `promptDidAppear`. The plan treats exactly those two as the timing endpoints.
+- **Sustained GPU and battery cost with the screen forced on.** `isIdleTimerDisabled` is set for sessions, so a 10-minute session keeps two full-screen blurs animating for 10 minutes.
+
+**(plausible: measure)** Use Instruments (SwiftUI + Time Profiler + Energy) for one 20-card session with Reduce Motion off versus on, and compare the spread of `responseMs` for an identical tapping pattern.
+
+**Fix direction (pick one):**
+- Freeze the aurora in `SessionView`: pass a `paused` flag that is true for the whole session, or at least while `.prompting`.
+- Render the blobs once into an image and animate only its offset (cheap compositing).
+- Drop to about 10 fps.
+
+Keep the motion on Home if wanted; it's the session screen that matters.
+
+### R3-3 · P3 (Low) · Colour contrast of the most-used controls is below WCAG large-text minimum
+**Files:**
+- `SessionView.swift` (Wrong `[rose, amber]`, Correct `[mint, teal]` with white labels)
+- `Theme.swift:15-22`
+- `HomeView.swift` `DeckCard` (white text and white-on-20 % chips over the Korean `coral→pink` gradient)
+
+Approximate contrast against white text:
+
+| Colour | Contrast vs white |
+|---|---|
+| mint | ≈ 1.9 : 1 |
+| teal | ≈ 2.7 : 1 |
+| amber | ≈ 1.9 : 1 |
+| rose | ≈ 3.1 : 1 |
+| coral | ≈ 2.8 : 1 |
+| pink | ≈ 3.0 : 1 |
+
+WCAG AA needs **3 : 1** for large bold text and **4.5 : 1** for the `.subheadline` / `.caption` text on the deck cards. The previous system green was also weak (≈ 2.2 : 1), so this isn't a regression for the grade buttons. It *is* a regression for the Korean deck card text. "Increase Contrast" is not handled anywhere.
+
+**Fix direction:**
+- Darken the gradient stops for button fills, or use dark label text on mint/amber.
+- Add an `accessibilityDifferentiateWithoutColor` / `colorSchemeContrast == .increased` variant with solid, darker fills.
+
+### R3-4 · P3 (Low) · The trend chart's smoothing misrepresents data
+**File:** `App/Sources/Features/Stats/StatsView.swift` (`trendMarks`: `.interpolationMethod(.catmullRom)` on `AreaMark` + `LineMark`)
+
+Catmull-Rom splines overshoot between points. An accuracy series of 100 % → 60 % → 100 % draws a curve **above 100 %** and a dip below the real minimum between sessions. A median-time series can similarly show values that never happened. This is a stats screen, so the curve should not invent data.
+
+**Fix direction:** use `.monotone`, which doesn't overshoot, or `.linear`.
+
+### R3-5 · P3 (Low) · The grade buttons flicker opaque → dim → opaque on every reveal
+**File:** `App/Sources/Features/Session/SessionView.swift:42, 287-296`
+
+`gradeEnabled` starts `true` and is only set to `false` inside `.task(id: phaseKey)`, which runs **after** the reveal's first frame. Each reveal therefore renders Wrong/Correct at full opacity and hit-testable for a frame, then animates to 0.55, then back to 1 after about 250 ms. It is functionally safe, because the engine still rejects early grades. Visually it is a flicker on every card, which is what G2 meant to avoid.
+
+**Fix direction:** set `gradeEnabled = false` synchronously in the same action that calls `vm.ok()` (Reveal button, tap-anywhere, keys), or derive the initial value from `vm.gradeLockoutRemaining > .zero` at render time.
+
+### R3-6 · P3 (Low) · `recoveredFields` misses fallbacks *inside* the options structs
+**Files:** `Decks/FretboardNotesDeck.swift` (`FretboardOptions.init(from:)`), `Korean/Vocab.swift` (`VocabOptions.init(from:)`)
+
+`SessionConfig` records a recovered field only when the whole `options` value fails. The inner tolerant decoders fall back silently, field by field. For example, an unknown `noteSet` raw value becomes `.naturals`, and `recoveredFields` stays empty. The Summary caption doesn't appear, and `initialConfig` re-uses the altered config as if it were valid.
+
+**Fix direction:** have the inner decoders report recovered keys too, for example via a `userInfo`-provided collector or by returning a `(value, recovered)` pair through a small helper. Then merge them as `"options.noteSet"` and so on.
+
+### R3-7 · P4 (Polish) — small items
+- **README out of date** (`README.md:24, 28`): it still documents the prompt key as "= OK" and the QA step as "prompt → OK". The button is now **Reveal**; the identifier `okButton` is unchanged, which is fine.
+- **Reduce Motion gaps:** the paused-overlay transition always scales (`.scale(scale: 0.94)` in `SessionView`), and the Home and Settings springs (`Theme.spring` on dismiss and expand) are not gated. The flip, tilt, aurora and heatmap animations are gated.
+- **Force-unwrap / index assumptions on colour arrays:**
+  - `GradientProgressBar` uses `colors.last!` (`Theme.swift:195`)
+  - `AuroraBackground` and `RingGauge` use `colors[0]`
+  - `subjectColors[0]` is used in several places
+  All callers pass two colours today. An empty array would crash. Use non-empty types, or fall back.
+- **Summary hero headline** judges on accuracy alone, so 1 of 1 correct reads "Flawless!". Consider requiring at least 5 counted cards before the superlatives.
+- **`DevSeeder`** (DEBUG simulator only) writes into the *current* store and **overwrites** existing Fretboard `ItemStats` with seeded values. It also does about 29k individual `save()` calls, which is slow. Consider a dedicated seeded store, or at least a confirmation dialog.
+
+## Process notes
+- **Branch:** the M1 baseline, all fixes and the UI pass now live on `review/m1-code-review`. The default branch `claude/korean-music-flashcard-plan-ffx6z5` still has only the plan. A PR from this branch would mix 13k lines of implementation with the review documents. Decide whether to merge it as-is or move the implementation to its own branch (the handoff flags this as unconfirmed).
+- **Still pending from the plan:** the G5 measurements (N5) and the G6 device checks (P2-2, P2-3, P2-5, P2-6).
+
+## Round 3 — Suggested next steps
+1. **R3-1:** fix the three test lines, switch CI to `swift test`, and fix the docs. About 10 minutes, and it restores a 127-test safety net.
+2. **R3-2:** measure, then freeze the aurora during sessions. This protects the app's core measurement.
+3. Run the G5 measurements and G6 device checks, and record them in PLAN §17.
+4. R3-5, R3-4, R3-3, R3-6 (all small), then the R3-7 polish.
+5. Settle the branch question before opening a PR.
 
 ---
 

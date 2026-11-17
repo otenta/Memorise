@@ -56,22 +56,6 @@ enum Fmt {
     }
 }
 
-/// Human labels for cards (summary rows, lists).
-enum CardLabel {
-    @MainActor
-    static func text(_ card: Card?, key: ItemKey, settings: AppSettings) -> String {
-        guard let card else { return key.raw }
-        switch card.content {
-        case let .fretboardNote(p):
-            return "\(NoteFormatter.format(p.spelling, settings: settings.musicDisplay)) · string \(p.stringNumber)"
-        case let .vocab(p):
-            return p.direction == .koToEn
-                ? "\(p.entry.hangul) → \(p.entry.meaningText)"
-                : "\(p.entry.meaningText) → \(p.entry.hangul)"
-        }
-    }
-}
-
 /// Color tokens.
 enum Palette {
     static let correct = Color.green

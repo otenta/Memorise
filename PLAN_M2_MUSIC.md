@@ -262,17 +262,17 @@ M2-0a → M2-0c are strictly sequential and change no behaviour. After M2-1, the
 
 | Segment | Status | Notes |
 |---|---|---|
-| M2-0a Core deck hooks (F10.1) | ☐ | no behaviour change |
-| M2-0b Deck-UI registry (F10.2) | ☐ | no behaviour change |
-| M2-0c Tuning plumbing + presets (F10.3) | ☐ | key prefix rule |
-| M2-1 Theory: intervals, spelling, Pitch | ☐ | |
-| M2-2 Name the Note deck | ☐ | |
-| M2-3 Find All deck | ☐ | |
-| M2-4 Intervals deck | ☐ | new options case |
-| M2-5 Note playback (synth) | ☐ | |
-| M2-6 Interval Ear deck | ☐ | new options case + content case |
-| M2-7 Microphone answer | ☐ | `NSMicrophoneUsageDescription` |
-| M2-8 Integration & QA | ☐ | |
+| M2-0a Core deck hooks (F10.1) | code ☑ | no behaviour change |
+| M2-0b Deck-UI registry (F10.2) | code ☑ | no behaviour change |
+| M2-0c Tuning plumbing + presets (F10.3) | code ☑ | key prefix rule |
+| M2-1 Theory: intervals, spelling, Pitch | code ☑ | |
+| M2-2 Name the Note deck | code ☑ | |
+| M2-3 Find All deck | code ☑ | |
+| M2-4 Intervals deck | code ☑ | new options case |
+| M2-5 Note playback (synth) | code ☑ | |
+| M2-6 Interval Ear deck | code ☑ | new options case + content case |
+| M2-7 Microphone answer | code ☑ | `NSMicrophoneUsageDescription` |
+| M2-8 Integration & QA | code ☑ | |
 
 ## 5. Key and format rules introduced by M2 (summary)
 

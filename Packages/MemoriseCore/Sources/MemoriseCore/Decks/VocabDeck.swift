@@ -1,6 +1,7 @@
 /// A vocabulary deck backed by a `VocabDeckFile`.
 public struct VocabDeck: Deck {
     public let id: DeckID
+    public let kind = DeckKind.vocab
     public let title: String
     public let subtitle: String
     public let subject: Subject
@@ -42,6 +43,8 @@ public struct VocabDeck: Deck {
     }
 
     public func introductionRank(of card: Card) -> Int? { card.vocab?.entry.rank }
+
+    public func newPerSession(options: DeckOptions) -> Int? { options.vocab?.newPerSession }
 
     /// Same entry (other direction) as previous ×0.1; tag shared with both of the previous 2 cards ×0.7.
     public func patternPenalty(candidate: Card, recent: ArraySlice<Card>) -> Double {

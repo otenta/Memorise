@@ -295,18 +295,18 @@ The Music section would list ~14 decks, so add `Deck.group: String` (core, displ
 
 | Segment | Status | Notes |
 |---|---|---|
-| M3-0 Shared UI + playback helpers | ☐ | fret window, chord box, staff, circle, Home groups |
-| M3-1 Theory core | ☐ | chords, scales, keys, progressions |
-| M3-2 Shape library + validator | ☐ | ≥ 60 shapes, verification table |
-| M3-3 Play / Name the Chord | ☐ | ~400 cards each |
-| M3-4 Triads on string sets | ☐ | up to 576 cards |
-| M3-5 Arpeggios | ☐ | ~144 cards |
-| M3-6 Scales & modes | ☐ | ~750 cards, gated introduction |
-| M3-7 Key signatures | ☐ | 60 cards |
-| M3-8 Diatonic chords | ☐ | 210–840 cards |
-| M3-9 Progressions | ☐ | ~165 cards |
-| M3-10 Circle of fifths | ☐ | 48 cards |
-| M3-11 Integration & docs | ☐ | |
+| M3-0 Shared UI + playback helpers | ☑ | fret window, chord box, staff, circle, Home groups |
+| M3-1 Theory core | ☑ | chords, scales, keys, progressions |
+| M3-2 Shape library + validator | ☑ | 67 shapes; verification table pending (owner) |
+| M3-3 Play / Name the Chord | ☑ | 369 cards each; choice mode enabled (M4-0) |
+| M3-4 Triads on string sets | ☑ | 540 cards |
+| M3-5 Arpeggios | ☑ | ~144 cards |
+| M3-6 Scales & modes | ☑ | 936 cards, gated introduction |
+| M3-7 Key signatures | ☑ | 60 cards |
+| M3-8 Diatonic chords | ☑ | 210–840 cards |
+| M3-9 Progressions | ☑ | 157 cards |
+| M3-10 Circle of fifths | ☑ | 48 cards |
+| M3-11 Integration & docs | ☑ | |
 
 ## 6. Key and format rules introduced by M3
 

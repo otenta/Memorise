@@ -1,47 +1,48 @@
 import MemoriseCore
 import SwiftUI
 
-/// Strings × pitch classes grid colored by response-time EWMA (§11.6).
-struct FretboardHeatmap: View {
-    let stats: [ItemKey: ItemStats]
-    @Environment(AppEnvironment.self) private var env
-    @State private var selected: Cell?
+/// Strings × columns grid coloured by response-time EWMA (§11.6). Columns are pitch classes
+/// (Fretboard Notes) or frets (Name the Note).
+struct HeatmapGrid: View {
+    struct Column: Hashable, Identifiable {
+        let id: Int
+        let label: String
+    }
 
     struct Cell: Identifiable, Hashable {
         let string: Int
-        let pitchClass: PitchClass
-        var id: ItemKey { FretboardNotesDeck.itemKey(string: string, pitchClass: pitchClass) }
+        let column: Int
+        let key: ItemKey
+        var id: ItemKey { key }
     }
+
+    /// String numbers, top row first.
+    let rows: [Int]
+    let columns: [Column]
+    let stats: [ItemKey: ItemStats]
+    let key: (_ string: Int, _ column: Int) -> ItemKey
+    /// Popover title, e.g. "A on string 6".
+    let title: (_ string: Int, _ column: Int) -> String
+    /// Large badge text in the popover, e.g. "A" or "5".
+    let badge: (_ string: Int, _ column: Int) -> String
+
+    @State private var selected: Cell?
+    @State private var appeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var reference: Double {
         Statistics.median(stats.values.compactMap(\.ewmaResponseMs)) ?? SchedulerConstants.standard.fallbackReferenceMs
     }
 
     var body: some View {
-        let strings = env.settings.highEOnTop ? Array(1...6) : Array((1...6).reversed())
         let ref = reference
+        let scrolls = columns.count > 13
         VStack(alignment: .leading, spacing: 12) {
-            Grid(horizontalSpacing: 3, verticalSpacing: 3) {
-                GridRow {
-                    Text("")
-                    ForEach(PitchClass.allCases, id: \.self) { pc in
-                        Text(NoteSpelling.preferred(for: pc, preferFlat: false).displayName)
-                            .font(.system(size: 10, weight: .bold, design: .rounded))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1).minimumScaleFactor(0.6)
-                    }
-                }
-                ForEach(Array(strings.enumerated()), id: \.element) { row, s in
-                    GridRow {
-                        Text("\(s)")
-                            .font(.system(size: 10, weight: .heavy, design: .rounded).monospacedDigit())
-                            .foregroundStyle(.white)
-                            .frame(width: 18, height: 18)
-                            .background(Subject.music.gradient, in: Circle())
-                        ForEach(Array(PitchClass.allCases.enumerated()), id: \.element) { col, pc in
-                            cell(Cell(string: s, pitchClass: pc), reference: ref, order: row + col)
-                        }
-                    }
+            Group {
+                if scrolls {
+                    ScrollView(.horizontal, showsIndicators: false) { grid(ref, cellSize: 22) }
+                } else {
+                    grid(ref, cellSize: nil)
                 }
             }
             legend
@@ -50,11 +51,36 @@ struct FretboardHeatmap: View {
         .onAppear { appeared = true }
     }
 
-    @State private var appeared = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    private func grid(_ ref: Double, cellSize: CGFloat?) -> some View {
+        Grid(horizontalSpacing: 3, verticalSpacing: 3) {
+            GridRow {
+                Text("")
+                ForEach(columns) { col in
+                    Text(col.label)
+                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1).minimumScaleFactor(0.6)
+                        .frame(width: cellSize)
+                }
+            }
+            ForEach(Array(rows.enumerated()), id: \.element) { row, s in
+                GridRow {
+                    Text("\(s)")
+                        .font(.system(size: 10, weight: .heavy, design: .rounded).monospacedDigit())
+                        .foregroundStyle(.white)
+                        .frame(width: 18, height: 18)
+                        .background(Subject.music.gradient, in: Circle())
+                    ForEach(Array(columns.enumerated()), id: \.element) { idx, col in
+                        cell(Cell(string: s, column: col.id, key: key(s, col.id)), reference: ref, order: row + idx)
+                            .frame(width: cellSize, height: cellSize)
+                    }
+                }
+            }
+        }
+    }
 
     private func cell(_ c: Cell, reference: Double, order: Int) -> some View {
-        let s = stats[c.id]
+        let s = stats[c.key]
         let seen = s?.ewmaResponseMs != nil
         let color: Color = if let t = s?.ewmaResponseMs { Palette.heat(ratio: t / reference) } else { Color.gray.opacity(0.18) }
         let isSelected = selected == c
@@ -76,15 +102,16 @@ struct FretboardHeatmap: View {
             .scaleEffect(isSelected ? 1.18 : (shown ? 1 : 0.3))
             .opacity(shown ? 1 : 0)
             .zIndex(isSelected ? 1 : 0)
-            .animation(reduceMotion ? nil : Theme.spring.delay(appeared ? 0 : Double(order) * 0.018), value: appeared)
+            .animation(reduceMotion ? nil : Theme.spring.delay(appeared ? 0 : Double(min(order, 30)) * 0.018), value: appeared)
             .animation(Theme.spring, value: isSelected)
             .onTapGesture { selected = c }
             .popover(item: Binding(get: { selected == c ? selected : nil }, set: { selected = $0 })) { cell in
-                CellDetail(cell: cell, stats: stats[cell.id], reference: reference)
+                CellDetail(badge: badge(cell.string, cell.column), title: title(cell.string, cell.column),
+                           stats: stats[cell.key], reference: reference)
                     .presentationCompactAdaptation(.popover)
             }
             .accessibilityElement()
-            .accessibilityLabel("String \(c.string), \(NoteSpelling.preferred(for: c.pitchClass, preferFlat: false).displayName)")
+            .accessibilityLabel(title(c.string, c.column))
             .accessibilityValue(s?.ewmaResponseMs.map { Fmt.seconds($0) } ?? "not seen")
             .accessibilityAddTraits(.isButton)
     }
@@ -114,6 +141,36 @@ struct FretboardHeatmap: View {
     }
 }
 
+extension HeatmapGrid {
+    /// Strings × pitch classes (Fretboard Notes).
+    static func notes(stats: [ItemKey: ItemStats], tuning: Tuning, highEOnTop: Bool) -> HeatmapGrid {
+        func name(_ pc: Int) -> String { NoteSpelling.preferred(for: PitchClass(pc), preferFlat: false).displayName }
+        return HeatmapGrid(
+            rows: highEOnTop ? Array(tuning.stringNumbers.reversed()) : tuning.stringNumbers,
+            columns: PitchClass.allCases.map { Column(id: $0.value, label: name($0.value)) },
+            stats: stats,
+            key: { s, pc in FretboardNotesDeck.itemKey(string: s, pitchClass: PitchClass(pc), tuning: tuning.id) },
+            title: { s, pc in "\(name(pc)) on string \(s)" },
+            badge: { _, pc in name(pc) }
+        )
+    }
+
+    /// Strings × frets (Name the Note).
+    static func positions(stats: [ItemKey: ItemStats], tuning: Tuning, frets: ClosedRange<Int>, highEOnTop: Bool) -> HeatmapGrid {
+        func name(_ s: Int, _ f: Int) -> String {
+            NoteSpelling.preferred(for: Fretboard.pitchClass(string: s, fret: f, tuning: tuning), preferFlat: false).displayName
+        }
+        return HeatmapGrid(
+            rows: highEOnTop ? Array(tuning.stringNumbers.reversed()) : tuning.stringNumbers,
+            columns: frets.map { Column(id: $0, label: "\($0)") },
+            stats: stats,
+            key: { s, f in FretboardNamesDeck.itemKey(FretPosition(string: s, fret: f), tuning: tuning.id) },
+            title: { s, f in "String \(s), fret \(f) · \(name(s, f))" },
+            badge: { s, f in name(s, f) }
+        )
+    }
+}
+
 private extension View {
     func legendChip() -> some View {
         padding(.horizontal, 8).padding(.vertical, 5)
@@ -122,21 +179,22 @@ private extension View {
 }
 
 private struct CellDetail: View {
-    let cell: FretboardHeatmap.Cell
+    let badge: String
+    let title: String
     let stats: ItemStats?
     let reference: Double
 
     var body: some View {
-        let name = NoteSpelling.preferred(for: cell.pitchClass, preferFlat: false).displayName
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 12) {
-                Text(name)
-                    .font(.system(size: 28, weight: .heavy, design: .rounded))
+                Text(badge)
+                    .font(.system(size: 24, weight: .heavy, design: .rounded))
                     .foregroundStyle(.white)
+                    .lineLimit(1).minimumScaleFactor(0.5)
                     .frame(width: 52, height: 52)
                     .background(Subject.music.gradient, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(name) on string \(cell.string)").font(.headline)
+                    Text(title).font(.headline)
                     if let s = stats, s.attempts > 0 {
                         Text("\(s.attempts) attempt\(s.attempts == 1 ? "" : "s")").font(.caption).foregroundStyle(.secondary)
                     }
@@ -174,6 +232,42 @@ private struct CellDetail: View {
     }
 }
 
+/// Generic per-item stats list (Find All, Intervals, Interval Ear): slowest/weakest first.
+struct ItemStatsList: View {
+    struct Item: Identifiable {
+        let key: ItemKey
+        let label: String
+        var id: ItemKey { key }
+    }
+
+    let title: String
+    let items: [Item]
+    let stats: [ItemKey: ItemStats]
+
+    var body: some View {
+        let calc = WeightCalculator(pool: [], stats: stats, focus: .normal, now: .now)
+        let ranked = items.sorted { a, b in
+            calc.baseWeight(stats[a.key]) > calc.baseWeight(stats[b.key])
+        }
+        Section(title) {
+            ForEach(ranked) { item in
+                let s = stats[item.key]
+                HStack {
+                    Text(item.label).font(.headline)
+                    Spacer()
+                    if let s, s.attempts > 0 {
+                        Text("\(Fmt.percent(s.accuracy)) · \(Fmt.seconds(s.ewmaResponseMs))")
+                            .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                    } else {
+                        Text("new").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                .accessibilityElement(children: .combine)
+            }
+        }
+    }
+}
+
 #Preview {
     let stats: [ItemKey: ItemStats] = Dictionary(uniqueKeysWithValues: (1...6).flatMap { s in
         PitchClass.naturals.map { pc in
@@ -182,5 +276,5 @@ private struct CellDetail: View {
                                    ewmaResponseMs: Double(800 + (s * 700 + pc.value * 311) % 4_000), ewmaError: Double(pc.value % 5) / 8))
         }
     })
-    return List { FretboardHeatmap(stats: stats) }.environment(AppEnvironment.preview())
+    return List { HeatmapGrid.notes(stats: stats, tuning: .standard, highEOnTop: true) }.environment(AppEnvironment.preview())
 }

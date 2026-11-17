@@ -54,6 +54,26 @@ struct SettingsView: View {
                         ForEach(FretboardOptions.maxFretPresets, id: \.self) { Text("\($0)").tag($0) }
                     } label: { SettingLabel("Max fret for new setups", icon: "ruler.fill", colors: [Theme.indigo, Theme.teal]) }
                     Toggle(isOn: $s.showStringHint) { SettingLabel("Show string hint (low E…)", icon: "lightbulb.fill", colors: [Theme.amber, Theme.coral]) }
+                    Toggle(isOn: $s.playNoteOnReveal) { SettingLabel("Play note on reveal", icon: "music.note", colors: Subject.music.colors) }
+                    Picker(selection: $s.dotLabels) {
+                        Text("Notes").tag(DotLabels.notes)
+                        Text("Degrees").tag(DotLabels.degrees)
+                    } label: { SettingLabel("Dot labels (scales, chords)", icon: "circle.grid.3x3.fill", colors: [Theme.violet, Theme.indigo]) }
+                    .accessibilityIdentifier("dotLabelsPicker")
+                    Toggle(isOn: $s.showShapeHint) { SettingLabel("Show chord shape hint", icon: "hand.point.up.left.fill", colors: [Theme.teal, Theme.mint]) }
+                        .accessibilityIdentifier("showShapeHintToggle")
+                    VStack(alignment: .leading) {
+                        SettingLabel("Note volume", icon: "speaker.wave.3.fill", colors: Subject.music.colors)
+                        Slider(value: $s.noteVolume, in: 0...1) {
+                            Text("Note volume")
+                        } minimumValueLabel: {
+                            Image(systemName: "speaker.fill")
+                        } maximumValueLabel: {
+                            Image(systemName: "speaker.wave.3.fill")
+                        } onEditingChanged: { editing in
+                            if !editing { env.notePlayer.play(midi: 57) }
+                        }
+                    }
                 } header: {
                     Text("Music")
                 } footer: {
@@ -93,6 +113,8 @@ struct SettingsView: View {
                     Toggle(isOn: $s.tapAnywhereForOK) { SettingLabel("Tap anywhere to reveal", icon: "hand.tap.fill", colors: [Theme.indigo, Theme.violet]) }
                     Toggle(isOn: $s.showTimer) { SettingLabel("Show timer during prompt", icon: "stopwatch.fill", colors: [Theme.amber, .orange]) }
                     Toggle(isOn: $s.hapticsEnabled) { SettingLabel("Haptics", icon: "iphone.radiowaves.left.and.right", colors: [Theme.mint, Theme.teal]) }
+                    Toggle(isOn: $s.autoAdvanceOnCorrect) { SettingLabel("Auto-advance typed/choice answers", icon: "forward.fill", colors: [Theme.teal, Theme.indigo]) }
+                        .accessibilityIdentifier("autoAdvanceToggle")
                 }
 
                 Section {
@@ -213,7 +235,9 @@ struct SettingsView: View {
         exportError = nil
         defer { exporting = false }
         do {
-            let snapshot = try await env.store.exportSnapshot()
+            var snapshot = try await env.store.exportSnapshot()
+            // M4-8: user decks are included as data (backup only).
+            snapshot.userDecks = env.userDeckFiles.isEmpty ? nil : env.userDeckFiles
             exportURLs = try await Task.detached(priority: .userInitiated) {
                 let dir = FileManager.default.temporaryDirectory.appendingPathComponent("export", isDirectory: true)
                 try? FileManager.default.removeItem(at: dir)

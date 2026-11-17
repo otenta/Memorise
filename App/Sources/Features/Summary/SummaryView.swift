@@ -14,6 +14,16 @@ struct SummaryView: View {
     @State private var labels: [ItemKey: String] = [:]
     @State private var appeared = false
 
+    private var inputCaption: String? {
+        switch summary.config.inputMode {
+        case .touch: nil
+        case .microphone: "Answered with the microphone"
+        case .typed: "Answered by typing (time not counted towards speed)"
+        case .choice: "Answered by choosing"
+        }
+    }
+
+
     var body: some View {
         List {
             if saveFailures > 0 {
@@ -21,6 +31,13 @@ struct SummaryView: View {
                     Label("\(saveFailures) answer\(saveFailures == 1 ? "" : "s") couldn't be saved", systemImage: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
                         .accessibilityIdentifier("saveFailuresRow")
+                }
+            }
+            if let caption = inputCaption {
+                Section {
+                    Label(caption, systemImage: summary.config.inputMode.systemImage)
+                        .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                        .accessibilityIdentifier("inputModeCaption")
                 }
             }
             if !summary.config.recoveredFields.isEmpty {
@@ -200,9 +217,14 @@ struct SummaryView: View {
         if summary.rows.contains(where: { $0.card == nil }), let deck {
             for c in deck.cards(options: summary.config.options) { lookup[c.key] = c }
         }
+        let ui = deck.map(env.deckUI(for:))
         var result: [ItemKey: String] = [:]
         for r in summary.rows where result[r.itemKey] == nil {
-            result[r.itemKey] = CardLabel.text(r.card ?? lookup[r.itemKey], key: r.itemKey, settings: env.settings)
+            if let card = r.card ?? lookup[r.itemKey], let ui {
+                result[r.itemKey] = ui.label(card, settings: env.settings)
+            } else {
+                result[r.itemKey] = r.itemKey.raw
+            }
         }
         labels = result
     }

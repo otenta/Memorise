@@ -94,7 +94,7 @@ public final class SessionEngine {
         self.stats = stats
 
         let pool = deck.cards(options: config.options)
-        let newPerSession = config.options.vocab?.newPerSession ?? .max
+        let newPerSession = deck.newPerSession(options: config.options) ?? .max
         self.scheduler = Scheduler(
             deck: deck,
             pool: pool,
@@ -174,10 +174,14 @@ public final class SessionEngine {
     /// revealed → next card / finished. Persists attempt + stats.
     /// Ignored (no effects, no state change) while `canGrade` is false.
     public func grade(correct: Bool) -> [SessionEffect] {
-        guard canGrade, case let .revealed(p, responseMs) = state else { return [] }
+        guard canGrade else { return [] }
+        return gradeRevealed(correct: correct, gradeMs: (clock.now() - revealedAt).wholeMilliseconds, countsTime: config.inputMode.countsTime)
+    }
+
+    private func gradeRevealed(correct: Bool, gradeMs: Int, countsTime: Bool) -> [SessionEffect] {
+        guard case let .revealed(p, responseMs) = state else { return [] }
         let now = wallClock()
-        let attempt = makeAttempt(p, responseMs: responseMs, gradeMs: (clock.now() - revealedAt).wholeMilliseconds,
-                                  correct: correct, interrupted: false)
+        let attempt = makeAttempt(p, responseMs: responseMs, gradeMs: gradeMs, correct: correct, interrupted: false)
         var effects: [SessionEffect] = [.saveAttempt(attempt)]
 
         if !p.isRetry {
@@ -185,7 +189,8 @@ public final class SessionEngine {
             let key = p.card.key
             let updated = StatsUpdater.apply(
                 responseMs: responseMs, correct: correct, at: now,
-                to: stats[key] ?? .empty(key: key, deck: deck.id), constants: constants
+                to: stats[key] ?? .empty(key: key, deck: deck.id), constants: constants,
+                updateTime: countsTime
             )
             stats[key] = updated
             effects.append(.saveStats(updated))
@@ -198,6 +203,28 @@ public final class SessionEngine {
 
         if isLengthReached || !presentNext() { effects += finish() }
         return effects
+    }
+
+    /// Current time on the engine's monotonic clock (for mapping external timestamps).
+    public var clockNow: Duration { clock.now() }
+
+    /// Automatically evaluated answer (microphone, choice, typed) given at `at` (engine clock).
+    ///
+    /// Valid only while prompting. Performs `ok` at `at` (`responseMs` from the prompt, ≥ 0) and
+    /// grades immediately with `gradeMs = 0`, bypassing the human double-tap lockout.
+    /// `countsTime: false` keeps the response time out of the time EWMA.
+    public func answerEvaluated(correct: Bool, at: Duration, countsTime: Bool) -> [SessionEffect] {
+        guard case let .prompting(p) = state else { return [] }
+        let start = promptShownAt ?? cardSelectedAt
+        let ms = (max(at, start) - start).wholeMilliseconds
+        revealedAt = clock.now() - .milliseconds(constants.gradeLockoutMs)
+        state = .revealed(p, responseMs: ms)
+        return gradeRevealed(correct: correct, gradeMs: 0, countsTime: countsTime)
+    }
+
+    /// Microphone answer: a correct note was detected with onset at `onset` (engine clock).
+    public func answerDetected(at onset: Duration) -> [SessionEffect] {
+        answerEvaluated(correct: true, at: onset, countsTime: true)
     }
 
     /// Pause / interruption (app backgrounded). A visible prompt is stored as interrupted
@@ -262,7 +289,7 @@ public final class SessionEngine {
         let wallNow = wallClock()
         // 1. Regular weighted pick within cooldown rules.
         if let picked = scheduler.nextCard(history: history, stats: stats, excluded: excluded, now: wallNow, allowFallback: false, rng: &rng) {
-            show(deck.present(picked, using: &rng), isRetry: false, at: now)
+            show(deck.present(picked, options: config.options, using: &rng), isRetry: false, at: now)
             return true
         }
         // 2. Prefer an early pending retry (not back-to-back) over a cooldown-breaking pick.
@@ -272,7 +299,7 @@ public final class SessionEngine {
         }
         // 3. Uniform fallback over the allowed set.
         if let picked = scheduler.nextCard(history: history, stats: stats, excluded: excluded, now: wallNow, allowFallback: true, rng: &rng) {
-            show(deck.present(picked, using: &rng), isRetry: false, at: now)
+            show(deck.present(picked, options: config.options, using: &rng), isRetry: false, at: now)
             return true
         }
         // 4. Flush any remaining retry, even back-to-back, rather than ending the session.

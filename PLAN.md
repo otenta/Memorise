@@ -186,6 +186,9 @@ public struct ItemKey: Hashable, Codable, Sendable { public let raw: String }  /
 ```
 
 - `ItemKey` is the key for statistics. **Never reuse or rename an ItemKey** once shipped; stats are joined on it.
+- **Tuning prefix rule (M2):** fretboard decks keep their bare key scheme for standard tuning forever (`fret:s6:A`); other tunings prefix the scheme with `@<TuningID>` (`fret@dropD:s6:A`). M2 schemes: Name the Note `fretname:s6:f5`, Find All `findall:A`, Intervals `int:M3:s6`, Interval Ear `ear:M3:asc` (no tuning). `TuningID`, `Interval` and `EarMode` raw values are part of keys — never change them.
+- **M3 schemes (standard tuning only):** Play the Chord `chord:<shapeId>` (open) / `chord:<shapeId>:<root>` (movable), Name the Chord `chordname:…`, Triads `triad:<quality>:<inversion>:<set>:<root>`, Arpeggios `arp:<quality>:s<rootString>:<root>`, Scales `scale:<type>:<system>:p<n>:<tonic>`, Key Signatures `keysig:<tonic>:<mode>:<direction>`, Diatonic `diatonic:<tonic>:<mode>:<size>:<degree>:<direction>`, Progressions `prog:<progressionId>:<tonic>`, Circle `cof:<question>:<tonic>`. Roots/tonics use ASCII spellings (`Bb`, `F#`, `Cb`). **Shape ids in `Resources/Shapes/chord_shapes.json` are frozen**, as are the raw values of `ChordQuality`, `ScaleType`, `ScaleSystem`, `TriadInversion`, `StringSet`, `Progression`, `KeyMode`, `KeySigDirection`, `DiatonicSize`, `DiatonicDirection` and `CircleQuestion`.
+- **M4 schemes (Korean):** vocab decks (Core 1–N, Patterns, AION, user decks) keep `<entryId>#<direction>` and add the `listen` direction (`ko.core.0001#listen`, separate stats). Hangul Reading `hangul:v:ㅏ` / `hangul:c:ㄱ` / `hangul:s:밥` / `hangul:w:<entryId>`, Particles `particle:<particle>:<batchim|vowel|rieul>`, Conjugation `conj:<entryId>:<form>`. User deck ids are `user.<8 hex>` (plus the fixed `user.aion0001`), and entry ids are `<deckId>.NNNN`, never reused (`nextEntryNumber` only increases). The raw values of `VocabDirection`, `Particle`, `ConjForm`, `HangulReadingOptions.Stage` and `InputMode` are frozen.
 - Fretboard: `"fret:s6:A"` (string number + pitch-class canonical sharp name, e.g. `"fret:s3:C#"`).
 - Korean: `"<entryId>#<direction>"`, e.g. `"ko.core.0042#ko-en"`, `"ko.core.0042#en-ko"`. Each direction has its own stats.
 - If deck content is removed, orphaned stats are simply ignored (never crash).
@@ -300,6 +303,18 @@ public struct ItemStats: Codable, Sendable, Equatable {
 - `Tuning`: list of open-string pitches from string 6 → 1. M1 ships **Standard: E2 A2 D3 G3 B3 E4**. Pitches stored as MIDI numbers (E2 = 40, A2 = 45, D3 = 50, G3 = 55, B3 = 59, E4 = 64) so future features (octaves, audio) work. The Tuning type must allow other tunings later (Drop D, etc.).
 - `Fretboard.frets(for pitchClass:, onString:, tuning:, fretRange:) -> [Int]`: all frets f in range where `(openMidi + f) % 12 == pitchClass`.
   - Example: A on string 6, range 0…12 → `[5]`; range 0…22 → `[5, 17]`. E on string 6, 0…12 → `[0, 12]`.
+
+### 7.1b M2 theory additions
+- `TuningID` presets: standard (E2 A2 D3 G3 B3 E4), dropD, halfDown (E♭ standard), dadgad, openG. String names derive from the open pitch: lowest "low X", highest "high X", others "X". `FretboardOptions.tuning` defaults to `.standard` (M1 data decodes as standard).
+- `Interval` m2…P8 with `semitones`, `letterSteps` (TT spelled as A4), `shortName`, `longName`. `NoteSpelling.transposed(by:)` returns `nil` when a double accidental would be needed (callers re-roll).
+- `Pitch` (MIDI): `octave` (MIDI 60 = C4), `frequency` (A4 = 440 Hz, 12-TET), `nearest(toFrequency:)`. `Fretboard.positions(of:strings:tuning:fretRange:)`, `Fretboard.midi(string:fret:tuning:)`.
+- DEBUG `TheoryCheck.run()` asserts at launch next to `PersistedFormatCheck`.
+
+### 7.1c M3 theory additions
+- `Accidental` gained `doubleFlat`/`doubleSharp` (raw values 3/4, appended). `NoteSpelling.adding(letters:semitones:allowDouble:)`, `.ascii`, `init?(ascii:)`, `.enharmonic`.
+- `Degree` (letter steps + semitones + label), `DegreeLabel.text(interval:)`, `ChordQuality` (15 qualities, PLAN_M3 §M3-1 table), `Chord` (one letter per degree; only `dim7`'s 7th may be a double flat; `Chord.spelled` tries the `RootNames` spelling, then its enharmonic).
+- `ScaleType` (14 types) and `Scale` (single accidentals only, enharmonic fallback). `Key` limited to the 15 major signatures + 15 relative minors: `signature`, `relative`, `diatonicTriads/Sevenths(harmonicV:)`, `RomanNumeral`. `CircleOfFifths` (C G D A E B F♯ D♭ A♭ E♭ B♭ F). `Progression` (11 ids) with `realize(in:)`.
+- `ChordShape` / `Voicing` / `ChordShapeLibrary.shared` (67 bundled shapes) and `ShapeValidator` (load-time, all configurations; failing shapes are dropped and reported in `DeckLoadReport.validationWarnings`).
 
 ### 7.2 Fretboard Notes deck
 
@@ -464,6 +479,23 @@ Game UI / gameplay vocabulary, tagged by area. Seed list below (authoring agent 
 
 Ranks: order by usefulness when starting the game (ui → character → combat → items → world → social → class → lore).
 
+### 8.3b M4 additions (Korean beyond words)
+
+Full spec: [PLAN_M4_KOREAN.md](PLAN_M4_KOREAN.md).
+
+- **Schema v2** (`VocabDeckFile.currentSchemaVersion` = 2; v1 files are still accepted). The additions are all optional and tolerant:
+  - `conj` (`ConjugationClass`: `regular`, `ha`, `b`, `d`, `s`, `reu`, `eu`, `l`, `h`, `copula`; an unknown value decodes as `regular`) is required on every bundled verb/adjective.
+  - `examples` holds up to 3 `{ko, en}` pairs.
+  - `pos` gains `pattern`; `pattern` entries must start with `-` or contain `~` and have ≥ 2 examples.
+  - The validator has a `.user` mode for user decks: romanization and `conj` are optional, an empty deck is allowed, and ids use the user format.
+- **Romanizer** (`Korean/HangulReading.swift`): RR for **isolated syllables only**, using initial/medial/final tables. Finals take their representative sound (k n t l m p ng) and initial ㅇ is silent. Words are never auto-romanized; real-word cards use the deck's own romanization.
+- **Generated decks:**
+  - **Hangul Reading** (`ko.hangul`) has stages basic vowels, basic consonants, aspirated/tense, complex vowels, syllables (140), batchim (154 curated) and real words. Gating follows stage order (`newPerSession` 8).
+  - **Particles** (`ko.particles`, `Korean/Particles.swift`) has 13 cards. They cover topic 은/는, subject 이/가, object 을/를, and 과/와, direction 으로/로 (an ㄹ-final takes 로) and copula 이에요/예요. Each card picks a random noun of the right ending class from every Korean deck (pronouns excluded). These cards are `choice` only.
+  - **Conjugation** (`ko.conjugation`, `Korean/Conjugator.swift`) has 7 forms: present/past/future polite, present casual, present formal, negative polite and want-to. It works from the stem and the `conj` irregular class, then applies vowel harmony, contraction (가+아 → 가, 오+아 → 와, 마시+어 → 마셔, 되+어 → 돼, 주+어 → 줘) and the ending with batchim-sensitive (으). Every ㄹ-final stem drops ㄹ.
+- **Custom decks** (`user.*`) are stored in `Application Support/UserDecks/<id>.json` in the `VocabDeckFile` format plus `nextEntryNumber`. There is no import; the full export includes them as `userDecks` (export schema 2).
+- **Screenshot words** (`Korean/ScreenshotWords.swift`) take the Hangul runs from each OCR line and strip one trailing particle (the longest match decides) only when ≥ 2 syllables remain. They are deduplicated and split into new and already-known (known = in any catalog deck).
+
 ### 8.4 Text-to-speech
 
 `SpeechService` (App layer): `AVSpeechSynthesizer`, voice `AVSpeechSynthesisVoice(language: "ko-KR")`, rate ~0.45. Speaks `hangul` (and the example sentence via a second button). If no Korean voice is installed, show a one-time hint pointing to *Settings → Accessibility → Spoken Content → Voices → Korean*. Audio session category `.playback` with `.mixWithOthers` so it doesn't kill music the user might have playing.
@@ -495,6 +527,17 @@ public struct SessionConfig: Codable, Hashable, Sendable {
 ```
 
 Timed sessions end when the timer expires **after** the current card is graded.
+
+**Answer modes (M2/M4):** `SessionConfig.inputMode: InputMode` decodes tolerantly; a missing value means `.touch`. Each `DeckUI` declares `supportedInputModes`, and Setup shows "Answer by" only when there is more than one.
+
+| `InputMode` | How the user answers | Grading | Updates the time EWMA? |
+|---|---|---|---|
+| `touch` (default) | OK → reveal → self-grade | self | yes |
+| `microphone` | play the note | auto, correct only (`answerEvaluated(correct:at:countsTime:)`) | yes |
+| `choice` | tap one of 2–4 options | auto: `ok()` at the tap, verdict graded on Next | yes |
+| `typed` | type, then Return | auto (`AnswerMatcher`: exact / close / wrong) + override | **no**; the error EWMA still updates |
+
+`StatsUpdater.apply(updateTime:)` leaves `ewmaResponseMs`/`bestResponseMs` alone when false. The `Attempt` still stores the raw `responseMs`, so there is no schema change. In a typed session, time is skipped for every card, including any card that falls back to touch. Vocab "close" counts as correct (with override); conjugation "close" counts as wrong.
 
 ### 9.3 Session engine (state machine)
 
@@ -686,6 +729,33 @@ Root: `TabView` with **Practice**, **Stats**, **Settings**.
 - Highlights: target string drawn thicker/accent color; answer fret(s) as filled circles labeled with the note name; open-string answer (fret 0) drawn left of the nut.
 - Reusable later for chords/scales: API takes a list of `FretMark { string, fret, label, style }` — design it generically now.
 
+### 11.5b M2 layouts and microphone UX
+- **Name the Note:** prompt = board with one unlabelled dot + highlighted string, "Which note?"; answer = note name, labelled dot, "String n (name), fret f", 🔊.
+- **Find All:** prompt = "Find every A" + "strings 6–1 · frets 0–12"; answer = every position labelled with octave ("A2"), count, 🔊 arpeggio low→high.
+- **Intervals:** prompt = "Play a major 3rd above C" + board with the root dot; answer = target name, root (orange) + targets (primary accent, others grey) in the playable window, "major 3rd = 4 semitones", 🔊 root→target.
+- **Interval Ear:** prompt plays the two notes and starts the timer when the second note sounds; Replay never resets it. Answer = long name, semitones, both note names, 🔊.
+- **Microphone (Notes, Intervals):** Setup toggle "Answer by playing" + "Reveal after 5/10/20 s". Prompt shows a "Listening…" chip with a level meter; a stable wrong note shows "Heard G♯" and keeps listening; a stable correct note grades correct immediately with the response time measured to the note onset. Timeout reveals for manual grading. Detector is off during reveal. Mic sessions show 🎤 in history and the summary.
+- Settings → Music: "Play note on reveal" (default off), "Note volume".
+
+### 11.5c M3 components and layouts
+- `FretboardView(fretWindow:)`: a window not starting at 0 draws no nut and labels its first fret; spacing stays logarithmic within the window. `FretMark` gained `badge` (small order number) and `emphasised` (ring, e.g. triad bass).
+- `ChordDiagramView`: vertical box, 5-fret window (nut when the voicing fits frets 1–5, else "Nfr"), ×/○ row, finger numbers, barre bar, roots in pink, left-handed mirroring, VoiceOver "B flat minor seventh, barre at fret 1, strings 5 to 1, x-1-3-1-2-1".
+- `StaffView(signature:)`: treble staff with 𝄞 (Apple Symbols; "Treble" text fallback) and sharps/flats at standard positions.
+- `CircleOfFifthsView(highlight:secondary:)`: majors outside, relative minors inside.
+- Home: music decks get sub-headers from `Deck.group` (Fretboard, Ear, Chords & shapes, Scales, Theory); empty groups are hidden.
+- Settings → Music: "Dot labels: Notes / Degrees" (scales, arpeggios, triads) and "Show chord shape hint".
+- `NotePlayer`: 6 voices, `strum` / `sequence` / `progression`; voices are assigned when a note starts (render-thread pending queue), so long sequences don't steal their own notes.
+
+### 11.5d M4 Korean UX
+- **Typed:** a `TypedAnswerField` sits below the prompt. It autofocuses with autocorrect and auto-capitalisation off, and Return submits. The field persists across cards, so the keyboard stays up, and it is cleared on each new card. "Don't know" reveals the card as wrong. Pedal/arrow keys are disabled while the field has focus. A Hangul answer with no Korean keyboard enabled shows "Add the Korean keyboard in Settings → General → Keyboard". The reveal shows a verdict banner (✓ Correct / ≈ Close: check spelling / ✗), *yours* vs *expected* with the differences highlighted, "I was right" / "I was wrong" overrides, and **Next**.
+- **Choice:** 2–4 large option buttons (Particles: "책은" / "책는"; Name the Chord: 4 options). A tap records the time and reveals the verdict and rule; Next grades it.
+- **Auto-advance:** after 0.8 s on an exact typed/choice answer. This is the Settings → Session toggle "Auto-advance typed/choice answers" (default on).
+- **Listening:** the prompt is a large 🔊 with no text. The timer starts when TTS finishes, and Replay doesn't reset it. Without a Korean voice, the Setup option is disabled and existing listening cards are filtered out. The weakest-words list labels listen items 🔊.
+- **Home:** the Korean section is ordered Hangul Reading, Core 1…N, Particles, Conjugation, Patterns, other bundled decks, AION 2. A separate **My decks** section follows, with "+ New deck" and "AION 2 words from a screenshot".
+- **My decks:** the deck editor has a title, subtitle, word list with swipe-delete, an add/edit word sheet (hangul, meanings, pos, optional romanization/example/tags) and a delete-deck confirmation (this also resets stats). The "My AION words" editor has "Add from screenshot".
+- **Screenshot import:** `PhotosPicker` (images only), then Vision OCR (ko-KR + en-US, `.accurate`), then a review list with checkboxes. Each selected word needs a typed meaning; romanization is optional. The list also shows "Already known (n)". The screenshot is never stored.
+- **Stats:** Hangul Reading shows a syllable grid per stage, coloured by error EWMA.
+
 ### 11.6 Stats tab
 
 - Deck picker at top.
@@ -850,10 +920,14 @@ Every item below should only need: new `CardContent` case(s), a deck generator/l
 **M3 — Harmony & shapes**: planned in [PLAN_M3_HARMONY.md](PLAN_M3_HARMONY.md) (M3-0…M3-11; requires M2-0a/0b/0c, M2-1, and M2-5 for playback).
 - Chords (open, barre, CAGED shapes), triads on string sets (1-2-3, 2-3-4, …) and inversions, arpeggios, scales and modes (positions/boxes, 3NPS), key signatures, diatonic chords in a key, progressions ("play ii–V–I in G", Roman numerals), circle of fifths. `FretboardView`'s `FretMark` API is reused for answers.
 
+M3 status: code implemented 2026-11-17 (see §17 decision log and the PLAN_M3_HARMONY.md tracker).
+
 **M4 — Korean beyond words**: planned in [PLAN_M4_KOREAN.md](PLAN_M4_KOREAN.md) (M4-0…M4-10; requires M2-0a/0b).
 - Korean Core 2/3 decks (next frequency bands), Hangul reading deck, particles (은/는, 이/가, 을/를…), verb conjugation drills (present/past/future, polite/casual), short sentences and patterns, listening cards (TTS plays, you recall meaning), optional typed answers with the Korean keyboard and fuzzy check.
 - **AION 2 screenshot → cards**: import a screenshot, on-device OCR with the Vision framework (supports Korean), pick unknown words, add them to a custom "My AION words" deck.
-- User-created custom decks & JSON import.
+- User-created custom decks (no import, owner decision 2026-11-16).
+
+M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §11.5d, the §17 decision log and the PLAN_M4_KOREAN.md tracker). The only open segment is M4-1: Core 2–4 have been added, and Core 5 is still to do.
 
 **M5 — Korean phrases from K-pop & K-dramas** (can be scheduled before M2; must start after G1)
 - New `ko.media` deck of everyday phrases heard in popular songs and dramas, using vocab deck schema v2 (additive: `register`, `dialogue`, `sources`).
@@ -924,3 +998,40 @@ _(Agents append dated entries here: decision, reason, segment.)_
 - 2026-11-16 · Planner · M4 planned in PLAN_M4_KOREAN.md: answer modes touch/microphone/choice/typed (typed doesn't update the time EWMA), engine `answerEvaluated(correct:at:countsTime:)`, Core 2/3 continuing `ko.core.` ids, generated Hangul reading/particles/conjugation decks with DEBUG fixture checks, listening direction `listen`, patterns deck, file-based user decks + JSON import, Vision OCR for AION screenshots. Shares vocab schema v2 with M5 (first to land bumps it).
 - 2026-11-16 · Owner/Planner · Plans contain no test work; the tester agent owns testing (M2/M4 DEBUG self-checks are replaced by reference examples). M4: large varied pool (Core 2–5 ≈ 800 words, ~80 patterns, all conjugation forms on by default, particle nouns from all Korean decks), no import of any kind. M5 K2 target raised to ~80 phrases.
 - 2026-11-16 · Planner · M3 planned in PLAN_M3_HARMONY.md: theory core (chords, scales/modes, 15 standard keys, diatonic + Roman numerals, circle, 11 progressions), ≥ 60-shape chord library with a load-time validator, decks Play/Name the Chord, Triads, Arpeggios, Scales & Modes (box + 3NPS), Key Signatures, Diatonic, Progressions, Circle of Fifths. Standard tuning only; the root is part of the key (large pools); Home groups music decks; no mic for chords.
+- 2026-11-16 · M2 · M2-0a…M2-8 code implemented (PLAN_M2_MUSIC.md). Name the Note naturals at 6 strings × 0–12 = **48** positions (every standard open string is natural, so fret 0 and 12 both count), not 46 as estimated in the M2 plan. Unknown `tuning` values fall back to standard silently (nested option fields don't feed `SessionConfig.recoveredFields`). `micTimeoutSeconds` is a new tolerant `SessionConfig` field. Intervals deck: when no target fits the −4…+5 window it shows the same-string target, then any position. Synth: Karplus–Strong with a fractional-delay allpass for tuning. YIN window 1024 inside 2048-sample frames. MemoriseCoreTests (owner-added) does not compile against the G3/M2 API changes; not updated (D1 = No).
+- 2026-11-17 · M3 · M3-0…M3-11 code implemented (PLAN_M3_HARMONY.md). Root/tonic option sets are persisted as `Set<PitchClass>` (ints) and spelled at generation via `RootNames` (B♭ E♭ A♭ D♭ F♯), falling back to the enharmonic when a chord/scale would need a double accidental (e.g. D♭°7 → C♯°7, D♭ Locrian → C♯ Locrian); keys use the actual spelling. Diatonic/Progression key sets are major tonics (ASCII); minor uses the relative minor. Minor diatonic cards always use the harmonic V/V7 (no option). Movable shapes are never placed with a sounded fret 0 (so e.g. E-shape E needs fret 12). Shape/triad span rule = at most 4 fret positions (max − min ≤ 3). Arpeggio box = root fret −1…+4; a span that doesn't fit is truncated. Default card counts: Play/Name the Chord 369 each, Triads 540, Arpeggios 144, Scales 936, Key Signatures 60, Diatonic 210, Progressions 157 (minor keys whose harmonic V needs 𝄪 are skipped), Circle 48. "Name the Chord" choice mode waits for M4-0. Chord stats grid colours by error EWMA averaged across shapes. Shape sources were cross-checked against standard chord charts from memory, not URLs (no verification table yet — owner/tester to spot-check).
+- 2026-11-17 · M4 · M4-0, M4-3, M4-4 (vocab) code implemented, plus Name the Chord `choice` mode (4 options: answer, same root/other quality, same quality/other root, random). **Deviation:** typed *and* choice answers reveal with `ok()` and grade with the stored verdict on Next (or auto-advance after 0.8 s when exact), instead of `answerEvaluated` grading immediately; this gives a reveal showing the verdict and rule (as M4-5 asks for). `answerEvaluated(correct:at:countsTime:)` exists and backs the mic path. Time EWMA is skipped for the whole session when `inputMode == .typed` (including any card that falls back to touch). Typed mode adds "Don't know" (reveal as wrong). `VocabDeckFile.currentSchemaVersion` = 2 (v1 still accepted); `conj` required-for-predicates validation is deferred to M4-6 with the Core 1 content step. Hangul predicate "close" = input (minus trailing 요) starts with the dictionary stem. English close uses OSA distance (transpositions = 1, so "recieve" → close). Listening is hidden in Setup and stripped from saved configs when no Korean voice is installed. New setting: "Auto-advance typed/choice answers" (default on).
+- 2026-11-17 · M4 · M4-2 Hangul reading (`ko.hangul`, `.hangulReading(HangulReadingOptions)`) implemented. **Additions:** `HangulReadingOptions.newPerSession` (default 8) so stage-order gating actually limits new cards (a deck returning `nil` introduces everything); batchim stage = 154 curated common syllables with any single final (not just the 7 letters ㄱㄴㄷㄹㅁㅂㅇ, so 첫/옷/밭 are covered), double finals filtered out; `syllables` stage is vowel-major (가나다…, then 거너더…); `realWords` takes 1–3-syllable, space-free, non-pattern entries from every Korean deck, deduplicated by spelling, shortest first. Batchim answers note "final consonants sound as k, n, t, l, m, p or ng". Stats: syllable grid per stage coloured by error EWMA (green → red). DEBUG `HangulReadingDeck.selfCheck()` (reference romanizations + stage counts) runs inside `PersistedFormatCheck.run()`.
+- 2026-11-17 · M4 · M4-5 Particles (`ko.particles`, `.particles(ParticleOptions)`) implemented: 13 cards `particle:<particle>:<batchim|vowel|rieul>`; `present` picks a random `noun`-POS entry (syllables only, deduplicated by spelling; pronouns excluded by POS) of the card's ending class; `.coreOnly` = decks with id prefix `ko.core.` and falls back to all decks when a class would be empty. Choice mode only, so it grades through the existing choice path (reveal, then grade on Next; see the entry above) rather than `answerEvaluated` immediately. The wrong option for ㄹ + direction is 으로. Today's pool: 137 nouns (16 ending in ㄹ). DEBUG `ParticlesDeck.selfCheck()` covers the M4-5 §5 reference forms.
+- 2026-11-17 · M4 · M4-6 Conjugation (`ko.conjugation`, `.conjugation(ConjugationOptions)`: `forms`, `source` `allCore|core1`, `newPerSession` 5) implemented. `Korean/Conjugator.swift` is rule-based on syllable indices; the 아/어 ("해") form is built first, so past = 해-form + ㅆ + 어요. Cards are `conj:<entryId>:<form>`; intro rank = word order (Core deck number, then rank) × 7 + form index. **Deviations:** (1) `negativePolite` uses lexical opposites: 있다 → 없어요 (맛있다/재미있다 likewise), 알다 → 몰라요, 이다 → 아니에요. 없다 and 모르다 get no negative card. Noun + 하다 *verbs* put 안 before 하다 (공부 안 해요); 좋아하다/싫어하다 and -하다 adjectives keep 안 in front. (2) `wantTo` is skipped for adjectives, 없다 and 모르다. (3) All ㄹ-final stems get ㄹ-drop and no 으 whatever their `conj`, because that is universal. Core 1: `conj` added to all 72 predicates; the file is now schemaVersion 2. The validator now requires `conj` on every predicate (relax it in M4-8 user mode). Today: 72 predicates → 473 cards. `docs/conjugation-reference.md` (178 rows, hand-written) mirrors DEBUG `ConjugationDeck.selfCheck()`; it has not been dictionary-verified yet.
+- 2026-11-17 · M4 · M4-8 Custom decks implemented.
+  - Core: `Korean/UserDecks.swift` has pure helpers: `newDeckID` (via injected `SplitMix64`), `adding`/`updating`/`deleting`/`renaming`, and `EntryDraft`. Ranks are re-assigned 1…N; `nextEntryNumber` only increases (DEBUG `UserDecks.selfCheck()`).
+  - `DeckValidator.validate(_:mode:)` gains `.user` mode: romanization and `conj` optional, empty deck allowed, `user.<8 hex>` id and a non-empty title required. `VocabEntry.romanization` decodes missing as `""`. `VocabDeckFile` now has hand-written tolerant Codable with `nextEntryNumber`. `BuiltInDecks.defaultOptions` treats `user.` ids as vocab.
+  - `ExportSnapshot.schemaVersion` = 2 with optional `userDecks`, because M5-K4 hasn't landed.
+  - App: `Persistence/UserDeckStore.swift` (actor, `Application Support/UserDecks/<id>.json`, atomic writes). `AppEnvironment.loadUserDecks/saveUserDeck/deleteUserDeck` (delete also calls `store.reset(deck:)`) and `reloadCatalog()` after every change.
+  - **Deviation:** user decks show in their own Home "My decks" section after the subjects, not inside Korean. Each card has an Edit button and an "Edit deck" context menu; tapping an empty deck opens the editor. "+ New deck" asks for a title in an alert, then opens the editor (`Features/MyDecks/UserDeckEditorView.swift`: title, subtitle, words list with swipe-delete, add/edit word sheet, delete deck with confirmation).
+  - The reveal hides an empty romanization.
+- 2026-11-17 · M4 · M4-9 AION screenshot → cards implemented.
+  - Core: `Korean/ScreenshotWords.swift`. It takes Hangul runs per OCR line and strips one trailing particle, but only when ≥ 2 syllables remain. The longest matching particle decides, so 집으로 stays whole and doesn't become 집으. Results are deduplicated and split into new and known, where known = any catalog vocab hangul. DEBUG `selfCheck` covers 10 sample tokens.
+  - App: `Services/KoreanTextExtractor.swift` (Vision `.accurate`, ko-KR + en-US, language correction, detached task; the image data isn't kept). `Features/MyDecks/ScreenshotImportView.swift` (`PhotosPicker` images only; review list with toggle, required meaning and optional romanization; "Already known (n)"; saved as nouns tagged `aion2`).
+  - **Deviation:** `UserDecks.isUserDeckID` special-cases `user.aion0001`, which isn't 8-hex. `AppEnvironment.ensureAionDeck()` creates "My AION words" on first use.
+  - Entry points: Home → My decks → "AION 2 words from a screenshot", and the AION deck's editor → "Add from screenshot". Typed meanings survive picking another screenshot.
+- 2026-11-17 · M4 · M4-10 step 1: `DeckCatalog.koreanDisplayOrder` sorts Korean decks as Hangul Reading, Core 1…N, Particles, Conjugation, `ko.patterns`, other bundled decks, `ko.aion2`, then user decks (Home shows those under "My decks"). Steps 3–4 (PLAN §6.1/8/9/11/15 and the README QA checklist) are still open.
+- 2026-11-17 · M4 · M4-10 done. Step 2: `BuiltInDecks.defaultOptions` already had rows for `ko.hangul`, `ko.particles` and `ko.conjugation`, and user ids fall back to vocab. Steps 3–4 added §6.1 (M4 key schemes), §8.3b (schema v2, Romanizer, generated decks, custom decks, screenshot words), §9.2 (answer modes table), §11.5d (typed/choice/listening/My decks UX), the §15 M4 status line, and the README QA checklist items (Korean keyboard, listening timer, OCR, custom-deck editing).
+- 2026-11-17 · M4 · M4-7 Patterns. `ko_patterns.json` (`ko.patterns`, schema 2) has 87 patterns, ranked by usefulness. Each has 3 original polite-style example sentences (261 in total), an attachment rule in `notes`, and one theme tag from a fixed list (tense, desire, ability, request, obligation, permission, connector, reason, condition, time, plan, experience, guess, ending, change, comparison, particle, quote, negation, nominal). It is listed in `bundledVocabFiles` between Core 1 and AION 2.
+  - The validator adds pattern rules: `Hangul.isValidPatternHeadword`, which must start with `-` or contain `~`, and allows compatibility jamo plus `( ) / ?` (e.g. `-(으)ㄹ 수 있다`, `-(으)ㄹ까요?`). It also requires ≥ 2 examples.
+  - **Additions:** TTS for a pattern headword (auto-play and listening) reads its first example sentence (`VocabEntry.spokenText`, App), and the reveal hides the headword 🔊, because the raw pattern text isn't speakable. Each example keeps its own 🔊.
+  - The deck was generated by a scratch script; the JSON is the source of truth. Owner spot-check pending.
+- 2026-11-17 · M4 · M4-1 Core 2 and Core 3 added.
+  - **Core 2** (`ko_core_2.json`): 218 entries, `ko.core.0206`–`0423`. 50 % are nouns across 18 themes, 30 % are verbs/adjectives, and 42 have example sentences.
+  - **Core 3** (`ko_core_3.json`): 229 entries, `0424`–`0652`. 52 % are nouns across 20 themes, 31 % are verbs/adjectives, and 31 have example sentences.
+  - Both use schema 2 and give every verb/adjective a `conj` class. Tags come from a fixed theme list (food, place, body, time, weather, nature, animal, people, school, work, home, clothes, transport, travel, shopping, hobby, media, feeling, colour, daily, health, communication, frequency, connector, greeting, counter, quantity, direction, society). Both are listed in `bundledVocabFiles` after Core 1.
+  - The validator adds the M4-1 duplicate check: the same hangul + pos in two `ko.core.*` files is reported. It is limited to Core decks so that themed decks (AION's 친구/가방) can repeat core words.
+  - **Deviation:** the verification table (`docs/core-verification.md`) links each entry to a KRDict search, but nothing has been dictionary-checked yet, because this session had no web access. Every Conjugator output was reviewed by hand.
+  - **Known gap:** 춤추다 → "안 춤춰요" (natural Korean: 춤 안 춰요), because the Conjugator moves 안 only for noun + 하다 verbs.
+- 2026-11-17 · M4 · M4-1 Core 4 (`ko_core_4.json`): 217 entries, `ko.core.0653`–`0869`. 52 % are nouns across 18 themes (adding society/news, work and life, school, feelings and character, health), 31 % are verbs/adjectives, and 31 have example sentences. Its rows were appended to `docs/core-verification.md`, which is still unchecked.
+  - **Conjugator fix:** `negativePolite` no longer splits one-syllable roots that aren't nouns on their own (`Conjugator.boundHaRoots`: 원 변 피 망 향 통 상 구 취 위). It now gives 안 원해요 / 안 변해요 / 안 피해요 instead of "원 안 해요". Real noun roots still split (일 안 해요, 말 안 해요).
+- 2026-11-17 · M4 · M4-1 Core 5 (`ko_core_5.json`): 225 entries, `ko.core.0870`–`1094`. This completes M4-1 content: Core 2–5 add 889 words, against the ~800 target. 48 % are nouns across 23 themes (adding directions/compass points, holidays, clothes and accessories, animals and weather), 34 % are verbs/adjectives (covering every irregular class: ㄷ 깨닫다/싣다, ㅅ 붓다/긋다, ㄹ 날다/졸다, 르 흐르다/누르다, 으 잠그다/뜨다, ㅂ 줍다/가렵다, ㅎ 어떻다/동그랗다), and 30 have example sentences. No hangul + pos repeats Core 1–4. Its rows were appended to `docs/core-verification.md` (889 rows, all still unchecked).
+  - **Conjugator fix:** 정 added to `boundHaRoots`, so 정하다 now gives 안 정해요 instead of "정 안 해요".
+  - **Known oddities (grammatical, semantically rare):** negatives of 없다-compounds (안 맛없어요, 안 재미없어요) and of 어떻다 (안 어때요); 화나다 → 안 화나요 (colloquially 화 안 나요).
+

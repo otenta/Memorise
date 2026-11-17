@@ -1,22 +1,28 @@
 import Foundation
 
 /// Applies one counted attempt to an item's statistics (§9.4).
+///
+/// `updateTime: false` (typed answers) leaves `ewmaResponseMs`/`bestResponseMs` unchanged while
+/// the error EWMA and attempt counts still update.
 public enum StatsUpdater {
     public static func apply(
         responseMs: Int,
         correct: Bool,
         at now: Date,
         to stats: ItemStats,
-        constants: SchedulerConstants = .standard
+        constants: SchedulerConstants = .standard,
+        updateTime: Bool = true
     ) -> ItemStats {
         var s = stats
         let t = constants.clamp(responseMs)
         s.attempts += 1
         if correct {
             s.correctCount += 1
-            let td = Double(t)
-            s.ewmaResponseMs = s.ewmaResponseMs.map { constants.alphaTime * td + (1 - constants.alphaTime) * $0 } ?? td
-            s.bestResponseMs = min(s.bestResponseMs ?? t, t)
+            if updateTime {
+                let td = Double(t)
+                s.ewmaResponseMs = s.ewmaResponseMs.map { constants.alphaTime * td + (1 - constants.alphaTime) * $0 } ?? td
+                s.bestResponseMs = min(s.bestResponseMs ?? t, t)
+            }
             s.ewmaError = (1 - constants.alphaError) * s.ewmaError
         } else {
             // A wrong answer's time never updates the time EWMA.

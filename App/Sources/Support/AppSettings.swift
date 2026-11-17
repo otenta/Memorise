@@ -2,6 +2,11 @@ import Foundation
 import MemoriseCore
 import Observation
 
+/// What M3 fretboard dots show.
+enum DotLabels: String, CaseIterable {
+    case notes, degrees
+}
+
 /// User preferences, persisted to `UserDefaults` on every change.
 @MainActor @Observable
 final class AppSettings {
@@ -13,6 +18,13 @@ final class AppSettings {
     var highEOnTop: Bool { didSet { store(highEOnTop, .highEOnTop) } }
     var defaultMaxFret: Int { didSet { store(defaultMaxFret, .defaultMaxFret) } }
     var showStringHint: Bool { didSet { store(showStringHint, .showStringHint) } }
+    var playNoteOnReveal: Bool { didSet { store(playNoteOnReveal, .playNoteOnReveal) } }
+    /// Synth output gain 0…1.
+    var noteVolume: Double { didSet { store(noteVolume, .noteVolume) } }
+    /// Scales/arpeggios/triads dot labels.
+    var dotLabels: DotLabels { didSet { store(dotLabels.rawValue, .dotLabels) } }
+    /// "A-shape barre" hint on Play the Chord prompts.
+    var showShapeHint: Bool { didSet { store(showShapeHint, .showShapeHint) } }
 
     // Korean
     var autoPlayPronunciation: Bool { didSet { store(autoPlayPronunciation, .autoPlayPronunciation) } }
@@ -25,19 +37,26 @@ final class AppSettings {
     var tapAnywhereForOK: Bool { didSet { store(tapAnywhereForOK, .tapAnywhereForOK) } }
     var showTimer: Bool { didSet { store(showTimer, .showTimer) } }
     var hapticsEnabled: Bool { didSet { store(hapticsEnabled, .hapticsEnabled) } }
+    /// Typed/choice answers: move on after 0.8 s when exactly correct.
+    var autoAdvanceOnCorrect: Bool { didSet { store(autoAdvanceOnCorrect, .autoAdvanceOnCorrect) } }
 
     @ObservationIgnored private let defaults: UserDefaults
 
     private enum Key: String {
         case noteNaming, solfegeVariant, leftHanded, highEOnTop, defaultMaxFret, showStringHint
+        case playNoteOnReveal, noteVolume, dotLabels, showShapeHint
         case autoPlayPronunciation, speechRate, showRomanization, koreanVoiceHintShown
-        case tapAnywhereForOK, showTimer, hapticsEnabled
+        case tapAnywhereForOK, showTimer, hapticsEnabled, autoAdvanceOnCorrect
     }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         func bool(_ k: Key, _ d: Bool) -> Bool { defaults.object(forKey: k.rawValue) as? Bool ?? d }
         noteNaming = defaults.string(forKey: Key.noteNaming.rawValue).flatMap(NoteNaming.init) ?? .both
+        playNoteOnReveal = bool(.playNoteOnReveal, false)
+        noteVolume = defaults.object(forKey: Key.noteVolume.rawValue) as? Double ?? 0.8
+        dotLabels = defaults.string(forKey: Key.dotLabels.rawValue).flatMap(DotLabels.init) ?? .notes
+        showShapeHint = bool(.showShapeHint, true)
         solfegeVariant = defaults.string(forKey: Key.solfegeVariant.rawValue).flatMap(SolfegeVariant.init) ?? .si
         leftHanded = bool(.leftHanded, false)
         highEOnTop = bool(.highEOnTop, true)
@@ -50,6 +69,7 @@ final class AppSettings {
         tapAnywhereForOK = bool(.tapAnywhereForOK, true)
         showTimer = bool(.showTimer, false)
         hapticsEnabled = bool(.hapticsEnabled, true)
+        autoAdvanceOnCorrect = bool(.autoAdvanceOnCorrect, true)
     }
 
     private func store(_ value: Any, _ key: Key) { defaults.set(value, forKey: key.rawValue) }

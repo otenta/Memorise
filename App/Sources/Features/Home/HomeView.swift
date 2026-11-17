@@ -50,6 +50,12 @@ struct HomeView: View {
     @State private var pendingLaunch: SessionLaunch?
     @State private var validationDismissed = false
     @State private var loadFailuresDismissed = false
+    /// User deck open in the editor (M4-8).
+    @State private var editingDeck: DeckID?
+    @State private var newDeckPrompt = false
+    @State private var newDeckTitle = ""
+    /// Deck receiving screenshot words (M4-9).
+    @State private var screenshotDeck: ScreenshotTarget?
 
     var body: some View {
         NavigationStack {
@@ -72,10 +78,15 @@ struct HomeView: View {
                         .transition(.scale(scale: 0.9).combined(with: .opacity))
                     }
                     ForEach(Array(Subject.allCases.enumerated()), id: \.element) { sIndex, subject in
-                        let decks = env.catalog.decks(for: subject)
+                        // User decks get their own "My decks" section below.
+                        let decks = env.catalog.decks(for: subject).filter { !UserDecks.isUserDeckID($0.id) }
                         if !decks.isEmpty {
                             sectionHeader(subject).appearAnimation(index: sIndex * 3 + 1)
                             ForEach(Array(decks.enumerated()), id: \.element.id) { i, deck in
+                                // Sub-header when the display group changes (empty groups are hidden).
+                                if !deck.group.isEmpty, i == 0 || decks[i - 1].group != deck.group {
+                                    groupHeader(deck.group).appearAnimation(index: sIndex * 3 + 2 + i)
+                                }
                                 Button { setupDeck = DeckBox(deck: deck) } label: {
                                     DeckCard(deck: deck, info: info[deck.id])
                                 }
@@ -85,6 +96,7 @@ struct HomeView: View {
                             }
                         }
                     }
+                    myDecksSection.appearAnimation(index: Subject.allCases.count * 3 + 1)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 24)
@@ -108,6 +120,95 @@ struct HomeView: View {
             .fullScreenCover(item: $launch) { l in
                 SessionView(deck: l.deck, config: l.config)
             }
+            .navigationDestination(item: $editingDeck) { UserDeckEditorView(deckID: $0) }
+            .sheet(item: $screenshotDeck) { target in
+                NavigationStack { ScreenshotImportView(deckID: target.id) }
+            }
+            .alert("New deck", isPresented: $newDeckPrompt) {
+                TextField("Title", text: $newDeckTitle)
+                    .accessibilityIdentifier("newDeckTitleField")
+                Button("Cancel", role: .cancel) { newDeckTitle = "" }
+                Button("Create") { Task { await createDeck() } }
+                    .accessibilityIdentifier("newDeckCreateButton")
+            } message: {
+                Text("Add your own words; you can practise them like any Korean deck.")
+            }
+        }
+    }
+
+    /// "My decks": user decks, each with Edit, plus "+ New deck" (PLAN_M4 M4-8).
+    private var myDecksSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "person.crop.square.filled.and.at.rectangle")
+                    .font(.footnote)
+                    .foregroundStyle(.white)
+                    .frame(width: 26, height: 26)
+                    .background(Subject.korean.gradient, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                Text("My decks").font(.title3.weight(.bold))
+            }
+            .padding(.top, 6)
+            .accessibilityAddTraits(.isHeader)
+            ForEach(env.userDecks, id: \.id) { deck in
+                VStack(alignment: .trailing, spacing: 6) {
+                    Button {
+                        if deck.entries.isEmpty { editingDeck = deck.id } else { setupDeck = DeckBox(deck: deck) }
+                    } label: {
+                        DeckCard(deck: deck, info: info[deck.id])
+                    }
+                    .buttonStyle(PressableStyle())
+                    .accessibilityIdentifier("deck.\(deck.id.raw)")
+                    .contextMenu {
+                        Button { editingDeck = deck.id } label: { Label("Edit deck", systemImage: "pencil") }
+                    }
+                    Button { editingDeck = deck.id } label: {
+                        Label(deck.entries.isEmpty ? "Add words" : "Edit", systemImage: "pencil")
+                            .font(.footnote.weight(.semibold))
+                    }
+                    .buttonStyle(.borderless)
+                    .accessibilityIdentifier("editDeck.\(deck.id.raw)")
+                }
+            }
+            Button { newDeckPrompt = true } label: {
+                Label("New deck", systemImage: "plus")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .glassCard(radius: 18, tint: Theme.pink)
+            }
+            .buttonStyle(PressableStyle())
+            .accessibilityIdentifier("newDeckButton")
+            Button { Task { await openAionImport() } } label: {
+                Label("AION 2 words from a screenshot", systemImage: "text.viewfinder")
+                    .font(.subheadline.weight(.semibold))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .glassCard(radius: 18, tint: Theme.indigo)
+            }
+            .buttonStyle(PressableStyle())
+            .accessibilityIdentifier("aionScreenshotButton")
+        }
+    }
+
+    private func openAionImport() async {
+        do {
+            screenshotDeck = ScreenshotTarget(id: try await env.ensureAionDeck())
+        } catch {
+            AppEnvironment.log.error("AION deck failed: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    private func createDeck() async {
+        let title = newDeckTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        newDeckTitle = ""
+        guard !title.isEmpty else { return }
+        var rng = SplitMix64(seed: UInt64.random(in: .min ... .max))
+        let id = UserDecks.newDeckID(existing: Set(env.catalog.decks.map(\.id.raw)), using: &rng)
+        do {
+            try await env.saveUserDeck(UserDecks.newDeck(id: id, title: title))
+            editingDeck = DeckID(id)
+        } catch {
+            AppEnvironment.log.error("Create deck failed: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -135,6 +236,17 @@ struct HomeView: View {
         }
         .padding(.top, 6)
         .accessibilityAddTraits(.isHeader)
+    }
+
+    private func groupHeader(_ title: String) -> some View {
+        Text(title.uppercased())
+            .font(.caption.weight(.heavy))
+            .tracking(1.5)
+            .foregroundStyle(.secondary)
+            .padding(.top, 4)
+            .padding(.leading, 4)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier("deckGroup.\(title)")
     }
 
     private var persistenceBanner: some View {
@@ -270,6 +382,11 @@ private struct DeckCard: View {
             .padding(.horizontal, 9).padding(.vertical, 5)
             .background(.white.opacity(0.2), in: Capsule())
     }
+}
+
+/// Deck receiving screenshot words.
+private struct ScreenshotTarget: Identifiable {
+    let id: DeckID
 }
 
 /// `Identifiable` wrapper so an existential deck can drive `.sheet(item:)`.

@@ -78,13 +78,52 @@ public enum NoteLetter: Int, Codable, Sendable, CaseIterable {
 
 /// Accidental applied to a letter.
 public enum Accidental: Int, Codable, Sendable, CaseIterable {
-    case natural, sharp, flat
+    /// Raw values are persisted — append only.
+    case natural, sharp, flat, doubleFlat, doubleSharp
 
     public var semitones: Int {
         switch self {
         case .natural: 0
         case .sharp: 1
         case .flat: -1
+        case .doubleFlat: -2
+        case .doubleSharp: 2
+        }
+    }
+
+    /// Accidental for a signed semitone offset (−2…2).
+    public init?(semitones: Int) {
+        switch semitones {
+        case 0: self = .natural
+        case 1: self = .sharp
+        case -1: self = .flat
+        case -2: self = .doubleFlat
+        case 2: self = .doubleSharp
+        default: return nil
+        }
+    }
+
+    public var isDouble: Bool { self == .doubleFlat || self == .doubleSharp }
+
+    /// ASCII form used in `ItemKey`s (`#`, `b`, `bb`, `x`). Never change.
+    public var ascii: String {
+        switch self {
+        case .natural: ""
+        case .sharp: "#"
+        case .flat: "b"
+        case .doubleFlat: "bb"
+        case .doubleSharp: "x"
+        }
+    }
+
+    /// Spoken form: "flat", "sharp"…
+    public var spoken: String {
+        switch self {
+        case .natural: ""
+        case .sharp: "sharp"
+        case .flat: "flat"
+        case .doubleFlat: "double flat"
+        case .doubleSharp: "double sharp"
         }
     }
 
@@ -94,6 +133,8 @@ public enum Accidental: Int, Codable, Sendable, CaseIterable {
         case .natural: ""
         case .sharp: "♯"
         case .flat: "♭"
+        case .doubleFlat: "𝄫"
+        case .doubleSharp: "𝄪"
         }
     }
 }
@@ -112,6 +153,42 @@ public struct NoteSpelling: Hashable, Codable, Sendable {
 
     /// Display with Unicode accidentals, e.g. `"C♯"`.
     public var displayName: String { letter.name + accidental.symbol }
+
+    /// ASCII spelling used in `ItemKey`s, e.g. `"Bb"`, `"F#"`. Never change.
+    public var ascii: String { letter.name + accidental.ascii }
+
+    /// "B flat"
+    public var spokenName: String { accidental == .natural ? letter.name : "\(letter.name) \(accidental.spoken)" }
+
+    /// Parses an ASCII spelling (`"C"`, `"Bb"`, `"F#"`, `"Ebb"`, `"Fx"`).
+    public init?(ascii: String) {
+        guard let first = ascii.first, let letter = NoteLetter.allCases.first(where: { $0.name == String(first) }) else { return nil }
+        guard let acc = Accidental.allCases.first(where: { $0.ascii == String(ascii.dropFirst()) }) else { return nil }
+        self.init(letter, acc)
+    }
+
+    /// The note `letters` letter steps and `semitones` above this one, spelled on the target
+    /// letter; `nil` if that needs more than a double accidental (or any double when not allowed).
+    public func adding(letters: Int, semitones: Int, allowDouble: Bool = false) -> NoteSpelling? {
+        let all = NoteLetter.allCases
+        let target = all[((letter.rawValue + letters) % 7 + 7) % 7]
+        let wanted = pitchClass.transposed(by: semitones)
+        var diff = (wanted.value - target.pitchClass.value) % 12
+        if diff > 6 { diff -= 12 }
+        if diff < -6 { diff += 12 }
+        guard let acc = Accidental(semitones: diff), allowDouble || !acc.isDouble else { return nil }
+        return NoteSpelling(target, acc)
+    }
+
+    /// The other common single-accidental spelling of this pitch class (C♯ ⇄ D♭), if any.
+    public var enharmonic: NoteSpelling? {
+        let pc = pitchClass
+        if NoteLetter(naturalPitchClass: pc) != nil, accidental == .natural { return nil }
+        switch accidental {
+        case .sharp, .doubleSharp: return NoteSpelling.preferred(for: pc, preferFlat: true)
+        default: return NoteSpelling.preferred(for: pc, preferFlat: false)
+        }
+    }
 
     /// Preferred spelling: naturals stay natural, otherwise sharp or flat as requested.
     public static func preferred(for pc: PitchClass, preferFlat: Bool) -> NoteSpelling {

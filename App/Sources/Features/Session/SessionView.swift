@@ -65,11 +65,11 @@ private struct SessionContent: View {
         .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
-            env.speech.stop()
-            env.speech.deactivate()
+            vm.stopMic()
+            env.releaseAudio()
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase != .active { vm.pause() } else { keyboardFocused = true }
+            if phase != .active { vm.pause() } else if !vm.usesTextField { keyboardFocused = true }
         }
     }
 
@@ -101,6 +101,7 @@ private struct SessionContent: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .animation(reduceMotion ? .easeOut(duration: 0.12) : .spring(response: 0.32, dampingFraction: 0.78), value: phaseKey)
+            typedField
         }
         .background { AuroraBackground(colors: subjectColors, intensity: 0.85) }
         .overlay { gradeFlashOverlay }
@@ -108,10 +109,10 @@ private struct SessionContent: View {
         .focused($keyboardFocused)
         .focusEffectDisabled()
         .onKeyPress(phases: .down) { handleKey($0.key) }
-        .onAppear { keyboardFocused = true }
-        .onChange(of: phaseKey) { keyboardFocused = true; dragOffset = 0 }
-        .onChange(of: confirmQuit) { _, shown in if !shown { keyboardFocused = true } }
-        .onChange(of: vm.showVoiceHint) { _, shown in if !shown { keyboardFocused = true } }
+        .onAppear { if !vm.usesTextField { keyboardFocused = true } }
+        .onChange(of: phaseKey) { if !vm.usesTextField { keyboardFocused = true }; dragOffset = 0 }
+        .onChange(of: confirmQuit) { _, shown in if !shown, !vm.usesTextField { keyboardFocused = true } }
+        .onChange(of: vm.showVoiceHint) { _, shown in if !shown, !vm.usesTextField { keyboardFocused = true } }
         .task(id: flashToken) {
             guard flash != nil else { return }
             try? await Task.sleep(for: .milliseconds(160))
@@ -152,6 +153,27 @@ private struct SessionContent: View {
             flashToken += 1
         }
         return accepted
+    }
+
+    /// Next on a typed/choice reveal: stores the checked verdict (or the override).
+    @discardableResult
+    private func gradeAuto() -> Bool {
+        guard let auto = vm.autoAnswer else { return false }
+        return grade(auto.correct)
+    }
+
+    /// Persistent typed-answer field (kept mounted across cards so the keyboard stays up).
+    @ViewBuilder private var typedField: some View {
+        if vm.usesTextField, let spec = vm.typedSpec, let p = vm.state.presented, !isPaused {
+            let prompting: Bool = if case .prompting = vm.state { true } else { false }
+            TypedAnswerField(
+                kind: spec.kind, resetID: p.presentationID, isEditable: prompting, colors: subjectColors,
+                onSubmit: { vm.submitTyped($0) },
+                onNext: { gradeAuto() }
+            )
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+        }
     }
 
     private var phaseKey: Int {
@@ -227,7 +249,9 @@ private struct SessionContent: View {
             cardSurface {
                 VStack(spacing: 16) {
                     if p.isRetry { retryBadge }
-                    CardPromptView(card: p.card)
+                    if let reason = vm.micFallbackReason { micFallbackNote(reason) }
+                    CardPromptView(card: p.card, ctx: vm.context(presentationID: p.presentationID))
+                    if let mic = vm.mic { MicListeningChip(mic: mic) }
                     if env.settings.showTimer {
                         TimelineView(.periodic(from: .now, by: 0.1)) { _ in
                             Text(String(format: "%.1f s", vm.promptElapsedSeconds ?? 0))
@@ -241,12 +265,24 @@ private struct SessionContent: View {
                 .padding(24)
             }
         } controls: {
-            BigButton(title: "Reveal", systemImage: "eye.fill", colors: subjectColors) { vm.ok() }
-                .accessibilityIdentifier("okButton")
+            switch vm.activeMode {
+            case .choice:
+                ChoiceGrid(choices: vm.choices ?? [], colors: subjectColors) { vm.choose($0) }
+            case .typed:
+                Button("Don't know") { vm.giveUp() }
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .frame(minHeight: 44)
+                    .accessibilityIdentifier("dontKnowButton")
+            case .touch, .microphone:
+                BigButton(title: "Reveal", systemImage: "eye.fill", colors: subjectColors) { vm.ok() }
+                    .accessibilityIdentifier("okButton")
+            }
         }
         .contentShape(Rectangle())
         .onTapGesture { if env.settings.tapAnywhereForOK { vm.ok() } }
-        .task(id: p.presentationID) { vm.promptDidAppear() }
+        // Ear-training prompts start the timer themselves (when the second note sounds).
+        .task(id: p.presentationID) { if !vm.managesPromptTiming(p.card) { vm.promptDidAppear() } }
     }
 
     private func revealState(_ p: PresentedCard, responseMs: Int) -> some View {
@@ -256,7 +292,8 @@ private struct SessionContent: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         if p.isRetry { retryBadge }
-                        CardAnswerView(card: p.card, maxFret: vm.maxFret)
+                        if let auto = vm.autoAnswer { VerdictBanner(answer: auto) }
+                        CardAnswerView(card: p.card, ctx: vm.context(presentationID: p.presentationID))
                         let color = Palette.responseColor(ms: responseMs, prior: p.priorEwmaMs)
                         Label(Fmt.seconds(responseMs), systemImage: "stopwatch.fill")
                             .font(.system(.headline, design: .rounded, weight: .bold).monospacedDigit())
@@ -273,8 +310,48 @@ private struct SessionContent: View {
             .overlay { swipeTint(swipe) }
             .offset(x: dragOffset)
             .rotationEffect(.degrees(reduceMotion ? 0 : Double(swipe) * 8), anchor: .bottom)
-            .gesture(swipeToGrade)
+            .gesture(swipeToGrade, isEnabled: vm.autoAnswer == nil)
         } controls: {
+            if let auto = vm.autoAnswer {
+                autoControls(auto)
+                    .opacity(gradeEnabled ? 1 : 0.55)
+                    .allowsHitTesting(gradeEnabled)
+            } else {
+                selfGradeControls(swipe)
+            }
+        }
+        .task(id: phaseKey) {
+            gradeEnabled = false
+            let remaining = vm.gradeLockoutRemaining
+            if remaining > .zero { try? await Task.sleep(for: remaining) }
+            guard !Task.isCancelled else { return }
+            gradeEnabled = true
+            // Exactly correct typed/choice answers move on by themselves.
+            guard env.settings.autoAdvanceOnCorrect, let auto = vm.autoAnswer, auto.verdict == .exact, auto.override == nil else { return }
+            try? await Task.sleep(for: .milliseconds(800))
+            if !Task.isCancelled, vm.autoAnswer?.override == nil { gradeAuto() }
+        }
+    }
+
+    /// Next + "I was right / wrong" for checked answers.
+    private func autoControls(_ auto: AutoAnswer) -> some View {
+        VStack(spacing: 10) {
+            if auto.input != nil {
+                Button(auto.correct ? "I was wrong" : "I was right") {
+                    vm.overrideAutoAnswer(correct: !auto.correct)
+                }
+                .font(.subheadline.weight(.semibold))
+                .frame(minHeight: 44)
+                .accessibilityIdentifier(auto.correct ? "overrideWrongButton" : "overrideRightButton")
+            }
+            BigButton(title: "Next", systemImage: "arrow.right", colors: auto.correct ? [Theme.mint, Theme.teal] : [Theme.rose, Theme.amber]) {
+                gradeAuto()
+            }
+            .accessibilityIdentifier("nextButton")
+        }
+    }
+
+    private func selfGradeControls(_ swipe: CGFloat) -> some View {
             HStack(spacing: 12) {
                 BigButton(title: "Wrong", systemImage: "xmark", colors: [Theme.rose, Theme.amber]) { grade(false) }
                     .accessibilityIdentifier("wrongButton")
@@ -287,13 +364,6 @@ private struct SessionContent: View {
             .opacity(gradeEnabled ? 1 : 0.55)
             .allowsHitTesting(gradeEnabled)
             .animation(reduceMotion ? nil : .easeIn(duration: 0.15), value: gradeEnabled)
-        }
-        .task(id: phaseKey) {
-            gradeEnabled = false
-            let remaining = vm.gradeLockoutRemaining
-            if remaining > .zero { try? await Task.sleep(for: remaining) }
-            if !Task.isCancelled { gradeEnabled = true }
-        }
     }
 
     /// Green/red wash + icon while the card is dragged.
@@ -332,6 +402,14 @@ private struct SessionContent: View {
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier("resumeButton")
+    }
+
+    private func micFallbackNote(_ text: String) -> some View {
+        Label(text, systemImage: "mic.slash.fill")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 12).padding(.vertical, 5)
+            .background(.primary.opacity(0.06), in: Capsule())
     }
 
     private var retryBadge: some View {
@@ -375,6 +453,16 @@ private struct SessionContent: View {
 
     private func handleKey(_ key: KeyEquivalent) -> KeyPress.Result {
         switch vm.state {
+        case .prompting where vm.activeMode == .typed || vm.activeMode == .choice:
+            // The text field / option shortcuts own the keyboard; the pedal can't reveal.
+            if key == .escape { vm.pause(); return .handled }
+            return .ignored
+        case .revealed where vm.autoAnswer != nil:
+            switch key {
+            case .rightArrow, .pageDown, .return, .space: return gradeAuto() ? .handled : .ignored
+            case .escape: vm.pause()
+            default: return .ignored
+            }
         case .prompting:
             switch key {
             case .space, .return, .rightArrow, .downArrow, .pageDown: vm.ok()
@@ -416,3 +504,46 @@ private struct FlipIn: ViewModifier {
     SessionView(deck: FretboardNotesDeck(), config: .default(for: FretboardNotesDeck()))
         .environment(AppEnvironment.preview())
 }
+
+/// "Listening…" chip with a live level meter and a transient "Heard G♯" note.
+private struct MicListeningChip: View {
+    let mic: MicAnswerController
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "mic.fill")
+                .foregroundStyle(Subject.music.gradient)
+                .symbolEffect(.pulse, options: .repeating, isActive: mic.isListening && !reduceMotion)
+            Text(mic.heardWrong.map { "Heard \($0)" } ?? (mic.isListening ? "Listening…" : "Mic paused"))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(mic.heardWrong == nil ? Color.primary : Theme.rose)
+                .contentTransition(.opacity)
+            LevelMeter(levelDB: mic.levelDB)
+                .frame(width: 60, height: 6)
+        }
+        .padding(.horizontal, 14).padding(.vertical, 8)
+        .background(.thinMaterial, in: Capsule())
+        .animation(.easeOut(duration: 0.15), value: mic.heardWrong)
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("micChip")
+    }
+}
+
+/// Input level bar (−60…0 dBFS).
+private struct LevelMeter: View {
+    let levelDB: Double
+
+    var body: some View {
+        GeometryReader { geo in
+            let v = max(0, min(1, (levelDB + 60) / 60))
+            ZStack(alignment: .leading) {
+                Capsule().fill(.primary.opacity(0.1))
+                Capsule().fill(LinearGradient(colors: [Theme.mint, Theme.amber, Theme.rose], startPoint: .leading, endPoint: .trailing))
+                    .frame(width: geo.size.width * v)
+            }
+        }
+        .accessibilityHidden(true)
+    }
+}
+
