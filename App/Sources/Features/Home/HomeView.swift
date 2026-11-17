@@ -60,7 +60,9 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 18) {
+                // Eager on purpose (R7-F5): ~27 tiles lay out cheaply, and no cell recycling means
+                // headers can never drift from their decks.
+                VStack(alignment: .leading, spacing: 18) {
                     greeting.appearAnimation()
                     // Validation problems first: they can silently mix stats, so they're the more dangerous.
                     if !env.deckReport.validationWarnings.isEmpty && !validationDismissed {
@@ -80,27 +82,11 @@ struct HomeView: View {
                     if let recent = recentDeck {
                         continueCard(recent).appearAnimation(index: 1)
                     }
-                    ForEach(Array(Subject.allCases.enumerated()), id: \.element) { sIndex, subject in
-                        // User decks get their own "My decks" section below.
-                        let groups = deckGroups(for: subject)
-                        if !groups.isEmpty {
-                            sectionHeader(subject).appearAnimation(index: sIndex * 3 + 2)
-                            ForEach(Array(groups.enumerated()), id: \.offset) { gIndex, group in
-                                if !group.title.isEmpty {
-                                    groupHeader(group.title).appearAnimation(index: sIndex * 3 + 3 + gIndex)
-                                }
-                                LazyVGrid(columns: gridColumns, spacing: 12) {
-                                    ForEach(Array(group.decks.enumerated()), id: \.element.id) { i, deck in
-                                        Button { setupDeck = DeckBox(deck: deck) } label: {
-                                            DeckTile(deck: deck, info: info[deck.id], colors: subject.palette(gIndex))
-                                        }
-                                        .buttonStyle(PressableStyle(scale: 0.95))
-                                        .accessibilityIdentifier("deck.\(deck.id.raw)")
-                                        .appearAnimation(index: sIndex * 3 + 3 + gIndex + i / 2)
-                                    }
-                                }
-                            }
-                        }
+                    // Stable, unique identity for every section and group (R7-F5): each subject is
+                    // one container keyed by its raw value, each group by "subject.title", so a fast
+                    // fling can never pair a recycled header with another section's tiles.
+                    ForEach(Subject.allCases, id: \.rawValue) { subject in
+                        subjectSection(subject)
                     }
                     myDecksSection.appearAnimation(index: Subject.allCases.count * 3 + 1)
                 }
@@ -159,6 +145,38 @@ struct HomeView: View {
             } message: {
                 Text("Add your own words; you can practise them like any Korean deck.")
             }
+        }
+    }
+
+    /// One subject's header plus its display groups, as a single identity-stable container.
+    @ViewBuilder
+    private func subjectSection(_ subject: Subject) -> some View {
+        let groups = deckGroups(for: subject)
+        // User decks get their own "My decks" section below.
+        if !groups.isEmpty {
+            let sIndex = Subject.allCases.firstIndex(of: subject) ?? 0
+            VStack(alignment: .leading, spacing: 18) {
+                sectionHeader(subject).appearAnimation(index: sIndex * 3 + 2)
+                ForEach(groups, id: \.id) { group in
+                    VStack(alignment: .leading, spacing: 12) {
+                        if !group.title.isEmpty {
+                            groupHeader(group.title).appearAnimation(index: sIndex * 3 + 3 + group.index)
+                        }
+                        LazyVGrid(columns: gridColumns, spacing: 12) {
+                            ForEach(Array(group.decks.enumerated()), id: \.element.id) { i, deck in
+                                Button { setupDeck = DeckBox(deck: deck) } label: {
+                                    DeckTile(deck: deck, info: info[deck.id], colors: subject.palette(group.index))
+                                }
+                                .buttonStyle(PressableStyle(scale: 0.95))
+                                .accessibilityIdentifier("deck.\(deck.id.raw)")
+                                .appearAnimation(index: sIndex * 3 + 3 + group.index + i / 2)
+                            }
+                        }
+                    }
+                    .id(group.id)
+                }
+            }
+            .id(subject.rawValue)
         }
     }
 
@@ -242,14 +260,24 @@ struct HomeView: View {
         [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
     }
 
+    /// One display group of built-in decks; `id` is unique across subjects (R7-F5).
+    private struct DeckGroup {
+        let id: String
+        let index: Int
+        let title: String
+        var decks: [any Deck]
+    }
+
     /// Built-in decks of a subject, split into display groups (order kept, empty group names allowed).
-    private func deckGroups(for subject: Subject) -> [(title: String, decks: [any Deck])] {
-        var out: [(title: String, decks: [any Deck])] = []
+    private func deckGroups(for subject: Subject) -> [DeckGroup] {
+        var out: [DeckGroup] = []
         for deck in env.catalog.decks(for: subject) where !UserDecks.isUserDeckID(deck.id) {
             if let last = out.indices.last, out[last].title == deck.group {
                 out[last].decks.append(deck)
             } else {
-                out.append((deck.group, [deck]))
+                // Index suffix keeps ids unique even if a group title recurs non-adjacently.
+                let id = "\(subject.rawValue).\(deck.group).\(out.count)"
+                out.append(DeckGroup(id: id, index: out.count, title: deck.group, decks: [deck]))
             }
         }
         return out
