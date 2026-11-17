@@ -18,6 +18,11 @@ struct CodableToleranceTests {
     static let vocabGolden = #"""
     {"deckID":"ko.aion2","focus":"normal","length":{"cards":{"_0":20}},"options":{"vocab":{"_0":{"autoPlayAudio":true,"direction":"both","newPerSession":5,"tags":["combat"]}}},"retryWrongCards":true}
     """#
+    /// Current encoder output: M2 added `inputMode` / `micTimeoutSeconds` (defaults); the legacy
+    /// `vocabGolden` above must still decode to the same value.
+    static let vocabCurrentGolden = #"""
+    {"deckID":"ko.aion2","focus":"normal","inputMode":"touch","length":{"cards":{"_0":20}},"micTimeoutSeconds":10,"options":{"vocab":{"_0":{"autoPlayAudio":true,"direction":"both","newPerSession":5,"tags":["combat"]}}},"retryWrongCards":true}
+    """#
     static let vocabExpected = SessionConfig(
         deckID: "ko.aion2", options: .vocab(VocabOptions(direction: .both, newPerSession: 5, tags: ["combat"]))
     )
@@ -39,7 +44,8 @@ struct CodableToleranceTests {
 
     @Test func encodingKeepsThePinnedShape() throws {
         let json = try encodeSorted(Self.vocabExpected)
-        #expect(json == Self.vocabGolden, "on-disk format of SessionConfig changed")
+        #expect(json == Self.vocabCurrentGolden, "on-disk format of SessionConfig changed")
+        #expect(try decode(json) == Self.vocabExpected)
         let fret = try encodeSorted(Self.fretboardExpected)
         #expect(fret.contains(#""options":{"fretboard":{"_0":{"#))
         #expect(fret.contains(#""length":{"minutes":{"_0":5}}"#))
@@ -48,8 +54,19 @@ struct CodableToleranceTests {
 
     @Test func unknownKeysAreIgnored() throws {
         let json = Self.fretboardGolden.replacingOccurrences(of: #""focus":"strong""#, with: #""focus":"strong","futureField":[1,2,3]"#)
-            .replacingOccurrences(of: #""noteSet":"all""#, with: #""noteSet":"all","tuning":"dropD""#)
+            .replacingOccurrences(of: #""noteSet":"all""#, with: #""noteSet":"all","capo":3"#)
         #expect(try decode(json) == Self.fretboardExpected)
+    }
+
+    @Test func tuningKeyIsHonouredAndUnknownTuningFallsBackToStandard() throws {
+        let drop = Self.fretboardGolden.replacingOccurrences(of: #""noteSet":"all""#, with: #""noteSet":"all","tuning":"dropD""#)
+        #expect(try decode(drop).options.tuning == .dropD)
+        let bad = try decode(#"{"tuning":"sevenString"}"#, as: FretboardOptions.self)
+        #expect(bad.tuning == .standard)
+    }
+
+    @Test func persistedFormatCheckPasses() {
+        #expect(PersistedFormatCheck.run() == [])
     }
 
     @Test func missingPropertiesFallBackToDefaults() throws {
@@ -110,7 +127,8 @@ struct CodableToleranceTests {
         #expect(FocusLevel.allCases.map(\.rawValue) == ["off", "normal", "strong"])
         #expect(FretboardOptions.NoteSet.allCases.map(\.rawValue) == ["naturals", "all"])
         #expect(FretboardOptions.AccidentalSpelling.allCases.map(\.rawValue) == ["sharps", "flats", "mixed"])
-        #expect(VocabOptions.DirectionOption.allCases.map(\.rawValue) == ["koToEn", "enToKo", "both"])
+        #expect(VocabOptions.DirectionOption.allCases.map(\.rawValue) == ["koToEn", "enToKo", "both", "listening", "allThree"])
+        #expect(TuningID.allCases.map(\.rawValue) == ["standard", "dropD", "halfDown", "dadgad", "openG"])
         #expect(Subject.allCases.map(\.rawValue) == ["music", "korean"])
     }
 

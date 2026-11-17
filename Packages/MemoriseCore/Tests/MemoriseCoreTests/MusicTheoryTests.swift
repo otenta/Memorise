@@ -63,10 +63,11 @@ struct MusicTheoryTests {
         #expect((1...6).map(t.stringName) == ["high E", "B", "G", "D", "A", "low E"])
     }
 
-    @Test func tuningWithoutNamesFallsBackToNoteNames() {
-        let dropD = Tuning(name: "Drop D", openMidi: [38, 45, 50, 55, 59, 64])
-        #expect(dropD.stringName(6) == "D")
-        #expect(dropD.stringName(1) == "E")
+    @Test func stringNamesDeriveFromOpenNotes() {
+        #expect((1...6).map(Tuning.dropD.stringName) == ["high E", "B", "G", "D", "A", "low D"])
+        #expect(Tuning.halfDown.stringName(6) == "low E♭")
+        #expect(Tuning.openG.stringName(5) == "G")
+        for id in TuningID.allCases { #expect(Tuning.preset(id).id == id) }
     }
 
     @Test func fretsMatchSpecExamples() {

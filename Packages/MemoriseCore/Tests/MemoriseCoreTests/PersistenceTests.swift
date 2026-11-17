@@ -187,7 +187,7 @@ struct PersistenceTests {
         let snap = ExportSnapshot(exportedAt: fixedNow, sessions: [s], attempts: [attempt(session: s.id, deck: deck, index: 0)], itemStats: [seenStats("fret:s6:A")])
         let data = try Exporter.json(snap)
         let text = String(decoding: data, as: UTF8.self)
-        #expect(text.contains("\"schemaVersion\" : 1"))
+        #expect(text.contains("\"schemaVersion\" : 2"))
         #expect(text.contains("2027-01-15T08:00:00Z"))
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601

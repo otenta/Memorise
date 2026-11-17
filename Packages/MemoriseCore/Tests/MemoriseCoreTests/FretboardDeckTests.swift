@@ -44,17 +44,19 @@ struct FretboardDeckTests {
     // MARK: F2 — spelling at presentation time
 
     private func presentedAccidentals(_ spelling: FretboardOptions.AccidentalSpelling, draws: Int = 1_000, seed: UInt64 = 42) -> (sharps: Int, flats: Int) {
-        let accidentals = fretboardCards(FretboardOptions(noteSet: .all, accidentalSpelling: spelling))
+        let options = FretboardOptions(noteSet: .all, accidentalSpelling: spelling)
+        let accidentals = fretboardCards(options)
             .filter { !$0.fretboardNote!.pitchClass.isNatural }
         var rng = SplitMix64(seed: seed)
         var sharps = 0, flats = 0
         for i in 0..<draws {
-            let shown = deck.present(accidentals[i % accidentals.count], using: &rng).fretboardNote!
+            let shown = deck.present(accidentals[i % accidentals.count], options: .fretboard(options), using: &rng).fretboardNote!
             #expect(shown.spelling.pitchClass == shown.pitchClass, "re-spelling must not change the pitch")
             switch shown.spelling.accidental {
             case .sharp: sharps += 1
             case .flat: flats += 1
             case .natural: Issue.record("accidental pitch presented as natural")
+            case .doubleFlat, .doubleSharp: Issue.record("fretboard notes must never use double accidentals")
             }
         }
         return (sharps, flats)
@@ -81,8 +83,9 @@ struct FretboardDeckTests {
 
     @Test func presentKeepsKeyAndNaturalsUntouched() {
         var rng = SplitMix64(seed: 3)
-        for card in fretboardCards(FretboardOptions(noteSet: .all, accidentalSpelling: .mixed)) {
-            let shown = deck.present(card, using: &rng)
+        let options = FretboardOptions(noteSet: .all, accidentalSpelling: .mixed)
+        for card in fretboardCards(options) {
+            let shown = deck.present(card, options: .fretboard(options), using: &rng)
             #expect(shown.key == card.key)
             #expect(shown.deckID == card.deckID)
             if card.fretboardNote!.pitchClass.isNatural { #expect(shown == card) }
@@ -90,10 +93,11 @@ struct FretboardDeckTests {
     }
 
     @Test func presentIsDeterministicForASeed() {
-        let cards = fretboardCards(FretboardOptions(noteSet: .all, accidentalSpelling: .mixed))
+        let options = FretboardOptions(noteSet: .all, accidentalSpelling: .mixed)
+        let cards = fretboardCards(options)
         func run() -> [String] {
             var rng = SplitMix64(seed: 99)
-            return cards.map { deck.present($0, using: &rng).fretboardNote!.spelling.displayName }
+            return cards.map { deck.present($0, options: .fretboard(options), using: &rng).fretboardNote!.spelling.displayName }
         }
         #expect(run() == run())
     }
