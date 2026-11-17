@@ -192,7 +192,7 @@
       "hangul": "-(으)ㄹ 수 없다",
       "romanization": "-(eu)l su eopda",
       "meanings": [
-        "cannot",
+        "cannot (be unable to)",
         "be unable to"
       ],
       "pos": "pattern",
@@ -345,7 +345,7 @@
       "hangul": "-고",
       "romanization": "-go",
       "meanings": [
-        "and",
+        "and (linking clauses)",
         "and then"
       ],
       "pos": "pattern",
@@ -376,7 +376,7 @@
       "hangul": "-지만",
       "romanization": "-jiman",
       "meanings": [
-        "but",
+        "but (verb ending)",
         "although"
       ],
       "pos": "pattern",
@@ -407,7 +407,7 @@
       "hangul": "-아/어서",
       "romanization": "-a/eoseo",
       "meanings": [
-        "so",
+        "so (cause ending)",
         "because",
         "and then"
       ],
@@ -470,7 +470,7 @@
       "hangul": "-(으)면",
       "romanization": "-(eu)myeon",
       "meanings": [
-        "if",
+        "if (verb ending)",
         "when"
       ],
       "pos": "pattern",
@@ -775,7 +775,7 @@
       "hangul": "-(으)ㄴ/는데",
       "romanization": "-(eu)n/neunde",
       "meanings": [
-        "but",
+        "but (background ending)",
         "and (background)"
       ],
       "pos": "pattern",
@@ -1354,7 +1354,7 @@
       "hangul": "-(으)ㄹ 때",
       "romanization": "-(eu)l ttae",
       "meanings": [
-        "when"
+        "when (at the time that)"
       ],
       "pos": "pattern",
       "rank": 45,
@@ -1384,7 +1384,7 @@
       "hangul": "-거나",
       "romanization": "-geona",
       "meanings": [
-        "or"
+        "or (verb ending)"
       ],
       "pos": "pattern",
       "rank": 46,
@@ -1840,7 +1840,7 @@
       "hangul": "-만",
       "romanization": "-man",
       "meanings": [
-        "only",
+        "only (particle)",
         "just"
       ],
       "pos": "pattern",
@@ -1871,7 +1871,7 @@
       "hangul": "-도",
       "romanization": "-do",
       "meanings": [
-        "also",
+        "also (particle)",
         "too",
         "even"
       ],
@@ -1903,7 +1903,7 @@
       "hangul": "-밖에 없다",
       "romanization": "-bakke eopda",
       "meanings": [
-        "only",
+        "only (nothing but)",
         "nothing but"
       ],
       "pos": "pattern",
@@ -1994,7 +1994,7 @@
       "hangul": "-(이)나",
       "romanization": "-(i)na",
       "meanings": [
-        "or",
+        "or (noun particle)",
         "as many as"
       ],
       "pos": "pattern",
@@ -2298,7 +2298,7 @@
       "hangul": "-(으)ㄹ 뻔하다",
       "romanization": "-(eu)l ppeonhada",
       "meanings": [
-        "almost",
+        "almost (nearly happened)",
         "nearly"
       ],
       "pos": "pattern",

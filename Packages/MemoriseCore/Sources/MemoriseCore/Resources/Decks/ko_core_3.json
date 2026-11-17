@@ -1849,7 +1849,7 @@
       "hangul": "값",
       "romanization": "gap",
       "meanings": [
-        "price",
+        "price (value)",
         "value"
       ],
       "pos": "noun",
@@ -2979,7 +2979,7 @@
       "hangul": "멋있다",
       "romanization": "meositda",
       "meanings": [
-        "cool",
+        "cool (stylish)",
         "stylish"
       ],
       "pos": "adjective",
@@ -2997,7 +2997,7 @@
       "hangul": "착하다",
       "romanization": "chakada",
       "meanings": [
-        "kind",
+        "kind (good-natured)",
         "good-natured"
       ],
       "pos": "adjective",
@@ -3453,7 +3453,7 @@
       "hangul": "좀",
       "romanization": "jom",
       "meanings": [
-        "a little",
+        "a little (casual)",
         "please (softener)"
       ],
       "pos": "adverb",
@@ -3470,7 +3470,7 @@
       "hangul": "이미",
       "romanization": "imi",
       "meanings": [
-        "already"
+        "already (as a done fact)"
       ],
       "pos": "adverb",
       "rank": 204,
@@ -3633,7 +3633,7 @@
       "hangul": "진짜",
       "romanization": "jinjja",
       "meanings": [
-        "really",
+        "really (casual)",
         "truly"
       ],
       "pos": "adverb",
@@ -3702,7 +3702,7 @@
       "hangul": "그러니까",
       "romanization": "geureonikka",
       "meanings": [
-        "so",
+        "so (that's why)",
         "that's why"
       ],
       "pos": "adverb",

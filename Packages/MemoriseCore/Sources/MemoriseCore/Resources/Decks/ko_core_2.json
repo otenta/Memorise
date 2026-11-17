@@ -1042,7 +1042,7 @@
       "hangul": "오전",
       "romanization": "ojeon",
       "meanings": [
-        "morning",
+        "morning (a.m.)",
         "a.m."
       ],
       "pos": "noun",
@@ -3391,7 +3391,7 @@
       "hangul": "함께",
       "romanization": "hamkke",
       "meanings": [
-        "together"
+        "together (formal)"
       ],
       "pos": "adverb",
       "rank": 197,
@@ -3506,7 +3506,7 @@
       "hangul": "또",
       "romanization": "tto",
       "meanings": [
-        "again",
+        "again (once more)",
         "also"
       ],
       "pos": "adverb",
@@ -3657,7 +3657,7 @@
       "hangul": "번",
       "romanization": "beon",
       "meanings": [
-        "time",
+        "time (occurrence count)",
         "number (counter)"
       ],
       "pos": "counter",

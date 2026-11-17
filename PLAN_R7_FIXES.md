@@ -47,7 +47,7 @@
 | F5 Home: stable section identity | #4 | ☑ | Frontend. |
 | F6 Korean text that fits | #8 | ☑ | Frontend. One shared component. |
 | F7 One home per Korean word, and derived decks that don't mirror Core 1 | #7 | ☑ | Core. The validator report feeds C2. |
-| C2 Distinct glosses across Korean decks | #7 | ☐ | Content agent, after F7. Edits existing glosses (the owner asked for this). |
+| C2 Distinct glosses across Korean decks | #7 | ☑ | Content agent, after F7. Edits existing glosses (the owner asked for this). |
 
 ---
 

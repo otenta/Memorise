@@ -80,7 +80,7 @@
       "hangul": "미안해",
       "romanization": "mianhae",
       "meanings": [
-        "I'm sorry"
+        "I'm sorry (casual)"
       ],
       "pos": "expression",
       "rank": 3,
@@ -130,7 +130,7 @@
       "hangul": "괜찮아",
       "romanization": "gwaenchana",
       "meanings": [
-        "it's okay",
+        "it's okay (casual)",
         "I'm okay",
         "are you okay?"
       ],
@@ -191,7 +191,7 @@
       "hangul": "진짜?",
       "romanization": "jinjja",
       "meanings": [
-        "really?",
+        "really? (casual)",
         "seriously?"
       ],
       "pos": "expression",
@@ -344,7 +344,7 @@
       "hangul": "몰라",
       "romanization": "molla",
       "meanings": [
-        "I don't know",
+        "I don't know (casual)",
         "who knows",
         "whatever"
       ],
@@ -556,7 +556,7 @@
       "hangul": "그래",
       "romanization": "geurae",
       "meanings": [
-        "okay",
+        "okay (casual)",
         "sure",
         "right",
         "is that so?"
@@ -618,7 +618,7 @@
       "hangul": "싫어",
       "romanization": "sireo",
       "meanings": [
-        "no",
+        "no (I don't want to)",
         "I don't want to",
         "I hate it"
       ],
@@ -1148,7 +1148,7 @@
       "hangul": "예뻐",
       "romanization": "yeppeo",
       "meanings": [
-        "pretty",
+        "pretty (casual)",
         "you're pretty"
       ],
       "pos": "expression",
@@ -1829,7 +1829,7 @@
       "hangul": "잘 가",
       "romanization": "jal ga",
       "meanings": [
-        "bye (to someone leaving)",
+        "bye (casual, to someone leaving)",
         "take care (to someone leaving)"
       ],
       "pos": "expression",
@@ -3134,7 +3134,7 @@
       "hangul": "아이고",
       "romanization": "aigo",
       "meanings": [
-        "oh my",
+        "oh my (oh dear)",
         "oh dear"
       ],
       "pos": "expression",
@@ -3194,7 +3194,7 @@
       "hangul": "잘 자",
       "romanization": "jal ja",
       "meanings": [
-        "good night",
+        "good night (casual)",
         "sleep well"
       ],
       "pos": "expression",
@@ -3736,7 +3736,7 @@
       "hangul": "거짓말",
       "romanization": "geojitmal",
       "meanings": [
-        "lie",
+        "lie (no way!)",
         "liar!",
         "no way! (disbelief)"
       ],
@@ -4040,7 +4040,7 @@
       "hangul": "오랜만이야",
       "romanization": "oraenmaniya",
       "meanings": [
-        "long time no see"
+        "long time no see (casual)"
       ],
       "pos": "expression",
       "rank": 103,

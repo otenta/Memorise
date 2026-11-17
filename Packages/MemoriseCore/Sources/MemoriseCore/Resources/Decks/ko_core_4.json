@@ -90,7 +90,7 @@
       "hangul": "물론이죠",
       "romanization": "mullonijyo",
       "meanings": [
-        "of course"
+        "of course (reply)"
       ],
       "pos": "expression",
       "rank": 6,
@@ -373,7 +373,7 @@
       "hangul": "일자리",
       "romanization": "iljari",
       "meanings": [
-        "job",
+        "job (position)",
         "position"
       ],
       "pos": "noun",
@@ -1444,7 +1444,7 @@
       "hangul": "컵",
       "romanization": "keop",
       "meanings": [
-        "cup"
+        "cup (the object)"
       ],
       "pos": "noun",
       "rank": 87,
@@ -2391,7 +2391,7 @@
       "hangul": "변하다",
       "romanization": "byeonhada",
       "meanings": [
-        "to change"
+        "to change (by itself)"
       ],
       "pos": "verb",
       "rank": 142,
@@ -2534,7 +2534,7 @@
       "hangul": "키우다",
       "romanization": "kiuda",
       "meanings": [
-        "to raise",
+        "to raise (bring up, keep a pet)",
         "to keep (a pet)"
       ],
       "pos": "verb",
@@ -3301,7 +3301,7 @@
       "hangul": "매우",
       "romanization": "maeu",
       "meanings": [
-        "very"
+        "very (formal)"
       ],
       "pos": "adverb",
       "rank": 193,
@@ -3317,7 +3317,7 @@
       "hangul": "모두",
       "romanization": "modu",
       "meanings": [
-        "all",
+        "all (everyone)",
         "everyone"
       ],
       "pos": "adverb",
@@ -3334,7 +3334,7 @@
       "hangul": "전부",
       "romanization": "jeonbu",
       "meanings": [
-        "all",
+        "all (the whole lot)",
         "everything"
       ],
       "pos": "adverb",
@@ -3438,7 +3438,7 @@
       "hangul": "아직도",
       "romanization": "ajikdo",
       "meanings": [
-        "still"
+        "still (even now)"
       ],
       "pos": "adverb",
       "rank": 201,

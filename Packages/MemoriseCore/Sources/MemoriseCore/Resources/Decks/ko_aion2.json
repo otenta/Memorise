@@ -251,7 +251,7 @@
       "hangul": "상점",
       "romanization": "sangjeom",
       "meanings": [
-        "shop",
+        "shop (in-game store)",
         "store"
       ],
       "pos": "noun",
@@ -960,7 +960,7 @@
       "hangul": "보스",
       "romanization": "boseu",
       "meanings": [
-        "boss"
+        "boss (monster)"
       ],
       "pos": "noun",
       "rank": 57,
@@ -2680,7 +2680,7 @@
       "hangul": "외형",
       "romanization": "oehyeong",
       "meanings": [
-        "appearance",
+        "appearance (cosmetic skin)",
         "cosmetic skin"
       ],
       "pos": "noun",

@@ -241,7 +241,7 @@
       "hangul": "어린이",
       "romanization": "eorini",
       "meanings": [
-        "child"
+        "child (formal)"
       ],
       "pos": "noun",
       "rank": 15,
@@ -308,7 +308,7 @@
       "hangul": "상사",
       "romanization": "sangsa",
       "meanings": [
-        "boss",
+        "boss (superior at work)",
         "superior"
       ],
       "pos": "noun",
@@ -707,7 +707,7 @@
       "hangul": "바닥",
       "romanization": "badak",
       "meanings": [
-        "floor"
+        "floor (ground surface)"
       ],
       "pos": "noun",
       "rank": 43,
@@ -1680,7 +1680,7 @@
       "hangul": "봉투",
       "romanization": "bongtu",
       "meanings": [
-        "bag",
+        "bag (envelope, paper bag)",
         "envelope"
       ],
       "pos": "noun",
@@ -1864,7 +1864,7 @@
       "hangul": "고민",
       "romanization": "gomin",
       "meanings": [
-        "worry",
+        "worry (something on one's mind)",
         "something on one's mind"
       ],
       "pos": "noun",
@@ -2091,7 +2091,7 @@
       "hangul": "내다",
       "romanization": "naeda",
       "meanings": [
-        "to pay",
+        "to pay (hand over)",
         "to hand in"
       ],
       "pos": "verb",
@@ -2183,7 +2183,7 @@
       "hangul": "올리다",
       "romanization": "ollida",
       "meanings": [
-        "to raise",
+        "to raise (lift up)",
         "to upload"
       ],
       "pos": "verb",
@@ -2382,7 +2382,7 @@
       "hangul": "정하다",
       "romanization": "jeonghada",
       "meanings": [
-        "to decide",
+        "to decide (set)",
         "to set"
       ],
       "pos": "verb",
@@ -3116,7 +3116,7 @@
       "hangul": "진하다",
       "romanization": "jinhada",
       "meanings": [
-        "strong",
+        "strong (rich, of flavour or colour)",
         "dark (colour)"
       ],
       "pos": "adjective",
@@ -3260,7 +3260,7 @@
       "hangul": "멋지다",
       "romanization": "meotjida",
       "meanings": [
-        "cool",
+        "cool (wonderful)",
         "wonderful"
       ],
       "pos": "adjective",
@@ -3312,7 +3312,7 @@
       "hangul": "이르다",
       "romanization": "ireuda",
       "meanings": [
-        "early"
+        "early (too soon)"
       ],
       "pos": "adjective",
       "rank": 194,
@@ -3397,7 +3397,7 @@
       "hangul": "늘",
       "romanization": "neul",
       "meanings": [
-        "always"
+        "always (all the time)"
       ],
       "pos": "adverb",
       "rank": 199,
@@ -3463,7 +3463,7 @@
       "hangul": "무척",
       "romanization": "mucheok",
       "meanings": [
-        "very",
+        "very (extremely)",
         "extremely"
       ],
       "pos": "adverb",
@@ -3647,7 +3647,7 @@
       "hangul": "또는",
       "romanization": "ttoneun",
       "meanings": [
-        "or"
+        "or (formal)"
       ],
       "pos": "adverb",
       "rank": 214,
@@ -3663,7 +3663,7 @@
       "hangul": "그렇지만",
       "romanization": "geureochiman",
       "meanings": [
-        "but",
+        "but (even so)",
         "however"
       ],
       "pos": "adverb",
@@ -3680,7 +3680,7 @@
       "hangul": "따라서",
       "romanization": "ttaraseo",
       "meanings": [
-        "therefore"
+        "therefore (accordingly)"
       ],
       "pos": "adverb",
       "rank": 216,
@@ -3764,7 +3764,7 @@
       "hangul": "봉지",
       "romanization": "bongji",
       "meanings": [
-        "bag",
+        "bag (packet)",
         "packet"
       ],
       "pos": "counter",
@@ -3814,7 +3814,7 @@
       "hangul": "회",
       "romanization": "hoe",
       "meanings": [
-        "time",
+        "time (round, episode)",
         "episode",
         "round"
       ],
@@ -3848,7 +3848,7 @@
       "hangul": "것",
       "romanization": "geot",
       "meanings": [
-        "thing",
+        "thing (abstract)",
         "the fact that"
       ],
       "pos": "noun",
@@ -3888,7 +3888,7 @@
       "hangul": "때",
       "romanization": "ttae",
       "meanings": [
-        "time",
+        "time (when something happens)",
         "when"
       ],
       "pos": "noun",
@@ -3945,7 +3945,7 @@
       "hangul": "그렇게",
       "romanization": "geureoke",
       "meanings": [
-        "like that",
+        "like that (in that way)",
         "so"
       ],
       "pos": "adverb",
@@ -3962,7 +3962,7 @@
       "hangul": "이렇게",
       "romanization": "ireoke",
       "meanings": [
-        "like this",
+        "like this (this way)",
         "this way"
       ],
       "pos": "adverb",
@@ -4000,7 +4000,7 @@
       "hangul": "두다",
       "romanization": "duda",
       "meanings": [
-        "to put",
+        "to put (leave somewhere)",
         "to leave (something)"
       ],
       "pos": "verb",
@@ -4514,7 +4514,7 @@
       "hangul": "세계",
       "romanization": "segye",
       "meanings": [
-        "world"
+        "world (global)"
       ],
       "pos": "noun",
       "rank": 262,
@@ -4579,7 +4579,7 @@
       "hangul": "의미",
       "romanization": "uimi",
       "meanings": [
-        "meaning",
+        "meaning (significance)",
         "significance"
       ],
       "pos": "noun",
@@ -4646,7 +4646,7 @@
       "hangul": "종류",
       "romanization": "jongnyu",
       "meanings": [
-        "kind",
+        "kind (type)",
         "type",
         "sort"
       ],
@@ -4684,7 +4684,7 @@
       "hangul": "크기",
       "romanization": "keugi",
       "meanings": [
-        "size"
+        "size (how big)"
       ],
       "pos": "noun",
       "rank": 272,
@@ -5215,7 +5215,7 @@
       "hangul": "저희",
       "romanization": "jeohui",
       "meanings": [
-        "we",
+        "we (humble)",
         "us (humble)"
       ],
       "pos": "pronoun",
@@ -5317,7 +5317,7 @@
       "hangul": "모든",
       "romanization": "modeun",
       "meanings": [
-        "all",
+        "all (before a noun)",
         "every"
       ],
       "pos": "determiner",
@@ -5396,7 +5396,7 @@
       "hangul": "첫",
       "romanization": "cheot",
       "meanings": [
-        "first"
+        "first (before a noun)"
       ],
       "pos": "determiner",
       "rank": 313,
@@ -5449,7 +5449,7 @@
       "hangul": "새",
       "romanization": "sae",
       "meanings": [
-        "new"
+        "new (before a noun)"
       ],
       "pos": "determiner",
       "rank": 316,
@@ -5757,7 +5757,7 @@
       "hangul": "이용하다",
       "romanization": "iyonghada",
       "meanings": [
-        "to use",
+        "to use (make use of)",
         "to make use of"
       ],
       "pos": "verb",
@@ -6010,7 +6010,7 @@
       "hangul": "물어보다",
       "romanization": "mureoboda",
       "meanings": [
-        "to ask"
+        "to ask (colloquial)"
       ],
       "pos": "verb",
       "rank": 348,
@@ -6048,7 +6048,7 @@
       "hangul": "선택하다",
       "romanization": "seontaekada",
       "meanings": [
-        "to choose"
+        "to choose (select)"
       ],
       "pos": "verb",
       "rank": 350,
@@ -6305,7 +6305,7 @@
       "hangul": "빼다",
       "romanization": "ppaeda",
       "meanings": [
-        "to take out",
+        "to take out (remove)",
         "to subtract"
       ],
       "pos": "verb",
@@ -6921,7 +6921,7 @@
       "hangul": "약간",
       "romanization": "yakgan",
       "meanings": [
-        "a little",
+        "a little (slightly)",
         "slightly"
       ],
       "pos": "adverb",
@@ -6938,7 +6938,7 @@
       "hangul": "얼마나",
       "romanization": "eolmana",
       "meanings": [
-        "how much",
+        "how much (to what extent)",
         "how (very)"
       ],
       "pos": "adverb",
@@ -6975,7 +6975,7 @@
       "hangul": "정말로",
       "romanization": "jeongmallo",
       "meanings": [
-        "really",
+        "really (emphatic)",
         "truly"
       ],
       "pos": "adverb",
@@ -7009,7 +7009,7 @@
       "hangul": "언제나",
       "romanization": "eonjena",
       "meanings": [
-        "always",
+        "always (at any time)",
         "at any time"
       ],
       "pos": "adverb",
@@ -7114,7 +7114,7 @@
       "hangul": "일단",
       "romanization": "ildan",
       "meanings": [
-        "first",
+        "first (for now)",
         "for now"
       ],
       "pos": "adverb",
@@ -7164,7 +7164,7 @@
       "hangul": "잠시",
       "romanization": "jamsi",
       "meanings": [
-        "for a moment"
+        "for a moment (formal)"
       ],
       "pos": "adverb",
       "rank": 412,
@@ -7180,7 +7180,7 @@
       "hangul": "가만히",
       "romanization": "gamanhi",
       "meanings": [
-        "still",
+        "still (motionless)",
         "quietly"
       ],
       "pos": "adverb",
@@ -7384,7 +7384,7 @@
       "hangul": "근데",
       "romanization": "geunde",
       "meanings": [
-        "but",
+        "but (casual)",
         "by the way (colloquial)"
       ],
       "pos": "adverb",
@@ -7401,7 +7401,7 @@
       "hangul": "그럼",
       "romanization": "geureom",
       "meanings": [
-        "then",
+        "then (casual)",
         "in that case"
       ],
       "pos": "adverb",
@@ -7470,7 +7470,7 @@
       "hangul": "대개",
       "romanization": "daegae",
       "meanings": [
-        "usually",
+        "usually (generally)",
         "generally"
       ],
       "pos": "adverb",
@@ -7570,7 +7570,7 @@
       "hangul": "좋아요",
       "romanization": "joayo",
       "meanings": [
-        "good",
+        "good (sounds good)",
         "okay",
         "I like it"
       ],
@@ -7588,7 +7588,7 @@
       "hangul": "그래요",
       "romanization": "geuraeyo",
       "meanings": [
-        "okay",
+        "okay (is that so?)",
         "is that so?"
       ],
       "pos": "expression",
@@ -7769,7 +7769,7 @@
       "hangul": "많이 드세요",
       "romanization": "mani deuseyo",
       "meanings": [
-        "enjoy your meal",
+        "enjoy your meal (eat plenty)",
         "eat a lot"
       ],
       "pos": "expression",
@@ -7986,7 +7986,7 @@
       "hangul": "색깔",
       "romanization": "saekkal",
       "meanings": [
-        "colour"
+        "colour (colloquial)"
       ],
       "pos": "noun",
       "rank": 461,
@@ -8448,7 +8448,7 @@
       "hangul": "기업",
       "romanization": "gieop",
       "meanings": [
-        "company",
+        "company (enterprise)",
         "business",
         "enterprise"
       ],
@@ -8976,7 +8976,7 @@
       "hangul": "국물",
       "romanization": "gungmul",
       "meanings": [
-        "soup",
+        "soup (broth)",
         "broth"
       ],
       "pos": "noun",
@@ -9479,7 +9479,7 @@
       "hangul": "담다",
       "romanization": "damda",
       "meanings": [
-        "to put in",
+        "to put in (fill a container)",
         "to fill (a container)"
       ],
       "pos": "verb",
@@ -10338,7 +10338,7 @@
       "hangul": "참석하다",
       "romanization": "chamseokada",
       "meanings": [
-        "to attend"
+        "to attend (an event)"
       ],
       "pos": "verb",
       "rank": 599,
@@ -10528,7 +10528,7 @@
       "hangul": "저장하다",
       "romanization": "jeojanghada",
       "meanings": [
-        "to save",
+        "to save (a file)",
         "to store"
       ],
       "pos": "verb",
@@ -10687,7 +10687,7 @@
       "hangul": "변경하다",
       "romanization": "byeongyeonghada",
       "meanings": [
-        "to change",
+        "to change (modify a plan or setting)",
         "to modify"
       ],
       "pos": "verb",
@@ -10794,7 +10794,7 @@
       "hangul": "단순하다",
       "romanization": "dansunhada",
       "meanings": [
-        "simple"
+        "simple (plain)"
       ],
       "pos": "adjective",
       "rank": 625,
@@ -10971,7 +10971,7 @@
       "hangul": "달콤하다",
       "romanization": "dalkomhada",
       "meanings": [
-        "sweet"
+        "sweet (pleasantly sweet)"
       ],
       "pos": "adjective",
       "rank": 635,
@@ -11060,7 +11060,7 @@
       "hangul": "서운하다",
       "romanization": "seounhada",
       "meanings": [
-        "sad",
+        "sad (let down by someone)",
         "hurt (let down by someone)"
       ],
       "pos": "adjective",
@@ -11130,7 +11130,7 @@
       "hangul": "짙다",
       "romanization": "jitda",
       "meanings": [
-        "dark",
+        "dark (deep, dense)",
         "thick",
         "dense"
       ],
@@ -11352,7 +11352,7 @@
       "hangul": "마침내",
       "romanization": "machimnae",
       "meanings": [
-        "finally",
+        "finally (at last)",
         "at last"
       ],
       "pos": "adverb",
@@ -11451,7 +11451,7 @@
       "hangul": "잔뜩",
       "romanization": "jantteuk",
       "meanings": [
-        "a lot",
+        "a lot (to the brim)",
         "fully"
       ],
       "pos": "adverb",
