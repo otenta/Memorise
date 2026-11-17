@@ -50,12 +50,8 @@ struct ParticlePromptView: View {
     var body: some View {
         VStack(spacing: 14) {
             PromptCaption(text: "ADD THE PARTICLE")
-            HStack(alignment: .firstTextBaseline, spacing: 10) {
-                Text(prompt.noun.hangul)
-                    .font(.system(size: 72, weight: .bold))
-                    .foregroundStyle(Subject.korean.gradient)
-                    .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
-                    .lineLimit(1).minimumScaleFactor(0.4)
+            HStack(spacing: 10) {
+                KoreanHeadline(text: prompt.noun.hangul, role: .prompt)
                 Text("+").font(.system(size: 40, weight: .bold)).foregroundStyle(.secondary)
             }
             Text(prompt.particle.title)
@@ -76,9 +72,11 @@ struct ParticleAnswerView: View {
     var body: some View {
         VStack(spacing: 14) {
             HStack(spacing: 12) {
-                Text("\(prompt.noun.hangul)\(Text(prompt.particle.form(after: prompt.ending)).foregroundStyle(Theme.pink))")
-                    .font(.system(size: 56, weight: .bold))
-                    .lineLimit(1).minimumScaleFactor(0.5)
+                KoreanHeadline(
+                    text: prompt.noun.hangul, role: .answer, style: AnyShapeStyle(.primary),
+                    tail: prompt.particle.form(after: prompt.ending)
+                )
+                .layoutPriority(1)
                 SpeakButton(text: prompt.correct)
             }
             Text(prompt.rule).font(.title3.weight(.semibold)).multilineTextAlignment(.center)

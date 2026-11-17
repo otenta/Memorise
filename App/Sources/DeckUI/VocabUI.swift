@@ -88,12 +88,7 @@ struct VocabPromptView: View {
         VStack(spacing: 12) {
             switch prompt.direction {
             case .koToEn, .listen:
-                Text(e.hangul)
-                    .font(.system(size: 72, weight: .bold))
-                    .foregroundStyle(Subject.korean.gradient)
-                    .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
-                    .lineLimit(2).minimumScaleFactor(0.4)
-                    .multilineTextAlignment(.center)
+                KoreanHeadline(text: e.hangul, role: .prompt)
                 if prompt.direction == .koToEn, let register = e.register { RegisterChip(register: register) }
             case .enToKo where e.partOfSpeech == .pattern && !e.allExamples.isEmpty:
                 // Sentence practice: say the first example in Korean.
@@ -169,9 +164,8 @@ struct VocabAnswerView: View {
         let settings = env.settings
         VStack(spacing: 14) {
             HStack(spacing: 12) {
-                Text(e.hangul).font(.system(size: 52, weight: .bold))
-                    .foregroundStyle(Subject.korean.gradient)
-                    .lineLimit(2).minimumScaleFactor(0.5)
+                KoreanHeadline(text: e.hangul, role: .answer)
+                    .layoutPriority(1)
                 // Patterns: each example has its own 🔊; the headword itself isn't speakable.
                 if e.partOfSpeech != .pattern { speakButton(e.hangul, label: "Play pronunciation") }
             }

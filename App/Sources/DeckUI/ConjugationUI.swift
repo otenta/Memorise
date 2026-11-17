@@ -66,11 +66,7 @@ struct ConjugationPromptView: View {
     var body: some View {
         VStack(spacing: 14) {
             PromptCaption(text: "CONJUGATE")
-            Text(prompt.entry.hangul)
-                .font(.system(size: 64, weight: .bold))
-                .foregroundStyle(Subject.korean.gradient)
-                .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
-                .lineLimit(1).minimumScaleFactor(0.4)
+            KoreanHeadline(text: prompt.entry.hangul, role: .prompt)
             Text(prompt.form.title)
                 .font(.title2.weight(.bold))
                 .padding(.horizontal, 16).padding(.vertical, 6)
@@ -90,10 +86,8 @@ struct ConjugationAnswerView: View {
     var body: some View {
         VStack(spacing: 14) {
             HStack(spacing: 12) {
-                Text(prompt.answer)
-                    .font(.system(size: 52, weight: .bold))
-                    .foregroundStyle(Theme.pink)
-                    .lineLimit(1).minimumScaleFactor(0.4)
+                KoreanHeadline(text: prompt.answer, role: .answer, style: AnyShapeStyle(Theme.pink))
+                    .layoutPriority(1)
                 SpeakButton(text: prompt.answer)
             }
             Text(prompt.rule).font(.title3.weight(.semibold)).multilineTextAlignment(.center)

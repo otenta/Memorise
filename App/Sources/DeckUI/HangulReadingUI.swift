@@ -72,11 +72,16 @@ struct HangulReadingPromptView: View {
     var body: some View {
         VStack(spacing: 12) {
             PromptCaption(text: prompt.stage == .realWords ? "READ THE WORD" : "HOW DO YOU READ IT?")
-            Text(prompt.text)
-                .font(.system(size: prompt.text.count > 1 ? 96 : 140, weight: .bold))
-                .foregroundStyle(Subject.korean.gradient)
-                .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
-                .lineLimit(1).minimumScaleFactor(0.4)
+            if prompt.text.count > 1 {
+                KoreanHeadline(text: prompt.text, role: .prompt)
+            } else {
+                // Single jamo / syllable keeps its big showcase size.
+                Text(prompt.text)
+                    .font(.system(size: 140, weight: .bold))
+                    .foregroundStyle(Subject.korean.gradient)
+                    .shadow(color: Theme.pink.opacity(0.3), radius: 12, y: 6)
+                    .lineLimit(1).minimumScaleFactor(0.4)
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("How do you read \(prompt.text)?")
@@ -89,9 +94,13 @@ struct HangulReadingAnswerView: View {
     var body: some View {
         VStack(spacing: 14) {
             HStack(spacing: 12) {
-                Text(prompt.text).font(.system(size: 56, weight: .bold))
-                    .foregroundStyle(Subject.korean.gradient)
-                    .lineLimit(1).minimumScaleFactor(0.5)
+                if prompt.text.count > 1 {
+                    KoreanHeadline(text: prompt.text, role: .answer).layoutPriority(1)
+                } else {
+                    Text(prompt.text).font(.system(size: 56, weight: .bold))
+                        .foregroundStyle(Subject.korean.gradient)
+                        .lineLimit(1).minimumScaleFactor(0.5)
+                }
                 SpeakButton(text: prompt.text)
             }
             Text(prompt.romanization)
