@@ -38,7 +38,7 @@ final class AppEnvironment {
 
     /// Card-pool sizes by deck and options (R5-2): Home and Setup only need the count, and building
     /// every pool on each `dataVersion` bump was ~90 ms of main-thread work. Cleared by `reloadCatalog()`.
-    @ObservationIgnored private var cardCountCache: [CardCountKey: Int] = [:]
+    @ObservationIgnored private var cardKeysCache: [CardCountKey: [ItemKey]] = [:]
     private struct CardCountKey: Hashable {
         let deck: DeckID
         let options: DeckOptions
@@ -122,7 +122,7 @@ final class AppEnvironment {
     /// Rebuilds the catalog from bundled decks and the current user decks.
     /// Saved configs of deleted decks are simply never looked up again.
     func reloadCatalog() {
-        cardCountCache = [:]
+        cardKeysCache = [:]
         catalog = DeckCatalog.assemble(bundledVocab: bundledVocab, userVocab: userDeckFiles.map(VocabDeck.init(file:)))
     }
 
@@ -232,13 +232,18 @@ final class AppEnvironment {
         }
     }
 
-    /// Number of cards `deck` yields for `options`, computed once per (deck, options) until the catalog reloads.
-    func cardCount(for deck: any Deck, options: DeckOptions) -> Int {
+    /// Keys of the cards `deck` yields for `options`, computed once per (deck, options) until the catalog reloads.
+    func cardKeys(for deck: any Deck, options: DeckOptions) -> [ItemKey] {
         let key = CardCountKey(deck: deck.id, options: options)
-        if let cached = cardCountCache[key] { return cached }
-        let count = deck.cards(options: options).count
-        cardCountCache[key] = count
-        return count
+        if let cached = cardKeysCache[key] { return cached }
+        let keys = deck.cards(options: options).map(\.key)
+        cardKeysCache[key] = keys
+        return keys
+    }
+
+    /// Number of cards `deck` yields for `options` (same cache as `cardKeys`).
+    func cardCount(for deck: any Deck, options: DeckOptions) -> Int {
+        cardKeys(for: deck, options: options).count
     }
 
     /// UI provider for a deck.

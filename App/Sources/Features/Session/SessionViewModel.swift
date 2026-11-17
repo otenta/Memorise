@@ -155,7 +155,11 @@ final class SessionViewModel {
         do {
             async let stats = env.store.stats(for: deck.id)
             async let previous = env.store.baselineOfLastCompletedSession(for: deck.id)
-            let engine = SessionEngine(deck: deck, config: config, stats: try await stats, previous: try await previous)
+            async let history = env.store.deckHistory(for: deck.id)
+            let engine = SessionEngine(
+                deck: deck, config: config, stats: try await stats, previous: try await previous,
+                history: try await history
+            )
             let recorder = SessionRecorder(store: env.store) { [weak self] error in
                 AppEnvironment.log.error("Persist failed: \(error.localizedDescription, privacy: .public)")
                 Task { @MainActor [weak self] in self?.saveFailures += 1 }

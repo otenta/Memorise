@@ -300,7 +300,7 @@ private struct StatsOverview: View {
     let data: DeckStatsData
 
     var body: some View {
-        let info = DeckRowInfo.make(cardCount: data.stats.count, stats: data.stats.values)
+        let info = DeckRowInfo.make(poolKeys: Array(data.stats.keys), stats: data.stats)
         let seen = data.stats.values.filter { $0.attempts > 0 }.count
         let sessions = data.points.count
         HStack(spacing: 10) {

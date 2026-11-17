@@ -11,22 +11,27 @@ struct SessionLaunch: Identifiable {
 /// Per-deck stats line.
 struct DeckRowInfo: Equatable {
     var cardCount: Int
+    /// Share of pool cards whose last answer was correct (R8-S2); `nil` while the deck is new.
+    var coverage: Double?
+    var coveredCount: Int
     var accuracy: Double?
     var medianMs: Double?
     var lastSeen: Date?
 
-    static func make(cardCount: Int, stats: some Collection<ItemStats>) -> DeckRowInfo {
+    static func make(poolKeys: [ItemKey], stats: [ItemKey: ItemStats]) -> DeckRowInfo {
         var attempts = 0, correct = 0
         var times: [Double] = []
         var last: Date?
-        for s in stats where s.attempts > 0 {
+        for s in stats.values where s.attempts > 0 {
             attempts += s.attempts
             correct += s.correctCount
             if let t = s.ewmaResponseMs { times.append(t) }
             if let seen = s.lastSeenAt, last.map({ seen > $0 }) ?? true { last = seen }
         }
         return DeckRowInfo(
-            cardCount: cardCount,
+            cardCount: poolKeys.count,
+            coverage: DeckCoverage.fraction(poolKeys: poolKeys, stats: stats),
+            coveredCount: DeckCoverage.coveredCount(poolKeys: poolKeys, stats: stats),
             accuracy: attempts > 0 ? Double(correct) / Double(attempts) : nil,
             medianMs: Statistics.median(times),
             lastSeen: last
@@ -35,7 +40,9 @@ struct DeckRowInfo: Equatable {
 
     var text: String {
         guard let accuracy else { return "\(cardCount) cards · New" }
-        var parts = ["\(cardCount) cards", Fmt.percent(accuracy)]
+        var parts = ["\(cardCount) cards"]
+        if let coverage { parts.append("\(Fmt.percent(coverage)) covered") }
+        parts.append("\(Fmt.percent(accuracy)) accuracy")
         if let medianMs { parts.append("median \(Fmt.seconds(medianMs))") }
         if let lastSeen { parts.append("last: \(Fmt.relative(lastSeen))") }
         return parts.joined(separator: " · ")
@@ -391,8 +398,8 @@ struct HomeView: View {
         var result: [DeckID: DeckRowInfo] = [:]
         result.reserveCapacity(decks.count)
         for deck in decks {
-            let count = env.cardCount(for: deck, options: env.initialConfig(for: deck).options)
-            result[deck.id] = .make(cardCount: count, stats: (all[deck.id] ?? [:]).values)
+            let keys = env.cardKeys(for: deck, options: env.initialConfig(for: deck).options)
+            result[deck.id] = .make(poolKeys: keys, stats: all[deck.id] ?? [:])
         }
         withAnimation(Theme.softSpring) { info = result }
     }
