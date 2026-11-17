@@ -104,7 +104,7 @@ final class MicAnswerController {
     func setListening(_ on: Bool) {
         guard on != isListening else { return }
         isListening = on
-        tracker.setListening(on)
+        tracker.setListening(on, at: Self.hostNowSeconds)
         detector?.setActive(on)
         heardWrong = nil
     }
@@ -176,18 +176,24 @@ final class MicFrameTracker: @unchecked Sendable {
     private var level = -80.0
     private var publishedLevel = -80.0
     private var publishedAt = -Double.infinity
+    /// Host seconds when listening was last armed; earlier windows hold the previous card's audio.
+    private var armedAt = -Double.infinity
 
     init(stableFrames: Int, centsTolerance: Double) {
         self.stableFrames = stableFrames
         self.centsTolerance = centsTolerance
     }
 
-    /// Bumped on every listening change; stale stable notes are dropped on main.
+    /// Bumped on every listening change; stale stable notes are dropped on main. Frames whose
+    /// analysis window starts before arming (`windowStartSeconds < armedAt`) are ignored on the
+    /// detector queue, so audio from before the prompt can't answer the card (R6-3).
     var generation: Int { lock.withLock { currentGeneration } }
 
-    func setListening(_ on: Bool) {
+    /// `hostSeconds` is the arming time on the same host clock as `PitchFrame` times.
+    func setListening(_ on: Bool, at hostSeconds: Double) {
         lock.withLock {
             listening = on
+            armedAt = on ? hostSeconds : -.infinity
             currentGeneration += 1
             runMidi = nil
             runCount = 0
@@ -205,6 +211,8 @@ final class MicFrameTracker: @unchecked Sendable {
                 publishedLevel = level
                 out.level = level
             }
+            // R6-3: a window that starts before arming holds the previous card's audio.
+            guard f.windowStartSeconds >= armedAt else { return out }
             guard let midi = f.midi, abs(f.cents) <= centsTolerance else {
                 runMidi = nil
                 runCount = 0

@@ -16,6 +16,10 @@ struct PitchFrame: Sendable {
     /// because a run's first detecting frame usually starts before the note. The hop start can be
     /// late by up to one hop (≈ 11 ms) when the note began earlier in the window (PLAN §17).
     let hostSeconds: Double
+    /// Host-clock seconds of the oldest sample in the analysed window.
+    ///
+    /// Frames whose window starts before the tracker was armed hold pre-prompt audio (R6-3).
+    let windowStartSeconds: Double
     /// Frame RMS in dBFS (for the level meter).
     let rmsDB: Double
 }
@@ -102,12 +106,14 @@ final class PitchDetector: @unchecked Sendable {
     private func analyse(newestHostSeconds: Double) {
         // Analyse `ring` in place: it is queue-confined and not mutated until the next append.
         let hostSeconds = newestHostSeconds - Double(Self.hop - 1) / sampleRate
+        let windowStart = newestHostSeconds - Double(Self.frameLength - 1) / sampleRate
 
         var rms: Float = 0
         vDSP_rmsqv(ring, 1, &rms, vDSP_Length(Self.frameLength))
         let rmsDB = 20 * log10(Double(max(rms, 1e-9)))
         guard rmsDB >= Self.gateDB else {
-            onFrame(PitchFrame(midi: nil, cents: 0, confidence: 0, hostSeconds: hostSeconds, rmsDB: rmsDB))
+            onFrame(PitchFrame(midi: nil, cents: 0, confidence: 0, hostSeconds: hostSeconds,
+                               windowStartSeconds: windowStart, rmsDB: rmsDB))
             return
         }
 
@@ -142,7 +148,8 @@ final class PitchDetector: @unchecked Sendable {
             tau += 1
         }
         guard best > 0 else {
-            onFrame(PitchFrame(midi: nil, cents: 0, confidence: 0, hostSeconds: hostSeconds, rmsDB: rmsDB))
+            onFrame(PitchFrame(midi: nil, cents: 0, confidence: 0, hostSeconds: hostSeconds,
+                               windowStartSeconds: windowStart, rmsDB: rmsDB))
             return
         }
 
@@ -155,10 +162,12 @@ final class PitchDetector: @unchecked Sendable {
         }
         let hz = sampleRate / refined
         guard hz >= Self.minHz, hz <= Self.maxHz else {
-            onFrame(PitchFrame(midi: nil, cents: 0, confidence: 0, hostSeconds: hostSeconds, rmsDB: rmsDB))
+            onFrame(PitchFrame(midi: nil, cents: 0, confidence: 0, hostSeconds: hostSeconds,
+                               windowStartSeconds: windowStart, rmsDB: rmsDB))
             return
         }
         let (pitch, cents) = Pitch.nearest(toFrequency: hz)
-        onFrame(PitchFrame(midi: pitch.midi, cents: cents, confidence: 1 - Double(diff[best]), hostSeconds: hostSeconds, rmsDB: rmsDB))
+        onFrame(PitchFrame(midi: pitch.midi, cents: cents, confidence: 1 - Double(diff[best]), hostSeconds: hostSeconds,
+                           windowStartSeconds: windowStart, rmsDB: rmsDB))
     }
 }

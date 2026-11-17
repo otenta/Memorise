@@ -218,14 +218,17 @@ public final class SessionEngine {
     ///
     /// Valid only while prompting. Performs `ok` at `at` (`responseMs` from the prompt, ≥ 0) and
     /// grades immediately with `gradeMs = 0`, bypassing the human double-tap lockout.
-    /// `countsTime: false` keeps the response time out of the time EWMA.
+    /// `countsTime: false` keeps the response time out of the time EWMA. An onset before the prompt
+    /// is recorded untimed (R6-3).
     public func answerEvaluated(correct: Bool, at: Duration, countsTime: Bool) -> [SessionEffect] {
         guard case let .prompting(p) = state else { return [] }
         let start = promptShownAt ?? cardSelectedAt
+        // R6-3: an onset before the prompt is not a real response time; record the answer untimed.
+        let timed = countsTime && at >= start
         let ms = (max(at, start) - start).wholeMilliseconds
         revealedAt = clock.now() - .milliseconds(constants.gradeLockoutMs)
         state = .revealed(p, responseMs: ms)
-        return gradeRevealed(correct: correct, gradeMs: 0, countsTime: countsTime)
+        return gradeRevealed(correct: correct, gradeMs: 0, countsTime: timed)
     }
 
     /// Microphone answer: a correct note was detected with onset at `onset` (engine clock).
