@@ -42,6 +42,8 @@ final class SessionViewModel {
     private(set) var autoAnswer: AutoAnswer?
     /// M5 K4: the entry whose "My snippet" sheet is open (the session is paused meanwhile).
     var snippetTarget: SnippetEditTarget?
+    /// Set when "End session" erased the session (R7-F2); the view dismisses without a summary.
+    private(set) var discarded = false
 
     @ObservationIgnored let ui: any DeckUI
     @ObservationIgnored private let env: AppEnvironment
@@ -176,10 +178,18 @@ final class SessionViewModel {
         resume()
     }
 
+    /// "End session" (R7-F2): before the length is reached the session is discarded and leaves no
+    /// trace (no record, no attempts, stats restored). A reached length finishes normally.
     func quit() {
         guard let engine else { return }
         env.speech.stop()
-        apply(engine.quit())
+        if case .finished = engine.state { return }
+        if engine.isLengthReached {
+            apply(engine.quit())
+        } else {
+            discarded = true
+            apply(engine.discard())
+        }
     }
 
     func speak(_ text: String) { env.speech.speak(text, rate: env.settings.speechRate) }

@@ -46,7 +46,10 @@ private struct SessionContent: View {
 
     var body: some View {
         Group {
-            if case let .finished(summary) = vm.state {
+            if vm.discarded {
+                // R7-F2: a discarded session has no summary; the cover closes straight away.
+                Color.clear
+            } else if case let .finished(summary) = vm.state {
                 NavigationStack {
                     SummaryView(summary: summary, deck: vm.deck, saveFailures: vm.saveFailures, celebrate: true)
                         .toolbar {
@@ -63,6 +66,7 @@ private struct SessionContent: View {
             }
         }
         .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+        .onChange(of: vm.discarded) { _, discarded in if discarded { onDone() } }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
             vm.stopMic()
@@ -130,10 +134,10 @@ private struct SessionContent: View {
             withAnimation(.easeOut(duration: 0.35)) { flash = nil }
         }
         .confirmationDialog("End session?", isPresented: $confirmQuit, titleVisibility: .visible) {
-            Button("End session", role: .destructive) { vm.quit() }
+            Button("Discard session", role: .destructive) { vm.quit() }
             Button("Keep going", role: .cancel) { vm.resume() }
         } message: {
-            Text("You'll see a summary of the cards answered so far.")
+            Text("This session won't be saved.")
         }
         .sheet(item: $vm.snippetTarget, onDismiss: { vm.snippetSheetDismissed() }) { target in
             SnippetEditorSheet(entry: target.entry)

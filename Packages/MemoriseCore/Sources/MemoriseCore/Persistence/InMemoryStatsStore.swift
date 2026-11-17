@@ -51,6 +51,13 @@ public actor InMemoryStatsStore: StatsStore {
         }
     }
 
+    public func discard(session: UUID, restore: [ItemStats], delete: [ItemKey], deck: DeckID) {
+        sessionsByID[session] = nil
+        attemptsBySession[session] = nil
+        for s in restore { itemStats[s.itemKey] = s }
+        for key in delete where itemStats[key]?.deckID == deck { itemStats[key] = nil }
+    }
+
     public func reset(deck: DeckID) {
         itemStats = itemStats.filter { $0.value.deckID != deck }
         for s in sessionsByID.values where s.deckID == deck {

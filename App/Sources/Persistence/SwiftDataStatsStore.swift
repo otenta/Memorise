@@ -118,6 +118,26 @@ actor SwiftDataStatsStore: StatsStore {
         try modelContext.save()
     }
 
+    func discard(session: UUID, restore: [ItemStats], delete: [ItemKey], deck: DeckID) throws {
+        try modelContext.delete(model: SDAttempt.self, where: #Predicate { $0.sessionID == session })
+        try modelContext.delete(model: SDSession.self, where: #Predicate { $0.id == session })
+        if !restore.isEmpty {
+            let keys = restore.map(\.itemKey.raw)
+            let rows = try modelContext.fetch(FetchDescriptor<SDItemStats>(predicate: #Predicate { keys.contains($0.itemKey) }))
+            var byKey = [String: SDItemStats](minimumCapacity: rows.count)
+            for r in rows { byKey[r.itemKey] = r }
+            for s in restore {
+                if let row = byKey[s.itemKey.raw] { row.update(from: s) } else { modelContext.insert(SDItemStats(s)) }
+            }
+        }
+        if !delete.isEmpty {
+            let keys = delete.map(\.raw)
+            let raw = deck.raw
+            try modelContext.delete(model: SDItemStats.self, where: #Predicate { $0.deckID == raw && keys.contains($0.itemKey) })
+        }
+        try modelContext.save()
+    }
+
     func reset(deck: DeckID) throws {
         let raw = deck.raw
         try modelContext.delete(model: SDItemStats.self, where: #Predicate { $0.deckID == raw })

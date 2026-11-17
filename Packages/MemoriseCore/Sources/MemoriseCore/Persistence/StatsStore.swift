@@ -21,6 +21,9 @@ public protocol StatsStore: Sendable {
     /// Closes every `.inProgress` session left by a killed app (call at launch, before other access).
     /// See `SessionRecord.closedAfterInterruption(attempts:)` for the rule.
     func closeInterruptedSessions() async throws
+    /// Erases a discarded session in one save (R7-F2): deletes the session row and all its
+    /// attempts, writes `restore`, and deletes the stats rows of `delete`.
+    func discard(session: UUID, restore: [ItemStats], delete: [ItemKey], deck: DeckID) async throws
     func reset(deck: DeckID) async throws
     func resetAll() async throws
     func exportSnapshot() async throws -> ExportSnapshot
@@ -39,6 +42,8 @@ public extension StatsStore {
         case let .upsertSession(s): try await upsert(s)
         case let .saveAttempt(a): try await save(a)
         case let .saveStats(s): try await save(s)
+        case let .discardSession(id, deck, restore, delete):
+            try await discard(session: id, restore: restore, delete: delete, deck: deck)
         }
     }
 

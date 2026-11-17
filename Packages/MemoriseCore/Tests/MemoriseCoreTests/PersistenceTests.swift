@@ -222,6 +222,7 @@ actor FailingStore: StatsStore {
     func attempts(for session: UUID) -> [Attempt] { [] }
     func attempts(forDeck deck: DeckID) -> [Attempt] { [] }
     func closeInterruptedSessions() {}
+    func discard(session: UUID, restore: [ItemStats], delete: [ItemKey], deck: DeckID) {}
     func reset(deck: DeckID) {}
     func resetAll() {}
     func exportSnapshot() -> ExportSnapshot { ExportSnapshot(exportedAt: fixedNow, sessions: [], attempts: [], itemStats: []) }

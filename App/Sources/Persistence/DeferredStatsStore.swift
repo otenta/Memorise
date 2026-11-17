@@ -59,6 +59,11 @@ final class DeferredStatsStore: StatsStore, Sendable {
     func attempts(forDeck deck: DeckID) async throws -> [Attempt] { try await store.attempts(forDeck: deck) }
     func trendPoints(for deck: DeckID) async throws -> [SessionTrendPoint] { try await store.trendPoints(for: deck) }
     func closeInterruptedSessions() async throws { try await store.closeInterruptedSessions() }
+    /// Writes for the session reach the store in order through `SessionRecorder` (one serial queue),
+    /// so every earlier write of the session is applied before the discard and can't resurrect it.
+    func discard(session: UUID, restore: [ItemStats], delete: [ItemKey], deck: DeckID) async throws {
+        try await store.discard(session: session, restore: restore, delete: delete, deck: deck)
+    }
     func reset(deck: DeckID) async throws { try await store.reset(deck: deck) }
     func resetAll() async throws { try await store.resetAll() }
     func exportSnapshot() async throws -> ExportSnapshot { try await store.exportSnapshot() }

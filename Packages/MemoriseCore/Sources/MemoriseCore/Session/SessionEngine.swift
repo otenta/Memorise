@@ -32,6 +32,9 @@ public enum SessionEffect: Sendable {
     case upsertSession(SessionRecord)
     case saveAttempt(Attempt)
     case saveStats(ItemStats)
+    /// Erase a discarded session (R7-F2): delete its record and attempts, write `restore` back and
+    /// delete the stats rows of `delete` (keys that had none when the session started), atomically.
+    case discardSession(id: UUID, deck: DeckID, restore: [ItemStats], delete: [ItemKey])
 }
 
 /// Pure session state machine (§9.3). Not thread-safe: drive it from one actor.
@@ -56,6 +59,8 @@ public final class SessionEngine {
     private let wallClock: @Sendable () -> Date
     private var rng: SplitMix64
     private let priorEwma: [ItemKey: Double]
+    /// Stats as they were at `init`, for `discard()` (R7-F2).
+    private let initialStats: [ItemKey: ItemStats]
     private let previous: SessionBaseline?
 
     private var history: [Card] = []
@@ -100,6 +105,7 @@ public final class SessionEngine {
         self.rng = rng
         self.previous = previous
         self.stats = stats
+        self.initialStats = stats
 
         let pool = deck.cards(options: config.options)
         let newPerSession = deck.newPerSession(options: config.options) ?? .max
@@ -292,14 +298,38 @@ public final class SessionEngine {
     }
 
     /// Ends the session early; completed if anything was graded, else abandoned.
+    /// The app uses `discard()` for "End session" since R7-F2; kept for API compatibility.
     public func quit() -> [SessionEffect] {
         if case .finished = state { return [] }
         return finish()
     }
 
+    /// Ends the session early and erases it (R7-F2): no record, no attempts, and every item's
+    /// stats back to their values at `init`. The state becomes `.finished` with an `.abandoned`
+    /// summary so the UI leaves the running state. Returns one `.discardSession` effect, or
+    /// nothing when already finished.
+    public func discard() -> [SessionEffect] {
+        if case .finished = state { return [] }
+        var restore: [ItemStats] = []
+        var delete: [ItemKey] = []
+        for (key, current) in stats {
+            if let initial = initialStats[key] {
+                if initial != current { restore.append(initial) }
+            } else {
+                delete.append(key)
+            }
+        }
+        stats = initialStats
+        restore.sort { $0.itemKey < $1.itemKey }
+        delete.sort()
+        let effects = finish(status: .abandoned)
+        return effects.isEmpty ? [] : [.discardSession(id: record.id, deck: deck.id, restore: restore, delete: delete)]
+    }
+
     // MARK: Internals
 
-    private var isLengthReached: Bool {
+    /// Whether the configured length (cards or minutes) has been reached.
+    public var isLengthReached: Bool {
         switch config.length {
         case let .cards(n): countedGraded >= n
         case let .minutes(m): activeElapsed >= .seconds(m * 60)
@@ -400,10 +430,10 @@ public final class SessionEngine {
         return a
     }
 
-    private func finish() -> [SessionEffect] {
+    private func finish(status: SessionStatus? = nil) -> [SessionEffect] {
         if let at = pausedAt { pausedTotal += clock.now() - at; pausedAt = nil }
         record.endedAt = wallClock()
-        record.status = countedGraded > 0 ? .completed : .abandoned
+        record.status = status ?? (countedGraded > 0 ? .completed : .abandoned)
         let shown = shownCards
         state = .finished(SessionSummary.build(
             session: record, attempts: attempts, cardLookup: { shown[$0] },

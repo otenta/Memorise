@@ -96,7 +96,8 @@ struct SummaryView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task(id: summary.sessionID) { buildLabels() }
         .overlay {
-            if celebrate, (summary.accuracy ?? 0) >= 0.8, !summary.rows.isEmpty {
+            // R7-F2: an ended-early session never celebrates.
+            if celebrate, summary.status != .abandoned, (summary.accuracy ?? 0) >= 0.8, !summary.rows.isEmpty {
                 ConfettiBurst(colors: colors + [Theme.mint, Theme.amber, Theme.pink])
             }
         }
@@ -109,11 +110,15 @@ struct SummaryView: View {
 
     private var hero: some View {
         let accuracy = summary.accuracy ?? 0
-        let (headline, symbol): (String, String) = switch accuracy {
-        case 0.95...: ("Flawless!", "crown.fill")
-        case 0.8..<0.95: ("Great run!", "flame.fill")
-        case 0.6..<0.8: ("Solid practice", "hand.thumbsup.fill")
-        default: ("Keep at it", "figure.strengthtraining.traditional")
+        let (headline, symbol): (String, String) = if summary.status == .abandoned {
+            ("Ended early", "stop.circle.fill")
+        } else {
+            switch accuracy {
+            case 0.95...: ("Flawless!", "crown.fill")
+            case 0.8..<0.95: ("Great run!", "flame.fill")
+            case 0.6..<0.8: ("Solid practice", "hand.thumbsup.fill")
+            default: ("Keep at it", "figure.strengthtraining.traditional")
+            }
         }
         return HStack(spacing: 20) {
             ZStack {
