@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "deckId": "ko.core.5",
   "title": "Korean Core 5",
-  "subtitle": "225 everyday words",
+  "subtitle": "450 everyday words",
   "subject": "korean",
   "entries": [
     {
@@ -3838,6 +3838,3976 @@
       "rank": 225,
       "tags": [
         "counter"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1095",
+      "hangul": "것",
+      "romanization": "geot",
+      "meanings": [
+        "thing",
+        "the fact that"
+      ],
+      "pos": "noun",
+      "rank": 226,
+      "tags": [
+        "basic"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "이게 무슨 것이에요?",
+        "en": "What is this thing?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1096",
+      "hangul": "수",
+      "romanization": "su",
+      "meanings": [
+        "way",
+        "means (can/can't)"
+      ],
+      "pos": "noun",
+      "rank": 227,
+      "tags": [
+        "basic"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "갈 수 있어요.",
+        "en": "I can go."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1097",
+      "hangul": "때",
+      "romanization": "ttae",
+      "meanings": [
+        "time",
+        "when"
+      ],
+      "pos": "noun",
+      "rank": 228,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "어릴 때 부산에 살았어요.",
+        "en": "I lived in Busan when I was young."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1098",
+      "hangul": "곳",
+      "romanization": "got",
+      "meanings": [
+        "place",
+        "spot"
+      ],
+      "pos": "noun",
+      "rank": 229,
+      "tags": [
+        "place"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1099",
+      "hangul": "힘",
+      "romanization": "him",
+      "meanings": [
+        "strength",
+        "power"
+      ],
+      "pos": "noun",
+      "rank": 230,
+      "tags": [
+        "body"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "힘이 없어요.",
+        "en": "I have no energy."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1100",
+      "hangul": "그렇게",
+      "romanization": "geureoke",
+      "meanings": [
+        "like that",
+        "so"
+      ],
+      "pos": "adverb",
+      "rank": 231,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1101",
+      "hangul": "이렇게",
+      "romanization": "ireoke",
+      "meanings": [
+        "like this",
+        "this way"
+      ],
+      "pos": "adverb",
+      "rank": 232,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1102",
+      "hangul": "가지다",
+      "romanization": "gajida",
+      "meanings": [
+        "to have",
+        "to take"
+      ],
+      "pos": "verb",
+      "rank": 233,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "우산을 가지고 가세요.",
+        "en": "Take an umbrella with you."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1103",
+      "hangul": "두다",
+      "romanization": "duda",
+      "meanings": [
+        "to put",
+        "to leave (something)"
+      ],
+      "pos": "verb",
+      "rank": 234,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1104",
+      "hangul": "나다",
+      "romanization": "nada",
+      "meanings": [
+        "to come out",
+        "to occur"
+      ],
+      "pos": "verb",
+      "rank": 235,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "열이 나요.",
+        "en": "I have a fever."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1105",
+      "hangul": "위하다",
+      "romanization": "wihada",
+      "meanings": [
+        "to be for (someone)",
+        "to do for the sake of"
+      ],
+      "pos": "verb",
+      "rank": 236,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "가족을 위해서 일해요.",
+        "en": "I work for my family."
+      },
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1106",
+      "hangul": "대하다",
+      "romanization": "daehada",
+      "meanings": [
+        "to treat",
+        "to face"
+      ],
+      "pos": "verb",
+      "rank": 237,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1107",
+      "hangul": "말다",
+      "romanization": "malda",
+      "meanings": [
+        "to stop",
+        "to not do (-지 말다)"
+      ],
+      "pos": "verb",
+      "rank": 238,
+      "tags": [
+        "negation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "l"
+    },
+    {
+      "id": "ko.core.1108",
+      "hangul": "동안",
+      "romanization": "dongan",
+      "meanings": [
+        "during",
+        "for (a period)"
+      ],
+      "pos": "noun",
+      "rank": 239,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "한 달 동안 여행했어요.",
+        "en": "I travelled for a month."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1109",
+      "hangul": "중",
+      "romanization": "jung",
+      "meanings": [
+        "middle",
+        "in the middle of",
+        "among"
+      ],
+      "pos": "noun",
+      "rank": 240,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "회의 중이에요.",
+        "en": "I'm in a meeting."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1110",
+      "hangul": "전",
+      "romanization": "jeon",
+      "meanings": [
+        "before",
+        "ago"
+      ],
+      "pos": "noun",
+      "rank": 241,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "삼 년 전에 왔어요.",
+        "en": "I came three years ago."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1111",
+      "hangul": "후",
+      "romanization": "hu",
+      "meanings": [
+        "after",
+        "later"
+      ],
+      "pos": "noun",
+      "rank": 242,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1112",
+      "hangul": "사실",
+      "romanization": "sasil",
+      "meanings": [
+        "fact",
+        "actually"
+      ],
+      "pos": "noun",
+      "rank": 243,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "사실 잘 몰라요.",
+        "en": "Actually, I don't really know."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1113",
+      "hangul": "정도",
+      "romanization": "jeongdo",
+      "meanings": [
+        "degree",
+        "about (approximately)"
+      ],
+      "pos": "noun",
+      "rank": 244,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "한 시간 정도 걸려요.",
+        "en": "It takes about an hour."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1114",
+      "hangul": "경우",
+      "romanization": "gyeongu",
+      "meanings": [
+        "case",
+        "circumstance"
+      ],
+      "pos": "noun",
+      "rank": 245,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1115",
+      "hangul": "자신",
+      "romanization": "jasin",
+      "meanings": [
+        "oneself",
+        "self",
+        "confidence"
+      ],
+      "pos": "noun",
+      "rank": 246,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1116",
+      "hangul": "부분",
+      "romanization": "bubun",
+      "meanings": [
+        "part",
+        "portion"
+      ],
+      "pos": "noun",
+      "rank": 247,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1117",
+      "hangul": "사이",
+      "romanization": "sai",
+      "meanings": [
+        "between",
+        "relationship"
+      ],
+      "pos": "noun",
+      "rank": 248,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "우리는 친한 사이예요.",
+        "en": "We're close."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1118",
+      "hangul": "속",
+      "romanization": "sok",
+      "meanings": [
+        "inside",
+        "within"
+      ],
+      "pos": "noun",
+      "rank": 249,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1119",
+      "hangul": "안",
+      "romanization": "an",
+      "meanings": [
+        "inside",
+        "interior"
+      ],
+      "pos": "noun",
+      "rank": 250,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "가방 안에 있어요.",
+        "en": "It's in the bag."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1120",
+      "hangul": "밑",
+      "romanization": "mit",
+      "meanings": [
+        "bottom",
+        "under"
+      ],
+      "pos": "noun",
+      "rank": 251,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1121",
+      "hangul": "중간",
+      "romanization": "junggan",
+      "meanings": [
+        "middle",
+        "midway"
+      ],
+      "pos": "noun",
+      "rank": 252,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1122",
+      "hangul": "소리",
+      "romanization": "sori",
+      "meanings": [
+        "sound",
+        "noise"
+      ],
+      "pos": "noun",
+      "rank": 253,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "무슨 소리예요?",
+        "en": "What's that sound?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1123",
+      "hangul": "얘기",
+      "romanization": "yaegi",
+      "meanings": [
+        "talk",
+        "story (colloquial)"
+      ],
+      "pos": "noun",
+      "rank": 254,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1124",
+      "hangul": "글",
+      "romanization": "geul",
+      "meanings": [
+        "writing",
+        "text"
+      ],
+      "pos": "noun",
+      "rank": 255,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1125",
+      "hangul": "느낌",
+      "romanization": "neukkim",
+      "meanings": [
+        "feeling",
+        "impression"
+      ],
+      "pos": "noun",
+      "rank": 256,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1126",
+      "hangul": "순간",
+      "romanization": "sungan",
+      "meanings": [
+        "moment",
+        "instant"
+      ],
+      "pos": "noun",
+      "rank": 257,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1127",
+      "hangul": "상황",
+      "romanization": "sanghwang",
+      "meanings": [
+        "situation"
+      ],
+      "pos": "noun",
+      "rank": 258,
+      "tags": [
+        "society"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1128",
+      "hangul": "생활",
+      "romanization": "saenghwal",
+      "meanings": [
+        "life",
+        "daily living"
+      ],
+      "pos": "noun",
+      "rank": 259,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "한국 생활은 어때요?",
+        "en": "How's life in Korea?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1129",
+      "hangul": "인생",
+      "romanization": "insaeng",
+      "meanings": [
+        "life (one's lifetime)"
+      ],
+      "pos": "noun",
+      "rank": 260,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1130",
+      "hangul": "삶",
+      "romanization": "sam",
+      "meanings": [
+        "life",
+        "living"
+      ],
+      "pos": "noun",
+      "rank": 261,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1131",
+      "hangul": "세계",
+      "romanization": "segye",
+      "meanings": [
+        "world"
+      ],
+      "pos": "noun",
+      "rank": 262,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1132",
+      "hangul": "외국",
+      "romanization": "oeguk",
+      "meanings": [
+        "foreign country",
+        "abroad"
+      ],
+      "pos": "noun",
+      "rank": 263,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1133",
+      "hangul": "우리나라",
+      "romanization": "urinara",
+      "meanings": [
+        "our country (Korea)"
+      ],
+      "pos": "noun",
+      "rank": 264,
+      "tags": [
+        "world"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1134",
+      "hangul": "정보",
+      "romanization": "jeongbo",
+      "meanings": [
+        "information"
+      ],
+      "pos": "noun",
+      "rank": 265,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1135",
+      "hangul": "의미",
+      "romanization": "uimi",
+      "meanings": [
+        "meaning",
+        "significance"
+      ],
+      "pos": "noun",
+      "rank": 266,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1136",
+      "hangul": "기회",
+      "romanization": "gihoe",
+      "meanings": [
+        "opportunity",
+        "chance"
+      ],
+      "pos": "noun",
+      "rank": 267,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1137",
+      "hangul": "능력",
+      "romanization": "neungnyeok",
+      "meanings": [
+        "ability",
+        "skill"
+      ],
+      "pos": "noun",
+      "rank": 268,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1138",
+      "hangul": "노력",
+      "romanization": "noryeok",
+      "meanings": [
+        "effort"
+      ],
+      "pos": "noun",
+      "rank": 269,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1139",
+      "hangul": "종류",
+      "romanization": "jongnyu",
+      "meanings": [
+        "kind",
+        "type",
+        "sort"
+      ],
+      "pos": "noun",
+      "rank": 270,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "어떤 종류를 좋아해요?",
+        "en": "What kind do you like?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1140",
+      "hangul": "모양",
+      "romanization": "moyang",
+      "meanings": [
+        "shape",
+        "appearance"
+      ],
+      "pos": "noun",
+      "rank": 271,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1141",
+      "hangul": "크기",
+      "romanization": "keugi",
+      "meanings": [
+        "size"
+      ],
+      "pos": "noun",
+      "rank": 272,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1142",
+      "hangul": "방향",
+      "romanization": "banghyang",
+      "meanings": [
+        "direction"
+      ],
+      "pos": "noun",
+      "rank": 273,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1143",
+      "hangul": "차이",
+      "romanization": "chai",
+      "meanings": [
+        "difference",
+        "gap"
+      ],
+      "pos": "noun",
+      "rank": 274,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1144",
+      "hangul": "상태",
+      "romanization": "sangtae",
+      "meanings": [
+        "state",
+        "condition"
+      ],
+      "pos": "noun",
+      "rank": 275,
+      "tags": [
+        "health"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1145",
+      "hangul": "전체",
+      "romanization": "jeonche",
+      "meanings": [
+        "whole",
+        "entire"
+      ],
+      "pos": "noun",
+      "rank": 276,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1146",
+      "hangul": "개인",
+      "romanization": "gaein",
+      "meanings": [
+        "individual",
+        "personal"
+      ],
+      "pos": "noun",
+      "rank": 277,
+      "tags": [
+        "society"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1147",
+      "hangul": "행동",
+      "romanization": "haengdong",
+      "meanings": [
+        "behaviour",
+        "action"
+      ],
+      "pos": "noun",
+      "rank": 278,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1148",
+      "hangul": "표현",
+      "romanization": "pyohyeon",
+      "meanings": [
+        "expression (of something)"
+      ],
+      "pos": "noun",
+      "rank": 279,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1149",
+      "hangul": "교육",
+      "romanization": "gyoyuk",
+      "meanings": [
+        "education"
+      ],
+      "pos": "noun",
+      "rank": 280,
+      "tags": [
+        "school"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1150",
+      "hangul": "주제",
+      "romanization": "juje",
+      "meanings": [
+        "topic",
+        "subject"
+      ],
+      "pos": "noun",
+      "rank": 281,
+      "tags": [
+        "school"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1151",
+      "hangul": "자연",
+      "romanization": "jayeon",
+      "meanings": [
+        "nature"
+      ],
+      "pos": "noun",
+      "rank": 282,
+      "tags": [
+        "nature"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1152",
+      "hangul": "언어",
+      "romanization": "eoneo",
+      "meanings": [
+        "language"
+      ],
+      "pos": "noun",
+      "rank": 283,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1153",
+      "hangul": "현실",
+      "romanization": "hyeonsil",
+      "meanings": [
+        "reality"
+      ],
+      "pos": "noun",
+      "rank": 284,
+      "tags": [
+        "society"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1154",
+      "hangul": "과정",
+      "romanization": "gwajeong",
+      "meanings": [
+        "process",
+        "course"
+      ],
+      "pos": "noun",
+      "rank": 285,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1155",
+      "hangul": "영향",
+      "romanization": "yeonghyang",
+      "meanings": [
+        "influence",
+        "effect"
+      ],
+      "pos": "noun",
+      "rank": 286,
+      "tags": [
+        "society"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1156",
+      "hangul": "시대",
+      "romanization": "sidae",
+      "meanings": [
+        "era",
+        "age",
+        "period"
+      ],
+      "pos": "noun",
+      "rank": 287,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1157",
+      "hangul": "활동",
+      "romanization": "hwaldong",
+      "meanings": [
+        "activity"
+      ],
+      "pos": "noun",
+      "rank": 288,
+      "tags": [
+        "hobby"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1158",
+      "hangul": "지역",
+      "romanization": "jiyeok",
+      "meanings": [
+        "region",
+        "area"
+      ],
+      "pos": "noun",
+      "rank": 289,
+      "tags": [
+        "place"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1159",
+      "hangul": "관계",
+      "romanization": "gwangye",
+      "meanings": [
+        "relationship",
+        "connection"
+      ],
+      "pos": "noun",
+      "rank": 290,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1160",
+      "hangul": "내용",
+      "romanization": "naeyong",
+      "meanings": [
+        "content",
+        "contents"
+      ],
+      "pos": "noun",
+      "rank": 291,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1161",
+      "hangul": "모습",
+      "romanization": "moseup",
+      "meanings": [
+        "appearance",
+        "figure",
+        "look"
+      ],
+      "pos": "noun",
+      "rank": 292,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1162",
+      "hangul": "번호",
+      "romanization": "beonho",
+      "meanings": [
+        "number (phone, ticket)"
+      ],
+      "pos": "noun",
+      "rank": 293,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "전화번호가 뭐예요?",
+        "en": "What's your phone number?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1163",
+      "hangul": "주소",
+      "romanization": "juso",
+      "meanings": [
+        "address"
+      ],
+      "pos": "noun",
+      "rank": 294,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1164",
+      "hangul": "비밀번호",
+      "romanization": "bimilbeonho",
+      "meanings": [
+        "password",
+        "PIN"
+      ],
+      "pos": "noun",
+      "rank": 295,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1165",
+      "hangul": "일주일",
+      "romanization": "iljuil",
+      "meanings": [
+        "one week"
+      ],
+      "pos": "noun",
+      "rank": 296,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1166",
+      "hangul": "요일",
+      "romanization": "yoil",
+      "meanings": [
+        "day of the week"
+      ],
+      "pos": "noun",
+      "rank": 297,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "오늘 무슨 요일이에요?",
+        "en": "What day is it today?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1167",
+      "hangul": "반",
+      "romanization": "ban",
+      "meanings": [
+        "half",
+        "class (group)"
+      ],
+      "pos": "noun",
+      "rank": 298,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "한 시 반이에요.",
+        "en": "It's half past one."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1168",
+      "hangul": "자리",
+      "romanization": "jari",
+      "meanings": [
+        "seat",
+        "place",
+        "spot"
+      ],
+      "pos": "noun",
+      "rank": 299,
+      "tags": [
+        "place"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "이 자리 비었어요?",
+        "en": "Is this seat free?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1169",
+      "hangul": "전쟁",
+      "romanization": "jeonjaeng",
+      "meanings": [
+        "war"
+      ],
+      "pos": "noun",
+      "rank": 300,
+      "tags": [
+        "society"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1170",
+      "hangul": "여러분",
+      "romanization": "yeoreobun",
+      "meanings": [
+        "everyone",
+        "you all"
+      ],
+      "pos": "pronoun",
+      "rank": 301,
+      "tags": [
+        "pronoun"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "여러분, 안녕하세요!",
+        "en": "Hello, everyone!"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1171",
+      "hangul": "당신",
+      "romanization": "dangsin",
+      "meanings": [
+        "you (formal, or to a spouse)"
+      ],
+      "pos": "pronoun",
+      "rank": 302,
+      "tags": [
+        "pronoun"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1172",
+      "hangul": "저희",
+      "romanization": "jeohui",
+      "meanings": [
+        "we",
+        "us (humble)"
+      ],
+      "pos": "pronoun",
+      "rank": 303,
+      "tags": [
+        "pronoun"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1173",
+      "hangul": "그녀",
+      "romanization": "geunyeo",
+      "meanings": [
+        "she",
+        "her"
+      ],
+      "pos": "pronoun",
+      "rank": 304,
+      "tags": [
+        "pronoun"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1174",
+      "hangul": "자기",
+      "romanization": "jagi",
+      "meanings": [
+        "oneself",
+        "honey (to a partner)"
+      ],
+      "pos": "pronoun",
+      "rank": 305,
+      "tags": [
+        "pronoun"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1175",
+      "hangul": "이거",
+      "romanization": "igeo",
+      "meanings": [
+        "this (thing, colloquial)"
+      ],
+      "pos": "pronoun",
+      "rank": 306,
+      "tags": [
+        "demonstrative"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "이거 얼마예요?",
+        "en": "How much is this?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1176",
+      "hangul": "그거",
+      "romanization": "geugeo",
+      "meanings": [
+        "that (thing, colloquial)"
+      ],
+      "pos": "pronoun",
+      "rank": 307,
+      "tags": [
+        "demonstrative"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1177",
+      "hangul": "저거",
+      "romanization": "jeogeo",
+      "meanings": [
+        "that over there (colloquial)"
+      ],
+      "pos": "pronoun",
+      "rank": 308,
+      "tags": [
+        "demonstrative"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1178",
+      "hangul": "모든",
+      "romanization": "modeun",
+      "meanings": [
+        "all",
+        "every"
+      ],
+      "pos": "determiner",
+      "rank": 309,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "모든 사람이 왔어요.",
+        "en": "Everyone came."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1179",
+      "hangul": "어떤",
+      "romanization": "eotteon",
+      "meanings": [
+        "which",
+        "what kind of",
+        "some"
+      ],
+      "pos": "determiner",
+      "rank": 310,
+      "tags": [
+        "question"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "어떤 음식을 좋아해요?",
+        "en": "What kind of food do you like?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1180",
+      "hangul": "다른",
+      "romanization": "dareun",
+      "meanings": [
+        "other",
+        "another",
+        "different"
+      ],
+      "pos": "determiner",
+      "rank": 311,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "다른 색 있어요?",
+        "en": "Do you have another colour?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1181",
+      "hangul": "여러",
+      "romanization": "yeoreo",
+      "meanings": [
+        "several",
+        "various"
+      ],
+      "pos": "determiner",
+      "rank": 312,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1182",
+      "hangul": "첫",
+      "romanization": "cheot",
+      "meanings": [
+        "first"
+      ],
+      "pos": "determiner",
+      "rank": 313,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "첫 번째예요.",
+        "en": "It's the first one."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1183",
+      "hangul": "지난",
+      "romanization": "jinan",
+      "meanings": [
+        "last",
+        "past"
+      ],
+      "pos": "determiner",
+      "rank": 314,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1184",
+      "hangul": "아무",
+      "romanization": "amu",
+      "meanings": [
+        "any",
+        "anyone"
+      ],
+      "pos": "determiner",
+      "rank": 315,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1185",
+      "hangul": "새",
+      "romanization": "sae",
+      "meanings": [
+        "new"
+      ],
+      "pos": "determiner",
+      "rank": 316,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "새 옷을 샀어요.",
+        "en": "I bought new clothes."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1186",
+      "hangul": "스물",
+      "romanization": "seumul",
+      "meanings": [
+        "twenty (native)"
+      ],
+      "pos": "numeral",
+      "rank": 317,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1187",
+      "hangul": "서른",
+      "romanization": "seoreun",
+      "meanings": [
+        "thirty (native)"
+      ],
+      "pos": "numeral",
+      "rank": 318,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1188",
+      "hangul": "마흔",
+      "romanization": "maheun",
+      "meanings": [
+        "forty (native)"
+      ],
+      "pos": "numeral",
+      "rank": 319,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1189",
+      "hangul": "쉰",
+      "romanization": "swin",
+      "meanings": [
+        "fifty (native)"
+      ],
+      "pos": "numeral",
+      "rank": 320,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1190",
+      "hangul": "예순",
+      "romanization": "yesun",
+      "meanings": [
+        "sixty (native)"
+      ],
+      "pos": "numeral",
+      "rank": 321,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1191",
+      "hangul": "일흔",
+      "romanization": "ilheun",
+      "meanings": [
+        "seventy (native)"
+      ],
+      "pos": "numeral",
+      "rank": 322,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1192",
+      "hangul": "여든",
+      "romanization": "yeodeun",
+      "meanings": [
+        "eighty (native)"
+      ],
+      "pos": "numeral",
+      "rank": 323,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1193",
+      "hangul": "아흔",
+      "romanization": "aheun",
+      "meanings": [
+        "ninety (native)"
+      ],
+      "pos": "numeral",
+      "rank": 324,
+      "tags": [
+        "number-native"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1194",
+      "hangul": "영",
+      "romanization": "yeong",
+      "meanings": [
+        "zero"
+      ],
+      "pos": "numeral",
+      "rank": 325,
+      "tags": [
+        "number-sino"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1195",
+      "hangul": "억",
+      "romanization": "eok",
+      "meanings": [
+        "hundred million"
+      ],
+      "pos": "numeral",
+      "rank": 326,
+      "tags": [
+        "number-sino"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1196",
+      "hangul": "월",
+      "romanization": "wol",
+      "meanings": [
+        "month (counter: 1월, 2월…)"
+      ],
+      "pos": "counter",
+      "rank": 327,
+      "tags": [
+        "counter"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "생일이 몇 월이에요?",
+        "en": "What month is your birthday?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1197",
+      "hangul": "통하다",
+      "romanization": "tonghada",
+      "meanings": [
+        "to go through",
+        "to get along"
+      ],
+      "pos": "verb",
+      "rank": 328,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1198",
+      "hangul": "알아보다",
+      "romanization": "araboda",
+      "meanings": [
+        "to find out",
+        "to recognise"
+      ],
+      "pos": "verb",
+      "rank": 329,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1199",
+      "hangul": "시키다",
+      "romanization": "sikida",
+      "meanings": [
+        "to order (food)",
+        "to make someone do"
+      ],
+      "pos": "verb",
+      "rank": 330,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "피자 시킬까요?",
+        "en": "Shall we order pizza?"
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1200",
+      "hangul": "이루다",
+      "romanization": "iruda",
+      "meanings": [
+        "to achieve",
+        "to accomplish"
+      ],
+      "pos": "verb",
+      "rank": 331,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1201",
+      "hangul": "나타나다",
+      "romanization": "natanada",
+      "meanings": [
+        "to appear"
+      ],
+      "pos": "verb",
+      "rank": 332,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1202",
+      "hangul": "바라보다",
+      "romanization": "baraboda",
+      "meanings": [
+        "to look at",
+        "to gaze at"
+      ],
+      "pos": "verb",
+      "rank": 333,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1203",
+      "hangul": "이용하다",
+      "romanization": "iyonghada",
+      "meanings": [
+        "to use",
+        "to make use of"
+      ],
+      "pos": "verb",
+      "rank": 334,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1204",
+      "hangul": "사라지다",
+      "romanization": "sarajida",
+      "meanings": [
+        "to disappear"
+      ],
+      "pos": "verb",
+      "rank": 335,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1205",
+      "hangul": "죽다",
+      "romanization": "jukda",
+      "meanings": [
+        "to die"
+      ],
+      "pos": "verb",
+      "rank": 336,
+      "tags": [
+        "health"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1206",
+      "hangul": "태어나다",
+      "romanization": "taeeonada",
+      "meanings": [
+        "to be born"
+      ],
+      "pos": "verb",
+      "rank": 337,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "서울에서 태어났어요.",
+        "en": "I was born in Seoul."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1207",
+      "hangul": "넘다",
+      "romanization": "neomda",
+      "meanings": [
+        "to exceed",
+        "to go over"
+      ],
+      "pos": "verb",
+      "rank": 338,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1208",
+      "hangul": "내려오다",
+      "romanization": "naeryeooda",
+      "meanings": [
+        "to come down"
+      ],
+      "pos": "verb",
+      "rank": 339,
+      "tags": [
+        "direction"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1209",
+      "hangul": "움직이다",
+      "romanization": "umjigida",
+      "meanings": [
+        "to move"
+      ],
+      "pos": "verb",
+      "rank": 340,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1210",
+      "hangul": "열리다",
+      "romanization": "yeollida",
+      "meanings": [
+        "to open (by itself)",
+        "to be held"
+      ],
+      "pos": "verb",
+      "rank": 341,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1211",
+      "hangul": "안다",
+      "romanization": "anda",
+      "meanings": [
+        "to hug",
+        "to hold in one's arms"
+      ],
+      "pos": "verb",
+      "rank": 342,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1212",
+      "hangul": "웃기다",
+      "romanization": "utgida",
+      "meanings": [
+        "to make laugh",
+        "to be funny"
+      ],
+      "pos": "verb",
+      "rank": 343,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "진짜 웃겨요.",
+        "en": "That's so funny."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1213",
+      "hangul": "헤어지다",
+      "romanization": "heeojida",
+      "meanings": [
+        "to break up",
+        "to part"
+      ],
+      "pos": "verb",
+      "rank": 344,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1214",
+      "hangul": "사귀다",
+      "romanization": "sagwida",
+      "meanings": [
+        "to date",
+        "to make friends with"
+      ],
+      "pos": "verb",
+      "rank": 345,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1215",
+      "hangul": "이야기하다",
+      "romanization": "iyagihada",
+      "meanings": [
+        "to talk",
+        "to tell"
+      ],
+      "pos": "verb",
+      "rank": 346,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1216",
+      "hangul": "얘기하다",
+      "romanization": "yaegihada",
+      "meanings": [
+        "to talk",
+        "to chat (colloquial)"
+      ],
+      "pos": "verb",
+      "rank": 347,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1217",
+      "hangul": "물어보다",
+      "romanization": "mureoboda",
+      "meanings": [
+        "to ask"
+      ],
+      "pos": "verb",
+      "rank": 348,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "선생님한테 물어보세요.",
+        "en": "Ask the teacher."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1218",
+      "hangul": "기대하다",
+      "romanization": "gidaehada",
+      "meanings": [
+        "to look forward to",
+        "to expect"
+      ],
+      "pos": "verb",
+      "rank": 349,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1219",
+      "hangul": "선택하다",
+      "romanization": "seontaekada",
+      "meanings": [
+        "to choose"
+      ],
+      "pos": "verb",
+      "rank": 350,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1220",
+      "hangul": "포기하다",
+      "romanization": "pogihada",
+      "meanings": [
+        "to give up"
+      ],
+      "pos": "verb",
+      "rank": 351,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "포기하지 마세요.",
+        "en": "Don't give up."
+      },
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1221",
+      "hangul": "도와주다",
+      "romanization": "dowajuda",
+      "meanings": [
+        "to help (someone)"
+      ],
+      "pos": "verb",
+      "rank": 352,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "좀 도와주세요.",
+        "en": "Please help me."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1222",
+      "hangul": "잃다",
+      "romanization": "ilta",
+      "meanings": [
+        "to lose"
+      ],
+      "pos": "verb",
+      "rank": 353,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1223",
+      "hangul": "꾸다",
+      "romanization": "kkuda",
+      "meanings": [
+        "to dream (a dream)"
+      ],
+      "pos": "verb",
+      "rank": 354,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "이상한 꿈을 꿨어요.",
+        "en": "I had a strange dream."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1224",
+      "hangul": "지다",
+      "romanization": "jida",
+      "meanings": [
+        "to lose (a game)",
+        "to set (sun)"
+      ],
+      "pos": "verb",
+      "rank": 355,
+      "tags": [
+        "hobby"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1225",
+      "hangul": "마치다",
+      "romanization": "machida",
+      "meanings": [
+        "to finish"
+      ],
+      "pos": "verb",
+      "rank": 356,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1226",
+      "hangul": "끝내다",
+      "romanization": "kkeunnaeda",
+      "meanings": [
+        "to finish",
+        "to end"
+      ],
+      "pos": "verb",
+      "rank": 357,
+      "tags": [
+        "work"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1227",
+      "hangul": "기억나다",
+      "romanization": "gieongnada",
+      "meanings": [
+        "to remember",
+        "to come to mind"
+      ],
+      "pos": "verb",
+      "rank": 358,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "기억나요?",
+        "en": "Do you remember?"
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1228",
+      "hangul": "생각나다",
+      "romanization": "saenggangnada",
+      "meanings": [
+        "to come to mind",
+        "to think of"
+      ],
+      "pos": "verb",
+      "rank": 359,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1229",
+      "hangul": "잊어버리다",
+      "romanization": "ijeobeorida",
+      "meanings": [
+        "to forget (completely)"
+      ],
+      "pos": "verb",
+      "rank": 360,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1230",
+      "hangul": "놓치다",
+      "romanization": "nochida",
+      "meanings": [
+        "to miss (a bus, a chance)"
+      ],
+      "pos": "verb",
+      "rank": 361,
+      "tags": [
+        "transport"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "버스를 놓쳤어요.",
+        "en": "I missed the bus."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1231",
+      "hangul": "밀다",
+      "romanization": "milda",
+      "meanings": [
+        "to push"
+      ],
+      "pos": "verb",
+      "rank": 362,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "l"
+    },
+    {
+      "id": "ko.core.1232",
+      "hangul": "당기다",
+      "romanization": "danggida",
+      "meanings": [
+        "to pull"
+      ],
+      "pos": "verb",
+      "rank": 363,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1233",
+      "hangul": "빼다",
+      "romanization": "ppaeda",
+      "meanings": [
+        "to take out",
+        "to subtract"
+      ],
+      "pos": "verb",
+      "rank": 364,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1234",
+      "hangul": "세다",
+      "romanization": "seda",
+      "meanings": [
+        "to count"
+      ],
+      "pos": "verb",
+      "rank": 365,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1235",
+      "hangul": "잘생기다",
+      "romanization": "jalsaenggida",
+      "meanings": [
+        "to be good-looking"
+      ],
+      "pos": "verb",
+      "rank": 366,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "그 배우는 잘생겼어요.",
+        "en": "That actor is good-looking."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1236",
+      "hangul": "못생기다",
+      "romanization": "motsaenggida",
+      "meanings": [
+        "to be ugly"
+      ],
+      "pos": "verb",
+      "rank": 367,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1237",
+      "hangul": "신나다",
+      "romanization": "sinnada",
+      "meanings": [
+        "to be excited",
+        "to have fun"
+      ],
+      "pos": "verb",
+      "rank": 368,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1238",
+      "hangul": "걱정되다",
+      "romanization": "geokjeongdoeda",
+      "meanings": [
+        "to be worried"
+      ],
+      "pos": "verb",
+      "rank": 369,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1239",
+      "hangul": "시작되다",
+      "romanization": "sijakdoeda",
+      "meanings": [
+        "to begin",
+        "to start (by itself)"
+      ],
+      "pos": "verb",
+      "rank": 370,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1240",
+      "hangul": "데려가다",
+      "romanization": "deryeogada",
+      "meanings": [
+        "to take (a person) along"
+      ],
+      "pos": "verb",
+      "rank": 371,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1241",
+      "hangul": "찾아가다",
+      "romanization": "chajagada",
+      "meanings": [
+        "to go to see",
+        "to visit"
+      ],
+      "pos": "verb",
+      "rank": 372,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1242",
+      "hangul": "정리하다",
+      "romanization": "jeongnihada",
+      "meanings": [
+        "to tidy up",
+        "to organise"
+      ],
+      "pos": "verb",
+      "rank": 373,
+      "tags": [
+        "home"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1243",
+      "hangul": "고민하다",
+      "romanization": "gominhada",
+      "meanings": [
+        "to worry over",
+        "to agonise"
+      ],
+      "pos": "verb",
+      "rank": 374,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1244",
+      "hangul": "감다",
+      "romanization": "gamda",
+      "meanings": [
+        "to close (eyes)",
+        "to wash (hair)"
+      ],
+      "pos": "verb",
+      "rank": 375,
+      "tags": [
+        "body"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "눈을 감으세요.",
+        "en": "Close your eyes."
+      },
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1245",
+      "hangul": "놀리다",
+      "romanization": "nollida",
+      "meanings": [
+        "to tease"
+      ],
+      "pos": "verb",
+      "rank": 376,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1246",
+      "hangul": "힘들다",
+      "romanization": "himdeulda",
+      "meanings": [
+        "to be hard",
+        "to be tiring"
+      ],
+      "pos": "adjective",
+      "rank": 377,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "오늘 너무 힘들어요.",
+        "en": "Today is really tough."
+      },
+      "notes": null,
+      "conj": "l"
+    },
+    {
+      "id": "ko.core.1247",
+      "hangul": "아쉽다",
+      "romanization": "aswipda",
+      "meanings": [
+        "to be a pity",
+        "to be disappointing"
+      ],
+      "pos": "adjective",
+      "rank": 378,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "b"
+    },
+    {
+      "id": "ko.core.1248",
+      "hangul": "적당하다",
+      "romanization": "jeokdanghada",
+      "meanings": [
+        "to be suitable",
+        "to be just right"
+      ],
+      "pos": "adjective",
+      "rank": 379,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1249",
+      "hangul": "확실하다",
+      "romanization": "hwaksilhada",
+      "meanings": [
+        "to be certain",
+        "to be sure"
+      ],
+      "pos": "adjective",
+      "rank": 380,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1250",
+      "hangul": "분명하다",
+      "romanization": "bunmyeonghada",
+      "meanings": [
+        "to be clear",
+        "to be obvious"
+      ],
+      "pos": "adjective",
+      "rank": 381,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1251",
+      "hangul": "친하다",
+      "romanization": "chinhada",
+      "meanings": [
+        "to be close (friends)"
+      ],
+      "pos": "adjective",
+      "rank": 382,
+      "tags": [
+        "people"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "우리는 친해요.",
+        "en": "We're close."
+      },
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1252",
+      "hangul": "어색하다",
+      "romanization": "eosaekada",
+      "meanings": [
+        "to be awkward"
+      ],
+      "pos": "adjective",
+      "rank": 383,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1253",
+      "hangul": "부드럽다",
+      "romanization": "budeureopda",
+      "meanings": [
+        "to be soft",
+        "to be gentle"
+      ],
+      "pos": "adjective",
+      "rank": 384,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "b"
+    },
+    {
+      "id": "ko.core.1254",
+      "hangul": "딱딱하다",
+      "romanization": "ttakttakada",
+      "meanings": [
+        "to be hard",
+        "to be stiff"
+      ],
+      "pos": "adjective",
+      "rank": 385,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1255",
+      "hangul": "둥글다",
+      "romanization": "dunggeulda",
+      "meanings": [
+        "to be round"
+      ],
+      "pos": "adjective",
+      "rank": 386,
+      "tags": [
+        "daily"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "l"
+    },
+    {
+      "id": "ko.core.1256",
+      "hangul": "늦다",
+      "romanization": "neutda",
+      "meanings": [
+        "to be late"
+      ],
+      "pos": "adjective",
+      "rank": 387,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1257",
+      "hangul": "저렇다",
+      "romanization": "jeoreota",
+      "meanings": [
+        "to be like that (over there)"
+      ],
+      "pos": "adjective",
+      "rank": 388,
+      "tags": [
+        "demonstrative"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "h"
+    },
+    {
+      "id": "ko.core.1258",
+      "hangul": "괴롭다",
+      "romanization": "goeropda",
+      "meanings": [
+        "to be painful",
+        "to be distressing"
+      ],
+      "pos": "adjective",
+      "rank": 389,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "b"
+    },
+    {
+      "id": "ko.core.1259",
+      "hangul": "엄청나다",
+      "romanization": "eomcheongnada",
+      "meanings": [
+        "to be enormous",
+        "to be tremendous"
+      ],
+      "pos": "adjective",
+      "rank": 390,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1260",
+      "hangul": "대단하다",
+      "romanization": "daedanhada",
+      "meanings": [
+        "to be amazing",
+        "to be great"
+      ],
+      "pos": "adjective",
+      "rank": 391,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "정말 대단해요!",
+        "en": "That's amazing!"
+      },
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1261",
+      "hangul": "놀랍다",
+      "romanization": "nollapda",
+      "meanings": [
+        "to be surprising"
+      ],
+      "pos": "adjective",
+      "rank": 392,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "b"
+    },
+    {
+      "id": "ko.core.1262",
+      "hangul": "깔끔하다",
+      "romanization": "kkalkkeumhada",
+      "meanings": [
+        "to be neat",
+        "to be tidy"
+      ],
+      "pos": "adjective",
+      "rank": 393,
+      "tags": [
+        "home"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "ha"
+    },
+    {
+      "id": "ko.core.1263",
+      "hangul": "옳다",
+      "romanization": "olta",
+      "meanings": [
+        "to be right",
+        "to be correct"
+      ],
+      "pos": "adjective",
+      "rank": 394,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null,
+      "conj": "regular"
+    },
+    {
+      "id": "ko.core.1264",
+      "hangul": "바로",
+      "romanization": "baro",
+      "meanings": [
+        "right (away)",
+        "directly",
+        "exactly"
+      ],
+      "pos": "adverb",
+      "rank": 395,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "바로 갈게요.",
+        "en": "I'll go right away."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1265",
+      "hangul": "역시",
+      "romanization": "yeoksi",
+      "meanings": [
+        "as expected",
+        "also"
+      ],
+      "pos": "adverb",
+      "rank": 396,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1266",
+      "hangul": "그대로",
+      "romanization": "geudaero",
+      "meanings": [
+        "as it is",
+        "unchanged"
+      ],
+      "pos": "adverb",
+      "rank": 397,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1267",
+      "hangul": "약간",
+      "romanization": "yakgan",
+      "meanings": [
+        "a little",
+        "slightly"
+      ],
+      "pos": "adverb",
+      "rank": 398,
+      "tags": [
+        "quantity"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1268",
+      "hangul": "얼마나",
+      "romanization": "eolmana",
+      "meanings": [
+        "how much",
+        "how (very)"
+      ],
+      "pos": "adverb",
+      "rank": 399,
+      "tags": [
+        "question"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "얼마나 걸려요?",
+        "en": "How long does it take?"
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1269",
+      "hangul": "굉장히",
+      "romanization": "goengjanghi",
+      "meanings": [
+        "extremely",
+        "very"
+      ],
+      "pos": "adverb",
+      "rank": 400,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1270",
+      "hangul": "정말로",
+      "romanization": "jeongmallo",
+      "meanings": [
+        "really",
+        "truly"
+      ],
+      "pos": "adverb",
+      "rank": 401,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1271",
+      "hangul": "단지",
+      "romanization": "danji",
+      "meanings": [
+        "merely",
+        "only"
+      ],
+      "pos": "adverb",
+      "rank": 402,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1272",
+      "hangul": "언제나",
+      "romanization": "eonjena",
+      "meanings": [
+        "always",
+        "at any time"
+      ],
+      "pos": "adverb",
+      "rank": 403,
+      "tags": [
+        "frequency"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1273",
+      "hangul": "자꾸",
+      "romanization": "jakku",
+      "meanings": [
+        "repeatedly",
+        "keep (doing)"
+      ],
+      "pos": "adverb",
+      "rank": 404,
+      "tags": [
+        "frequency"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1274",
+      "hangul": "차라리",
+      "romanization": "charari",
+      "meanings": [
+        "rather",
+        "would rather"
+      ],
+      "pos": "adverb",
+      "rank": 405,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1275",
+      "hangul": "제대로",
+      "romanization": "jedaero",
+      "meanings": [
+        "properly",
+        "right"
+      ],
+      "pos": "adverb",
+      "rank": 406,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1276",
+      "hangul": "그만",
+      "romanization": "geuman",
+      "meanings": [
+        "stop (doing)",
+        "that's enough"
+      ],
+      "pos": "adverb",
+      "rank": 407,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "이제 그만 해요.",
+        "en": "Stop it now."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1277",
+      "hangul": "어쨌든",
+      "romanization": "eojjaetdeun",
+      "meanings": [
+        "anyway",
+        "in any case"
+      ],
+      "pos": "adverb",
+      "rank": 408,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1278",
+      "hangul": "일단",
+      "romanization": "ildan",
+      "meanings": [
+        "first",
+        "for now"
+      ],
+      "pos": "adverb",
+      "rank": 409,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1279",
+      "hangul": "우선",
+      "romanization": "useon",
+      "meanings": [
+        "first of all"
+      ],
+      "pos": "adverb",
+      "rank": 410,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1280",
+      "hangul": "당장",
+      "romanization": "dangjang",
+      "meanings": [
+        "right now",
+        "immediately"
+      ],
+      "pos": "adverb",
+      "rank": 411,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1281",
+      "hangul": "잠시",
+      "romanization": "jamsi",
+      "meanings": [
+        "for a moment"
+      ],
+      "pos": "adverb",
+      "rank": 412,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1282",
+      "hangul": "가만히",
+      "romanization": "gamanhi",
+      "meanings": [
+        "still",
+        "quietly"
+      ],
+      "pos": "adverb",
+      "rank": 413,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1283",
+      "hangul": "따로",
+      "romanization": "ttaro",
+      "meanings": [
+        "separately"
+      ],
+      "pos": "adverb",
+      "rank": 414,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1284",
+      "hangul": "실제로",
+      "romanization": "siljero",
+      "meanings": [
+        "actually",
+        "in reality"
+      ],
+      "pos": "adverb",
+      "rank": 415,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1285",
+      "hangul": "원래",
+      "romanization": "wollae",
+      "meanings": [
+        "originally",
+        "by nature"
+      ],
+      "pos": "adverb",
+      "rank": 416,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1286",
+      "hangul": "주로",
+      "romanization": "juro",
+      "meanings": [
+        "mainly",
+        "mostly"
+      ],
+      "pos": "adverb",
+      "rank": 417,
+      "tags": [
+        "frequency"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1287",
+      "hangul": "오직",
+      "romanization": "ojik",
+      "meanings": [
+        "only",
+        "solely"
+      ],
+      "pos": "adverb",
+      "rank": 418,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1288",
+      "hangul": "또한",
+      "romanization": "ttohan",
+      "meanings": [
+        "also",
+        "as well"
+      ],
+      "pos": "adverb",
+      "rank": 419,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1289",
+      "hangul": "즉",
+      "romanization": "jeuk",
+      "meanings": [
+        "namely",
+        "that is"
+      ],
+      "pos": "adverb",
+      "rank": 420,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1290",
+      "hangul": "만약",
+      "romanization": "manyak",
+      "meanings": [
+        "if",
+        "in case"
+      ],
+      "pos": "adverb",
+      "rank": 421,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "만약 비가 오면 안 가요.",
+        "en": "If it rains, I won't go."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1291",
+      "hangul": "비록",
+      "romanization": "birok",
+      "meanings": [
+        "although",
+        "even though"
+      ],
+      "pos": "adverb",
+      "rank": 422,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1292",
+      "hangul": "매주",
+      "romanization": "maeju",
+      "meanings": [
+        "every week"
+      ],
+      "pos": "adverb",
+      "rank": 423,
+      "tags": [
+        "frequency"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1293",
+      "hangul": "매년",
+      "romanization": "maenyeon",
+      "meanings": [
+        "every year"
+      ],
+      "pos": "adverb",
+      "rank": 424,
+      "tags": [
+        "frequency"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1294",
+      "hangul": "근데",
+      "romanization": "geunde",
+      "meanings": [
+        "but",
+        "by the way (colloquial)"
+      ],
+      "pos": "adverb",
+      "rank": 425,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1295",
+      "hangul": "그럼",
+      "romanization": "geureom",
+      "meanings": [
+        "then",
+        "in that case"
+      ],
+      "pos": "adverb",
+      "rank": 426,
+      "tags": [
+        "connector"
+      ],
+      "hanja": null,
+      "example": {
+        "ko": "그럼 내일 봐요.",
+        "en": "See you tomorrow, then."
+      },
+      "notes": null
+    },
+    {
+      "id": "ko.core.1296",
+      "hangul": "아무도",
+      "romanization": "amudo",
+      "meanings": [
+        "nobody",
+        "no one"
+      ],
+      "pos": "adverb",
+      "rank": 427,
+      "tags": [
+        "negation"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1297",
+      "hangul": "오랫동안",
+      "romanization": "oraetdongan",
+      "meanings": [
+        "for a long time"
+      ],
+      "pos": "adverb",
+      "rank": 428,
+      "tags": [
+        "time"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1298",
+      "hangul": "다행히",
+      "romanization": "dahaenghi",
+      "meanings": [
+        "fortunately"
+      ],
+      "pos": "adverb",
+      "rank": 429,
+      "tags": [
+        "adverb"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1299",
+      "hangul": "대개",
+      "romanization": "daegae",
+      "meanings": [
+        "usually",
+        "generally"
+      ],
+      "pos": "adverb",
+      "rank": 430,
+      "tags": [
+        "frequency"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1300",
+      "hangul": "응",
+      "romanization": "eung",
+      "meanings": [
+        "yeah",
+        "yes (casual)"
+      ],
+      "pos": "interjection",
+      "rank": 431,
+      "tags": [
+        "basic"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1301",
+      "hangul": "아니",
+      "romanization": "ani",
+      "meanings": [
+        "no (casual)"
+      ],
+      "pos": "interjection",
+      "rank": 432,
+      "tags": [
+        "basic"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1302",
+      "hangul": "와",
+      "romanization": "wa",
+      "meanings": [
+        "wow"
+      ],
+      "pos": "interjection",
+      "rank": 433,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1303",
+      "hangul": "글쎄",
+      "romanization": "geulsse",
+      "meanings": [
+        "well…",
+        "let me see"
+      ],
+      "pos": "interjection",
+      "rank": 434,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1304",
+      "hangul": "안녕",
+      "romanization": "annyeong",
+      "meanings": [
+        "hi",
+        "bye (casual)"
+      ],
+      "pos": "expression",
+      "rank": 435,
+      "tags": [
+        "greeting"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1305",
+      "hangul": "좋아요",
+      "romanization": "joayo",
+      "meanings": [
+        "good",
+        "okay",
+        "I like it"
+      ],
+      "pos": "expression",
+      "rank": 436,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1306",
+      "hangul": "그래요",
+      "romanization": "geuraeyo",
+      "meanings": [
+        "okay",
+        "is that so?"
+      ],
+      "pos": "expression",
+      "rank": 437,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1307",
+      "hangul": "고마워요",
+      "romanization": "gomawoyo",
+      "meanings": [
+        "thank you (polite, friendly)"
+      ],
+      "pos": "expression",
+      "rank": 438,
+      "tags": [
+        "greeting"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1308",
+      "hangul": "미안해요",
+      "romanization": "mianhaeyo",
+      "meanings": [
+        "I'm sorry (polite, friendly)"
+      ],
+      "pos": "expression",
+      "rank": 439,
+      "tags": [
+        "greeting"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1309",
+      "hangul": "사랑해요",
+      "romanization": "saranghaeyo",
+      "meanings": [
+        "I love you (polite)"
+      ],
+      "pos": "expression",
+      "rank": 440,
+      "tags": [
+        "feeling"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1310",
+      "hangul": "몰라요",
+      "romanization": "mollayo",
+      "meanings": [
+        "I don't know"
+      ],
+      "pos": "expression",
+      "rank": 441,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1311",
+      "hangul": "모르겠어요",
+      "romanization": "moreugesseoyo",
+      "meanings": [
+        "I'm not sure",
+        "I don't know"
+      ],
+      "pos": "expression",
+      "rank": 442,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1312",
+      "hangul": "됐어요",
+      "romanization": "dwaesseoyo",
+      "meanings": [
+        "it's fine",
+        "no thanks",
+        "that's enough"
+      ],
+      "pos": "expression",
+      "rank": 443,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1313",
+      "hangul": "여기요",
+      "romanization": "yeogiyo",
+      "meanings": [
+        "excuse me (calling staff)",
+        "here you are"
+      ],
+      "pos": "expression",
+      "rank": 444,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1314",
+      "hangul": "얼마예요?",
+      "romanization": "eolmayeyo",
+      "meanings": [
+        "how much is it?"
+      ],
+      "pos": "expression",
+      "rank": 445,
+      "tags": [
+        "shopping"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1315",
+      "hangul": "다시 말해 주세요",
+      "romanization": "dasi malhae juseyo",
+      "meanings": [
+        "please say that again"
+      ],
+      "pos": "expression",
+      "rank": 446,
+      "tags": [
+        "communication"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1316",
+      "hangul": "안녕히 주무세요",
+      "romanization": "annyeonghi jumuseyo",
+      "meanings": [
+        "good night (polite)"
+      ],
+      "pos": "expression",
+      "rank": 447,
+      "tags": [
+        "greeting"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1317",
+      "hangul": "많이 드세요",
+      "romanization": "mani deuseyo",
+      "meanings": [
+        "enjoy your meal",
+        "eat a lot"
+      ],
+      "pos": "expression",
+      "rank": 448,
+      "tags": [
+        "food"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1318",
+      "hangul": "다녀오겠습니다",
+      "romanization": "danyeoogetseumnida",
+      "meanings": [
+        "I'm off (see you later)"
+      ],
+      "pos": "expression",
+      "rank": 449,
+      "tags": [
+        "greeting"
+      ],
+      "hanja": null,
+      "example": null,
+      "notes": null
+    },
+    {
+      "id": "ko.core.1319",
+      "hangul": "다녀왔습니다",
+      "romanization": "danyeowatseumnida",
+      "meanings": [
+        "I'm home"
+      ],
+      "pos": "expression",
+      "rank": 450,
+      "tags": [
+        "greeting"
       ],
       "hanja": null,
       "example": null,
