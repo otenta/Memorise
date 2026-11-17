@@ -1,6 +1,252 @@
-# Memorise — Code Review (M1)
+# Memorise — Code Review
 
-> Newest first: **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3.
+> Newest first: **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4.
+
+---
+
+# Round 4 — Full review after M2 music, M3 harmony, M4 Korean, M5 media
+
+- **Date:** 2026-11-17
+- **Scope:** `b269937..427ef73`: commits `c404913` (M2–M4), `5952402`, `a67216a` and `427ef73` (M5). That is 116 files, about +35.7k lines, of which about 22k are deck/shape JSON.
+- **Read in full:**
+  - Core: `SessionEngine` (diff), `SessionConfig`/`StatsUpdater`/`StatsStore` (diff), `Deck.swift`, `Conjugator` (forms), `AnswerMatcher`, `PersonalSnippet`, `ChordDecks`, `ChordShapeLibrary`, `DeckValidator` (tail)
+  - App: `SessionViewModel`, `MicAnswerController`, `PitchDetector`, `AudioSessionCoordinator`, `AppEnvironment`, `PersonalSnippetStore`, `UserDeckStore`
+- **Read selectively (targeted greps):** the other deck generators, Particles, HangulReading, Theory, Scales, the OCR import, export, and the large SwiftUI screens (`SessionView`, `HomeView`, `MediaSnippetView`, `UserDeckEditorView`, `StatsView`). These views were **not** read line by line, so UI-level findings in this round are limited to the items below.
+- **Verification actually run:**
+  - `swift build` (MemoriseCore): passes.
+  - `swift test`: **does not compile** (R4-1). In a scratch copy I applied the minimal compile patches: **127 tests ran, 118 passed and 9 failed**. All 9 failures are stale M1 expectations, not regressions.
+  - **Probe runs (scratch only):**
+    - `Conjugator`: 49 verbs/adjectives × 7 forms.
+    - `AnswerMatcher`: 11 input pairs.
+  - The repo was not modified.
+  - The iOS app was not built or run locally (CI `ios-build.yml` covers the build).
+
+## Verdict
+
+**The domain core is in good shape. The conjugator in particular is impressive.**
+- 48 of the 49 probe verbs conjugate correctly across all 7 forms. This includes ㄷ/ㅂ/ㅅ/ㅎ/르/ㅡ/ㄹ irregulars, 하다 splitting (공부 안 해요 vs 안 좋아해요), 있다→없다, and 알다→몰라요.
+- The new persistence pieces follow the project rules. These are the personal-snippets store, the user deck store, `SessionConfig.inputMode`, and `PersistedFormatCheck`, which now covers all 15 option cases.
+- The mic pipeline is carefully engineered: preallocated YIN, a queue-confined detector, and a host-time onset mapped onto the engine clock.
+
+**Three systemic problems:**
+1. **The safety net has rotted further.** The tests still don't compile and CI still doesn't run them. About 7k lines of new core logic have **zero** tests (R4-1).
+2. **Automatic grading can store wrong grades.** Fuzzy matching accepts different words as "close", and close counts as correct (R4-2). Valid alternative conjugations are marked wrong (R4-3).
+3. **The response-time statistic now mixes measurements that aren't comparable.** These include choice versus recall, typed fallbacks, and mic timeouts (R4-4).
+
+Problems 2 and 3 feed straight into scheduling, which is the app's core purpose.
+
+## Status of Round 3 findings
+
+| ID | Status | Evidence |
+|---|---|---|
+| R3-1 · tests don't compile, CI doesn't run them | 🔴 **Open, worse** | See R4-1. It's now 4 files and 9 compile errors, up from 1 file and 3. |
+| R3-2 · aurora renders continuously during sessions | 🔴 Open | `Theme.swift:63` is still paused only for Reduce Motion, and `SessionView.swift:109` still uses it. It now competes with mic frame traffic (R4-5). |
+| R3-3 · contrast | 🔴 Open | No `colorSchemeContrast` / `accessibilityDifferentiateWithoutColor` handling anywhere in `App/Sources`. |
+| R3-4 · Catmull-Rom overshoot | 🔴 Open | `StatsView.swift:158, 161`. |
+| R3-5 · grade-button flicker | 🟡 Likely open | `SessionView.swift:42` `@State gradeEnabled = true` is unchanged. The task path was not re-traced. |
+| R3-6 · `recoveredFields` misses inner fallbacks | ⚪ Not re-checked | It now applies to 13 more option structs, so the gap is wider if it's still open. |
+| R3-7 · polish | 🔴 Open (README) | `README.md:24, 31` still say "= OK" / "prompt → OK". |
+
+## New findings (Round 4)
+
+### R4-1 · P1 (High) · The test suite rotted further, and M2–M5 core logic has no tests at all
+**Files:**
+- `Tests/MemoriseCoreTests/DeckContentTests.swift:37, 48, 49`
+- `FretboardDeckTests.swift:52, 54, 85, 96`
+- `MusicTheoryTests.swift:67`
+- `SchedulerTests.swift:174`
+- `SessionEngineTests.swift:361`
+- `.github/workflows/core-tests.yml`
+
+**What's wrong:**
+- **Compile errors** (all from API changes in `c404913` with no test update):
+  - `DeckLoadReport` (×3, as in R3-1)
+  - `Deck.present(_:options:using:)` gained `options` (×3)
+  - `Accidental` gained `doubleFlat`/`doubleSharp`, so the test's `switch` is no longer exhaustive
+  - `Tuning.init` gained `id:`
+  - `Deck` gained a required `kind`, which breaks the test doubles `UniformDeck` and `FixedDeck`
+- **After the minimal compile patches (scratch copy): 118/127 pass.** The 9 failures are stale expectations, not regressions:
+  - catalog deck list and counts (`["music.fretboard.notes","ko.core.1","ko.aion2"]`)
+  - the `missingFile` deck list
+  - vocab golden JSON (now has `inputMode` and `micTimeoutSeconds`, an additive and allowed change)
+  - `unknownKeysAreIgnored` (uses `"tuning"`, which is now a real key)
+  - `DirectionOption.allCases` (`listening` and `allThree` appended, which is allowed)
+  - `Tuning.stringName` ("low D" / "high E")
+  - export `schemaVersion` 1 → 2
+  - the validator `"unsupported schemaVersion"` fragment
+
+  I also checked that `mixedPresentsBothSpellingsRoughlyEvenly` passes once the test passes `.mixed` options. **P1-1 has not regressed.**
+- **No tests exist for any of the following.** This is roughly 7k lines of pure, deterministic, Foundation-only code, the easiest code in the project to test:
+  - `Conjugator`
+  - `AnswerMatcher`
+  - `HangulReading`
+  - `Particles`
+  - `Key` / `Scale` / `Chord` / `ChordShape` voicing
+  - the 14 new deck generators
+  - `UserDecks`
+  - `PersonalSnippet` / `PersonalSnippetFile`
+  - `DeckValidator` schema-2 rules
+  - `SessionEngine.answerEvaluated` / `answerDetected`
+- `TheoryCheck` (37 lines, DEBUG-launch `assert`) is not a substitute: it doesn't run in CI and stops at the first launch.
+
+**Fix direction:**
+1. Patch the 9 compile sites and update the 9 stale expectations. This is mechanical, about 30 minutes.
+2. Make CI run `swift test`.
+3. Add golden tests:
+   - **Conjugator:** an entry × form table. The probe list in this round (49 verbs) is a ready seed, and every row except 푸르다 was hand-checked.
+   - **AnswerMatcher:** must-accept and must-reject pairs (see R4-2 and R4-3).
+   - **Every deck generator:** card count and key uniqueness per default options, plus `present` keeps the key.
+   - **`answerEvaluated`:** clamps `at` < prompt start, and `gradeMs == 0`.
+4. Add a rule to CLAUDE.md: *"API change in Core ⇒ `swift test` green before commit."*
+
+### R4-2 · P2 (Medium-High) · Typed-answer fuzzy matching grades *different words* as correct
+**Files:**
+- `Korean/AnswerMatcher.swift:73-88` (hangul) and `:94-104` (English)
+- `App/Sources/DeckUI/VocabUI.swift:34-40` (vocab uses `exactRequired: false`, so **close = correct**)
+
+**Verified with probe runs:**
+
+| Input | Expected | Verdict | Why |
+|---|---|---|---|
+| 가방 (bag) | 가다 (to go) | **close → correct** | The `isPredicate` branch only checks `conj.hasPrefix(stem)`, so any word starting with 가 passes. |
+| 하 | 하다 | **close → correct** | A bare stem passes too. |
+| 의사 (doctor) | 의자 (chair) | **close → correct** | Jamo distance 1 (ㅅ/ㅈ) on a 2-syllable word. Minimal pairs like this are common in Korean. |
+| there | three | close → correct | OSA transposition = 1 |
+| angle / quiet / dessert / later | angel / quite / desert / latter | close → correct | distance 1 at ≥ 5 letters |
+
+**Why it matters:** these grades update `ewmaError` and drive the scheduler. A user can hold a word as "learned" while confusing it with its neighbour. That is exactly the failure a memorisation app exists to catch. The override button exists, but the default is wrong and users rarely contradict a green verdict.
+
+**Fix direction:**
+- **Predicate branch:** require `conj.count > stem.count`, and require that the remainder is a recognised ending. Better: generate the accepted conjugations with `Conjugator` (all 7 forms) and compare exactly.
+- **Hangul distance:** don't auto-accept an edit that changes a *whole* jamo (initial or medial) in a ≤ 2-syllable word. Allowing only final-consonant (batchim) slips is a defensible middle ground.
+- **English:** keep `close`, but **store it as wrong unless the user confirms** (an "I was right" override), or restrict close to distance-1 *insertions/deletions* (typos), excluding substitutions and transpositions that produce real words.
+- Whatever is chosen, record it in PLAN §17 and lock it with must-accept / must-reject tests (R4-1).
+
+### R4-3 · P2 (Medium) · Conjugation drill accepts exactly one spelling, so valid answers are graded wrong
+**Files:**
+- `App/Sources/DeckUI/ConjugationUI.swift:26` (`expected: [p.answer]`, `exactRequired: true`)
+- `Korean/Conjugator.swift:34-43`. The doc says *"the form, any other accepted spellings"*, but `Conjugation` has only `text`.
+
+**Verified:**
+- 안 공부해요 and 공부하지 않아요 are **wrong** for 공부 안 해요. Both are standard, and `-지 않아요` is the textbook long negation.
+- Uncontracted forms such as 보아요, 주어요, 되어요 and the contracted 놔요 (for 놓아요) are graded wrong because only one spelling is generated.
+
+Spaces are already ignored (normalisation strips them), so this is purely about alternates.
+
+**Fix direction:**
+- Add `alternates: [String]` to `Conjugation`:
+  - negative → also `안 X해요` and `-지 않아요`
+  - contraction-optional stems → both spellings
+- Pass `[text] + alternates` as `expected`. The first stays the displayed answer.
+
+### R4-4 · P2 (Medium) · The response-time EWMA now mixes incomparable measurements
+**Files:**
+- `Domain/SessionConfig.swift` (`InputMode.countsTime`)
+- `Session/SessionEngine.swift:178`
+- `App/Sources/Features/Session/SessionViewModel.swift` (`activeMode`, `armMicTimeout`)
+
+`grade()` decides whether time counts from **`config.inputMode`**, while the card was actually answered in **`activeMode`**:
+
+1. **Mic timeout:** after `micTimeoutSeconds` (default 10 s), `ok()` reveals the card. `responseMs` ≈ 10 000. If the user then grades it correct, **a 10 s time enters `ewmaResponseMs` and can set `bestResponseMs`'s baseline** for that item. Mic sessions therefore systematically inflate time stats on the cards the mic missed.
+2. **Typed sessions with touch fallback:** cards with no `typedAnswer` fall back to Reveal/self-grade. Because `config.inputMode == .typed`, `countsTime` is false, so legitimate recall times are dropped.
+3. **Choice:** choosing among 4 options (recognition) is counted in the same EWMA as touch recall. That makes a deck look faster after a choice session and shifts the time-based weighting (`focus`) for the next touch session.
+
+**Fix direction:**
+- Compute `countsTime` from the per-answer mode (pass it into `grade`).
+- Treat a mic-timeout reveal as `countsTime: false`.
+- Decide in PLAN whether choice time counts at all. A simple option is not to count it, like typed.
+- Consider recording the answer mode on `Attempt` (optional field, default `nil`). Today it can only be inferred from the session config, which is wrong for fallbacks.
+
+### R4-5 · P2 (Medium) · Mic mode floods the main actor while the aurora animates (extends R3-2)
+**Files:**
+- `App/Sources/Services/MicAnswerController.swift:65-67, 100-101`
+- `PitchDetector.swift`
+
+Every analysed hop (512 samples, about **94 per second at 48 kHz**) creates a `Task { @MainActor … handle(frame) }`. `handle` always writes `levelDB`, an observed property, so the level meter re-renders up to 94 times per second, **including while not listening**. Stability matching also runs on the main actor. Together with the 30 fps blurred aurora (R3-2) and the `.regularMaterial` cards, this is sustained main-thread load during the exact window whose timing the app measures.
+
+The onset itself is safe because it uses host time. The latency to auto-advance and of touch handling is not.
+
+**(plausible: measure)** Use Instruments (SwiftUI + Time Profiler), with mic mode on, for 60 s of prompts.
+
+**Fix direction:**
+- Do run-tracking on the detector queue and only hop to main for a stable note.
+- Publish `levelDB` at ≤ 20 Hz and only when it changes by more than 1 dB.
+- Freeze the aurora during sessions (R3-2).
+
+### R4-6 · P2 (Medium, process) · ~1,100 Korean entries are unverified, but typed grading treats them as ground truth
+**File:** `docs/core-verification.md` (header: *"have not yet been checked against the dictionary"*; every row ☐)
+
+Core 2–5 (about 890 entries) plus patterns were authored from memory. Typed romanization is an **exact** match (`AnswerMatcher.romanizationVerdict`), and typed meaning/Hangul feed grades. One wrong gloss or romanization becomes a card the user can never get "right".
+
+**Fix direction:**
+- Treat the verification table as a ship gate. Ticking can be split across sessions.
+- Until it's done, consider labelling Core 2–5 as "beta" on Home.
+
+### R4-7 · P3 (Low) · Mic onset is biased early by up to one analysis window
+**File:** `PitchDetector.swift`, `analyse` (`hostSeconds` = the frame's **first** sample)
+
+The detector reports a frame's time as the start of its 2048-sample window (≈ 43 ms at 48 kHz). The first stable frame's window usually *begins before* the note was struck. So mic `responseMs` is systematically **under**-estimated by 0 to about 40 ms compared with touch.
+
+That's small, but it's a fixed bias in a timing app. It also compounds R4-4 (3) when comparing modes.
+
+**Fix direction:** use the hop start (newest − hop) as the onset, or subtract half a window. Document the remaining uncertainty in PLAN §17.
+
+### R4-8 · P3 (Low) · `DeckOptions` is now the main rigidity hotspot (P2-8 remainder)
+**File:** `Domain/Deck.swift:43-218`
+
+The UI registry (`DeckUIRegistry`) fixed most of P2-8. But each new deck still needs **6 coordinated edits** in one enum:
+1. a case
+2. a `CodingKeys` entry
+3. a decode branch
+4. an encode branch
+5. an accessor
+6. a `caseKey` branch
+
+plus `PersistedFormatCheck`. That's about 175 lines of near-identical code for 15 cases. The encode switch is the risky part: a copy-paste slip (`forKey: .scales` inside `case .triads`) compiles and silently writes the wrong wire shape. `PersistedFormatCheck` would catch it only in DEBUG and only if a fixture exists for that case.
+
+Separately, `Deck.kind` has no default, which is what broke both test doubles.
+
+**Fix direction (no wire change):**
+- Make one `private var payload: (key: CodingKeys, value: any Encodable)` switch, and write `encode` once from it. `caseKey` then becomes `payload.key`.
+- Add a test that every case round-trips and that `caseKey`'s raw value equals the encoded top-level key.
+
+### R4-9 · P3 (Low) · Personal snippets are described as "never leave the device", but iCloud backups include them
+**Files:** `App/Sources/Persistence/PersonalSnippetStore.swift:4, 21-24`; `Korean/PersonalSnippet.swift:3`
+
+`Application Support/personal_snippets.json` is included in iCloud/Finder device backups by default. The code comments, and probably the product promise (PLAN_M5 K4), say nothing leaves the device except through Export.
+
+**Fix direction:**
+- Either set `URLResourceValues.isExcludedFromBackup = true` after each write, or reword the promise to "not uploaded by Memorise".
+- The same applies to `UserDecks/` if the same promise is made there.
+
+### R4-10 · P3 (Low) · Small robustness gaps in the new persistence and environment code
+- **Launch race** (`AppEnvironment.swift:84, 123-128`): `loadUserDecks()` replaces `userDeckFiles` wholesale. If the user saves a deck before the launch load resumes on main, the in-memory list drops it until relaunch. The file on disk is safe. Merge by `deckId` instead of replacing.
+- **Delete order** (`deleteUserDeck`): the file is deleted first, then `store.reset`. If reset throws, the deck stays in the catalog with no file behind it. Reset first, or update the catalog in a `defer`.
+- **`micTimeoutSeconds`** is decoded without bounds. A persisted `0` or a negative value reveals instantly. Clamp it to `micTimeoutPresets` in `sanitize`.
+- **Screenshot import** (`ScreenshotImportView.swift:131-132`) stores every entry as `pos: .noun`. OCR'd verbs never get `conj`, never reach the conjugation deck, and skip the `isPredicate` matching path.
+
+### R4-11 · P4 (Polish)
+- **러-irregular** (푸르다 → 푸르러요, 이르다 "to arrive" → 이르러요) isn't modelled. As `.reu`, the probe produced 풀러요. None of these is in a deck today; the deck's 이르다 means "early", where 일러요 is correct. `DeckValidator` could reject those headwords until the class exists. The known 춤추다 gap is already logged in §17.
+- **`ChordShapeLibrary.shape(id:)`** is a linear scan. That's fine now, but `ChordDiagramView` previews force-unwrap it (`:122-132`), and so does `ChordsUI` previews (`:179, 185`). A renamed shape id crashes previews, not tests. Shape ids are effectively `ItemKey` parts (`chord:<shape.id>`), so state in the JSON header that **shape ids are frozen**, like entry ids.
+- **`ChordChoices.options`** can return fewer than 4 choices after 50 attempts with a narrow quality set. The UI should tolerate 2–3. This was not checked in the view.
+
+## What's good (keep it)
+- **Conjugator:** an ordered pipeline (stem → irregular → harmony → contraction → ending) with human-readable `rule` strings. The 하다 negative split, with bound-root (`원/변/피…`) and emotion-verb exceptions, is unusually thoughtful.
+- **`PersonalSnippetStore`:** it uses an actor cache. An unreadable file is moved aside and never overwritten, and if that move fails, `writesBlocked` stops all writes. Writes are atomic and decoding is tolerant per snippet (`LossySnippet`). This is a model for the other stores.
+- **`AudioSessionCoordinator`:** one owner of the category, and it never downgrades a mic session.
+- **`PitchDetector`:** preallocated buffers, queue-confined state, vDSP, and a gate plus range limits. The host-time → engine-clock mapping in `micHeard` is correct.
+- **`SessionEngine.answerEvaluated`:** it clamps onsets before the prompt and goes through the same `gradeRevealed` path, so retries and stats stay consistent.
+- **`PersistedFormatCheck`** now pins every `DeckOptions` case plus the new `SessionConfig` fields. All new options use hand-written tolerant decoding with sorted `Set` encoding.
+- **Snippet editing pauses the session through the same pause path**, so grade time isn't inflated.
+
+## Round 4 — Suggested fix order
+1. **R4-1:** compile and update the tests, make CI run `swift test`, and add Conjugator and AnswerMatcher golden tests. This is half a day and the highest-leverage item. Everything below should land with a test.
+2. **R4-2 + R4-3:** fix grading correctness: tighter fuzzy rules, and conjugation alternates.
+3. **R4-4:** per-answer `countsTime`, and mic-timeout reveals don't count time.
+4. **R4-5 + R3-2:** measure, then throttle mic frames and freeze the aurora.
+5. **R4-6:** start ticking the verification table, or label the decks as beta.
+6. R4-7 to R4-10, then the open R3-3 to R3-7 items and R4-11.
+7. Still open from earlier rounds: the G5 measurements (N5), the G6 device checks, and the branch/PR question.
 
 ---
 
