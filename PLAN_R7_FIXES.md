@@ -43,9 +43,9 @@
 | F1 No repeats until the pool is used up; correct cards stay away; top up new cards | #1, #6 | ☑ | Core. Update PLAN.md §10.3 and §10.5. |
 | F2 Ending a session early discards it | #5 | ☑ | Core + app. One new `SessionEffect` case and one new `StatsStore` requirement. |
 | F3 Mic answer: "Correct" / "Try again", then move on | #2 | ☑ | App only. One new `AppSettings` field. |
-| F4 Fretboard redesign | #3 | ☐ | Frontend. The owner checks it on device. |
-| F5 Home: stable section identity | #4 | ☐ | Frontend. |
-| F6 Korean text that fits | #8 | ☐ | Frontend. One shared component. |
+| F4 Fretboard redesign | #3 | ☑ | Frontend. The owner checks it on device. |
+| F5 Home: stable section identity | #4 | ☑ | Frontend. |
+| F6 Korean text that fits | #8 | ☑ | Frontend. One shared component. |
 | F7 One home per Korean word, and derived decks that don't mirror Core 1 | #7 | ☐ | Core. The validator report feeds C2. |
 | C2 Distinct glosses across Korean decks | #7 | ☐ | Content agent, after F7. Edits existing glosses (the owner asked for this). |
 

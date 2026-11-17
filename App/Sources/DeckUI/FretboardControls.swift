@@ -179,6 +179,15 @@ extension AppSettings {
         )
     }
 
+    /// Zoomed answer board around `focus` frets, with pager and "Whole neck" toggle (R7-F4).
+    func answerBoard(neckMax: Int, tuning: Tuning, focus: [Int], marks: [FretMark], highlight: Set<Int> = [],
+                     caption: String? = nil) -> FretboardAnswerBoard {
+        FretboardAnswerBoard(
+            stringCount: tuning.stringCount, neckMax: neckMax, focus: focus, marks: marks, highlight: highlight,
+            leftHanded: leftHanded, highEOnTop: highEOnTop, caption: caption
+        )
+    }
+
     /// Dot text for an M3 note, per the "Dot labels" setting.
     func dotLabel(_ n: FretNote) -> String { dotLabels == .degrees ? n.degree : n.spelling.displayName }
 

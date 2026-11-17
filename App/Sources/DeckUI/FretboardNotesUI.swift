@@ -137,20 +137,19 @@ struct FretboardNoteAnswerView: View {
     var body: some View {
         let name = prompt.spelling.displayName
         let tuning = Tuning.preset(prompt.tuning)
-        VStack(spacing: 16) {
-            HStack(spacing: 12) {
-                Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
-                    .font(.system(size: 44, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Subject.music.gradient)
-                PlayNotesButton(notes: notes)
-            }
-            settings.board(
-                maxFret: maxFret, tuning: tuning,
+        FretboardAnswerLayout {
+            Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
+                .font(.system(size: 44, weight: .heavy, design: .rounded))
+                .foregroundStyle(Subject.music.gradient)
+                .shadow(color: Theme.violet.opacity(0.25), radius: 8, y: 4)
+            PlayNotesButton(notes: notes)
+        } board: {
+            settings.answerBoard(
+                neckMax: max(maxFret, prompt.answerFrets.max() ?? 0), tuning: tuning, focus: prompt.answerFrets,
                 marks: prompt.answerFrets.map { FretMark(string: prompt.stringNumber, fret: $0, label: name) },
-                highlight: [prompt.stringNumber]
+                highlight: [prompt.stringNumber],
+                caption: FretboardNotesDeck.answerText(frets: prompt.answerFrets)
             )
-            Text(FretboardNotesDeck.answerText(frets: prompt.answerFrets))
-                .font(.title3.weight(.semibold).monospacedDigit())
         }
     }
 }
@@ -170,6 +169,13 @@ struct TuningBadge: View {
 #Preview("Fretboard prompt") {
     let p = FretboardNotePrompt(stringNumber: 6, pitchClass: PitchClass(9), spelling: NoteSpelling(.a), answerFrets: [5])
     return FretboardNotePromptView(prompt: p, settings: AppSettings()).padding()
+}
+
+#Preview("Fretboard answer, landscape", traits: .landscapeLeft) {
+    let p = FretboardNotePrompt(stringNumber: 6, pitchClass: PitchClass(9), spelling: NoteSpelling(.a), answerFrets: [5, 17])
+    return FretboardNoteAnswerView(prompt: p, maxFret: 22, settings: AppSettings(), notes: [(45, 0)])
+        .padding()
+        .environment(AppEnvironment.preview())
 }
 
 #Preview("Fretboard answer") {

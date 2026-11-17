@@ -76,16 +76,18 @@ struct FindAllAnswerView: View {
             FretMark(string: pos.string, fret: pos.fret,
                      label: Pitch(midi: Fretboard.midi(string: pos.string, fret: pos.fret, tuning: tuning)).name(spelling: prompt.spelling))
         }
-        VStack(spacing: 16) {
-            HStack(spacing: 12) {
-                Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
-                    .font(.system(size: 44, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Subject.music.gradient)
-                PlayNotesButton(notes: notes, label: "Play all positions")
-            }
-            settings.board(maxFret: prompt.fretRange.upperBound, tuning: tuning, marks: marks, highlight: Set(prompt.strings))
-            Text("\(prompt.positions.count) position\(prompt.positions.count == 1 ? "" : "s")")
-                .font(.title3.weight(.semibold).monospacedDigit())
+        FretboardAnswerLayout {
+            Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
+                .font(.system(size: 44, weight: .heavy, design: .rounded))
+                .foregroundStyle(Subject.music.gradient)
+                .shadow(color: Theme.violet.opacity(0.25), radius: 8, y: 4)
+            PlayNotesButton(notes: notes, label: "Play all positions")
+        } board: {
+            settings.answerBoard(
+                neckMax: prompt.fretRange.upperBound, tuning: tuning, focus: prompt.positions.map(\.fret),
+                marks: marks, highlight: Set(prompt.strings),
+                caption: "\(prompt.positions.count) position\(prompt.positions.count == 1 ? "" : "s")"
+            )
         }
     }
 }

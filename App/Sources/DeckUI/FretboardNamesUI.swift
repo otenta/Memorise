@@ -57,7 +57,8 @@ struct NamePromptView: View {
         VStack(spacing: 16) {
             Text("WHICH NOTE?").font(.caption.weight(.heavy)).tracking(3).foregroundStyle(.secondary)
             settings.board(
-                maxFret: max(maxFret, prompt.position.fret), tuning: tuning,
+                window: FretWindows.window(around: [prompt.position.fret], neckMax: max(maxFret, prompt.position.fret)),
+                tuning: tuning,
                 marks: [FretMark(string: prompt.position.string, fret: prompt.position.fret)],
                 highlight: [prompt.position.string]
             )
@@ -77,21 +78,20 @@ struct NameAnswerView: View {
     var body: some View {
         let tuning = Tuning.preset(prompt.tuning)
         let pos = prompt.position
-        VStack(spacing: 16) {
-            HStack(spacing: 12) {
-                Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
-                    .font(.system(size: 52, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Subject.music.gradient)
-                    .lineLimit(1).minimumScaleFactor(0.5)
-                PlayNotesButton(notes: notes)
-            }
-            settings.board(
-                maxFret: max(maxFret, pos.fret), tuning: tuning,
+        FretboardAnswerLayout {
+            Text(NoteFormatter.format(prompt.spelling, settings: settings.musicDisplay))
+                .font(.system(size: 52, weight: .heavy, design: .rounded))
+                .foregroundStyle(Subject.music.gradient)
+                .shadow(color: Theme.violet.opacity(0.25), radius: 8, y: 4)
+                .lineLimit(1).minimumScaleFactor(0.5)
+            PlayNotesButton(notes: notes)
+        } board: {
+            settings.answerBoard(
+                neckMax: max(maxFret, pos.fret), tuning: tuning, focus: [pos.fret],
                 marks: [FretMark(string: pos.string, fret: pos.fret, label: prompt.spelling.displayName)],
-                highlight: [pos.string]
+                highlight: [pos.string],
+                caption: "String \(pos.string) (\(tuning.stringName(pos.string))) · \(pos.fret == 0 ? "open" : "fret \(pos.fret)")"
             )
-            Text("String \(pos.string) (\(tuning.stringName(pos.string))), \(pos.fret == 0 ? "open" : "fret \(pos.fret)")")
-                .font(.title3.weight(.semibold).monospacedDigit())
         }
     }
 }

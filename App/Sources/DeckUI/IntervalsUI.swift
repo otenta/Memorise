@@ -73,7 +73,8 @@ struct IntervalPromptView: View {
                 .foregroundStyle(Subject.music.gradient)
                 .lineLimit(1).minimumScaleFactor(0.4)
             settings.board(
-                maxFret: maxFret, tuning: .preset(prompt.tuning),
+                window: FretWindows.window(around: [prompt.root.fret], neckMax: maxFret, padAbove: 5),
+                tuning: .preset(prompt.tuning),
                 marks: [FretMark(string: prompt.root.string, fret: prompt.root.fret, label: prompt.rootSpelling.displayName, style: .secondary)],
                 highlight: [prompt.root.string]
             )
@@ -96,17 +97,19 @@ struct IntervalAnswerView: View {
             + prompt.targets.map { t in
                 FretMark(string: t.string, fret: t.fret, label: target, style: t == prompt.primary ? .answer : .muted)
             }
-        VStack(spacing: 16) {
-            HStack(spacing: 12) {
-                Text(NoteFormatter.format(prompt.targetSpelling, settings: settings.musicDisplay))
-                    .font(.system(size: 44, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Subject.music.gradient)
-                PlayNotesButton(notes: notes, label: "Play interval")
-            }
-            settings.board(maxFret: maxFret, tuning: .preset(prompt.tuning), marks: marks,
-                           highlight: Set(prompt.targets.map(\.string)))
-            Text("\(prompt.interval.longName) = \(prompt.interval.semitones) semitone\(prompt.interval.semitones == 1 ? "" : "s")")
-                .font(.title3.weight(.semibold))
+        FretboardAnswerLayout {
+            Text(NoteFormatter.format(prompt.targetSpelling, settings: settings.musicDisplay))
+                .font(.system(size: 44, weight: .heavy, design: .rounded))
+                .foregroundStyle(Subject.music.gradient)
+                .shadow(color: Theme.violet.opacity(0.25), radius: 8, y: 4)
+            PlayNotesButton(notes: notes, label: "Play interval")
+        } board: {
+            // Frame the root and the primary target; other positions show when in view or on "Whole neck".
+            settings.answerBoard(
+                neckMax: maxFret, tuning: .preset(prompt.tuning), focus: [prompt.root.fret] + (prompt.primary.map { [$0.fret] } ?? []),
+                marks: marks, highlight: Set(prompt.targets.map(\.string)),
+                caption: "\(prompt.interval.longName) = \(prompt.interval.semitones) semitone\(prompt.interval.semitones == 1 ? "" : "s")"
+            )
         }
     }
 }
