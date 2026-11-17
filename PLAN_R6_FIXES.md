@@ -40,7 +40,7 @@
 | Segment | Covers | Status | Notes |
 |---|---|---|---|
 | T1 Wire `ko_media` + song locators → "lyrics" + commit K2 | R6-1, R6-5a | ☐ | First. Do not tick PLAN_M5 K2 / PLAN_R5 S7 until the owner's spot-check (D2) |
-| T2 Commit the Core 5 + AION 2 extension | R6-1, R6-4 | ☐ | Waits for owner decision D1 |
+| T2 Commit the Core 5 + AION 2 extension | R6-1, R6-4 | ☐ | Unblocked: owner said yes to D1 (2026-11-17) |
 | T3 Matcher: ±요 is close for non-predicate Hangul | R6-2 | ☐ | Core only |
 | T4 Make the media deck's glosses unique | R6-2 | ☐ | After T1 is committed |
 | T5 Ignore pre-arm audio; no 0 ms mic answers | R6-3 | ☐ | App + one core line |
@@ -91,7 +91,7 @@
 
 ### T2 · R6-1 + R6-4 · Commit the Core 5 + AION 2 extension
 
-**Blocked on owner decision D1.** Until this lands, committed `HEAD` still fails the 450 and 140 count assertions.
+**Owner approved (D1 = yes, 2026-11-17).** Until this lands, committed `HEAD` still fails the 450 and 140 count assertions.
 
 **Files:**
 - `Packages/MemoriseCore/Sources/MemoriseCore/Resources/Decks/ko_core_5.json` (+225 entries, `ko.core.1095`–`ko.core.1319`)
@@ -278,7 +278,7 @@
 
 ## 4. Planner follow-ups (not implementor work)
 
-- **P1 · R6-6 (carried over from PLAN_R5_FIXES P1).** The trigger has been met (`9339c46`). Fold the R4/R5/R6 decisions into the normative sections:
+- **P1 · R6-6 (carried over from PLAN_R5_FIXES P1). ☑ Done 2026-11-17.** The trigger has been met (`9339c46`). Fold the R4/R5/R6 decisions into the normative sections:
   - PLAN.md §9.2: the `choice` row should say "time EWMA: no"; also the paragraph below the table;
   - PLAN.md §11.5d;
   - PLAN_M4 M4-0 step 2: `countsTime` is per answer, via `ok(countsTime:)`;
@@ -295,5 +295,5 @@
 
 | # | Decision | Recommendation |
 |---|---|---|
-| D1 | Commit the Core 5 / AION 2 extension (T2) **before** its verification rows and spot-check exist? | **Yes.** It makes `HEAD` green; the ids are already stable and the change is additive; verification follows as P2. If no, the tester must lower the count assertions to 225 and 81 until then. |
+| D1 | Commit the Core 5 / AION 2 extension (T2) **before** its verification rows and spot-check exist? | **Decided: yes** (owner, 2026-11-17). Rationale: It makes `HEAD` green; the ids are already stable and the change is additive; verification follows as P2. If no, the tester must lower the count assertions to 225 and 81 until then. |
 | D2 | K2 ships with 66 % verified coverage and a 91/1/8 split (targets: 70 % and ≈ 50/30/20)? | Do the 10-reference spot-check first, preferring song rows and checking the NewJeans 7-digit Bugs ids and the FIRE page year (R6-5c). If at most 1 failure, tick K2 and S7, and raise coverage in K2b. Record the decision in §17. |

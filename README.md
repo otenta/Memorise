@@ -21,14 +21,14 @@ See [PLAN.md](PLAN.md) for the full design.
 Core only: `cd Packages/MemoriseCore && swift build`.
 
 ## Hardware keyboard / page-turner pedal
-- Prompt: Space, Return, →, ↓, Page Down = OK · Esc = pause
+- Prompt: Space, Return, →, ↓, Page Down = Reveal · Esc = pause
 - Reveal: →, Page Down, Return = Correct · ←, Page Up, Backspace = Wrong
 
 ## Microphone
 Mic answers (Fretboard Notes, Intervals) need microphone permission; the app asks the first time you enable "Answer by playing". If denied, sessions fall back to touch. Change it in *Settings → Privacy & Security → Microphone → Memorise*.
 
 ## Manual QA checklist
-- [ ] Response time feels accurate (prompt → OK)
+- [ ] Response time feels accurate (prompt → Reveal)
 - [ ] Background the app mid-card → card re-shown with a fresh timer after resume
 - [ ] Pedal / keyboard keys work in prompt and reveal
 - [ ] Korean TTS plays (install a Korean voice if prompted)

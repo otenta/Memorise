@@ -49,9 +49,9 @@ The recommended single-agent order is 0 → 3 → 4 → 2 → 5 → 6 → 1 → 
 
 | `InputMode` | How the user answers | Grading | Time updates the time-EWMA? |
 |---|---|---|---|
-| `touch` (default) | OK → reveal → self-grade | self | yes |
-| `microphone` (M2-7) | play the note | auto (correct only) | yes |
-| `choice` | tap one of 2–4 options | auto | yes |
+| `touch` (default) | Reveal → self-grade | self | yes |
+| `microphone` (M2-7) | play the note | auto (correct only) | yes; no for a timeout reveal (R4-4) |
+| `choice` | tap one of 2–4 options | auto | **no** (R4-4; the error EWMA still updates) |
 | `typed` | type the answer, press Return | auto + override | **no** (typing speed would distort recall time; the error EWMA still updates) |
 
 - Each `DeckUI` provider declares `supportedInputModes`. Setup shows a segmented "Answer by" control only when there is more than one mode.
@@ -80,7 +80,7 @@ User decks (M4-8) have relaxed rules; see §M4-8.
 **Files:** `Domain/SessionConfig.swift`, `Session/SessionEngine.swift`, `Stats/StatsUpdater.swift`, `Korean/Vocab.swift`, `Korean/DeckValidator.swift`, `Domain/PersistedFormatCheck.swift`, `App/Sources/AppEnvironment.swift`, `App/Sources/DeckUI/DeckUI.swift`.
 
 1. `InputMode` with the four cases; `SessionConfig.inputMode` decoded tolerantly; a `PersistedFormatCheck` fixture (legacy JSON → `.touch`).
-2. Engine `answerEvaluated(correct:at:countsTime:)`; engine `grade` gains an internal `countsTime` derived from `config.inputMode == .typed` (false); `StatsUpdater.apply(updateTime:)`.
+2. Engine `answerEvaluated(correct:at:countsTime:)`; the engine stores `countsTime` **per answer**: `ok(countsTime:)` is passed by the view model for each card (touch reveal = true, typed/choice = false, mic timeout = false; R4-4, superseding the original "derived from `config.inputMode == .typed`"); `StatsUpdater.apply(updateTime:)`.
 3. Schema additions from §3.2 in `VocabEntry` / `PartOfSpeech`, plus the `conj` enum `ConjugationClass` (tolerant: unknown → `.regular`, logged by the validator).
 4. `DeckUI` gains `supportedInputModes: [InputMode]` (default `[.touch]`) and `typedAnswer(for card) -> TypedAnswerSpec?`, which is the expected answers plus a matcher kind (`.hangul`, `.english`, `.romanization`).
 5. Dynamic catalog (§3.3): `reloadCatalog()` and `DeckCatalog.init(decks:)` reuse.

@@ -537,12 +537,24 @@ Timed sessions end when the timer expires **after** the current card is graded.
 
 | `InputMode` | How the user answers | Grading | Updates the time EWMA? |
 |---|---|---|---|
-| `touch` (default) | OK → reveal → self-grade | self | yes |
-| `microphone` | play the note | auto, correct only (`answerEvaluated(correct:at:countsTime:)`) | yes |
-| `choice` | tap one of 2–4 options | auto: `ok()` at the tap, verdict graded on Next | yes |
+| `touch` (default) | Reveal → self-grade | self | yes |
+| `microphone` | play the note | auto, correct only (`answerEvaluated(correct:at:countsTime:)`) | yes, measured to the note onset; **no** for a timeout reveal or an onset before the prompt (R6-3) |
+| `choice` | tap one of 2–4 options | auto: `ok()` at the tap, verdict graded on Next | **no** (R4-4); the error EWMA still updates |
 | `typed` | type, then Return | auto (`AnswerMatcher`: exact / close / wrong) + override | **no**; the error EWMA still updates |
 
-`StatsUpdater.apply(updateTime:)` leaves `ewmaResponseMs`/`bestResponseMs` alone when false. The `Attempt` still stores the raw `responseMs`, so there is no schema change. In a typed session, time is skipped for every card, including any card that falls back to touch. Vocab "close" counts as correct (with override); conjugation "close" counts as wrong.
+`StatsUpdater.apply(updateTime:)` leaves `ewmaResponseMs`/`bestResponseMs` alone when false. The `Attempt` still stores the raw `responseMs`, so there is no schema change.
+
+**Time is decided per answer, not per session (R4-4).** The view model passes `ok(countsTime:)` (or `answerEvaluated(…, countsTime:)`) for each card:
+- a touch reveal counts, including a card that falls back to touch inside a typed, choice or mic session;
+- a typed or choice reveal never counts (`InputMode.countsTime` is true only for `touch` and `microphone`);
+- a mic answer counts; a mic-timeout reveal doesn't, because its time is just the timeout;
+- an answer whose onset is before the prompt appeared is graded but untimed (R6-3).
+
+**"Close" (typed answers, `AnswerMatcher`):**
+- *Hangul predicates* (verbs, adjectives): a real **affirmative** conjugation of the expected word (`Conjugator.allAcceptedForms`, `ConjForm.affirmative`, main spelling or alternate, with or without 요) is close. Negative forms (몰라요 for 알다, 없어요 for 있다, 안 가요 for 가다) are wrong (R5-1). A bare stem or another word with the same first syllable (가방 for 가다) is wrong (R4-2).
+- *Other Hangul*: the same word or phrase with the polite 요 added or dropped is close (미안해요 for 미안해; R6-2, PLAN_R6_FIXES T3). Otherwise, for 1–2 syllables only a batchim slip is close (의사/의자 is wrong); for 3+ syllables, jamo distance ≤ 1.
+- *English*: only dropped or extra letters (one at ≥ 5 letters, two at ≥ 9); substitutions and transpositions are wrong. Parentheticals in a gloss are ignored.
+- Vocab "close" counts as correct (with override); conjugation "close" counts as wrong (`exactRequired`).
 
 ### 9.3 Session engine (state machine)
 
@@ -562,9 +574,9 @@ idle ───────────────► prompting(card)  ── pr
                       finished(summary)
 
 pause()/interrupt(): prompting → paused → resume() → prompting(same card, new timer)
+(No undo: `undoLastGrade` was dropped from the spec by owner decision D2, 2026-11-17. The "I was right / I was wrong" overrides on typed and choice reveals cover mis-grades before Next.)
 quit(): any → finished(summary of what was done)   (session status = .abandoned if 0 graded? else .completed)
 grade lockout: grade(correct:) is ignored (no effects, no state change) until gradeLockoutMs (250 ms, SchedulerConstants) after the reveal; pause time does not count
-undoLastGrade(): allowed only from the state right after a grade and before the next ok(); flips correctness, re-applies stats (stretch goal, nice to have)
 ```
 
 Engine responsibilities:
@@ -739,7 +751,7 @@ Root: `TabView` with **Practice**, **Stats**, **Settings**.
 - **Find All:** prompt = "Find every A" + "strings 6–1 · frets 0–12"; answer = every position labelled with octave ("A2"), count, 🔊 arpeggio low→high.
 - **Intervals:** prompt = "Play a major 3rd above C" + board with the root dot; answer = target name, root (orange) + targets (primary accent, others grey) in the playable window, "major 3rd = 4 semitones", 🔊 root→target.
 - **Interval Ear:** prompt plays the two notes and starts the timer when the second note sounds; Replay never resets it. Answer = long name, semitones, both note names, 🔊.
-- **Microphone (Notes, Intervals):** Setup toggle "Answer by playing" + "Reveal after 5/10/20 s". Prompt shows a "Listening…" chip with a level meter; a stable wrong note shows "Heard G♯" and keeps listening; a stable correct note grades correct immediately with the response time measured to the note onset. Timeout reveals for manual grading. Detector is off during reveal. Mic sessions show 🎤 in history and the summary.
+- **Microphone (Notes, Intervals):** Setup toggle "Answer by playing" + "Reveal after 5/10/20 s". Prompt shows a "Listening…" chip with a level meter; a stable wrong note shows "Heard G♯" and keeps listening; a stable correct note grades correct immediately with the response time measured to the note onset. Timeout reveals for manual grading, and that card's time is not counted. Detector analysis runs only while listening; audio from before the prompt is ignored (R5-3, R6-3). Mic sessions show 🎤 in history and the summary.
 - Settings → Music: "Play note on reveal" (default off), "Note volume".
 
 ### 11.5c M3 components and layouts
@@ -753,7 +765,7 @@ Root: `TabView` with **Practice**, **Stats**, **Settings**.
 
 ### 11.5d M4 Korean UX
 - **Typed:** a `TypedAnswerField` sits below the prompt. It autofocuses with autocorrect and auto-capitalisation off, and Return submits. The field persists across cards, so the keyboard stays up, and it is cleared on each new card. "Don't know" reveals the card as wrong. Pedal/arrow keys are disabled while the field has focus. A Hangul answer with no Korean keyboard enabled shows "Add the Korean keyboard in Settings → General → Keyboard". The reveal shows a verdict banner (✓ Correct / ≈ Close: check spelling / ✗), *yours* vs *expected* with the differences highlighted, "I was right" / "I was wrong" overrides, and **Next**.
-- **Choice:** 2–4 large option buttons (Particles: "책은" / "책는"; Name the Chord: 4 options). A tap records the time and reveals the verdict and rule; Next grades it.
+- **Choice:** 2–4 large option buttons (Particles: "책은" / "책는"; Name the Chord: 4 options). A tap reveals the verdict and rule; Next grades it. The tap time is stored on the attempt but does not feed the time EWMA (R4-4).
 - **Auto-advance:** after 0.8 s on an exact typed/choice answer. This is the Settings → Session toggle "Auto-advance typed/choice answers" (default on).
 - **Listening:** the prompt is a large 🔊 with no text. The timer starts when TTS finishes, and Replay doesn't reset it. Without a Korean voice, the Setup option is disabled and existing listening cards are filtered out. The weakest-words list labels listen items 🔊.
 - **Home:** the Korean section is ordered Hangul Reading, Core 1…N, Particles, Conjugation, Patterns, other bundled decks, AION 2. A separate **My decks** section follows, with "+ New deck" and "AION 2 words from a screenshot".
@@ -839,7 +851,7 @@ Every segment's **Definition of Done**: code compiles; `swift test` passes in `P
 
 ### S6 — Session engine & summary
 **Goal:** §9.1–9.3, §9.5.
-- `MonotonicClock`, `ManualClock` (tests), `SessionEngine` state machine, retry queue, pause/interrupt/resume, quit, `SessionSummary` builder, optional `undoLastGrade`.
+- `MonotonicClock`, `ManualClock` (tests), `SessionEngine` state machine, retry queue, pause/interrupt/resume, quit, `SessionSummary` builder. (`undoLastGrade` dropped, D2.)
 - Engine talks to `StatsStore` (protocol from S7 — define the protocol here if S7 is not yet done, see S7) and the Scheduler.
 **Accept:** tests drive full sessions with `ManualClock` + seeded RNG + `InMemoryStatsStore`: correct responseMs; interrupted attempts excluded; retries appear 3–5 cards later (or earlier when the pool is starved, §10.6), once, not counted toward length; timed session ends after current card; summary numbers verified by hand-computed fixture.
 
@@ -932,7 +944,7 @@ M3 status: code implemented 2026-11-17 (see §17 decision log and the PLAN_M3_HA
 - **AION 2 screenshot → cards**: import a screenshot, on-device OCR with the Vision framework (supports Korean), pick unknown words, add them to a custom "My AION words" deck.
 - User-created custom decks (no import, owner decision 2026-11-16).
 
-M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §11.5d, the §17 decision log and the PLAN_M4_KOREAN.md tracker). The only open segment is M4-1: Core 2–4 have been added, and Core 5 is still to do.
+M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §11.5d, the §17 decision log and the PLAN_M4_KOREAN.md tracker). M4-1 content is in: Core 2–5 are added, and Core 5 was extended to 450 entries (M4-1b, see §17; PLAN_R6_FIXES T2). Dictionary verification is still open (`docs/core-verification.md`, R4-6/R6-4).
 
 **M5 — Korean phrases from K-pop & K-dramas** (can be scheduled before M2; must start after G1)
 - New `ko.media` deck of everyday phrases heard in popular songs and dramas, using vocab deck schema v2 (additive: `register`, `dialogue`, `sources`).
@@ -971,7 +983,7 @@ M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §1
 | S3 Fretboard deck | ☑ |  |
 | S4 Korean content & loader | ☑ | Core 1 = 205, AION 2 = 81 entries |
 | S5 Scheduler & stats | ☑ |  |
-| S6 Session engine & summary | ☑ | undoLastGrade not implemented (stretch) |
+| S6 Session engine & summary | ☑ | `undoLastGrade` dropped from the spec (owner D2, 2026-11-17) |
 | S7 Persistence | ☑ |  |
 | S8 Shell, Home, Setup | ☑ |  |
 | S9 Session screen | ☑ |  |
@@ -1076,3 +1088,4 @@ _(Agents append dated entries here: decision, reason, segment.)_
 - 2026-11-17 · Code Review Round 5 frontend (PLAN_R5_FIXES S4, S6; UI only).
   - **R3-2 (S4):** `AuroraBackground(animated:)`. `false` pauses the `TimelineView` and draws the static `t = 0` frame, the same frame Reduce Motion uses. `SessionView` passes `animated: false`. The optional step is also done: every aurora pauses while `scenePhase != .active`. Other screens still animate.
   - **R5-5 b (S6):** `VocabUI` always embeds `MediaSnippetView`. `shouldShow(for:)` is renamed to `hasMedia(for:)`. A plain entry with no saved snippet shows only a lifted `AddSnippetButton`: no section header, identifier `addSnippetButton`, VoiceOver label "Add your own snippet for <hangul>". On reveal it plays one dash-crawl and icon bounce, which is skipped under Reduce Motion. When a snippet is saved, the button blur-morphs into the full "My snippet" section. Entry ids can't collide: bundled ids are `ko.*` with no duplicates across the 7 decks, and user ids are `user.<8hex>.NNNN`.
+- 2026-11-17 · Planner · P1 (R5-4, R6-6, R3-7) spec alignment. §9.2: the `choice` row is "time EWMA: no", and time is decided per answer (touch reveal counts, including a touch fallback; typed, choice and mic-timeout reveals don't; an onset before the prompt is untimed, R6-3); added the normative definition of "close" (R4-2, R5-1, R6-2). §9.3, §12 S6 and the §17 tracker: `undoLastGrade` removed (owner D2). §11.5b/§11.5d updated for mic timing and choice timing. §15 M4 status: Core 2–5 in, Core 5 at 450. PLAN_M4 §3.1 and M4-0 step 2 now say `countsTime` is per answer. README: "OK" → "Reveal" (R3-7). Owner decision D1 (PLAN_R6_FIXES): commit the Core 5 / AION 2 extension before its verification rows exist.

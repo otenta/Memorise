@@ -315,7 +315,7 @@ That adds up to about 90 ms of main-thread work in Debug, landing on top of the 
 
 ## 4. Planner follow-up (not implementor work)
 
-**P1 · R5-4 + R3-7 + D2:** fold the R4 decisions into the normative sections:
+**P1 · R5-4 + R3-7 + D2** (☑ done 2026-11-17 as PLAN_R6_FIXES P1): fold the R4 decisions into the normative sections:
 - PLAN.md §9.2 table (the `choice` row should say "time EWMA: no") and the paragraph below it (a touch fallback counts; a mic-timeout reveal doesn't);
 - §11.5d;
 - the PLAN_M4 §3.1 table and M4-0 step 2 (`countsTime` per answer via `ok(countsTime:)`);
