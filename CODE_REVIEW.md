@@ -1,6 +1,287 @@
 # Memorise — Code Review
 
-> Newest first: **Round 5** (R4 fixes + performance + spec comparison) → **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4, R5-x from Round 5.
+> Newest first: **Round 6** (R5 fixes + K2 content + performance + spec comparison) → **Round 5** (R4 fixes + performance + spec comparison) → **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4, R5-x from Round 5, R6-x from Round 6.
+
+---
+
+# Round 6 — R5 fixes, K2 content, performance pass, and spec (business-analysis) comparison
+
+- **Date:** 2026-11-17
+- **Scope:**
+  1. Committed R5 work: `9339c46` (R4 fixes + R5-1/2/3/6), `74d9aa1` (R3-2 aurora), `37134f1` (R5-5 b snippet button), `c0e739d` (tests).
+  2. **Uncommitted** content in the working tree: new `ko_media.json` (105 entries) and `docs/media-verification.md`; `ko_core_5.json` 225 → 450; `ko_aion2.json` 81 → 140.
+  3. A performance pass over the changed paths (Home load, mic pipeline, aurora).
+  4. A requirement-by-requirement comparison of PLAN_R5_FIXES (S1–S7, P1), PLAN_M5 (K2, K5) and the PLAN.md normative sections with the code.
+- **Read in full:** `AppEnvironment`, `PitchDetector`, `MicAnswerController` (+ `MicFrameTracker`), `SwiftDataStatsStore`, `DeferredStatsStore`, `StatsStore`, `AnswerMatcher` (matching half), `SessionViewModel` (grading + mic), `DeckCatalog` (file list), and the diffs of `37134f1` and `74d9aa1`.
+- **Read selectively:** `HomeView.load`, `SessionEngine.answerEvaluated/pause`, `FretboardNotesUI`/`IntervalsUI` `micAccepts`, `DeckUI.onReveal`, `VocabUI.typedAnswer`, the CI workflows, `project.yml`.
+- **Verification actually run** (a scratch copy; the repo was not modified):
+  - `swift build --build-tests`: **passes**. `swift test` with the working tree: **154 tests in 13 suites pass**.
+  - `xcodegen generate` + `xcodebuild` (iOS Simulator, Debug, unsigned): **BUILD SUCCEEDED, 0 warnings from app sources** (R5-6c is confirmed fixed).
+  - **Content diff (Python):** `ko_core_5` and `ko_aion2` only *add* entries. 0 existing ids were changed or removed, so the id-stability rule holds. Cross-deck duplicate Hangul and K2 statistics were also computed.
+  - **Matcher probe** (scratch test): the polite forms of the media phrases, and duplicate glosses inside `ko_media`.
+  - Not run: device or Instruments profiling. Claims that need it are marked *(plausible: measure)*. I did **not** re-fetch the K2 citations; that is the owner's 10-reference spot-check (R6-5).
+
+## Verdict
+
+**The R5 code fixes are good and complete.** S1 (R5-1), S2 (R5-2), S3 (R5-3), S4 (R3-2), S5 (R5-6 a/b/c) and S6 (R5-5 b) are implemented as specified, and the build is warning-free. The tests now compile and pass (R4-1 is largely resolved). The R5-1 must-reject rows (몰라요/알다, 없어요/있다) are in `AnswerMatcherTests`.
+
+**The milestone is not finished from the user's point of view.**
+- **The K2 deck is written but not shipped.** `ko_media.json` exists, but `DeckCatalog.bundledVocabFiles` still has `"ko_media"` commented out. The content is uncommitted, and committed `HEAD` is red without it (R6-1).
+- **The media deck grades its own polite forms as wrong in en→ko typed mode** (R6-2).
+
+**One mic correctness issue predates R5-3, but R5-3's design makes it explicit.** Stale audio from the previous card can answer the next card instantly, with a 0 ms response time (R6-3).
+
+**Process gaps are growing.**
+- 284 new Korean entries arrived with no plan segment, no verification rows and no §17 entry (R6-4).
+- The planner's P1 follow-up (R5-4) is still not done, so PLAN.md still contradicts the code (R6-6).
+
+## Status of Round 5 findings
+
+| ID | Status | Evidence |
+|---|---|---|
+| R5-1 · typed vocab accepts the opposite word | ✅ Fixed | `ConjForm.affirmative` is passed via `allAcceptedForms(…, forms:)` (`AnswerMatcher.swift:102`). Tests: `AnswerMatcherTests.swift:76-77` reject 몰라요/알다 and 없어요/있다, while 몰라요/모르다 stays close (line 71). |
+| R5-2 · Home rebuilds every pool on main | ✅ Fixed | `AppEnvironment.cardCount(for:options:)` (line 232) is cleared in `reloadCatalog()`. `stats(forDecks:)` is a protocol requirement; SwiftData makes one fetch (`SwiftDataStatsStore.swift:30-38`). `HomeView.load` makes one store call. |
+| R5-3 · YIN runs while not listening | ✅ Fixed | `PitchDetector.active` is an `OSAllocatedUnfairLock`, and `append` analyses only `if filled == frameLength, isActive` (line 94). The ring keeps filling. See **R6-3** for a consequence. |
+| R5-4 · PLAN body contradicts code | 🔴 **Open** | Planner P1 has not run. Details in R6-6. |
+| R5-5 · M5 unreachable | 🟡 **Half** | (b) is done: `VocabUI` always embeds `MediaSnippetView`; plain entries get `AddSnippetButton`. (a) K2 content exists but is **not wired and not committed** (R6-1). |
+| R5-6 · polish a/b/c | ✅ Fixed | (a) tombstones plus the delete-all flag (`AppEnvironment.swift:24-27, 195-229`); (b) `grade(correct:haptic:)`, with `gradeAutoAnswer` passing `false`; (c) the build has 0 app warnings. |
+| R3-2 · aurora renders continuously | 🟡 **Mostly fixed** | `AuroraBackground(animated:)`, `SessionView` passes `false`, and every aurora pauses when the scene isn't active. Home's aurora behind the session `fullScreenCover` may still tick (R6-7a). |
+| R3-7 · README wording | 🔴 Open | `README.md:24, 31` are unchanged. |
+| R4-1 · tests / CI | 🟡 **Mostly fixed** | 154 tests pass with the working tree. Remaining: `HEAD` is red without the uncommitted content (R6-1); `.github/workflows/core-tests.yml` runs only `swift build -c release`, never `swift test`; there is still no App test target. |
+| R4-6 · Korean content unverified | 🔴 **Open, and growing** | `docs/core-verification.md` still has no ✓ ticks, and the 225 new Core 5 entries have no rows at all (R6-4). |
+
+## New findings (Round 6)
+
+### R6-1 · P2 (High for delivery) · K2 is half-landed: the deck isn't in the catalog, and committed HEAD is red
+
+**Files:**
+- `Packages/MemoriseCore/Sources/MemoriseCore/Decks/DeckCatalog.swift:69-73` (`// "ko_media", // M5 K2`)
+- `Packages/MemoriseCore/Tests/MemoriseCoreTests/DeckContentTests.swift:53-70`
+- `PLAN_R5_FIXES.md` §2 (S7 ☐), `PLAN_M5_KOREAN_MEDIA.md:207` (K2 ☐)
+
+**What's wrong:**
+1. **Users never see the deck.** S7 says the `DeckCatalog` uncomment is *the only code change* of K2, and it wasn't made. `ko_media.json` is in the bundle but no code path loads it into the catalog. So the "In a scene" and "Heard in" panels are still dead in production, which was the whole point of R5-5 (a).
+2. **The test codifies the gap instead of the goal.** `mediaDeckIsValidAndSlotsBeforeAion2` filters `"ko_media"` out of the list, re-inserts it by hand and asserts the order of the *simulated* list. Once the deck is wired, the test still passes, and today it passes while the deck is missing. It can't catch a regression either way.
+3. **Committed `HEAD` (`c0e739d`) fails 3 checks.** The tests assert 450 Core 5 entries, 140 AION entries and that `ko_media` loads, but that content exists only in the working tree (confirmed by the tester's handoff). Anyone who checks out the branch, and CI if it ran tests, sees red.
+
+**Fix direction (one commit, `K2: ko_media.json (105 entries, 88 verified refs)`):**
+- Commit `ko_media.json` and `docs/media-verification.md`.
+- Uncomment `"ko_media"` (before `"ko_aion2"`) and update the doc comment at `DeckCatalog.swift:67-68`.
+- Change the test to assert the **real** `DeckCatalog.builtIn().catalog` order (`ko.media` before `ko.aion2`) and `report.loadFailures.isEmpty`.
+- Commit the Core 5 and AION content **separately**, after R6-4's decision, so each content change has its own audit trail.
+- Tick S7 and K2 only after the owner's 10-reference spot-check (R6-5).
+
+### R6-2 · P2 (Medium-High) · Media deck, en→ko typed: the polite form of the phrase is graded *wrong*, and 7 glosses are shared by two entries
+
+**Files:**
+- `App/Sources/DeckUI/VocabUI.swift:40` (`expected: [e.hangul]`, `isPredicate` false for `pos: expression`)
+- `Korean/AnswerMatcher.swift:110-113`
+- `ko_media.json`
+
+**Verified (probe, en→ko typed):**
+
+| Input | Expected | Verdict |
+|---|---|---|
+| 미안해요 | 미안해 | **wrong** |
+| 사랑해요 | 사랑해 | **wrong** |
+| 괜찮아요 | 괜찮아 | **wrong** |
+| 보고 싶어요 | 보고 싶어 | **wrong** |
+| 고마워요 | 고마워 | **wrong** |
+| 진짜 | 진짜? | exact (punctuation is stripped, as intended) |
+
+- All 105 entries are `pos: expression`, so the R4-2 conjugation rule never applies to them.
+- For 3+ syllables, adding 요 is a jamo distance of 2 (ㅇ + ㅛ), and for 1–2 syllables only a batchim slip is close. So the most natural learner answer is **wrong, not even close**.
+- The entries' own `notes` teach these exact forms ("Polite: 사랑해요").
+
+**Duplicate glosses inside the deck:**
+
+| Gloss | Entries |
+|---|---|
+| cheer up | 힘을 내 / 힘내 |
+| tell me | 말해줘 / 말해봐 |
+| I don't care | 관심 없어 / 신경 안 써 |
+| don't worry | 걱정하지 마 / 걱정 마 |
+| trust me | 내 말 믿어 / 믿어 줘 |
+| no way! | 대박 / 거짓말 |
+| bye | 안녕 / 잘 가 |
+
+For these, en→ko accepts only one entry, and the equally correct sibling is graded wrong.
+
+**Why it matters:**
+- PLAN_M5 §3 (line 113) allows en→ko for this deck. It only mitigates ambiguity with the register chip, which doesn't help grading.
+- Wrong verdicts raise `ewmaError`, so the scheduler drills phrases the learner actually knows.
+- This is the mirror image of R5-1: there, a wrong answer counted as correct; here, a correct answer counts as wrong.
+
+**Fix direction:**
+- **Matcher (core, smallest):** for non-predicate Hangul, treat `a == b + "요"` and `b == a + "요"` as **close**. This covers 해/해요, 아/아요 and 어/어요. It is safe for nouns, because a noun + 요 is still the same word. Add golden rows, including must-stay-wrong ones (사랑 vs 사랑해).
+- **Content:** make the first glosses distinct ("cheer up (lit. 'find strength')", "cheer up (short)") or merge the near-duplicates. Then add a validator **warning** for a duplicate first gloss within one deck. This is additive and needs no wire change.
+- **Alternative:** an optional `accepted: [String]` field on `VocabEntry`. It is additive (defaults to `[]`), but it is a schema touch, so the owner would decide. Not needed if the matcher rule lands.
+
+### R6-3 · P2 (Medium) · Stale audio in the detector ring can answer the next card instantly, with a 0 ms response time
+
+**Files:**
+- `App/Sources/Services/PitchDetector.swift:77-99` (the ring keeps filling while inactive, by design since R5-3)
+- `MicAnswerController.swift:104-110, 188-196`
+- `SessionViewModel.swift:275-282`
+- `SessionEngine.swift:222-228`
+
+**Mechanism:**
+1. During the reveal, `DeckUI.onReveal` plays the answer note through the speaker (`playNoteOnReveal`), and the user's own guitar note is still ringing.
+2. The user grades and the next prompt appears. `setListening(true)` resets the tracker and re-activates YIN on a ring that holds the last **2,048 samples (≈ 43 ms) of pre-arm audio**.
+3. The first 3 analysed frames, which is all `stableFrames` needs, are mostly pre-arm audio. A sustained note therefore becomes "stable" within about 32 ms of the prompt appearing.
+4. If its pitch class matches the new card, the note is accepted. `FretboardNotesUI.micAccepts` accepts the pitch class anywhere on the card's string from 0 to 12+, so a different card with the same pitch class is common: roughly 1 in 12 for fretboard notes.
+5. `answerEvaluated` clamps `max(at, start)`, so `responseMs = 0`. With `countsTime: true` it is written into `ewmaResponseMs` and `bestResponseMs`, and it drags the deck median down.
+6. A non-matching stale note shows "Heard X" on the new card. This is cosmetic but confusing.
+
+This existed before R5-3, because YIN ran continuously and the tracker reset on arm. However, R5-3's stated goal, "re-arming has a full frame at once", is exactly the stale frame. *(plausible: measure how often it happens on device with "Play note on reveal" on)*
+
+**Fix direction:**
+- In `MicFrameTracker.setListening(true)`, store `armHostSeconds` (pass `MicAnswerController.hostNowSeconds` in).
+- In `process`, ignore every frame whose **window start** (`hostSeconds − (frameLength − hop)/sampleRate`) is before `armHostSeconds`. The first usable frame then arrives about 43 ms after arming, which is far below human reaction time, so nothing perceptible is lost.
+- **Defence in depth (core):** in `answerEvaluated`, if `at < start`, record the answer with `countsTime: false` instead of clamping to a perfect 0 ms. Add a golden row for it.
+- The ring can keep filling; that part of R5-3 is fine.
+
+### R6-4 · P3 (Medium for content integrity) · 284 new Korean entries with no plan, no §17 entry and no verification rows
+
+**Files:**
+- `ko_core_5.json`: +225 entries, `ko.core.1095`–`ko.core.1319`, ranks 226–450
+- `ko_aion2.json`: +59 entries, `ko.aion2.0082`–`0140`
+- `docs/core-verification.md:687`: the header still says "Korean Core 5 (225 entries)"
+
+**What's wrong:**
+- No plan segment asked for these additions: PLAN.md §15, PLAN_M4 M4-1 and PLAN_R5_FIXES are all silent, and §17 has no entry. The owner's preference for large pools (memory) is a reason to do it, not a substitute for recording it.
+- PLAN_M4 M4-1 *Accept* requires 0 validator errors (✅ verified by the tests), a POS and tag split in the PR, and an **owner spot-check of 15 random entries per deck**. Neither the split nor the spot-check exists for the new entries, and the new Core 5 entries have no verification rows.
+- R4-6 already flagged that Core 2–5 were "authored from the author's own knowledge". This change doubles the unchecked surface of Core 5.
+
+**What's fine (verified):**
+- 0 existing ids were changed or removed, and ids are contiguous.
+- Every verb and adjective has a `conj` class.
+- The new Core 5 POS mix is varied: noun 67, verb 55, adverb 38, adjective 18 and others.
+- The AION additions are all nouns. That is appropriate for game terms, but a sample like 장판 "ground AoE zone" and 기믹 "boss mechanic" is community slang that needs the owner's in-game confirmation.
+
+**Fix direction:**
+- **Planner:** add a §17 entry and a tracker line (e.g. "M4-1b Core 5 extension + AION 2 extension").
+- **Content agent:** append verification rows for `ko.core.1095`–`1319`, and add an AION table (none exists).
+- **Owner:** 15-entry spot-check per deck.
+- **Then:** commit separately from K2 (R6-1).
+- **Note:** six phrases also appear in core decks (어떡해, 안녕, 화이팅, 거짓말, 오빠, 언니). That's allowed, because the duplicate check is limited to `ko.core.*`. They will have separate stats; mention it in the §17 entry.
+
+### R6-5 · P3 (business) · K2 misses its own acceptance targets and the owner's priorities
+
+**Source:** `docs/media-verification.md` header and the `ko_media.json` statistics. The agent reported the misses honestly and did not pad, which is the right behaviour.
+
+| Requirement (PLAN_R5_FIXES S7 / PLAN_M5 K2) | Target | Delivered |
+|---|---|---|
+| Entries | ≈ 80 | **105** ✅ |
+| Entries with ≥ 1 VERIFIED reference | ≥ 70 % | **66 %** (69/105) ❌ |
+| Split of verified references (song / show / drama) | ≈ 50 / 30 / 20 | **91 / 1 / 8** (80 / 1 / 7) ❌ |
+| Owner priority shows: Kian's Bizarre B&B, The Devil's Plan | first among shows | **0 references** (1 PROPOSED, paywalled) ❌ |
+| Priority artists: BTS, LE SSERAFIM, TWICE, NewJeans, ILLIT | first | TWICE 34, BTS 20, NewJeans 14, ILLIT 6, LE SSERAFIM 6 ✅ |
+| Original 2–3-line dialogue containing the phrase | every entry | 105/105 ✅ (verified by script) |
+| No `url` key, `context` ≤ 200 characters | every reference | ✅ |
+| Owner spot-check of 10 references | before ticking K2 | **not done** |
+
+**Concerns:**
+- **a. Locators are guesses shown to users as facts.** The table says section labels are "best estimates, because Bugs lyrics have no section markers". "Heard in … verse 2" is user-visible, and a wrong one undermines the "every reference is verified" promise in PLAN_M5 §2. Use `locator: "lyrics"` (or omit the section) unless an official MV or subtitle confirms it.
+- **b. Single-source songs.** 80 of 88 references cite only a Bugs track page whose lyrics are "registered by Bugs, not label-supplied". S7 lists Bugs as acceptable, so this is not a violation, but the owner's spot-check should prefer song rows.
+- **c. Possible wrong track pages.**
+  - The NewJeans citations use 7-digit Bugs ids (`6186207`, `6171084`, `6184997`) while every other artist has 8-digit ids.
+  - FIRE (2016) cites `32563047`, which is newer than Life Goes On (2020, `32075135`). That may be a re-release page, not the original, so check the year.
+  - *(plausible: verify during the spot-check)*
+
+**Fix direction:**
+- The **owner** decides whether 66 % and 91/1/8 are acceptable for shipping now, with K2b raising them, and records that in §17.
+- The **content agent** changes the guessed locators to `"lyrics"` before the K2 commit.
+
+### R6-6 · P3 (spec integrity) · The P1 planner follow-up has not run, so the PLAN still contradicts the code
+
+Everything in R5-4 still applies, verified line by line today:
+
+| Location | Says | Code / decision |
+|---|---|---|
+| PLAN.md §9.2 table, `choice` row (line 541) | time EWMA: **yes** | **no** (R4-4) |
+| PLAN.md §9.2 paragraph (line 545) | "time is skipped for every card, including any card that falls back to touch" | a touch fallback counts; a mic-timeout reveal doesn't |
+| PLAN_M4 M4-0 step 2 (line 83) | `countsTime` "derived from `config.inputMode == .typed`" | per answer, via `ok(countsTime:)` |
+| PLAN.md §15 M4 status (line 935) | "Core 5 is still to do" | done, and now 450 entries |
+| PLAN.md §9.3 (line 567), §12 S6 (line 842), §17 tracker (line 974) | `undoLastGrade` (stretch) | **dropped** by owner decision D2 |
+| README.md:24, 31 | "= OK", "prompt → OK" | R3-7 |
+| PLAN_R5_FIXES §2 S7, PLAN_M5 §6 K2/K5 | ☐ | K2 content exists (R6-1); K5 not started |
+
+**Additional gaps:**
+- **K5 (Integration and QA)** has no owner and no schedule.
+  - Its step 2, the media deck defaulting to ko→en, is already satisfied by `VocabOptions.direction = .koToEn`.
+  - Steps 1, 3 and 4 are not done: Home placement waits on R6-1, there are no README QA checks for K3/K4, and there is no M5 tracker row in PLAN.md §17.
+- **G6 device checks** (PLAN_M1_FIXES:355) are still ☐. They are the only M1 item left.
+
+**Fix direction:** run P1 now. Its trigger ("after the R4 batch + S1 commit lands") was met by `9339c46`. Then schedule K5 after R6-1.
+
+### R6-7 · P3/P4 (performance)
+
+**a. Home's aurora may keep ticking under the session cover** *(plausible: measure)*.
+- `HomeView.swift:143` presents the session with `.fullScreenCover`, so Home stays in the hierarchy.
+- Its `AuroraBackground` is `animated: true` and the scene is `.active`, so its `TimelineView(.animation(minimumInterval: 1/30))` is not paused. Whether SwiftUI skips redrawing a fully covered view is not guaranteed.
+- **Check:** use Instruments (Core Animation FPS, or a `Self._printChanges()` breakpoint in the Canvas) during a session.
+- **Fix if it ticks:** pass `animated: launch == nil` from Home, and do the same for any other presenter of `SessionView`. This is a one-line change.
+
+**b. `HomeView.load` still decodes 27 saved configs per load.**
+- `env.initialConfig(for:)` runs a UserDefaults JSON decode plus `sanitize` for every deck, on every `dataVersion` bump.
+- Each decode is sub-millisecond, so this is low priority. If Home timing still shows up in the G5 log, cache the decoded config per deck in `SessionConfigStore` and invalidate it on `save`.
+
+**c. Fine, no action:**
+- `stats(forDecks:)` fetches every `SDItemStats` row in one go, which is the same rows the 27 calls fetched before, with one actor hop instead of 27.
+- The `cardCount` cache is bounded by (decks × option sets actually used).
+- YIN is gated, and the ring memmove is about 8 KB per hop.
+
+### R6-8 · P4 (polish)
+
+- **a. CI never runs the tests.** `core-tests.yml` runs `swift build -c release` only. Now that the tests compile, change it to `swift test`. Linux `swift:6.0` should work, because core is Foundation-only; confirm `precomposedStringWithCanonicalMapping` on Linux Foundation. The change is meaningful only after R6-1, because `HEAD` is red today.
+- **b. `DeckContentTests` hard-codes the media count** (`#expect(media.entries.count == 105)`). Every K2b addition will break it. Assert `≥ 80` (the plan's floor) plus id contiguity instead. Core 5 (450) and AION (140) have the same problem.
+- **c. Ten media entries have no `register`:** 쉿, 깐부, 무야호, 화이팅, 아이고, 영원히, 거짓말, 오빠, 언니, 제발. That's consistent with PLAN_M5 §7's "-" (register-neutral), so no action. It is noted here so the next reviewer doesn't re-flag it.
+
+## Spec comparison (business-analysis view)
+
+**R5 plan (PLAN_R5_FIXES):**
+
+| Item | Requirement | Delivered | Gap |
+|---|---|---|---|
+| S1 | negatives not accepted in typed vocab; drill unchanged | ✅ | none |
+| S2 | count cache, batched stats, one store call | ✅ | R6-7b (minor) |
+| S3 | YIN only while listening | ✅ | R6-3 (consequence) |
+| S4 | aurora frozen in sessions | ✅ | R6-7a (plausible) |
+| S5 | tombstones, single haptic, 0 warnings | ✅ | none |
+| S6 | snippet button on every vocab reveal | ✅ | device QA (K5) |
+| S7 | K2 content + catalog line | 🟡 | R6-1, R6-5 |
+| P1 | PLAN/README alignment, `undoLastGrade` removal | ❌ | R6-6 |
+| Commit rule | "one segment = one commit, `R5-<n>:`" | 🟡 | S1, S2, S3 and S5 went into one commit (`9339c46`), and S4 is labelled `R3-2`. Acceptable, because the plan allowed bundling with the R4 batch, but the history no longer maps one-to-one to segments. |
+
+**Product-level status (what a user can do today, on `HEAD` + the working tree):**
+
+| Milestone | User-visible state | Blocking items |
+|---|---|---|
+| M1 / M1.1 | complete | G6 device checks |
+| M2 / M3 | complete in code | R6-3 (mic accuracy), on-device QA |
+| M4 | complete; Core 5 extended | R4-6 / R6-4 content verification |
+| M5 | **"My snippet" works on every vocab card; the media deck is not visible** | R6-1, R6-2, R6-5, K5 |
+
+## What's good
+
+- **R5-2 is done properly.** It uses a protocol requirement (not an extension-only method), so `any StatsStore` dispatches dynamically. SwiftData does a single `IN` fetch, and the cache is cleared at the one place the catalog changes.
+- **The R5-3 gating is minimal and thread-correct.** It uses an unfair lock, `setActive` at every lifecycle point (`start`, `stop`, `setListening`), and the ring stays warm.
+- **The R5-6a tombstones cover delete-all too.** A later save correctly wins over an earlier delete.
+- **The S6 compact button is a good product call.** One quiet affordance, VoiceOver label with the Hangul, Reduce-Motion aware, and it blur-morphs into the full section on save.
+- **The tests are back.** 154 tests, and the R5-1 must-reject rows are encoded.
+- **The content discipline is real.** Not a single existing id changed across 284 additions. K2 dropped references it couldn't verify, kept PROPOSED rows out of the JSON, quoted no lyrics, and reported its missed targets honestly.
+
+## Suggested fix order
+
+1. **R6-1** Wire `ko_media` and fix the media test. Commit the K2 content so `HEAD` is green; keep the Core 5/AION content in its own commit. *(implementor + owner)*
+2. **R6-2** The matcher's 요 rule plus distinct glosses. *(implementor + content agent)*
+3. **R6-3** Arm-time frame filter, plus `countsTime: false` for answers whose onset is before the prompt. *(implementor)*
+4. **R6-5** Owner spot-check of 10 references; change the locators to `"lyrics"`; decide whether the 66 % coverage ships. *(owner + content agent)*
+5. **R6-6 / P1** PLAN and README alignment, `undoLastGrade` removal, §17 entries for R6-4. Schedule K5. *(planner)*
+6. **R6-4** Verification rows for the new Core 5 and AION entries, plus the owner spot-check. *(content agent + owner)*
+7. **R6-8a/b** CI runs `swift test`; loosen the count assertions. *(tester)*
+8. **R6-7a** Measure, then the one-line fix if needed. *(frontend)*
 
 ---
 
