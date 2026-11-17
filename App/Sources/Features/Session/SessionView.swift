@@ -106,7 +106,7 @@ private struct SessionContent: View {
             .animation(reduceMotion ? .easeOut(duration: 0.12) : .spring(response: 0.32, dampingFraction: 0.78), value: phaseKey)
             typedField
         }
-        .background { AuroraBackground(colors: subjectColors, intensity: 0.85) }
+        .background { AuroraBackground(colors: subjectColors, intensity: 0.85, animated: false) }
         .overlay { gradeFlashOverlay }
         .focusable()
         .focused($keyboardFocused)

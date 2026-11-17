@@ -51,17 +51,24 @@ extension Subject {
 
 // MARK: - Aurora background
 
-/// Slowly drifting soft colour field behind content. Static when Reduce Motion is on.
+/// Slowly drifting soft colour field behind content.
+/// Static (frame `t = 0`) when Reduce Motion is on, when `animated` is false (sessions, R3-2),
+/// or while the scene isn't active — so it never redraws at 30 Hz in the background.
 struct AuroraBackground: View {
     var colors: [Color] = Subject.music.colors
     var intensity: Double = 1
+    /// `false` freezes the field on its rest frame (used in sessions to keep the GPU free for the prompt and mic).
+    var animated: Bool = true
 
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
+
+    private var isStatic: Bool { reduceMotion || !animated }
 
     var body: some View {
-        TimelineView(.animation(minimumInterval: 1 / 30, paused: reduceMotion)) { ctx in
-            let t = reduceMotion ? 0 : ctx.date.timeIntervalSinceReferenceDate
+        TimelineView(.animation(minimumInterval: 1 / 30, paused: isStatic || scenePhase != .active)) { ctx in
+            let t = isStatic ? 0 : ctx.date.timeIntervalSinceReferenceDate
             Canvas { gc, size in
                 let base = scheme == .dark ? 0.32 : 0.22
                 let blobs: [(Color, Double, Double, Double)] = [
