@@ -1,6 +1,280 @@
 # Memorise — Code Review
 
-> Newest first: **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4.
+> Newest first: **Round 5** (R4 fixes + performance + spec comparison) → **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4, R5-x from Round 5.
+
+---
+
+# Round 5 — Round 4 fixes, performance pass, and spec (business-analysis) comparison
+
+- **Date:** 2026-11-17
+- **Scope:**
+  1. The **uncommitted** Round 4 fixes on `review/m1-code-review`: 19 files, +423/−143 (`git diff` against `d67db46`).
+  2. A performance and optimisation pass over the launch path, the session hot path, Home/Stats loading and the microphone pipeline.
+  3. A requirement-by-requirement comparison of PLAN.md and PLAN_M1_FIXES/M2/M3/M4/M5 with the code.
+- **Read in full:**
+  - The whole diff.
+  - Core: `SessionEngine`, `Scheduler`, `WeightCalculator`, `IntroductionPolicy`, `DeckCatalog`, `BuiltInDecks`, `ConjugationDeck`.
+  - App: `SessionViewModel`, `PitchDetector`, `MicAnswerController`, `SwiftDataStatsStore`, `AppEnvironment` (top half).
+- **Read selectively (targeted greps):** `SessionView`, `HomeView.load`, `SettingsView` export, `Theme.AuroraBackground`, `HangulReadingUI`, `ChordsUI`, `StatsView`, `SummaryView`. I also ran a requirement grep matrix over `App/Sources` (45 spec items).
+- **Verification actually run** (a scratch copy and a scratch probe package; the repo was not modified):
+  - `swift build` (core): **passes**.
+  - `swift build --build-tests`: **fails**, with the same compile errors as R4-1 (`DeckContentTests.swift:37,48,49`; `FretboardDeckTests.swift:52,85,96`; …).
+  - `xcodegen generate` + `xcodebuild` (iOS Simulator, Debug, unsigned): **BUILD SUCCEEDED**, with 1 warning (R5-6c).
+  - `PersistedFormatCheck.run()` and `TheoryCheck.run()` return `[]`, so R4-8 caused no wire change.
+  - **AnswerMatcher probe:** 21 Hangul pairs and 9 English pairs. **Conjugator probe:** 21 verbs × 7 forms (alternates).
+  - **Timing probe:** catalog build, validation and `cards(options:)` for every deck in the catalog, in Debug and Release, on an Apple-silicon Mac. Device numbers are not measured.
+
+## Verdict
+
+**The Round 4 fixes are good work.**
+- R4-3, R4-4, R4-5, R4-7, R4-8, R4-9 and R4-11 are fixed as specified, and I verified them by probe or by build.
+- The conjugation alternates are linguistically right in every row I checked (보아요, 주어요, 되어요, 마시어요, 놔요, 공부하지 않아요, 안 공부해요). Vowel-initial stems (오다, 배우다) correctly get no uncontracted alternate.
+
+**One fix introduced a new grading bug of the same class it was fixing (R5-1).**
+- The new "real conjugation of the expected word" rule includes the **negative** form.
+- So the *opposite* answer is graded correct: 몰라요 for 알다 "to know", 없어요 for 있다, 맛없어요 for 맛있다, and 안 가요 for 가다. Fix this before committing.
+
+**Performance is fine where it matters most.**
+- The session hot path costs milliseconds.
+- **Two avoidable costs remain:**
+  - Home recomputes every deck's whole card pool on the main actor after every session (R5-2).
+  - The pitch detector runs YIN at full rate while nobody is listening (R5-3).
+
+**Spec coverage is high.** Of the 45 user-facing UI requirements I grepped, 44 are present; the missing one is the `undoLastGrade` stretch goal. The gaps outside that grep (see "Spec comparison" below) are:
+- tests and CI, still the largest risk (R4-1);
+- M5 content, which leaves the whole M5 snippet feature unreachable (R5-5);
+- accessibility contrast (R3-3);
+- PLAN text that now contradicts the code (R5-4).
+
+## Status of Round 4 findings
+
+| ID | Status | Evidence |
+|---|---|---|
+| R4-1 · tests don't compile, no M2–M5 tests | 🔴 **Open** | `swift build --build-tests` fails with the same errors. No new test files. |
+| R4-2 · fuzzy matching accepts other words | 🟡 **Partly fixed, new regression** | Now **wrong**, as intended: 가방/가다, 하/하다, 의사/의자, there/three, angle/angel. Typos stay close: frend/friend, restaurnt/restaurant. **New:** antonyms are accepted (R5-1). |
+| R4-3 · conjugation alternates | ✅ Fixed | Probe of 21 verbs: negatives accept `-지 않아요` and, for noun+하다, `안 X해요`. Uncontracted forms are accepted for ㅗ/ㅜ/ㅣ/ㅚ/ㅐ/ㅔ stems with an initial consonant. 놓다 ↔ 놔요. `ConjugationUI` passes `acceptedAnswers`. |
+| R4-4 · EWMA mixes measurements | ✅ Fixed in code | `SessionEngine.ok(countsTime:)`. Choice, typed and mic-timeout reveals don't count; touch and a mic hit do. The PLAN body was not updated (R5-4). |
+| R4-5 · mic floods main actor | ✅ Fixed | `MicFrameTracker` runs on the detector queue. Main gets stable notes (generation-checked) and a level at ≤ 20 Hz. The detector itself still runs at full rate (R5-3). |
+| R4-6 · unverified Korean content | 🔴 Open | Process item; not code. |
+| R4-7 · mic onset biased early | ✅ Fixed | `hostSeconds` is now the start of the newest hop. |
+| R4-8 · `DeckOptions` rigidity | ✅ Fixed | One `payload` switch; `PersistedFormatCheck` = `[]`; `Deck.kind` defaults to the id. |
+| R4-9 · snippets in backups | ✅ Fixed | `isExcludedFromBackup` is set after every atomic write. |
+| R4-10 · robustness gaps | 🟡 Mostly fixed | The deck launch merge, delete order, mic-timeout snapping and POS guess are done. Snippets have no tombstone, so a delete made before the load finishes is revived (R5-6a). |
+| R4-11 · polish | ✅ Fixed (code) | 러-irregular validator rule, the shape-id note and the dictionary lookup are in. The `ChordChoices` 2–3 option check is still with UI. |
+| R3-2 · aurora renders continuously | 🔴 Open | `Theme.swift:63`: `TimelineView(.animation(minimumInterval: 1/30))` + full-screen `Canvas` blur, used by **13** screens including `SessionView.swift:109`. |
+| R3-7 · README wording | 🔴 Open | `README.md:24, 31` are unchanged. |
+
+## New findings (Round 5)
+
+### R5-1 · P2 (Medium-High) · Typed vocab now accepts the *opposite* word as correct
+**Files:**
+- `Korean/Conjugator.swift`, `allAcceptedForms` (iterates `ConjForm.allCases`, which includes `.negativePolite`)
+- `Korean/AnswerMatcher.swift`, `hangulVerdict` (predicate branch)
+- `App/Sources/DeckUI/VocabUI.swift:40-41` (vocab is `exactRequired: false`, so close = correct)
+
+**Verified (probe, en→ko typed):**
+
+| Input | Expected | Verdict | Meaning of the input |
+|---|---|---|---|
+| 몰라요 / 몰라 | 알다 (to know) | **close → correct** | "I don't know" (a different verb, 모르다) |
+| 없어요 | 있다 (to exist/have) | **close → correct** | "there isn't" (없다) |
+| 맛없어요 | 맛있다 (tasty) | **close → correct** | "it's not tasty" |
+| 안 가요, 가지 않아요 | 가다 | **close → correct** | "I don't go" |
+
+**Why it matters:** this is the same failure class as R4-2, and arguably worse. A learner who mixes up 알다 and 모르다, or 있다 and 없다 (the classic beginner confusions), gets a green verdict, and `ewmaError` drops. The scheduler then shows those words *less*.
+
+**Fix direction:**
+- Give `allAcceptedForms` a parameter `forms: [ConjForm]`.
+- Have the matcher pass every form except `.negativePolite`. Even better, keep only forms whose text still contains the stem, which also covers any future suppletive form.
+- Keep the conjugation deck on the full set.
+- Add must-reject rows to the R4-1 golden tests: 몰라요/알다, 없어요/있다, 맛없어요/맛있다, 안 가요/가다.
+- Must-accept rows: 가요, 갔어요, 가고 싶어요/가다, and 먹어/먹다.
+
+### R5-2 · P3 (Low-Medium, performance) · Home regenerates every deck's card pool on the main actor after every session
+**Files:**
+- `App/Sources/Features/Home/HomeView.swift:356-363` (`load()`, run by `.task(id: env.dataVersion)`)
+- also `SessionSetupView.swift:43` and `WeakestWordsSection.swift:28` (same pattern, less often)
+
+**What happens:**
+- `load()` is main-actor code. For each of the 27 catalog decks it runs:
+  - `deck.cards(options:)`, building every `Card` only to read `.count`;
+  - `initialConfig(for:)`, a JSON decode from UserDefaults;
+  - a separate `await store.stats(for:)` round trip, which fetches every `ItemStats` row of that deck.
+- It reruns on every `dataVersion` bump: every finished session, reset, and user-deck save. A finished session is exactly when the Summary confetti is animating.
+
+**Measured (Debug, Apple-silicon Mac, core only):**
+
+| Deck | Time | Cards |
+|---|---|---|
+| `music.scales` | 31.5 ms | 936 |
+| `music.progressions` | 27.6 ms | 157 |
+| `ko.conjugation` | 11.3 ms (4.3 ms Release) | 2,336 |
+| `music.chords.play` + `.name` | 9.1 ms | — |
+| `music.triads` | 4.7 ms | — |
+| `ko.particles` | 2.7 ms | — |
+
+- **Sum: about 90 ms of main-thread work per `load()`**, before the 27 store hops.
+- PLAN §14 installs from Xcode, so the owner runs **Debug** builds day to day.
+- On an iPhone this is likely 100–250 ms, a visible hitch *(plausible: measure with the G5 timing log)*.
+
+**Fix direction:**
+- Card counts depend only on (deck id, options), and decks are immutable values. Memoise `cardCount(deck:options:)` in `AppEnvironment` and clear the cache in `reloadCatalog()`.
+- Or compute the counts in a `Task.detached`, because every `Deck` is `Sendable`.
+- Replace the 27 `stats(for:)` calls with one store method that returns per-deck row aggregates (count seen, accuracy, median, last seen) in a single fetch.
+
+### R5-3 · P3 (Low-Medium, performance and battery) · The pitch detector runs at full rate while nobody is listening
+**Files:**
+- `App/Sources/Services/PitchDetector.swift:93-150` (`analyse` runs for every hop)
+- `MicAnswerController.swift` (`setListening(false)` only gates the *tracker*)
+
+**What's wrong:**
+- PLAN §11.5b says *"Detector is off during reveal."*
+- In code, the input tap and YIN keep running through reveal, pause, the snippet sheet and note playback. Their output is computed and then discarded in `MicFrameTracker.process` (`guard listening`).
+- **Cost per hop at 48 kHz:**
+  - `tauMax` ≈ 685 lags, each a 1,024-sample `vDSP_distancesq`, so about 0.7 M multiply-adds per frame;
+  - about 94 frames/s, so **about 66 M multiply-adds/s**, plus one `Array` allocation per tap buffer.
+- In a mic session the reveal can be most of the wall time, because the user reads the answer, listens to playback and grades.
+
+**Fix direction:**
+- Share the tracker's `listening` flag with the detector, behind the same lock or an atomic. Check it at the top of `append`: keep filling the ring, but skip `analyse` when not listening.
+- Keep the engine running so re-arming has no start-up latency.
+- Optional, *(plausible: measure)*:
+  - bound `tauMax` by the card's lowest acceptable note (a guitar's lowest is E2, 82 Hz, so the 70 Hz floor is already close);
+  - or move to an FFT-based difference function (`vDSP_fft_zrip`), which is O(N log N) instead of O(N·τ).
+
+### R5-4 · P3 (Low, spec integrity) · The PLAN body now contradicts the code
+The decisions are recorded in §17, but the normative sections that agents read first were not updated (CLAUDE.md: *"Record plan deviations in PLAN.md §17"*; §16: *"If the plan is ambiguous or wrong … record it"*). A future agent following §9.2 would undo R4-4.
+
+| Location | Says | Code / decision |
+|---|---|---|
+| PLAN.md §9.2 table, `choice` row (line ~542) | updates time EWMA: **yes** | **no** (R4-4, `InputMode.countsTime`) |
+| PLAN.md §9.2 paragraph (line ~545) | "In a typed session, time is skipped for every card, **including any card that falls back to touch**" | a touch fallback **counts**; a mic-timeout reveal doesn't |
+| PLAN_M4 §4, M4-0 step 2 (line 83) | `countsTime` "derived from `config.inputMode == .typed`" | per answer, via `ok(countsTime:)` |
+| PLAN.md §15, M4 status (line 935) | "Core 2–4 have been added, and Core 5 is still to do" | Core 5 is done (§17, 2026-11-17; `ko_core_5.json`, 225 entries) |
+| PLAN.md §9.2 / PLAN_M4 §7 | vocab "close counts as correct" | still true, but "close" now has the R4-2 and R5-1 semantics, which aren't described outside §17 |
+| README.md:24, 31 | "= OK", "prompt → OK" | R3-7, still open |
+
+**Fix direction:** this is a planner task. Fold the R4 decisions into §9.2 and §11.5d, and into the PLAN_M4 §3.1 table and M4-0, then fix the §15 status line.
+
+### R5-5 · P3 (Medium for product value) · M5 delivers no user-visible feature yet: snippets are unreachable without K2 content
+**Files:**
+- `DeckCatalog.swift`: `"ko_media"` is commented out of `bundledVocabFiles`
+- `VocabUI.swift:204`: `MediaSnippetView` is embedded only when `dialogue`/`sources` is non-empty
+- PLAN_M5 tracker: K2 and K5 are ☐
+
+**Verified:** no bundled deck JSON contains a `dialogue` or `sources` key (grep over `Resources/Decks/*.json`).
+
+**What follows:** the following are all **dead in production**, and only previews exercise them:
+- the "In a scene" and "Heard in" panels;
+- "My snippet" (K4), because its only entry point is that panel;
+- the snippet store and its backup exclusion;
+- the `personalSnippets` export key;
+- the "Also delete my snippets?" reset prompt.
+
+This matches PLAN_M5 K3 §2 to the letter ("only when … non-empty"). From a business point of view, though, the milestone's value has not shipped. About 900 lines of M5 UI and persistence carry maintenance cost and have zero reach.
+
+**Options (owner decision):**
+- **(a)** Schedule K2. It needs a web-capable agent for the citation verification (PLAN_M5 §2).
+- **(b)** Show "+ Add your own snippet" on *every* vocab reveal, so K4 works now. This changes the "existing decks look unchanged" rule in K3, so it needs the owner's approval.
+- **(c)** Explicitly park M5 in PLAN §15.
+
+### R5-6 · P4 (Polish)
+- **a. Snippet deletes can be revived at launch.** In `AppEnvironment.loadPersonalSnippets` (line 181), `snippets.merging(personalSnippets)` keeps a disk entry for any key missing from memory. A snippet deleted before the launch load completes therefore comes back. User decks got a tombstone set in R4-10; snippets need the same. The window is small: you would have to edit within the first moments after launch.
+- **b. Double haptic on typed and choice answers.** `SessionViewModel.reveal(_:_:)` (line 240) fires `haptics.grade` at the reveal, and `gradeAutoAnswer → grade` (line 150) fires it again on Next. Keep the reveal one and skip the second when `autoAnswer != nil`.
+- **c. New Swift 6 warning.** `ScreenshotImportView.swift:41` reads the main-actor-isolated `phase` from a `Sendable` closure. The segment DoD requires no new warnings.
+
+## Performance: what's fine (measured, no action)
+
+| Path | Debug | Release | Note |
+|---|---|---|---|
+| `DeckCatalog.builtIn()` (7 JSON files, about 1,100 entries + validation) | 19.7 ms | 13.2 ms | runs once at launch |
+| `ChordShapeLibrary.shared` (67 shapes, all configurations validated) | 4.7 ms | 8.3 ms* | once, lazily |
+| `DeckValidator.validate` (all files) | 5.5 ms | 2.0 ms | — |
+| `PersistedFormatCheck` + `TheoryCheck` | 3.2 ms | 1.5 ms | DEBUG launch only |
+| `SessionEngine.init` on the largest pool (`ko.conjugation`, 2,336 cards) | 14.3 ms | 4.4 ms | once per session |
+| `Scheduler.nextCard` | O(pool) + one median sort per pick | — | under 1 ms at 2–3k cards; caching `referenceMs` isn't worth the complexity |
+| `SwiftDataStatsStore.save(ItemStats)` | — | — | `itemKey` is `@Attribute(.unique)`, so the lookup is indexed |
+| Typed matching (`allAcceptedForms` per submit) | — | — | about 30 strings per submit, negligible |
+
+\* The library ran first in the Release probe, so that number includes the cold bundle and JSON load.
+
+**Not fixable on iOS 17:** `SDAttempt.sessionID` and `deckID` have no index (`#Index` needs iOS 18). The table grows without bound, about 18k rows per year at 50 cards a day. `attempts(for:)` (every session start, via the baseline) and `trendPoints` (N5) scan it. This is fine for years *(plausible: measure; G5 numbers are still not taken)*.
+
+## Spec comparison (business-analysis view)
+
+Legend: ✅ implemented (checked in code) · 🟡 implemented with a recorded deviation, or partly · ❌ missing · ⏳ blocked on owner or content.
+
+### M1 core loop (PLAN §1–§11)
+| Requirement | Status | Notes |
+|---|---|---|
+| Timed prompt → OK → reveal → self-grade; monotonic clock; timer starts when the prompt is visible (§9.1) | ✅ | The prompt uses `.transition(.identity)`, and `promptDidAppear` runs from `.task(id: presentationID)`, so no animation is timed |
+| Interruptions: interrupted attempt stored and excluded; same card, fresh timer (§9.1) | ✅ | `SessionEngine.pause/resume` |
+| Clamp 150–30 000 ms for stats only (§9.1) | ✅ | |
+| Retry queue: 3–5 cards later, once per card, not counted (§9.3) | ✅ | Cooldown-delayed; flushed when starved |
+| Grade lockout 250 ms (§9.3) | ✅ | |
+| **`undoLastGrade`** (§9.3, stretch) | ❌ | Never implemented (S6 note); not in any fix plan. Owner: keep it or drop it from the spec |
+| Weighted scheduler, cooldown, pattern penalties, gating, fallback order (§10) | ✅ | Read in full; matches §10.2–§10.6 |
+| Summary: tiles with Δ, chart with median rule, slowest 5, missed list, full list (§11.4) | ✅ | `RuleMark` present |
+| Stats: trend, history → summary, fretboard heatmap + popover, weakest words, Learned/Seen/New (§11.6) | ✅ | The trend loads every attempt (N5; G5 unmeasured) |
+| Settings list (§11.7): naming, Si/Ti, left-handed, string order, max fret, string hint, auto-play, speech rate, romanization, tap-anywhere, timer, haptics, export JSON + CSV, reset per deck or all | ✅ | |
+| Keyboard and pedal map (§11.3), including Backspace = Wrong and Esc = pause | ✅ | `SessionView.swift:519-538` |
+| Idle timer disabled in session, haptics, swipe-to-grade, Reduce Motion | ✅ | |
+| TTS `ko-KR`, `.playback` + `.mixWithOthers`, one-time "install Korean voice" hint (§8.4) | ✅ | |
+| Accessibility beyond Reduce Motion: contrast and Differentiate Without Color (§11, R3-3) | ❌ | R3-3 still open; no `colorSchemeContrast` handling |
+| **Tests:** core `swift test`, AppTests, UI smoke test (§5, §13, segment DoD) | ❌ | R4-1. Owner deferred tests in M1, and later rounds hand them to the tester agent. Today **no automated check runs at all**, and the M2–M5 logic (about 7k lines) is untested |
+
+### M2 music (PLAN_M2)
+| Requirement | Status | Notes |
+|---|---|---|
+| Name the Note, Find All, Intervals, Ear decks; tunings with the key prefix rule | ✅ | |
+| Note playback, "Play note on reveal", volume | ✅ | |
+| Mic answers: Listening chip, level meter, "Heard G♯", 5/10/20 s timeout, 🎤 in history and summary | ✅ | `StatsView.swift:214`, `SummaryView.swift:20` |
+| "Detector is off during reveal" (§11.5b) | 🟡 | Matching is off, but analysis still runs (R5-3) |
+| Mic for Find All | ⏳ | Owner OPEN question (PLAN_M2 §6) |
+
+### M3 harmony (PLAN_M3)
+| Requirement | Status | Notes |
+|---|---|---|
+| 9 decks, card counts as in the tracker (369/369/540/144/936/60/210/157/48) | ✅ | Probe counts match exactly |
+| Chord box, staff, circle views with VoiceOver labels; dot labels Notes/Degrees; shape hint | ✅ | |
+| Shape verification table | ⏳ | Owner (M3-2) |
+| Unwanted chord families or scale types? | ⏳ | Owner OPEN (PLAN_M3 §7) |
+
+### M4 Korean (PLAN_M4)
+| Requirement | Status | Notes |
+|---|---|---|
+| Core 2–5 (889 words), Patterns (87) | 🟡 | Content present; dictionary verification pending (R4-6, `docs/core-verification.md`) |
+| Hangul reading (stages, gating, stats grid), listening, particles, conjugation | ✅ | `HangulStatsGrid` in `HangulReadingUI.swift:188` |
+| Typed answers: Korean-keyboard hint, Don't know, override, diff highlight, auto-advance | ✅ | Grading semantics need R5-1 |
+| Custom decks, AION screenshot → cards (PhotosPicker, ko-KR OCR, Already known, screenshot not stored) | ✅ | Real-screenshot device check pending (M4-9) |
+
+### M5 media (PLAN_M5)
+| Requirement | Status | Notes |
+|---|---|---|
+| K1 schema v2 and validator | ✅ | |
+| K2 `ko_media.json` (about 80 verified entries) | ❌ | Not started; needs a web-capable agent |
+| K3 snippet panel, K4 My snippet | 🟡 | Built, but **unreachable** without K2 (R5-5) |
+| K5 integration and QA | ❌ | |
+
+### Process items from PLAN_M1_FIXES still open
+- G5: the `trendPoints` numbers were never taken.
+- G6: the device checks (P2-2, P2-3, P2-5, P2-6) are still ☐.
+
+## What's good (keep it)
+- **R4-2 is a principled fix.** The matcher now generates the accepted forms instead of guessing from prefixes. The batchim-slip rule for short words has a clear linguistic rationale (의사/의자 wrong, 있다/잇다 close). The indel-only English distance removes exactly the real-word substitutions. R5-1 is a one-line scope fix on top of a sound design.
+- **The conjugation alternates are carefully bounded.** Vowel-initial stems are excluded, 놓다 is special-cased, and the dedup sits in `Conjugation.init`.
+- **The mic threading is now textbook.** The detector queue owns the per-frame state. Main gets only actionable events, guarded by a generation token so stale notes can't grade the next card.
+- **R4-8 is done without touching the wire format,** and `PersistedFormatCheck` proves it.
+- **The launch path is cheap** (about 20 ms Debug for the whole catalog), and the session hot path is O(pool) with small constants.
+
+## Round 5 — Suggested fix order
+1. **R5-1** before committing the R4 batch. It's a small change in `Conjugator.allAcceptedForms` and `AnswerMatcher`, plus the must-reject rows.
+2. **Commit** the R4 batch with the R5-1 fix (the owner asked for review before commit).
+3. **R4-1** (tester): compile fixes, then CI `swift test`, then the golden tables. The probe lists in Round 4 and in this round are ready-made seeds.
+4. **R5-4** (planner): fold the R4 decisions into the PLAN §9.2 and PLAN_M4 tables, and fix the §15 status line.
+5. **R5-2, R5-3, R3-2** as one performance segment: Home card-count cache and batched stats, detector gating, aurora freeze during sessions. Measure on device before and after with the G5 timing log.
+6. **R5-5**: owner decision (a), (b) or (c).
+7. **R5-6**: polish batch.
 
 ---
 
