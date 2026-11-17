@@ -23,11 +23,11 @@
 | R3-2 Aurora renders continuously, including in sessions | **S4** | **frontend agent** |
 | R5-6a/b/c Polish | **S5** | implementor |
 | R5-4 PLAN body contradicts code (+ R3-7 README wording) | P1 | planner (after S1 is committed; see §4) |
-| R5-5 M5 unreachable without K2 | none | **owner decision**, see §5 |
+| R5-5 M5 unreachable without K2 | **S6** (option b; K2 later) | **frontend agent** |
 | R4-1 Tests / CI | none | tester |
 | R4-6 Korean content verification | none | process / owner |
 
-**Order:** S1 comes first and blocks the R4 commit. S2, S3, S4 and S5 are independent and can run in parallel. They touch disjoint files, except `AppEnvironment.swift`, which S2 and S5a both touch; do S2 first.
+**Order:** S1 comes first and blocks the R4 commit. S2, S3, S4, S5 and S6 are independent and can run in parallel. They touch disjoint files, except `AppEnvironment.swift`, which S2 and S5a both touch; do S2 first.
 
 ## 2. Tracker
 
@@ -38,6 +38,7 @@
 | S3 Gate the pitch detector on listening | R5-3 | ☐ | |
 | S4 Freeze the aurora in sessions | R3-2 | ☐ | Frontend agent |
 | S5 Polish: snippet tombstone, double haptic, Swift 6 warning | R5-6 | ☐ | |
+| S6 "My snippet" on every vocab reveal | R5-5 (b) | ☐ | Frontend agent; owner approved 2026-11-17 |
 
 ---
 
@@ -222,9 +223,46 @@ That adds up to about 90 ms of main-thread work in Debug, landing on top of the 
 
 ---
 
+### S6 · R5-5 (b) · "My snippet" on every vocab reveal (frontend agent)
+
+**Decision (owner, 2026-11-17):** option (b) now, and K2 content later. The K3 rule "existing decks look unchanged" is relaxed. A vocab reveal may now show the "My snippet" section, but the "In a scene" and "Heard in" sections still appear only when the entry has that data.
+
+**Problem:** `VocabUI.swift:203` embeds `MediaSnippetView` only when `MediaSnippetView.shouldShow(for:)` is true, meaning the entry has dialogue or sources. No bundled deck has either, so K4 ("My snippet"), its store, its export key and the reset prompt can't be reached.
+
+**Files:**
+- `App/Sources/DeckUI/VocabUI.swift` (around line 203)
+- `App/Sources/Components/MediaSnippetView.swift`
+
+**Steps:**
+1. **`VocabUI` answer view:** remove the `shouldShow` condition and always embed `MediaSnippetView(entry: e, onEditSnippet: onEditSnippet)`. Keep `.padding(.top, 8)`. This covers every vocab entry: bundled core, patterns, user and AION decks, in every direction including listening.
+2. **`MediaSnippetView`:**
+   - Rename `shouldShow(for:)` to `hasMedia(for:)` (same logic). Its only caller was `VocabUI`.
+   - The "In a scene" and "Heard in" sections keep their own `isEmpty` checks, which already exist.
+   - **Compact form for non-media entries.** When `!hasMedia(for: entry)` **and** the entry has no saved snippet, show only the existing `addButton`. Leave out the `PanelSection` header, so plain decks gain one quiet dashed button and not a whole titled panel.
+   - When the entry has a saved snippet, show the full "My snippet" `PanelSection` with the saved card, the same as for media entries.
+   - Make `addButton` reachable from the compact path. Either expose `MySnippetCard` with a `compact` flag, or lift the button out into a small private view. Keep the identifier `addSnippetButton`.
+3. **Keep the session wiring as it is:** opening the editor goes through `onEditSnippet`, which pauses the session timer (K4). Nothing changes there.
+4. **Identifiers:** the outer container keeps `mediaSnippet`. If a VoiceOver label is missing, add `Add your own snippet for <hangul>` on the compact button.
+5. **`#Preview`s:**
+   - a plain core entry with no snippet (compact button only);
+   - a plain entry with a saved snippet;
+   - the existing media previews, unchanged.
+6. **Check entry-id uniqueness:** snippets are keyed by `VocabEntry.id` alone. Confirm that user-deck entry ids can't collide with bundled ids; read `UserDecks.newDeck` and the entry-id generation. If they can collide, **stop and report to the planner**. Don't change id schemes; CLAUDE.md forbids it.
+7. Update the doc comment in `VocabUI` ("M5: only media phrases get the panel …") to describe the new rule.
+
+**Acceptance (device or simulator):**
+- Reveal a Core 1 card. Below the examples and notes there is one dashed "Add your own snippet" button, with no "In a scene" or "Heard in" sections.
+- Tap the button. The editor sheet opens and the session timer is paused. Save the snippet. The reveal now shows the "My snippet" section with the saved text, and the next time this card comes up the snippet is still there.
+- The Wrong/Correct controls stay reachable, and long reveals scroll, as in PLAN_M5 §K3.
+- Settings → Export JSON contains the `personalSnippets` key with the saved entry. Reset all asks "Also delete my snippets?".
+- User/AION deck cards and listening-direction reveals show the button too.
+- Non-vocab decks (music, Hangul reading, particles, conjugation) are unchanged.
+
+---
+
 ## 4. Planner follow-up (not implementor work)
 
-**P1 · R5-4 + R3-7:** fold the R4 decisions into the normative sections:
+**P1 · R5-4 + R3-7 + D2:** fold the R4 decisions into the normative sections:
 - PLAN.md §9.2 table (the `choice` row should say "time EWMA: no") and the paragraph below it (a touch fallback counts; a mic-timeout reveal doesn't);
 - §11.5d;
 - the PLAN_M4 §3.1 table and M4-0 step 2 (`countsTime` per answer via `ok(countsTime:)`);
@@ -232,11 +270,17 @@ That adds up to about 90 ms of main-thread work in Debug, landing on top of the 
 - the definition of "close" for vocab (R4-2 + R5-1);
 - README.md lines 24 and 31.
 
+The same pass also removes `undoLastGrade` from the spec, as the owner decided under D2:
+- PLAN.md §9.3 (line ~567);
+- the S6 scope line (line ~842);
+- the S6 tracker note (line ~974);
+- plus a §17 entry.
+
 The planner does this **after** the R4 batch + S1 commit lands. PLAN.md currently holds the code-writer's uncommitted §17 entries, and the planner commits only plan files.
 
-## 5. Owner decisions still open
+## 5. Owner decisions
 
-| # | Decision | Planner recommendation |
+| # | Decision | Outcome (2026-11-17) |
 |---|---|---|
-| D1 | **R5-5:** M5 snippets are unreachable without K2 content. Choose (a) schedule K2 (needs a web-capable agent), (b) show "+ Add your own snippet" on every vocab reveal, or (c) park M5 in PLAN §15. | **(b) now, (a) later.** (b) is a small UI change that makes K4 usable today; it changes K3's "existing decks look unchanged" rule, so it needs your approval. If approved, the planner adds segment S6 here. |
-| D2 | `undoLastGrade` (PLAN §9.3 stretch goal) was never built. Keep it or drop it? | Drop it from the spec. Swipe-to-grade plus the 250 ms lockout already guard against mis-grades. |
+| D1 | R5-5: how to make M5 reachable | **(b) now:** "+ Add your own snippet" on every vocab reveal (S6). K2 content follows later and needs a web-capable agent. The K3 "existing decks look unchanged" rule is relaxed accordingly (PLAN_M5 §K3 updated). |
+| D2 | `undoLastGrade` (PLAN §9.3 stretch goal) | **Dropped** from the spec. The implementor builds nothing for it; the planner removes it from PLAN.md in P1. |

@@ -171,13 +171,14 @@ The phrases deck reuses `VocabDeck` / `VocabEntry`, so no new `CardContent` case
    - **"Heard in"**: one row per source. SF Symbol `music.note` for songs, `tv` for drama/show, `film` for film. Shows title (plus `titleKo` if present), `by` · `year`, the locator chip, and the context text. Plain text only; no links or buttons.
    - **"My snippet"**: placeholder in K3; wired up in K4.
 2. Embed it in the vocab provider's answer view below the existing content, only when `entry.dialogue` or `entry.sources` is non-empty, so the existing decks look unchanged.
+   - **Superseded 2026-11-17 (owner, R5-5 option b; see PLAN_R5_FIXES S6):** the view is embedded on **every** vocab reveal. Entries without media show only a compact "+ Add your own snippet" button, or the "My snippet" section once a snippet is saved. "In a scene" and "Heard in" still need data.
 3. Add the `register` chip ("casual" / "polite" / "formal") next to the romanization in both the prompt and answer views when present.
 4. Accessibility: each bubble is a combined element ("Speaker A: …, meaning …"); each source row reads as "Heard in <title> by <by>, <year>, <locator>". Identifiers: `mediaSnippet`, `dialogueLine.<n>`, `mediaSource.<n>`.
 5. `#Preview`s: an entry with dialogue + 2 sources; dialogue only; dark mode; largest Dynamic Type; landscape.
 
 **Accept (device):**
 - reveal on a media card shows the panel and the controls stay reachable
-- core/aion2 cards are visually unchanged
+- core/aion2 cards are visually unchanged *(superseded by S6: they gain only the compact snippet button)*
 - no tappable link appears anywhere in the panel
 
 ### K4 — "My snippet": personal, on-device notes
