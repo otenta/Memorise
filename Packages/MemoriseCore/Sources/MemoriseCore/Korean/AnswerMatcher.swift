@@ -90,6 +90,7 @@ public enum AnswerMatcher {
     /// - Words of 1–2 syllables: only a final-consonant (batchim) slip in one syllable is close;
     ///   changing an initial or a vowel makes a different word (의사/의자) and is wrong.
     /// - Longer words: jamo distance ≤ 1 is close.
+    /// - Non-predicates: the same phrase with the polite 요 added or dropped is close (R6-2).
     static func hangulVerdict(
         _ input: String, _ expected: String, isPredicate: Bool,
         conjugationClass: ConjugationClass = .regular, isAdjective: Bool = false
@@ -98,6 +99,8 @@ public enum AnswerMatcher {
         let b = normalizedHangul(expected)
         guard !a.isEmpty, !b.isEmpty else { return .wrong }
         if a == b { return .exact }
+        // R6-2: the polite 요 added or dropped (미안해요 for 미안해, 진짜요 for 진짜) is the same phrase.
+        if !isPredicate, a == b + "요" || b == a + "요" { return .close }
         if isPredicate, b.hasSuffix("다") {
             let forms = Conjugator.allAcceptedForms(expected, class: conjugationClass, isAdjective: isAdjective,
                                                     forms: ConjForm.affirmative)
