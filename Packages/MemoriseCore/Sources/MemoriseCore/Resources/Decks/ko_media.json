@@ -4150,6 +4150,17 @@
           "ko": "넌 준비 많이 했잖아. 괜찮을 거야.",
           "en": "You prepared a lot. It'll be okay."
         }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "괜찮을거야",
+          "by": "Roy Kim",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "Roy Kim's gentle ballad keeps reassuring a struggling friend that things will turn out fine.",
+          "citation": "https://music.bugs.co.kr/track/6180024"
+        }
       ]
     },
     {
@@ -4178,6 +4189,26 @@
           "speaker": "B",
           "ko": "힘내. 다 잘될 거야.",
           "en": "Cheer up. Everything will work out."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "다 잘될 거야",
+          "by": "COOL",
+          "year": 2015,
+          "locator": "lyrics",
+          "context": "COOL's mid-tempo single lifts a low mood by promising that it will all work out.",
+          "citation": "https://music.bugs.co.kr/track/4580183"
+        },
+        {
+          "kind": "song",
+          "title": "다 잘될 거야",
+          "by": "김호연",
+          "year": 2022,
+          "locator": "lyrics",
+          "context": "A soothing OST track that tells a worn-out listener everything will be fine before saying good night.",
+          "citation": "https://music.bugs.co.kr/track/32736715"
         }
       ]
     },
@@ -4325,6 +4356,18 @@
           "ko": "당연하지. 비가 엄청 왔잖아.",
           "en": "Of course. It was pouring."
         }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "RE : WIND",
+          "titleKo": "이세계아이돌",
+          "by": "ISEGYE IDOL",
+          "year": 2021,
+          "locator": "lyrics",
+          "context": "The virtual idol group's debut single opens by asking someone if they remember the day they first met.",
+          "citation": "https://music.bugs.co.kr/track/32416798"
+        }
       ]
     },
     {
@@ -4353,6 +4396,27 @@
           "speaker": "B",
           "ko": "나도 미치겠다, 진짜.",
           "en": "It's driving me crazy too, seriously."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Star Star Star",
+          "titleKo": "별별별 (☆★☆)",
+          "by": "Girls' Generation",
+          "year": 2010,
+          "locator": "lyrics",
+          "context": "A heartbroken plea where the singer says the longing is driving her crazy and asks the stars to carry her feelings.",
+          "citation": "https://music.bugs.co.kr/track/1920887"
+        },
+        {
+          "kind": "song",
+          "title": "Want U Back",
+          "by": "100%",
+          "year": 2013,
+          "locator": "lyrics",
+          "context": "A man begging his ex to come back cries out that losing her is driving him mad.",
+          "citation": "https://music.bugs.co.kr/track/2986050"
         }
       ]
     },
@@ -4383,6 +4447,17 @@
           "speaker": "B",
           "ko": "응, 생각만 해도 설렌다.",
           "en": "Yeah, just thinking about it makes my heart flutter."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "LIKEY",
+          "by": "TWICE",
+          "year": 2017,
+          "locator": "lyrics",
+          "context": "In TWICE's giddy crush song about posting selfies for one person, the chorus hook is her fluttering heart.",
+          "citation": "https://music.bugs.co.kr/track/30826585"
         }
       ]
     },
@@ -4502,6 +4577,17 @@
           "speaker": "B",
           "ko": "몰라서 물어? 다 너 때문이야.",
           "en": "You really have to ask? It's all because of you."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "Insomnia",
+          "by": "RIIZE",
+          "year": 2026,
+          "locator": "lyrics",
+          "context": "RIIZE lie awake unable to stop thinking about someone and finally admit that person is the reason.",
+          "citation": "https://music.bugs.co.kr/track/6513728"
         }
       ]
     },
@@ -4680,6 +4766,17 @@
           "ko": "미안해. 우리 끝났어.",
           "en": "I'm sorry. We're over."
         }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "끝났어",
+          "by": "Lee Jung-hyun",
+          "year": 2000,
+          "locator": "lyrics",
+          "context": "Lee Jung-hyun's dance-pop breakup song declares that the exhausting love is finally over.",
+          "citation": "https://music.bugs.co.kr/track/87780"
+        }
       ]
     },
     {
@@ -4768,6 +4865,17 @@
           "ko": "조금만 더 같이 있어 줘.",
           "en": "Stay with me a little longer."
         }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "같이 있어줘",
+          "by": "태하 & 화요비",
+          "year": 2011,
+          "locator": "lyrics",
+          "context": "A duet pleading with someone who has caused pain to stay close anyway.",
+          "citation": "https://music.bugs.co.kr/track/2315707"
+        }
       ]
     },
     {
@@ -4796,6 +4904,18 @@
           "speaker": "B",
           "ko": "아니야, 시간이 없어. 빨리 가자.",
           "en": "No, there's no time. Let's hurry."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "song",
+          "title": "RE : WIND",
+          "titleKo": "이세계아이돌",
+          "by": "ISEGYE IDOL",
+          "year": 2021,
+          "locator": "lyrics",
+          "context": "The song's chorus worries about running out of time before a longed-for reunion.",
+          "citation": "https://music.bugs.co.kr/track/32416798"
         }
       ]
     },

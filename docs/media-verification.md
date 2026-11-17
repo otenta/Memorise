@@ -110,3 +110,24 @@
 | ko.media.0069 | 오늘은 살아봐요 | drama | Lovely Runner (선재 업고 튀어) | tvN | 2024 | series | https://sports.khan.co.kr/article/202405281433003 | agent | VERIFIED | 2026-11-17 |
 | ko.media.0070 | 무야호 | show | Infinite Challenge (무한도전) | MBC | 2010 | E195 | https://www.khan.co.kr/article/202103141850001 | agent | VERIFIED | 2026-11-17 |
 | — | 산수할 줄 알아? | show | The Devil's Plan: Death Room (데블스 플랜: 데스룸) | Netflix | 2025 | series | https://www.elle.co.kr/article/1882018 | agent | PROPOSED | 2026-11-17 |
+
+## Extension: ko.media.0106–0146 (41 entries, 2026-11-17)
+
+- **Entries with ≥ 1 verified reference:** 9 of 41. **Verified references:** 11, all songs. The other 32 phrases stay as dialogue-only cards until a reference can be verified.
+- Same method as above: each phrase had to appear verbatim in the Korean lyrics on the cited Bugs track page, ignoring only spaces and punctuation. Years come from the album page's 발매일 or the page's MV listing. 34 lyrics pages were read by a web-capable content agent.
+- **Not used (substring only):** 사랑한다 inside 사랑한다는 (IU 밤편지, track 30598121), and 내가 지켜 줄게 only as 내가 지켜 줄게요 (로건 내가지켜줄게요, track 32356877). 너 때문이야 is in the title of Supreme Team's 너 때문이야 (track 2017955) but not in its lyrics.
+- **Checked, no match:** TWICE What is Love?, 미쳤나봐, TT, SCIENTIST, 툭하면 톡, BDZ; BTS HOME, IDOL, N.O, Begin, ON, Blue & Grey; IU 좋은 날; NewJeans Ditto; LE SSERAFIM Perfect Night (English lyrics); ILLIT Lucky Girl Syndrome, Magnetic; G.NA 꺼져줄게 잘 살아 (only 꺼져줄게).
+
+| id | hangul | kind | title | by | year | locator | citation | verified-by | status | date |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ko.media.0106 | 괜찮을 거야 | song | 괜찮을거야 | Roy Kim | 2022 | lyrics | https://music.bugs.co.kr/track/6180024 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0107 | 다 잘될 거야 | song | 다 잘될 거야 | COOL | 2015 | lyrics | https://music.bugs.co.kr/track/4580183 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0107 | 다 잘될 거야 | song | 다 잘될 거야 | 김호연 | 2022 | lyrics | https://music.bugs.co.kr/track/32736715 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0112 | 기억나? | song | RE : WIND (이세계아이돌) | ISEGYE IDOL | 2021 | lyrics | https://music.bugs.co.kr/track/32416798 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0113 | 미치겠다 | song | Star Star Star (별별별 (☆★☆)) | Girls' Generation | 2010 | lyrics | https://music.bugs.co.kr/track/1920887 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0113 | 미치겠다 | song | Want U Back | 100% | 2013 | lyrics | https://music.bugs.co.kr/track/2986050 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0114 | 설렌다 | song | LIKEY | TWICE | 2017 | lyrics | https://music.bugs.co.kr/track/30826585 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0118 | 너 때문이야 | song | Insomnia | RIIZE | 2026 | lyrics | https://music.bugs.co.kr/track/6513728 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0124 | 끝났어 | song | 끝났어 | Lee Jung-hyun | 2000 | lyrics | https://music.bugs.co.kr/track/87780 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0127 | 같이 있어 줘 | song | 같이 있어줘 | 태하 & 화요비 | 2011 | lyrics | https://music.bugs.co.kr/track/2315707 | agent | VERIFIED | 2026-11-17 |
+| ko.media.0128 | 시간이 없어 | song | RE : WIND (이세계아이돌) | ISEGYE IDOL | 2021 | lyrics | https://music.bugs.co.kr/track/32416798 | agent | VERIFIED | 2026-11-17 |
