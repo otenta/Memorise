@@ -2,7 +2,8 @@ import Foundation
 import MemoriseCore
 
 /// "My snippet" notes on disk: `Application Support/personal_snippets.json` (PLAN_M5 K4).
-/// No SwiftData schema change. Every write is atomic. Nothing leaves the device except through Export.
+/// No SwiftData schema change. Every write is atomic. Nothing leaves the device except through Export:
+/// the file is excluded from iCloud/Finder device backups (R4-9), so moving to a new device needs Export.
 actor PersonalSnippetStore {
     private let fileURL: URL?
     private var cache: [String: PersonalSnippet]?
@@ -71,8 +72,22 @@ actor PersonalSnippetStore {
         if let fileURL {
             try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
             try PersonalSnippetFile.encoder().encode(PersonalSnippetFile(snippets: all)).write(to: fileURL, options: .atomic)
+            // An atomic write replaces the file, so the flag is set again after every write.
+            Self.excludeFromBackup(fileURL)
         }
         cache = all
+    }
+
+    /// Best effort: a failure only means the file may appear in a device backup.
+    private static func excludeFromBackup(_ url: URL) {
+        var values = URLResourceValues()
+        values.isExcludedFromBackup = true
+        var url = url
+        do {
+            try url.setResourceValues(values)
+        } catch {
+            AppEnvironment.log.error("Snippets: couldn't exclude from backup (\(error.localizedDescription, privacy: .public))")
+        }
     }
 
     /// Renames an unreadable file to `personal_snippets.unreadable-<timestamp>.json`; returns the new name.

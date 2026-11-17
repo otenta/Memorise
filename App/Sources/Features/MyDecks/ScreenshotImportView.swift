@@ -37,8 +37,10 @@ struct ScreenshotImportView: View {
                 }
             }
             Section {
+                // Computed outside the Sendable label closure, which can't read main-actor state (R5-6c).
+                let pickerTitle = phase == .idle ? "Choose a screenshot" : "Choose another screenshot"
                 PhotosPicker(selection: $pick, matching: .images, photoLibrary: .shared()) {
-                    Label(phase == .idle ? "Choose a screenshot" : "Choose another screenshot", systemImage: "photo.on.rectangle.angled")
+                    Label(pickerTitle, systemImage: "photo.on.rectangle.angled")
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, minHeight: 50)
@@ -128,8 +130,10 @@ struct ScreenshotImportView: View {
     private func save() async {
         guard var file = env.userDeckFile(id: deckID) else { errorMessage = "Deck not found"; return }
         for c in selected {
+            let meanings = UserDecks.meanings(from: c.meaning)
             let draft = UserDecks.EntryDraft(
-                hangul: c.hangul, meanings: UserDecks.meanings(from: c.meaning), pos: .noun, romanization: c.romanization, tags: ["aion2"]
+                hangul: c.hangul, meanings: meanings, pos: UserDecks.guessedPartOfSpeech(hangul: c.hangul, meanings: meanings),
+                romanization: c.romanization, tags: ["aion2"]
             ).normalized
             let problems = UserDecks.problems(draft, in: file)
             guard problems.isEmpty else { errorMessage = "\(c.hangul): \(problems.joined(separator: "; "))"; return }

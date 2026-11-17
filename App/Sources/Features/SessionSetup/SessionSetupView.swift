@@ -40,7 +40,7 @@ struct SessionSetupView: View {
         }
         .onAppear { if config == nil { config = env.initialConfig(for: deck) } }
         .task(id: config?.options) {
-            poolCount = config.map { deck.cards(options: $0.options).count } ?? 0
+            poolCount = config.map { env.cardCount(for: deck, options: $0.options) } ?? 0
         }
         .presentationDetents([.large])
     }

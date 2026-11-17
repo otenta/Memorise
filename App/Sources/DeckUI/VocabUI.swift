@@ -37,7 +37,8 @@ struct VocabUI: DeckUI {
             if e.partOfSpeech == .pattern, let ex = e.allExamples.first {
                 return TypedAnswerSpec(expected: [ex.ko], kind: .hangul)
             }
-            return TypedAnswerSpec(expected: [e.hangul], kind: .hangul, isPredicate: e.partOfSpeech?.isPredicate ?? false)
+            return TypedAnswerSpec(expected: [e.hangul], kind: .hangul, isPredicate: e.partOfSpeech?.isPredicate ?? false,
+                                   conjugationClass: e.conjugationClass, isAdjective: e.partOfSpeech == .adjective)
         }
     }
 

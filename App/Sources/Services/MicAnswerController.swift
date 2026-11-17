@@ -6,11 +6,15 @@ import Observation
 ///
 /// A note is **stable** when the same MIDI note (±40 cents) is detected in 3 consecutive frames;
 /// its onset is the host time of the first frame of that run.
+///
+/// Frames (≈ 94/s at 48 kHz) are tracked on the detector queue by `MicFrameTracker`; the main
+/// actor only hears about stable notes and a throttled level (R4-5).
 @MainActor @Observable
 final class MicAnswerController {
     enum Permission { case unknown, granted, denied }
 
-    /// Smoothed input level in dBFS (for the meter).
+    /// Smoothed input level in dBFS (for the meter). Published at ≤ 20 Hz, only while listening
+    /// and only when it moves by more than 1 dB.
     private(set) var levelDB: Double = -80
     /// Transient "Heard G♯" text for a stable but wrong note.
     private(set) var heardWrong: String?
@@ -24,11 +28,8 @@ final class MicAnswerController {
     @ObservationIgnored private let audio: AudioSessionCoordinator
     @ObservationIgnored private let engine = AVAudioEngine()
     @ObservationIgnored private var detector: PitchDetector?
-    // Stability tracking.
-    @ObservationIgnored private var runMidi: Int?
-    @ObservationIgnored private var runCount = 0
-    @ObservationIgnored private var runOnset = 0.0
-    @ObservationIgnored private var reportedMidi: Int?
+    @ObservationIgnored private let tracker = MicFrameTracker(stableFrames: MicAnswerController.stableFrames,
+                                                              centsTolerance: MicAnswerController.centsTolerance)
     @ObservationIgnored private var wrongClearTask: Task<Void, Never>?
 
     static let stableFrames = 3
@@ -63,9 +64,18 @@ final class MicAnswerController {
         try audio.beginRecording()
         let input = engine.inputNode
         let format = input.outputFormat(forBus: 0)
+        let tracker = tracker
         let detector = PitchDetector(sampleRate: format.sampleRate) { [weak self] frame in
-            Task { @MainActor [weak self] in self?.handle(frame) }
+            // Detector queue: track here, hop to main only for something to show or act on.
+            let out = tracker.process(frame)
+            if let level = out.level {
+                Task { @MainActor [weak self] in self?.publishLevel(level) }
+            }
+            if let note = out.stable {
+                Task { @MainActor [weak self] in self?.deliver(note) }
+            }
         }
+        detector.setActive(isListening)
         self.detector = detector
         Self.installTap(on: input, format: format, detector: detector)
         try engine.start()
@@ -83,6 +93,7 @@ final class MicAnswerController {
         guard isRunning else { return }
         engine.inputNode.removeTap(onBus: 0)
         engine.stop()
+        detector?.setActive(false)
         detector = nil
         isRunning = false
         isListening = false
@@ -93,40 +104,26 @@ final class MicAnswerController {
     func setListening(_ on: Bool) {
         guard on != isListening else { return }
         isListening = on
-        resetRun()
-        reportedMidi = nil
+        tracker.setListening(on)
+        detector?.setActive(on)
         heardWrong = nil
     }
 
-    // MARK: Frames
+    // MARK: Main-actor delivery
 
-    private func handle(_ f: PitchFrame) {
-        levelDB = 0.7 * levelDB + 0.3 * max(f.rmsDB, -80)
+    private func publishLevel(_ level: Double) {
         guard isListening else { return }
-        guard let midi = f.midi, abs(f.cents) <= Self.centsTolerance else {
-            resetRun()
-            if f.midi == nil { reportedMidi = nil }
-            return
-        }
-        if midi == runMidi {
-            runCount += 1
-        } else {
-            runMidi = midi
-            runCount = 1
-            runOnset = f.hostSeconds
-        }
-        guard runCount == Self.stableFrames, midi != reportedMidi else { return }
-        reportedMidi = midi
-        if onStableNote?(midi, runOnset) == true {
-            setListening(false)
-        } else {
-            showWrong(midi)
-        }
+        levelDB = level
     }
 
-    private func resetRun() {
-        runMidi = nil
-        runCount = 0
+    private func deliver(_ note: MicFrameTracker.StableNote) {
+        // Drop notes from a listening window that has since closed (reveal, next card).
+        guard isListening, note.generation == tracker.generation else { return }
+        if onStableNote?(note.midi, note.onsetHostSeconds) == true {
+            setListening(false)
+        } else {
+            showWrong(note.midi)
+        }
     }
 
     private func showWrong(_ midi: Int) {
@@ -141,4 +138,90 @@ final class MicAnswerController {
 
     /// Current host-clock time in seconds.
     static var hostNowSeconds: Double { AVAudioTime.seconds(forHostTime: mach_absolute_time()) }
+}
+
+/// Stability tracking and level smoothing, run on the detector queue (R4-5).
+///
+/// `process` is called from the detector's serial queue; `setListening` / `generation` from the
+/// main actor. All state is guarded by one lock (uncontended in practice; work per frame is tiny).
+final class MicFrameTracker: @unchecked Sendable {
+    struct StableNote: Sendable {
+        let midi: Int
+        let onsetHostSeconds: Double
+        /// Listening window the note belongs to.
+        let generation: Int
+    }
+
+    struct Output: Sendable {
+        /// New level to publish, if due.
+        var level: Double?
+        var stable: StableNote?
+    }
+
+    /// Minimum seconds between level publications (≤ 20 Hz).
+    static let levelInterval = 0.05
+    /// Minimum level change worth publishing, in dB.
+    static let levelStepDB = 1.0
+
+    private let stableFrames: Int
+    private let centsTolerance: Double
+    private let lock = NSLock()
+
+    private var listening = false
+    private var currentGeneration = 0
+    private var runMidi: Int?
+    private var runCount = 0
+    private var runOnset = 0.0
+    private var reportedMidi: Int?
+    private var level = -80.0
+    private var publishedLevel = -80.0
+    private var publishedAt = -Double.infinity
+
+    init(stableFrames: Int, centsTolerance: Double) {
+        self.stableFrames = stableFrames
+        self.centsTolerance = centsTolerance
+    }
+
+    /// Bumped on every listening change; stale stable notes are dropped on main.
+    var generation: Int { lock.withLock { currentGeneration } }
+
+    func setListening(_ on: Bool) {
+        lock.withLock {
+            listening = on
+            currentGeneration += 1
+            runMidi = nil
+            runCount = 0
+            reportedMidi = nil
+        }
+    }
+
+    func process(_ f: PitchFrame) -> Output {
+        lock.withLock {
+            var out = Output()
+            level = 0.7 * level + 0.3 * max(f.rmsDB, -80)
+            guard listening else { return out }
+            if f.hostSeconds - publishedAt >= Self.levelInterval, abs(level - publishedLevel) > Self.levelStepDB {
+                publishedAt = f.hostSeconds
+                publishedLevel = level
+                out.level = level
+            }
+            guard let midi = f.midi, abs(f.cents) <= centsTolerance else {
+                runMidi = nil
+                runCount = 0
+                if f.midi == nil { reportedMidi = nil }
+                return out
+            }
+            if midi == runMidi {
+                runCount += 1
+            } else {
+                runMidi = midi
+                runCount = 1
+                runOnset = f.hostSeconds
+            }
+            guard runCount == stableFrames, midi != reportedMidi else { return out }
+            reportedMidi = midi
+            out.stable = StableNote(midi: midi, onsetHostSeconds: runOnset, generation: currentGeneration)
+            return out
+        }
+    }
 }

@@ -33,11 +33,11 @@
 
 | Segment | Covers | Status | Notes |
 |---|---|---|---|
-| S1 Exclude negatives from typed predicate matching | R5-1 | ☐ | Blocks the R4-batch commit |
-| S2 Home card-count cache + batched stats | R5-2 | ☐ | |
-| S3 Gate the pitch detector on listening | R5-3 | ☐ | |
+| S1 Exclude negatives from typed predicate matching | R5-1 | ☑ | Code done 2026-11-17, uncommitted (awaits owner for the R4 + R5-1 commit) |
+| S2 Home card-count cache + batched stats | R5-2 | ☑ | Uncommitted: shares dirty files with the R4 batch |
+| S3 Gate the pitch detector on listening | R5-3 | ☑ | Uncommitted: shares dirty files with the R4 batch |
 | S4 Freeze the aurora in sessions | R3-2 | ☐ | Frontend agent |
-| S5 Polish: snippet tombstone, double haptic, Swift 6 warning | R5-6 | ☐ | |
+| S5 Polish: snippet tombstone, double haptic, Swift 6 warning | R5-6 | ☑ | Uncommitted: shares dirty files with the R4 batch |
 | S6 "My snippet" on every vocab reveal | R5-5 (b) | ☐ | Frontend agent; owner approved 2026-11-17 |
 | S7 K2 content: `ko_media.json` | R5-5 (a), PLAN_M5 K2 | ☐ | **Next after S1.** Web-capable agent; owner confirms show refs |
 

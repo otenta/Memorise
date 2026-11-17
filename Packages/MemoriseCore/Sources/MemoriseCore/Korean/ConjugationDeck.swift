@@ -47,18 +47,24 @@ public struct ConjugationPrompt: Hashable, Sendable {
     public let entry: VocabEntry
     public let form: ConjForm
     public let answer: String
+    /// Other accepted spellings (R4-3): 공부하지 않아요 for 공부 안 해요, 보아요 for 봐요. Not displayed.
+    public let alternates: [String]
     /// One-line rule, e.g. "ㅏ/ㅗ stem → 았어요, 가+았 → 갔".
     public let rule: String
     /// Introduction order (word rank, then form).
     public let rank: Int
 
-    public init(entry: VocabEntry, form: ConjForm, answer: String, rule: String, rank: Int) {
+    public init(entry: VocabEntry, form: ConjForm, answer: String, alternates: [String] = [], rule: String, rank: Int) {
         self.entry = entry
         self.form = form
         self.answer = answer
+        self.alternates = alternates
         self.rule = rule
         self.rank = rank
     }
+
+    /// Every accepted answer; the first is the displayed one.
+    public var acceptedAnswers: [String] { [answer] + alternates }
 }
 
 /// `ko.conjugation` — one card per (verb/adjective, form), generated from the Core decks.
@@ -107,7 +113,7 @@ public struct ConjugationDeck: Deck {
         for (index, p) in predicates.enumerated() where o.source == .allCore || p.isCore1 {
             for (formIndex, form) in ConjForm.allCases.enumerated() where o.forms.contains(form) {
                 guard let c = Conjugator.conjugate(p.entry, form) else { continue }
-                let prompt = ConjugationPrompt(entry: p.entry, form: form, answer: c.text, rule: c.rule,
+                let prompt = ConjugationPrompt(entry: p.entry, form: form, answer: c.text, alternates: c.alternates, rule: c.rule,
                                                rank: index * ConjForm.allCases.count + formIndex)
                 result.append(Card(key: Self.itemKey(entryID: p.entry.id, form), deckID: id, content: .conjugation(prompt)))
             }

@@ -1,6 +1,7 @@
 import Accelerate
 import AVFoundation
 import MemoriseCore
+import os
 
 /// One analysed frame.
 struct PitchFrame: Sendable {
@@ -9,7 +10,11 @@ struct PitchFrame: Sendable {
     let cents: Double
     /// 1 − CMNDF minimum (0…1).
     let confidence: Double
-    /// Host-clock seconds of the frame's first sample (the onset estimate).
+    /// Host-clock seconds of the start of the frame's newest hop (the onset estimate, R4-7).
+    ///
+    /// The window's first sample would bias onsets early by up to a window (≈ 43 ms at 48 kHz),
+    /// because a run's first detecting frame usually starts before the note. The hop start can be
+    /// late by up to one hop (≈ 11 ms) when the note began earlier in the window (PLAN §17).
     let hostSeconds: Double
     /// Frame RMS in dBFS (for the level meter).
     let rmsDB: Double
@@ -29,6 +34,9 @@ final class PitchDetector: @unchecked Sendable {
     let sampleRate: Double
     private let queue = DispatchQueue(label: "memorise.pitch", qos: .userInteractive)
     private let onFrame: @Sendable (PitchFrame) -> Void
+    /// Whether frames are analysed (R5-3). Off during reveal, pause and playback: the ring keeps
+    /// filling so re-arming has a full frame at once, but YIN is skipped.
+    private let active = OSAllocatedUnfairLock(initialState: false)
 
     // Queue-confined state (preallocated).
     private var ring: [Float]
@@ -59,6 +67,11 @@ final class PitchDetector: @unchecked Sendable {
         }
     }
 
+    /// Turns analysis on or off (any thread).
+    func setActive(_ on: Bool) { active.withLock { $0 = on } }
+
+    private var isActive: Bool { active.withLock { $0 } }
+
     // MARK: Queue
 
     private func append(_ samples: [Float], newestHostSeconds: Double) {
@@ -78,7 +91,7 @@ final class PitchDetector: @unchecked Sendable {
             filled = min(Self.frameLength, filled + take)
             if sinceHop == Self.hop {
                 sinceHop = 0
-                if filled == Self.frameLength {
+                if filled == Self.frameLength, isActive {
                     let newest = newestHostSeconds - Double(samples.count - i) / sampleRate
                     analyse(newestHostSeconds: newest)
                 }
@@ -88,7 +101,7 @@ final class PitchDetector: @unchecked Sendable {
 
     private func analyse(newestHostSeconds: Double) {
         // Analyse `ring` in place: it is queue-confined and not mutated until the next append.
-        let hostSeconds = newestHostSeconds - Double(Self.frameLength - 1) / sampleRate
+        let hostSeconds = newestHostSeconds - Double(Self.hop - 1) / sampleRate
 
         var rms: Float = 0
         vDSP_rmsqv(ring, 1, &rms, vDSP_Length(Self.frameLength))

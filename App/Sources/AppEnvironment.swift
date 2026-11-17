@@ -12,12 +12,19 @@ final class AppEnvironment {
     @ObservationIgnored private let bundledVocab: [VocabDeck]
     /// User-created vocab decks (M4-8).
     private(set) var userDeckFiles: [VocabDeckFile] = []
+    /// User decks deleted before the launch load finished (R4-10): a stale disk read mustn't revive them.
+    @ObservationIgnored private var userDecksDeletedBeforeLoad = Set<String>()
+    @ObservationIgnored private var userDecksLoaded = false
     @ObservationIgnored let userDeckStore: UserDeckStore
     /// User deck files that couldn't be read this launch.
     private(set) var userDeckFailures: [String] = []
     /// "My snippet" notes keyed by vocab entry id (M5 K4). On-device only.
     private(set) var personalSnippets: [String: PersonalSnippet] = [:]
     @ObservationIgnored let snippetStore: PersonalSnippetStore
+    /// Snippet deletes made before the launch load finished (R5-6a): a stale disk read mustn't revive them.
+    @ObservationIgnored private var snippetsLoaded = false
+    @ObservationIgnored private var snippetsDeletedBeforeLoad = Set<String>()
+    @ObservationIgnored private var snippetsDeleteAllBeforeLoad = false
     /// Non-nil when the snippets file couldn't be read this launch.
     private(set) var snippetLoadFailure: String?
     @ObservationIgnored let store: any StatsStore
@@ -28,6 +35,14 @@ final class AppEnvironment {
     @ObservationIgnored let haptics = Haptics()
     @ObservationIgnored let configStore: SessionConfigStore
     let settings: AppSettings
+
+    /// Card-pool sizes by deck and options (R5-2): Home and Setup only need the count, and building
+    /// every pool on each `dataVersion` bump was ~90 ms of main-thread work. Cleared by `reloadCatalog()`.
+    @ObservationIgnored private var cardCountCache: [CardCountKey: Int] = [:]
+    private struct CardCountKey: Hashable {
+        let deck: DeckID
+        let options: DeckOptions
+    }
 
     /// Bumped whenever stored data changes (session finished, reset) so screens reload.
     private(set) var dataVersion = 0
@@ -103,6 +118,7 @@ final class AppEnvironment {
     /// Rebuilds the catalog from bundled decks and the current user decks.
     /// Saved configs of deleted decks are simply never looked up again.
     func reloadCatalog() {
+        cardCountCache = [:]
         catalog = DeckCatalog.assemble(bundledVocab: bundledVocab, userVocab: userDeckFiles.map(VocabDeck.init(file:)))
     }
 
@@ -113,11 +129,20 @@ final class AppEnvironment {
     }
 
     /// Reads user decks from disk (launch).
+    ///
+    /// Merges by `deckId` instead of replacing (R4-10): a deck saved while the load was in flight
+    /// is already in memory and newer than (or equal to) what was read, so memory wins.
     func loadUserDecks() async {
         let (files, failures) = await userDeckStore.loadAll()
         for f in failures { Self.log.error("User deck load failure: \(f, privacy: .public)") }
         userDeckFailures = failures
-        setUserDecks(files)
+        let inMemory = Set(userDeckFiles.map(\.deckId))
+        var merged = userDeckFiles
+        merged += files.filter { !inMemory.contains($0.deckId) && !userDecksDeletedBeforeLoad.contains($0.deckId) }
+        merged.sort { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+        userDecksLoaded = true
+        userDecksDeletedBeforeLoad = []
+        setUserDecks(merged)
     }
 
     /// User decks in display order (sorted by title).
@@ -148,11 +173,14 @@ final class AppEnvironment {
     }
 
     /// Deletes a user deck file and its progress.
+    /// Stats first, then the file (R4-10): if either step throws, the deck keeps its file and stays
+    /// in the catalog, so it can be deleted again — never a catalog entry with no file behind it.
     func deleteUserDeck(id: DeckID) async throws {
-        try await userDeckStore.delete(deckID: id.raw)
         try await store.reset(deck: id)
+        defer { dataDidChange() }
+        try await userDeckStore.delete(deckID: id.raw)
+        if !userDecksLoaded { userDecksDeletedBeforeLoad.insert(id.raw) }
         setUserDecks(userDeckFiles.filter { $0.deckId != id.raw })
-        dataDidChange()
     }
 
     // MARK: Personal snippets (M5 K4)
@@ -162,7 +190,14 @@ final class AppEnvironment {
         let (snippets, failure) = await snippetStore.loadAll()
         if let failure { Self.log.error("Snippet load failure: \(failure, privacy: .public)") }
         snippetLoadFailure = failure
-        personalSnippets = snippets
+        // Same launch race as user decks: snippets saved meanwhile are newer, so memory wins, and
+        // snippets deleted meanwhile stay deleted.
+        var fromDisk = snippetsDeleteAllBeforeLoad ? [:] : snippets
+        for id in snippetsDeletedBeforeLoad { fromDisk[id] = nil }
+        personalSnippets = fromDisk.merging(personalSnippets) { _, inMemory in inMemory }
+        snippetsLoaded = true
+        snippetsDeletedBeforeLoad = []
+        snippetsDeleteAllBeforeLoad = false
     }
 
     func personalSnippet(for entryID: String) -> PersonalSnippet? { personalSnippets[entryID] }
@@ -171,17 +206,35 @@ final class AppEnvironment {
     func savePersonalSnippet(entryID: String, text: String, source: String?) async throws {
         let saved = try await snippetStore.save(entryID: entryID, text: text, source: source)
         personalSnippets[entryID] = saved
+        // A later save wins over an earlier delete; an empty save is itself a delete.
+        if !snippetsLoaded {
+            if saved == nil { snippetsDeletedBeforeLoad.insert(entryID) } else { snippetsDeletedBeforeLoad.remove(entryID) }
+        }
     }
 
     func deletePersonalSnippet(entryID: String) async throws {
         try await snippetStore.delete(entryID: entryID)
         personalSnippets[entryID] = nil
+        if !snippetsLoaded { snippetsDeletedBeforeLoad.insert(entryID) }
     }
 
     /// Reset-all, when the user also chose "Also delete my snippets?".
     func deleteAllPersonalSnippets() async throws {
         try await snippetStore.deleteAll()
         personalSnippets = [:]
+        if !snippetsLoaded {
+            snippetsDeleteAllBeforeLoad = true
+            snippetsDeletedBeforeLoad = []
+        }
+    }
+
+    /// Number of cards `deck` yields for `options`, computed once per (deck, options) until the catalog reloads.
+    func cardCount(for deck: any Deck, options: DeckOptions) -> Int {
+        let key = CardCountKey(deck: deck.id, options: options)
+        if let cached = cardCountCache[key] { return cached }
+        let count = deck.cards(options: options).count
+        cardCountCache[key] = count
+        return count
     }
 
     /// UI provider for a deck.
@@ -203,6 +256,7 @@ final class AppEnvironment {
             saved.options = ui.sanitize(saved.options, deck: deck)
             if !speech.hasKoreanVoice, case let .vocab(o) = saved.options { saved.options = .vocab(o.withoutListening()) }
             if !modes.contains(saved.inputMode) { saved.inputMode = modes.first ?? .touch }
+            saved.micTimeoutSeconds = SessionConfig.nearestMicTimeoutPreset(saved.micTimeoutSeconds)
             return saved
         }
         var config = SessionConfig.default(for: deck)

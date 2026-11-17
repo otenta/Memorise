@@ -143,13 +143,21 @@ public struct Voicing: Hashable, Sendable {
 }
 
 /// The bundled chord shapes, validated once at first use.
+/// Shape ids are **frozen**: they are part of `ItemKey`s (`chord:<shape.id>`), like vocab entry ids.
 public struct ChordShapeLibrary: Sendable {
     public let shapes: [ChordShape]
     public let warnings: [String]
+    private let byID: [String: ChordShape]
 
     public static let shared: ChordShapeLibrary = load()
 
-    public func shape(id: String) -> ChordShape? { shapes.first { $0.id == id } }
+    init(shapes: [ChordShape], warnings: [String]) {
+        self.shapes = shapes
+        self.warnings = warnings
+        byID = Dictionary(shapes.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+    }
+
+    public func shape(id: String) -> ChordShape? { byID[id] }
 
     private struct File: Decodable {
         let schemaVersion: Int

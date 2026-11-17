@@ -3,6 +3,9 @@ import Foundation
 /// Persistence boundary. The app implements it with SwiftData; core ships an in-memory actor.
 public protocol StatsStore: Sendable {
     func stats(for deck: DeckID) async throws -> [ItemKey: ItemStats]
+    /// Stats for several decks in one round trip (Home, R5-2). Decks with no rows map to `[:]`.
+    /// Has a default implementation (one `stats(for:)` call per deck).
+    func stats(forDecks decks: [DeckID]) async throws -> [DeckID: [ItemKey: ItemStats]]
     func save(_ stats: ItemStats) async throws
     func save(_ attempt: Attempt) async throws
     func upsert(_ session: SessionRecord) async throws
@@ -24,6 +27,12 @@ public protocol StatsStore: Sendable {
 }
 
 public extension StatsStore {
+    func stats(forDecks decks: [DeckID]) async throws -> [DeckID: [ItemKey: ItemStats]] {
+        var result = [DeckID: [ItemKey: ItemStats]](minimumCapacity: decks.count)
+        for deck in decks { result[deck] = try await stats(for: deck) }
+        return result
+    }
+
     /// Applies a single engine effect.
     func apply(_ effect: SessionEffect) async throws {
         switch effect {

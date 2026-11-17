@@ -87,55 +87,33 @@ public enum DeckOptions: Hashable, Codable, Sendable {
         }
     }
 
+    /// The one place that maps a case to its wire key and payload (R4-8). `encode` and `caseKey`
+    /// both derive from it, so a case can't be written under another case's key.
+    private var payload: (key: CodingKeys, value: any Encodable) {
+        switch self {
+        case let .fretboard(o): (.fretboard, o)
+        case let .vocab(o): (.vocab, o)
+        case let .intervals(o): (.intervals, o)
+        case let .earIntervals(o): (.earIntervals, o)
+        case let .chords(o): (.chords, o)
+        case let .triads(o): (.triads, o)
+        case let .arpeggios(o): (.arpeggios, o)
+        case let .scales(o): (.scales, o)
+        case let .keySignatures(o): (.keySignatures, o)
+        case let .diatonic(o): (.diatonic, o)
+        case let .progressions(o): (.progressions, o)
+        case let .circle(o): (.circle, o)
+        case let .hangulReading(o): (.hangulReading, o)
+        case let .particles(o): (.particles, o)
+        case let .conjugation(o): (.conjugation, o)
+        }
+    }
+
     public func encode(to encoder: any Encoder) throws {
         var c = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case let .fretboard(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .fretboard)
-            try p.encode(o, forKey: ._0)
-        case let .vocab(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .vocab)
-            try p.encode(o, forKey: ._0)
-        case let .intervals(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .intervals)
-            try p.encode(o, forKey: ._0)
-        case let .earIntervals(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .earIntervals)
-            try p.encode(o, forKey: ._0)
-        case let .chords(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .chords)
-            try p.encode(o, forKey: ._0)
-        case let .triads(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .triads)
-            try p.encode(o, forKey: ._0)
-        case let .arpeggios(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .arpeggios)
-            try p.encode(o, forKey: ._0)
-        case let .scales(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .scales)
-            try p.encode(o, forKey: ._0)
-        case let .keySignatures(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .keySignatures)
-            try p.encode(o, forKey: ._0)
-        case let .diatonic(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .diatonic)
-            try p.encode(o, forKey: ._0)
-        case let .progressions(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .progressions)
-            try p.encode(o, forKey: ._0)
-        case let .circle(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .circle)
-            try p.encode(o, forKey: ._0)
-        case let .hangulReading(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .hangulReading)
-            try p.encode(o, forKey: ._0)
-        case let .particles(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .particles)
-            try p.encode(o, forKey: ._0)
-        case let .conjugation(o):
-            var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: .conjugation)
-            try p.encode(o, forKey: ._0)
-        }
+        let (key, value) = payload
+        var p = c.nestedContainer(keyedBy: PayloadKeys.self, forKey: key)
+        try p.encode(value, forKey: ._0)
     }
 
     public var fretboard: FretboardOptions? {
@@ -213,25 +191,10 @@ public enum DeckOptions: Hashable, Codable, Sendable {
         return nil
     }
 
-    private var caseKey: CodingKeys {
-        switch self {
-        case .fretboard: .fretboard
-        case .vocab: .vocab
-        case .intervals: .intervals
-        case .earIntervals: .earIntervals
-        case .chords: .chords
-        case .triads: .triads
-        case .arpeggios: .arpeggios
-        case .scales: .scales
-        case .keySignatures: .keySignatures
-        case .diatonic: .diatonic
-        case .progressions: .progressions
-        case .circle: .circle
-        case .hangulReading: .hangulReading
-        case .particles: .particles
-        case .conjugation: .conjugation
-        }
-    }
+    private var caseKey: CodingKeys { payload.key }
+
+    /// Wire key of this case (`"fretboard"`, `"vocab"`, …), e.g. for round-trip checks.
+    public var wireKey: String { caseKey.stringValue }
 
     /// Whether both values are the same case (payloads ignored).
     public func sameCase(as other: DeckOptions) -> Bool { caseKey == other.caseKey }
@@ -276,6 +239,10 @@ public protocol Deck: Sendable {
 }
 
 public extension Deck {
+    /// Default kind: the deck id itself (R4-8). Real decks set a shared kind explicitly; the
+    /// default keeps simple conformers (test doubles, previews) compiling. An unknown kind falls
+    /// back to the generic UI provider.
+    var kind: DeckKind { DeckKind(rawValue: id.raw) }
     var group: String { "" }
     func introductionRank(of card: Card) -> Int? { nil }
     func newPerSession(options: DeckOptions) -> Int? { nil }

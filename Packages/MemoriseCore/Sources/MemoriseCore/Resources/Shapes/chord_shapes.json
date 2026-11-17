@@ -1,4 +1,5 @@
 {
+ "_note": "Shape ids are frozen: they are part of ItemKeys (chord:<shape.id>). Never rename or reuse an id; add new shapes instead.",
  "schemaVersion": 1,
  "shapes": [
   {

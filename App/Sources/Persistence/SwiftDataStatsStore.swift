@@ -27,6 +27,16 @@ actor SwiftDataStatsStore: StatsStore {
         return result
     }
 
+    func stats(forDecks decks: [DeckID]) throws -> [DeckID: [ItemKey: ItemStats]] {
+        var result = [DeckID: [ItemKey: ItemStats]](minimumCapacity: decks.count)
+        for deck in decks { result[deck] = [:] }
+        guard !decks.isEmpty else { return result }
+        let raws = decks.map(\.raw)
+        let rows = try modelContext.fetch(FetchDescriptor<SDItemStats>(predicate: #Predicate { raws.contains($0.deckID) }))
+        for r in rows { result[DeckID(r.deckID), default: [:]][ItemKey(r.itemKey)] = r.core }
+        return result
+    }
+
     func sessions(for deck: DeckID) throws -> [SessionRecord] {
         let raw = deck.raw
         let rows = try modelContext.fetch(FetchDescriptor<SDSession>(

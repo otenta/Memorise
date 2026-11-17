@@ -29,17 +29,30 @@ public enum ConjForm: String, Codable, Sendable, CaseIterable, Hashable {
         case .wantTo: "-고 싶어요"
         }
     }
+
+    /// Forms that keep the word's meaning; typed vocab accepts these as close (R5-1).
+    /// `.negativePolite` is excluded: 몰라요 / 없어요 / 안 가요 mean the opposite of 알다 / 있다 / 가다.
+    public static let affirmative: [ConjForm] = allCases.filter { $0 != .negativePolite }
 }
 
 /// One conjugated answer: the form, any other accepted spellings, and a one-line rule.
 public struct Conjugation: Hashable, Sendable {
+    /// The displayed (most common) spelling.
     public let text: String
+    /// Other standard spellings that are also correct (R4-3), e.g. 보아요 for 봐요,
+    /// 공부하지 않아요 / 안 공부해요 for 공부 안 해요. Never contains `text`.
+    public let alternates: [String]
     public let rule: String
 
-    public init(text: String, rule: String) {
+    public init(text: String, alternates: [String] = [], rule: String) {
         self.text = text
+        var seen: Set<String> = [text]
+        self.alternates = alternates.filter { seen.insert($0).inserted }
         self.rule = rule
     }
+
+    /// `text` followed by `alternates`.
+    public var accepted: [String] { [text] + alternates }
 }
 
 /// Rule-based conjugator for dictionary-form verbs/adjectives (PLAN_M4 M4-6 §2).
@@ -63,7 +76,21 @@ public enum Conjugator {
         let stem = Stem(String(word.dropLast()))
         guard !stem.syllables.isEmpty else { return nil }
         guard let result = conjugate(stem, cls, form, isAdjective: isAdjective, word: word) else { return nil }
-        return Conjugation(text: prefix + result.text, rule: result.rule)
+        return Conjugation(text: prefix + result.text, alternates: result.alternates.map { prefix + $0 }, rule: result.rule)
+    }
+
+    /// Every listed form of a dictionary-form predicate, main spellings and alternates (for typed matching).
+    public static func allAcceptedForms(_ dictionaryForm: String, class cls: ConjugationClass,
+                                        isAdjective: Bool = false,
+                                        forms: [ConjForm] = ConjForm.allCases) -> [String] {
+        var out: [String] = []
+        var seen = Set<String>()
+        for form in forms {
+            for t in conjugate(dictionaryForm, class: cls, form: form, isAdjective: isAdjective)?.accepted ?? [] where seen.insert(t).inserted {
+                out.append(t)
+            }
+        }
+        return out
     }
 
     // MARK: - Forms
@@ -73,14 +100,21 @@ public enum Conjugator {
         switch form {
         case .presentPolite:
             let h = haeForm(stem, cls)
-            return Conjugation(text: h.text + "요", rule: h.rule(endings: ("아요", "어요")))
+            return Conjugation(text: h.text + "요", alternates: optionalHaeForms(stem, cls).map { Stem($0).text + "요" },
+                               rule: h.rule(endings: ("아요", "어요")))
         case .presentCasual:
             let h = haeForm(stem, cls)
-            return Conjugation(text: h.text, rule: h.rule(endings: ("아", "어")))
+            return Conjugation(text: h.text, alternates: optionalHaeForms(stem, cls).map { Stem($0).text },
+                               rule: h.rule(endings: ("아", "어")))
         case .pastPolite:
             var h = haeForm(stem, cls)
             h.syllables[h.syllables.count - 1].final = Syl.ssangsiot
-            return Conjugation(text: h.text + "어요", rule: h.rule(endings: ("았어요", "었어요"), past: true))
+            let alternates = optionalHaeForms(stem, cls).map { syllables -> String in
+                var s = syllables
+                s[s.count - 1].final = Syl.ssangsiot
+                return Stem(s).text + "어요"
+            }
+            return Conjugation(text: h.text + "어요", alternates: alternates, rule: h.rule(endings: ("았어요", "었어요"), past: true))
         case .futurePolite:
             return future(stem, cls)
         case .presentFormal:
@@ -155,6 +189,23 @@ public enum Conjugator {
         }
     }
 
+    /// 러-irregular predicates (푸르다 → 푸르러요, 이르다 "to arrive" → 이르러요). Not modelled: as `.reu`
+    /// they would produce 풀러요. 이르다 "early" is a normal 르-irregular (일러요), so it is told apart
+    /// by meaning. `DeckValidator` rejects these headwords in bundled decks (R4-11).
+    public static func isUnmodelledReoIrregular(_ entry: VocabEntry) -> Bool {
+        guard entry.partOfSpeech?.isPredicate ?? false else { return false }
+        let word = entry.hangul.split(separator: " ").last.map(String.init) ?? entry.hangul
+        switch word {
+        case "푸르다": return true
+        case "이르다":
+            return entry.meanings.contains { m in
+                let m = m.lowercased()
+                return m.contains("arrive") || m.contains("reach")
+            }
+        default: return false
+        }
+    }
+
     /// One-syllable roots of -하다 verbs that can't stand alone as nouns, so 안 can't split them off.
     static let boundHaRoots: Set<String> = ["원", "변", "피", "망", "향", "통", "상", "구", "취", "위", "정"]
 
@@ -172,6 +223,9 @@ public enum Conjugator {
             return Conjugation(text: "몰라요", rule: "알다 → 모르다: 몰라요 (not 안 알아요)")
         }
         let polite = haeForm(stem, cls).text + "요"
+        // Long negation (-지 않아요) and uncontracted spellings are equally correct (R4-3).
+        let longNegative = stem.text + "지 않아요"
+        let frontAlternates = optionalHaeForms(stem, cls).map { "안 " + Stem($0).text + "요" }
         // Noun + 하다 verbs: 안 goes before 하다 (공부 안 해요). 좋아하다/싫어하다 and -하다
         // adjectives (안 필요해요) keep 안 in front.
         if cls == .ha, !isAdjective, stem.syllables.count > 1 {
@@ -182,10 +236,13 @@ public enum Conjugator {
             // take 안 in front: 안 원해요, not 원 안 해요. Real nouns (일하다 → 일 안 해요) still split.
             let isBoundRoot = noun.syllables.count == 1 && boundHaRoots.contains(noun.text)
             if !isEmotionVerb, !isBoundRoot {
-                return Conjugation(text: "\(noun.text) 안 해요", rule: "Noun + 하다: 안 goes before 하다 (\(noun.text) 안 해요)")
+                // 안 공부해요 is common in speech and accepted; 공부하지 않아요 is the long negation.
+                return Conjugation(text: "\(noun.text) 안 해요", alternates: ["안 " + polite, longNegative],
+                                   rule: "Noun + 하다: 안 goes before 하다 (\(noun.text) 안 해요)")
             }
         }
-        return Conjugation(text: "안 " + polite, rule: "안 + present polite (\(polite))")
+        return Conjugation(text: "안 " + polite, alternates: frontAlternates + [longNegative],
+                           rule: "안 + present polite (\(polite))")
     }
 
     // MARK: - 아/어 form
@@ -220,6 +277,24 @@ public enum Conjugator {
                 return "\(vowel) → \(ending), \(lastStem)+\(marker) → \(syllables.last!.character)"
             }
         }
+    }
+
+    /// Other standard spellings of the 아/어 form, as syllables (R4-3):
+    /// - optional contraction: 보아 (봐), 주어 (줘), 되어 (돼), 마시어 (마셔), 보내어 (보내), 세어 (세).
+    ///   Skipped when the last stem syllable has no initial consonant (오다 → 와 only, 배우다 → 배워 only).
+    /// - 놓다: 놓아 is the main form, 놔 the accepted contraction.
+    static func optionalHaeForms(_ stem: Stem, _ cls: ConjugationClass) -> [[Syl]] {
+        guard let last = stem.syllables.last else { return [] }
+        let main = haeForm(stem, cls)
+        if cls == .regular, last == Syl.noh {
+            var s = stem.syllables
+            s[s.count - 1] = Syl(initial: last.initial, medial: Syl.wa)
+            return [s]
+        }
+        guard cls == .regular || cls == .l, main.contracted, last.final == 0, last.initial != Syl.ieung else { return [] }
+        let optional: Set<Int> = [Syl.o, Syl.u, Syl.i, Syl.oe, Syl.ae, Syl.e]
+        guard optional.contains(last.medial) else { return [] }
+        return [stem.syllables + [last.isBright ? Syl.a_ : Syl.eo_]]
     }
 
     static func haeForm(_ stem: Stem, _ cls: ConjugationClass) -> HaeForm {
@@ -313,6 +388,8 @@ struct Syl: Hashable, Sendable {
     static let digeut = 7, rieul = 8, bieup = 17, bieup_siot = 18, siot = 19, ssangsiot = 20, hieut = 27
 
     static let ha = Syl(initial: hieutInitial, medial: a)
+    /// 놓 (놓다 → 놓아요 / 놔요).
+    static let noh = Syl(initial: 2, medial: o, final: hieut)
     static let reu = Syl(initial: rieulInitial, medial: eu)
     static let a_ = Syl(initial: ieung, medial: a)
     static let eo_ = Syl(initial: ieung, medial: eo)

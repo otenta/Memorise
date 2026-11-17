@@ -14,12 +14,21 @@ public struct TypedAnswerSpec: Sendable, Hashable {
     public let exactRequired: Bool
     /// Hangul: also accept a conjugated form of the dictionary form (가요 for 가다) as close.
     public let isPredicate: Bool
+    /// Predicates: conjugation class used to generate the accepted conjugated forms (R4-2).
+    public let conjugationClass: ConjugationClass
+    /// Predicates: adjectives have no `wantTo` form.
+    public let isAdjective: Bool
 
-    public init(expected: [String], kind: AnswerMatchKind, exactRequired: Bool = false, isPredicate: Bool = false) {
+    public init(
+        expected: [String], kind: AnswerMatchKind, exactRequired: Bool = false, isPredicate: Bool = false,
+        conjugationClass: ConjugationClass = .regular, isAdjective: Bool = false
+    ) {
         self.expected = expected
         self.kind = kind
         self.exactRequired = exactRequired
         self.isPredicate = isPredicate
+        self.conjugationClass = conjugationClass
+        self.isAdjective = isAdjective
     }
 }
 
@@ -46,10 +55,14 @@ public enum AnswerMatcher {
     }
 
     public static func match(input: String, spec: TypedAnswerSpec) -> Result {
-        match(input: input, expected: spec.expected, kind: spec.kind, isPredicate: spec.isPredicate)
+        match(input: input, expected: spec.expected, kind: spec.kind, isPredicate: spec.isPredicate,
+              conjugationClass: spec.conjugationClass, isAdjective: spec.isAdjective)
     }
 
-    public static func match(input: String, expected: [String], kind: AnswerMatchKind, isPredicate: Bool = false) -> Result {
+    public static func match(
+        input: String, expected: [String], kind: AnswerMatchKind, isPredicate: Bool = false,
+        conjugationClass: ConjugationClass = .regular, isAdjective: Bool = false
+    ) -> Result {
         let fallback = expected.first ?? ""
         guard !input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, !expected.isEmpty else {
             return Result(verdict: .wrong, closest: fallback)
@@ -57,7 +70,7 @@ public enum AnswerMatcher {
         var best = Result(verdict: .wrong, closest: fallback)
         for e in expected {
             let v: AnswerVerdict = switch kind {
-            case .hangul: hangulVerdict(input, e, isPredicate: isPredicate)
+            case .hangul: hangulVerdict(input, e, isPredicate: isPredicate, conjugationClass: conjugationClass, isAdjective: isAdjective)
             case .english: englishVerdict(input, e)
             case .romanization: romanizationVerdict(input, e)
             }
@@ -69,21 +82,48 @@ public enum AnswerMatcher {
 
     // MARK: Hangul
 
-    static func hangulVerdict(_ input: String, _ expected: String, isPredicate: Bool) -> AnswerVerdict {
+    /// Hangul rules (R4-2, PLAN §17):
+    /// - Predicates: a real affirmative conjugation of the expected word (any `ConjForm.affirmative`
+    ///   form, main spelling or alternate, with or without the polite 요) is close. Negative forms
+    ///   (몰라요 for 알다, 없어요 for 있다, 안 가요 for 가다) are wrong (R5-1). A bare stem or another
+    ///   word sharing the first syllable (가방 for 가다) is not close either.
+    /// - Words of 1–2 syllables: only a final-consonant (batchim) slip in one syllable is close;
+    ///   changing an initial or a vowel makes a different word (의사/의자) and is wrong.
+    /// - Longer words: jamo distance ≤ 1 is close.
+    static func hangulVerdict(
+        _ input: String, _ expected: String, isPredicate: Bool,
+        conjugationClass: ConjugationClass = .regular, isAdjective: Bool = false
+    ) -> AnswerVerdict {
         let a = normalizedHangul(input)
         let b = normalizedHangul(expected)
         guard !a.isEmpty, !b.isEmpty else { return .wrong }
         if a == b { return .exact }
         if isPredicate, b.hasSuffix("다") {
-            let stem = String(b.dropLast())
-            var conj = a
-            if conj.hasSuffix("요") { conj.removeLast() }
-            // 가요 / 먹어요 / 먹어 for 가다 / 먹다: a conjugated form of the right stem.
-            if !stem.isEmpty, conj.hasPrefix(stem) { return .close }
+            let forms = Conjugator.allAcceptedForms(expected, class: conjugationClass, isAdjective: isAdjective,
+                                                    forms: ConjForm.affirmative)
+            for form in forms.map(normalizedHangul) where !form.isEmpty {
+                // 먹어요 / 먹어 / 먹었어요 for 먹다.
+                if a == form { return .close }
+                if form.hasSuffix("요"), a == String(form.dropLast()) { return .close }
+            }
         }
-        let distance = editDistance(Hangul.jamo(a), Hangul.jamo(b))
-        if distance <= 1, Hangul.syllableCount(b) >= 2 { return .close }
-        return .wrong
+        let syllables = Hangul.syllableCount(b)
+        guard syllables >= 2 else { return .wrong }
+        if syllables <= 2 { return isBatchimSlip(a, b) ? .close : .wrong }
+        return editDistance(Hangul.jamo(a), Hangul.jamo(b)) <= 1 ? .close : .wrong
+    }
+
+    /// Same syllables except one, which differs only in its final consonant (있다/잇다, 많이/만이).
+    static func isBatchimSlip(_ a: String, _ b: String) -> Bool {
+        let x = Array(a.unicodeScalars), y = Array(b.unicodeScalars)
+        guard x.count == y.count else { return false }
+        var differences = 0
+        for (p, q) in zip(x, y) where p != q {
+            guard let dp = Hangul.decompose(p), let dq = Hangul.decompose(q),
+                  dp.initial == dq.initial, dp.medial == dq.medial else { return false }
+            differences += 1
+        }
+        return differences == 1
     }
 
     /// NFC; keeps Hangul syllables and jamo only (spaces and punctuation stripped).
@@ -95,16 +135,33 @@ public enum AnswerMatcher {
 
     // MARK: English
 
+    /// Close = a typo made of dropped or extra letters only (R4-2, PLAN §17): one at ≥ 5 letters,
+    /// two at ≥ 9. Substitutions and transpositions are wrong, because they mostly produce other
+    /// real words (three/there, angel/angle, quite/quiet).
     static func englishVerdict(_ input: String, _ expected: String) -> AnswerVerdict {
         let a = normalizedEnglish(input)
         let glosses = expected.split(whereSeparator: { $0 == "/" || $0 == ";" }).map { normalizedEnglish(stripParentheticals(String($0))) }
         var best = AnswerVerdict.wrong
         for b in glosses where !b.isEmpty {
             if a == b { return .exact }
-            let d = editDistance(Array(a), Array(b))
+            let d = indelDistance(Array(a), Array(b))
             if (b.count >= 9 && d <= 2) || (b.count >= 5 && d <= 1) { best = .close }
         }
         return best
+    }
+
+    /// Edit distance with insertions and deletions only (`|a| + |b| − 2·LCS`).
+    static func indelDistance<T: Equatable>(_ a: [T], _ b: [T]) -> Int {
+        guard !a.isEmpty, !b.isEmpty else { return a.count + b.count }
+        var prev = Array(repeating: 0, count: b.count + 1)
+        var cur = prev
+        for i in 1...a.count {
+            for j in 1...b.count {
+                cur[j] = a[i - 1] == b[j - 1] ? prev[j - 1] + 1 : max(prev[j], cur[j - 1])
+            }
+            swap(&prev, &cur)
+        }
+        return a.count + b.count - 2 * prev[b.count]
     }
 
     static func normalizedEnglish(_ s: String) -> String {

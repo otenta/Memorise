@@ -354,11 +354,14 @@ struct HomeView: View {
     }
 
     private func load() async {
+        // One store round trip for every deck, and cached pool sizes (R5-2).
+        let decks = env.catalog.decks
+        let all = (try? await env.store.stats(forDecks: decks.map(\.id))) ?? [:]
         var result: [DeckID: DeckRowInfo] = [:]
-        for deck in env.catalog.decks {
-            let count = deck.cards(options: env.initialConfig(for: deck).options).count
-            let stats = (try? await env.store.stats(for: deck.id)) ?? [:]
-            result[deck.id] = .make(cardCount: count, stats: stats.values)
+        result.reserveCapacity(decks.count)
+        for deck in decks {
+            let count = env.cardCount(for: deck, options: env.initialConfig(for: deck).options)
+            result[deck.id] = .make(cardCount: count, stats: (all[deck.id] ?? [:]).values)
         }
         withAnimation(Theme.softSpring) { info = result }
     }

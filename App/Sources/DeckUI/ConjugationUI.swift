@@ -20,10 +20,11 @@ struct ConjugationUI: DeckUI {
 
     func supportedInputModes(deck: any Deck) -> [InputMode] { [.touch, .typed] }
 
-    /// Spelling is the skill: "close" counts as wrong.
+    /// Spelling is the skill: "close" counts as wrong. Standard alternates (long negation,
+    /// uncontracted forms) are exact matches (R4-3); the main spelling is shown.
     func typedAnswer(for card: Card) -> TypedAnswerSpec? {
         guard let p = card.conjugation else { return nil }
-        return TypedAnswerSpec(expected: [p.answer], kind: .hangul, exactRequired: true)
+        return TypedAnswerSpec(expected: p.acceptedAnswers, kind: .hangul, exactRequired: true)
     }
 
     /// Never leaves the form set empty.

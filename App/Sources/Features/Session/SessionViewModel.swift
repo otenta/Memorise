@@ -124,10 +124,16 @@ final class SessionViewModel {
     }
 
     func ok() {
+        reveal(countsTime: true)
+    }
+
+    /// Manual reveal. A touch reveal (including the touch fallback for cards without choices or a
+    /// typed spec) counts its time; a microphone timeout reveal doesn't (R4-4).
+    private func reveal(countsTime: Bool) {
         guard let engine, case .prompting = engine.state else { return }
         // Typed / choice prompts reveal through `submitTyped` / `choose` / `giveUp`.
         guard choices == nil, typedSpec == nil else { return }
-        engine.ok()
+        engine.ok(countsTime: countsTime)
         env.haptics.ok()
         syncState()
         if case let .revealed(p, _) = state { ui.onReveal(p.card, ctx: context(presentationID: p.presentationID)) }
@@ -137,11 +143,12 @@ final class SessionViewModel {
     var gradeLockoutRemaining: Duration { engine?.gradeLockoutRemaining ?? .zero }
 
     /// Applies a grade. Returns false when rejected (not revealed, or still in the lockout).
+    /// `haptic: false` when the reveal already played the verdict haptic (typed/choice, R5-6b).
     @discardableResult
-    func grade(correct: Bool) -> Bool {
+    func grade(correct: Bool, haptic: Bool = true) -> Bool {
         guard let engine, engine.canGrade else { return false }
         env.speech.stop()
-        env.haptics.grade(correct: correct)
+        if haptic { env.haptics.grade(correct: correct) }
         apply(engine.grade(correct: correct))
         return true
     }
@@ -224,11 +231,12 @@ final class SessionViewModel {
     @discardableResult
     func gradeAutoAnswer() -> Bool {
         guard let autoAnswer else { return false }
-        return grade(correct: autoAnswer.correct)
+        return grade(correct: autoAnswer.correct, haptic: false)
     }
 
     private func reveal(_ engine: SessionEngine, _ answer: AutoAnswer) {
-        engine.ok()
+        // Per-answer mode: typed and choice reveals never feed the time EWMA.
+        engine.ok(countsTime: activeMode.countsTime)
         autoAnswer = answer
         env.haptics.grade(correct: answer.correct)
         syncState()
@@ -279,11 +287,12 @@ final class SessionViewModel {
         micTimeoutTask?.cancel()
         guard mic != nil, case let .prompting(p) = state else { return }
         let id = p.presentationID
-        let seconds = config.micTimeoutSeconds
+        let seconds = SessionConfig.nearestMicTimeoutPreset(config.micTimeoutSeconds)
         micTimeoutTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(seconds))
             guard !Task.isCancelled, let self, case let .prompting(cur) = self.state, cur.presentationID == id else { return }
-            self.ok()
+            // responseMs ≈ the timeout here: keep it out of the time stats.
+            self.reveal(countsTime: false)
         }
     }
 

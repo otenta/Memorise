@@ -71,6 +71,8 @@ public final class SessionEngine {
     private var promptShownAt: Duration?
     private var cardSelectedAt: Duration = .zero
     private var revealedAt: Duration = .zero
+    /// Whether the current reveal's response time feeds the time EWMA (set by `ok`).
+    private var revealCountsTime = true
     private var shownAtWall = Date.distantPast
 
     public init(
@@ -151,8 +153,12 @@ public final class SessionEngine {
     }
 
     /// prompting → revealed. Records the response time.
-    public func ok() {
+    ///
+    /// `countsTime` describes how *this* card was answered (R4-4), not the session's configured
+    /// mode: pass `false` for typed/choice reveals and for a microphone timeout reveal.
+    public func ok(countsTime: Bool = true) {
         guard case let .prompting(p) = state else { return }
+        revealCountsTime = countsTime
         let now = clock.now()
         let ms = (now - (promptShownAt ?? cardSelectedAt)).wholeMilliseconds
         revealedAt = now
@@ -175,7 +181,7 @@ public final class SessionEngine {
     /// Ignored (no effects, no state change) while `canGrade` is false.
     public func grade(correct: Bool) -> [SessionEffect] {
         guard canGrade else { return [] }
-        return gradeRevealed(correct: correct, gradeMs: (clock.now() - revealedAt).wholeMilliseconds, countsTime: config.inputMode.countsTime)
+        return gradeRevealed(correct: correct, gradeMs: (clock.now() - revealedAt).wholeMilliseconds, countsTime: revealCountsTime)
     }
 
     private func gradeRevealed(correct: Bool, gradeMs: Int, countsTime: Bool) -> [SessionEffect] {

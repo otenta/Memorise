@@ -73,8 +73,10 @@ public enum InputMode: String, Codable, Sendable, CaseIterable {
     /// Type the answer; graded automatically with a manual override.
     case typed
 
-    /// Whether the response time updates the time EWMA. Typing speed isn't recall speed.
-    public var countsTime: Bool { self != .typed }
+    /// Whether a card answered this way updates the time EWMA. Typing speed isn't recall speed,
+    /// and picking from options is recognition, not recall (R4-4, PLAN §17), so only touch and
+    /// microphone answers count. Evaluated per answer, not per session.
+    public var countsTime: Bool { self == .touch || self == .microphone }
 
     public var title: String {
         switch self {
@@ -119,6 +121,11 @@ public struct SessionConfig: Codable, Hashable, Sendable {
     }
 
     public static let micTimeoutPresets = [5, 10, 20]
+
+    /// The preset nearest to `seconds` (R4-10): a persisted 0 or negative value would reveal instantly.
+    public static func nearestMicTimeoutPreset(_ seconds: Int) -> Int {
+        micTimeoutPresets.min { abs($0 - seconds) < abs($1 - seconds) } ?? 10
+    }
 
     private enum CodingKeys: String, CodingKey {
         case deckID, options, length, focus, retryWrongCards, inputMode, micTimeoutSeconds

@@ -57,6 +57,10 @@ public enum DeckValidator {
             if !user, e.partOfSpeech?.isPredicate ?? false, e.conj == nil {
                 errors.append("\(at): verbs/adjectives need conj")
             }
+            // 러-irregular isn't modelled yet (R4-11): keep those headwords out of the conjugation deck.
+            if !user, Conjugator.isUnmodelledReoIrregular(e) {
+                errors.append("\(at): 러-irregular (\(e.hangul) → …르러요) isn't supported by the conjugator yet")
+            }
             if e.examples.count > 3 { errors.append("\(at): at most 3 examples") }
             for ex in e.examples {
                 if ex.ko.isBlank || ex.en.isBlank { errors.append("\(at): examples ko/en must be non-empty") }

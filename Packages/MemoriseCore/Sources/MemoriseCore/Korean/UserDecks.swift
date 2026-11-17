@@ -77,8 +77,25 @@ public enum UserDecks {
         func entry(id: String, rank: Int) -> VocabEntry {
             let d = normalized
             return VocabEntry(id: id, hangul: d.hangul, romanization: d.romanization, meanings: d.meanings,
-                              pos: d.pos.rawValue, rank: rank, tags: d.tags, example: d.example)
+                              pos: d.pos.rawValue, rank: rank, tags: d.tags, example: d.example,
+                              conj: UserDecks.inferredConj(hangul: d.hangul, pos: d.pos))
         }
+    }
+
+    /// `conj` for user predicates: only the unambiguous -하다 class is inferred (others read as regular).
+    static func inferredConj(hangul: String, pos: PartOfSpeech) -> String? {
+        pos.isPredicate && hangul.hasSuffix("하다") && hangul.count >= 3 ? ConjugationClass.ha.rawValue : nil
+    }
+
+    /// Part of speech for an imported word (R4-10): a dictionary form (ends in 다) whose first meaning
+    /// starts with "to " is a predicate — "to be …" an adjective, otherwise a verb. Everything else is a
+    /// noun (바다 "sea" stays a noun because its meaning has no "to").
+    public static func guessedPartOfSpeech(hangul: String, meanings: [String]) -> PartOfSpeech {
+        let h = hangul.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard h.hasSuffix("다"), Hangul.syllableCount(h) >= 2,
+              let first = meanings.first?.trimmingCharacters(in: .whitespaces).lowercased(), first.hasPrefix("to ")
+        else { return .noun }
+        return first.hasPrefix("to be ") ? .adjective : .verb
     }
 
     /// "a, b ,c" → ["a", "b", "c"].

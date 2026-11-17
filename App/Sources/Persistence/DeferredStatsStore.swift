@@ -48,6 +48,9 @@ final class DeferredStatsStore: StatsStore, Sendable {
     }
 
     func stats(for deck: DeckID) async throws -> [ItemKey: ItemStats] { try await store.stats(for: deck) }
+    func stats(forDecks decks: [DeckID]) async throws -> [DeckID: [ItemKey: ItemStats]] {
+        try await store.stats(forDecks: decks)
+    }
     func save(_ stats: ItemStats) async throws { try await store.save(stats) }
     func save(_ attempt: Attempt) async throws { try await store.save(attempt) }
     func upsert(_ session: SessionRecord) async throws { try await store.upsert(session) }
