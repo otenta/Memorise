@@ -1121,3 +1121,4 @@ _(Agents append dated entries here: decision, reason, segment.)_
   - F7: one deck per Korean headword (hidden in code, JSON untouched) and interleaved derived-deck introduction.
   - C2: distinct glosses. The owner waived the append-only content rule for this.
   - Defaults D1–D5 are listed in PLAN_R7_FIXES §4.
+- 2026-11-17 · Owner confirmed PLAN_R7_FIXES §4 defaults D1–D5 as final.

@@ -402,9 +402,11 @@ A session that reaches its length finishes and is summarised exactly as today.
 
 ---
 
-## 4. Owner decisions (defaults applied unless the owner says otherwise)
+## 4. Owner decisions
 
-| ID | Question | Default in this plan |
+**Confirmed by the owner on 2026-11-17: all defaults below apply.** Implementors should treat them as final.
+
+| ID | Question | Decision (confirmed) |
 |---|---|---|
 | D1 | Mic: a card answered correctly after one or more "Try again"s: is it graded correct or wrong? | **Wrong** (it is retried later, and the stats stay honest). It still says "Correct" and moves on. |
 | D2 | Discard: also discard sessions ended by a mic/typed timeout or by the app being killed? | **No.** Only the "End session" button discards. Killed sessions keep today's behaviour. |
