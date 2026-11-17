@@ -23,11 +23,11 @@
 | R3-2 Aurora renders continuously, including in sessions | **S4** | **frontend agent** |
 | R5-6a/b/c Polish | **S5** | implementor |
 | R5-4 PLAN body contradicts code (+ R3-7 README wording) | P1 | planner (after S1 is committed; see §4) |
-| R5-5 M5 unreachable without K2 | **S6** (option b; K2 later) | **frontend agent** |
+| R5-5 M5 unreachable without K2 | **S6** (option b) + **S7** (K2 content) | frontend agent (S6), **web-capable content agent** (S7) |
 | R4-1 Tests / CI | none | tester |
 | R4-6 Korean content verification | none | process / owner |
 
-**Order:** S1 comes first and blocks the R4 commit. S2, S3, S4, S5 and S6 are independent and can run in parallel. They touch disjoint files, except `AppEnvironment.swift`, which S2 and S5a both touch; do S2 first.
+**Order:** S1 comes first and blocks the R4 commit. **S7 (K2) is the next priority after S1** (owner, 2026-11-17); it touches only deck JSON, a docs file and one line of `DeckCatalog`, so it can start immediately, in parallel with S1. S2, S3, S4, S5 and S6 are independent and can run in parallel. They touch disjoint files, except `AppEnvironment.swift`, which S2 and S5a both touch; do S2 first.
 
 ## 2. Tracker
 
@@ -39,6 +39,7 @@
 | S4 Freeze the aurora in sessions | R3-2 | ☐ | Frontend agent |
 | S5 Polish: snippet tombstone, double haptic, Swift 6 warning | R5-6 | ☐ | |
 | S6 "My snippet" on every vocab reveal | R5-5 (b) | ☐ | Frontend agent; owner approved 2026-11-17 |
+| S7 K2 content: `ko_media.json` | R5-5 (a), PLAN_M5 K2 | ☐ | **Next after S1.** Web-capable agent; owner confirms show refs |
 
 ---
 
@@ -257,6 +258,58 @@ That adds up to about 90 ms of main-thread work in Debug, landing on top of the 
 - Settings → Export JSON contains the `personalSnippets` key with the saved entry. Reset all asks "Also delete my snippets?".
 - User/AION deck cards and listening-direction reveals show the button too.
 - Non-vocab decks (music, Hangul reading, particles, conjugation) are unchanged.
+
+---
+
+### S7 · PLAN_M5 K2 · `ko_media.json` content (web-capable content agent) — **scheduled next**
+
+**Decision (owner, 2026-11-17):** K2 is scheduled next, right after S1. Together with S6, it makes M5 fully visible: media phrases get "In a scene", "Heard in" and "My snippet".
+
+**The spec is PLAN_M5 §2 (content rules), §3 (schema v2), §5 K2 and §7 (40 candidate phrases).** Read those first; this segment only adds the execution details. Where they conflict, PLAN_M5 §2 (copyright and accuracy) wins.
+
+**Who runs it:** the session needs web search and web fetch, because every reference must be verified against a real source. An agent without web access must **not** write `sources`. It may write entries with dialogue and no sources, and leave references for a web-capable pass.
+
+**Files:**
+- **new** `Packages/MemoriseCore/Sources/MemoriseCore/Resources/Decks/ko_media.json`
+- **new** `docs/media-verification.md` (the verification table, in the same style as `docs/core-verification.md`)
+- `Packages/MemoriseCore/Sources/MemoriseCore/Decks/DeckCatalog.swift:71`: uncomment `"ko_media"`, keeping its position before `"ko_aion2"`, and update the doc comment at line 67. This is the only code change.
+
+**Steps:**
+1. **File header:**
+   - `schemaVersion: 2`, `deckId: "ko.media"`, `subject: "korean"`;
+   - title and subtitle as in PLAN_M5 §3.
+2. **Entries:** about 80 in total, made of the 40 candidates from PLAN_M5 §7 plus about 40 more found while researching the priority artists and shows.
+   - Ids are `ko.media.0001` upwards, contiguous. Ranks are unique, with the most useful phrases first.
+   - These ids are permanent from the first commit: never renumber or reuse them.
+   - Every entry has meanings, Revised Romanization (checked against the official RR rules), `pos` (mostly `expression`), tags from the fixed set in K2 step 6, `register`, and notes with the polite/casual counterparts.
+   - Every entry has **one original dialogue** of 2–3 lines that contains the phrase.
+3. **References, 0–3 per entry**, in the owner's priority order from K2 step 5 (and in memory):
+   - **K-pop:** BTS, LE SSERAFIM, TWICE, NewJeans, ILLIT, then newer groups.
+   - **Shows:** Kian's Bizarre B&B, The Devil's Plan, then other popular reality/variety shows.
+   - **Dramas:** popular dramas.
+4. **What counts as verification:**
+   - **Songs:** a licensed lyrics page (Melon, Genie, Bugs, or the artist's or label's official site) or the official MV with official subtitles. A user-edited site such as Genius may support a reference but is **not enough on its own**. `citation` is the URL actually used.
+   - **Dramas:** the broadcaster's or streaming service's official episode page or official clip, or reputable press quoting the line.
+   - **Shows:** the same sources as dramas. Without one of those, the reference is **PROPOSED**: it goes in the verification table only, **not** in the JSON, until the owner confirms it. After confirmation, the planner schedules a follow-up commit that adds it with `citation: "owner"`.
+   - The agent never invents a reference and never marks a show reference verified on its own judgement.
+5. **Copyright:** `context` is an original description of at most 200 characters. Neither `context` nor `dialogue` may quote any lyric or script line beyond the phrase itself. No `url` key, and no links anywhere.
+6. **`docs/media-verification.md`:** one row per reference, with the columns `id | hangul | kind | title | by | year | locator | citation | verified-by (agent/owner) | status (VERIFIED / PROPOSED / DROPPED) | date`.
+   - Add a short header with the counts: entries, entries with ≥ 1 verified ref, and the song/show/drama split.
+   - Dropped references stay in the table with the reason, as an audit trail.
+7. **Targets** (never pad to reach them):
+   - at least 70 % of entries with at least 1 **VERIFIED** reference; PROPOSED ones don't count;
+   - among verified references, roughly 50 % songs, 30 % shows and 20 % dramas.
+   - If a target is missed, say so in the commit message and the table header. Don't stretch the verification.
+8. **Commit:** `K2: ko_media.json (<n> entries, <m> verified refs)`. Stage only the three files above.
+
+**Acceptance:**
+- `swift build` passes. The DEBUG launch shows **no** deck-issues banner, which means `DeckValidator` found 0 errors in `ko_media.json`. The new deck appears in the Korean section of Home, between Core 1 and AION.
+- Reveal a media card: the "In a scene" bubbles each have a 🔊 button that speaks; "Heard in" lists names only, with no tappable links; "My snippet" works (with S6).
+- Every reference in the JSON has a matching **VERIFIED** row in `docs/media-verification.md`, and no PROPOSED row appears in the JSON.
+- Owner spot-check (PLAN_M5 K2 Accept): 10 random references. Any failure removes that reference; two or more failures send S7 back for re-verification.
+- A grep of `context`/`dialogue` against the cited lyrics finds no copied line beyond the phrase.
+
+**After S7:** the owner confirms PROPOSED show references and names favourite dramas (PLAN_M5 §8, OPEN). The planner then schedules **K2b** (confirmed references added with `citation: "owner"`) and **K5** (integration and device QA).
 
 ---
 
