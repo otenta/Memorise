@@ -6,10 +6,14 @@ public struct DeckLoadReport: Sendable, Hashable {
     public var loadFailures: [String] = []
     /// Validator errors (decks are loaded, but stats may be mixed for affected entries).
     public var validationWarnings: [String] = []
+    /// Content overlap across Korean decks (R7-F7): duplicate headwords and shared first glosses.
+    /// Debug report only — not shown on Home, never fails a load. Input for content fixes (C2).
+    public var overlapWarnings: [String] = []
 
-    public init(loadFailures: [String] = [], validationWarnings: [String] = []) {
+    public init(loadFailures: [String] = [], validationWarnings: [String] = [], overlapWarnings: [String] = []) {
         self.loadFailures = loadFailures
         self.validationWarnings = validationWarnings
+        self.overlapWarnings = overlapWarnings
     }
 
     public var isEmpty: Bool { loadFailures.isEmpty && validationWarnings.isEmpty }
@@ -92,7 +96,40 @@ public struct DeckCatalog: Sendable {
         #if DEBUG
         assert(report.validationWarnings.isEmpty, "Invalid bundled decks:\n" + report.validationWarnings.joined(separator: "\n"))
         #endif
-        return (assemble(bundledVocab: files.map(VocabDeck.init(file:))), report)
+        let hidden = hiddenDuplicates(files)
+        report.overlapWarnings = DeckValidator.overlapWarnings(files, hidden: hidden)
+        let decks = files.map { VocabDeck(file: $0, hiddenEntryIDs: hidden[$0.deckId] ?? []) }
+        return (assemble(bundledVocab: decks), report)
+    }
+
+    /// Which deck owns a shared headword (R7-F7, owner D3): the earliest in this list wins.
+    /// Bundled Korean decks not listed come after, in file order.
+    public static let headwordOwnershipOrder = [
+        "ko.core.1", "ko.core.2", "ko.core.3", "ko.core.4", "ko.core.5", "ko.patterns", "ko.aion2", "ko.media",
+    ]
+
+    /// Entry ids each bundled deck hides because an earlier deck (ownership order) has the same
+    /// headword + part of speech. Duplicates inside one deck are kept (the validator reports them).
+    /// User decks are never passed here, so they are never hidden.
+    static func hiddenDuplicates(_ files: [VocabDeckFile]) -> [String: Set<String>] {
+        let order = Dictionary(headwordOwnershipOrder.enumerated().map { ($1, $0) }, uniquingKeysWith: { a, _ in a })
+        let ranked = files.enumerated()
+            .filter { $0.element.subject == .korean }
+            .sorted { (order[$0.element.deckId] ?? .max, $0.offset) < (order[$1.element.deckId] ?? .max, $1.offset) }
+            .map(\.element)
+        var owner: [String: String] = [:]
+        var hidden: [String: Set<String>] = [:]
+        for f in ranked {
+            for e in f.entries {
+                let key = DeckValidator.headwordKey(e)
+                if let o = owner[key], o != f.deckId {
+                    hidden[f.deckId, default: []].insert(e.id)
+                } else {
+                    owner[key] = f.deckId
+                }
+            }
+        }
+        return hidden
     }
 
     /// Loads `Resources/Decks/<name>.json` from the package bundle.

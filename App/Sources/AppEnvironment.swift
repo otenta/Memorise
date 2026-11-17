@@ -89,6 +89,10 @@ final class AppEnvironment {
         let (catalog, report) = DeckCatalog.builtIn()
         for f in report.loadFailures { log.error("Deck load failure: \(f, privacy: .public)") }
         for w in report.validationWarnings { log.error("Deck validation: \(w, privacy: .public)") }
+        #if DEBUG
+        // R7-F7: content overlap across Korean decks (debug report only; input for C2).
+        for w in report.overlapWarnings { log.debug("Deck overlap: \(w, privacy: .public)") }
+        #endif
         let store = DeferredStatsStore()
         let env = AppEnvironment(
             catalog: catalog, store: store, deckReport: report,

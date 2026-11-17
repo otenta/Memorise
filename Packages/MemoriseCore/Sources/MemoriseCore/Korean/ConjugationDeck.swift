@@ -76,23 +76,27 @@ public struct ConjugationDeck: Deck {
     public let title = "Conjugation"
     public let subtitle = "가다 → 가요"
     public let subject = Subject.korean
-    /// Core verbs/adjectives in introduction order (Core 1 first, then by rank), deduplicated by spelling.
+    /// Core verbs/adjectives, deduplicated by spelling (the earliest Core deck keeps a word), in
+    /// `.allCore` introduction order: interleaved across Core decks (R7-F7).
     public let predicates: [(entry: VocabEntry, isCore1: Bool)]
+    /// Core 1 predicates in rank order, for `.core1` (the owner asked for Core 1 order there).
+    private let core1Predicates: [VocabEntry]
 
     public init(vocab: [VocabDeck] = []) {
         let core = vocab
             .filter { $0.subject == .korean && $0.id.raw.hasPrefix(Self.corePrefix) }
             .sorted { Self.coreNumber($0.id) < Self.coreNumber($1.id) }
         var seen = Set<String>()
-        var out: [(VocabEntry, Bool)] = []
+        var groups: [(sourceID: String, items: [(entry: VocabEntry, isCore1: Bool)])] = []
         for deck in core {
             let isCore1 = deck.id.raw == "ko.core.1"
-            for e in deck.entries.sorted(by: { $0.rank < $1.rank })
-            where (e.partOfSpeech?.isPredicate ?? false) && seen.insert(e.hangul).inserted {
-                out.append((e, isCore1))
-            }
+            let items = deck.entries.sorted(by: { $0.rank < $1.rank })
+                .filter { ($0.partOfSpeech?.isPredicate ?? false) && seen.insert($0.hangul).inserted }
+                .map { (entry: $0, isCore1: isCore1) }
+            groups.append((deck.id.raw, items))
         }
-        predicates = out
+        core1Predicates = groups.first { $0.sourceID == "ko.core.1" }?.items.map(\.entry) ?? []
+        predicates = DerivedIntroductionOrder.interleave(groups, derivedID: Self.deckID)
     }
 
     static let corePrefix = "ko.core."
@@ -110,12 +114,13 @@ public struct ConjugationDeck: Deck {
     public func cards(options: DeckOptions) -> [Card] {
         guard case let .conjugation(o) = options else { return [] }
         var result: [Card] = []
-        for (index, p) in predicates.enumerated() where o.source == .allCore || p.isCore1 {
+        let ordered = o.source == .core1 ? core1Predicates : predicates.map(\.entry)
+        for (index, entry) in ordered.enumerated() {
             for (formIndex, form) in ConjForm.allCases.enumerated() where o.forms.contains(form) {
-                guard let c = Conjugator.conjugate(p.entry, form) else { continue }
-                let prompt = ConjugationPrompt(entry: p.entry, form: form, answer: c.text, alternates: c.alternates, rule: c.rule,
+                guard let c = Conjugator.conjugate(entry, form) else { continue }
+                let prompt = ConjugationPrompt(entry: entry, form: form, answer: c.text, alternates: c.alternates, rule: c.rule,
                                                rank: index * ConjForm.allCases.count + formIndex)
-                result.append(Card(key: Self.itemKey(entryID: p.entry.id, form), deckID: id, content: .conjugation(prompt)))
+                result.append(Card(key: Self.itemKey(entryID: entry.id, form), deckID: id, content: .conjugation(prompt)))
             }
         }
         return result

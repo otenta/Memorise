@@ -5,17 +5,25 @@ public struct VocabDeck: Deck {
     public let title: String
     public let subtitle: String
     public let subject: Subject
+    /// Visible entries in rank order (hidden duplicates excluded, R7-F7).
     public let entries: [VocabEntry]
+    /// Entry ids hidden because an earlier deck owns the same headword (R7-F7). The JSON and ids
+    /// are untouched; their stats stay in the store, unused.
+    public let hiddenEntryIDs: Set<String>
     /// Every distinct tag, sorted.
     public let allTags: [String]
 
-    public init(file: VocabDeckFile) {
+    public init(file: VocabDeckFile) { self.init(file: file, hiddenEntryIDs: []) }
+
+    public init(file: VocabDeckFile, hiddenEntryIDs: Set<String>) {
         id = DeckID(file.deckId)
         title = file.title
         subtitle = file.subtitle
         subject = file.subject
-        entries = file.entries.sorted { $0.rank < $1.rank }
-        allTags = Array(Set(file.entries.flatMap(\.tags))).sorted()
+        self.hiddenEntryIDs = hiddenEntryIDs
+        let visible = hiddenEntryIDs.isEmpty ? file.entries : file.entries.filter { !hiddenEntryIDs.contains($0.id) }
+        entries = visible.sorted { $0.rank < $1.rank }
+        allTags = Array(Set(visible.flatMap(\.tags))).sorted()
     }
 
     public var defaultOptions: DeckOptions { .vocab(VocabOptions()) }
@@ -66,5 +74,47 @@ public struct VocabDeck: Deck {
             penalty *= 0.7
         }
         return penalty
+    }
+}
+
+/// Stable FNV-1a 64-bit hash (never `hashValue`, which is randomised per launch).
+@inlinable func stableHash(_ s: String) -> UInt64 {
+    var h: UInt64 = 0xcbf2_9ce4_8422_2325
+    for b in s.utf8 {
+        h ^= UInt64(b)
+        h &*= 0x0000_0100_0000_01b3
+    }
+    return h
+}
+
+/// Introduction order for decks derived from vocab decks (R7-F7): round-robin across source decks,
+/// each source in a fixed shuffle seeded from the derived deck's id, so derived decks don't all
+/// start with Core 1's top words. Stable across launches and builds.
+enum DerivedIntroductionOrder {
+    /// `groups` are the source decks' words, in source order. Returns all words, interleaved.
+    static func interleave<T>(_ groups: [(sourceID: String, items: [T])], derivedID: DeckID) -> [T] {
+        let shuffled = groups.map { g -> [T] in
+            var rng = SplitMix64(seed: stableHash(derivedID.raw + "|" + g.sourceID))
+            return fixedShuffle(g.items, using: &rng)
+        }
+        var out: [T] = []
+        out.reserveCapacity(shuffled.reduce(0) { $0 + $1.count })
+        let longest = shuffled.map(\.count).max() ?? 0
+        for i in 0..<longest {
+            for g in shuffled where i < g.count { out.append(g[i]) }
+        }
+        return out
+    }
+
+    /// Fisher–Yates with our own index draw, so the order never depends on the standard library's
+    /// shuffle implementation.
+    static func fixedShuffle<T>(_ items: [T], using rng: inout SplitMix64) -> [T] {
+        var a = items
+        guard a.count > 1 else { return a }
+        for i in stride(from: a.count - 1, to: 0, by: -1) {
+            let j = Int(rng.next().multipliedFullWidth(by: UInt64(i + 1)).high)
+            a.swapAt(i, j)
+        }
+        return a
     }
 }

@@ -126,16 +126,19 @@ public struct HangulReadingDeck: Deck {
 
     public init(vocab: [VocabDeck] = []) {
         var seen = Set<String>()
-        var words: [VocabEntry] = []
+        // Syllable count → source deck groups (deck order kept).
+        var byLength: [Int: [(sourceID: String, items: [VocabEntry])]] = [:]
         for deck in vocab where deck.subject == .korean {
+            var bucket: [Int: [VocabEntry]] = [:]
             for e in deck.entries where Self.isReadableWord(e) && seen.insert(e.hangul).inserted {
-                words.append(e)
+                bucket[Hangul.syllableCount(e.hangul), default: []].append(e)
             }
+            for (n, items) in bucket { byLength[n, default: []].append((deck.id.raw, items)) }
         }
-        // Shortest words first, then deck order.
-        realWords = words.enumerated()
-            .sorted { (Hangul.syllableCount($0.element.hangul), $0.offset) < (Hangul.syllableCount($1.element.hangul), $1.offset) }
-            .map(\.element)
+        // Shortest words first; within a length, interleaved across source decks (R7-F7).
+        realWords = byLength.keys.sorted().flatMap { n in
+            DerivedIntroductionOrder.interleave(byLength[n]!, derivedID: Self.deckID)
+        }
     }
 
     static func isReadableWord(_ e: VocabEntry) -> Bool {

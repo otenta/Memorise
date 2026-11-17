@@ -142,19 +142,21 @@ public struct ParticlesDeck: Deck {
     public let title = "Particles"
     public let subtitle = "은/는, 이/가, 을/를 …"
     public let subject = Subject.korean
-    /// Every usable noun (deduplicated by spelling), with whether it came from a Core deck.
+    /// Every usable noun (deduplicated by spelling), with whether it came from a Core deck,
+    /// interleaved across source decks (R7-F7) so a card's default noun isn't Core 1's top word.
     public let nouns: [(entry: VocabEntry, isCore: Bool)]
 
     public init(vocab: [VocabDeck] = []) {
         var seen = Set<String>()
-        var out: [(VocabEntry, Bool)] = []
+        var groups: [(sourceID: String, items: [(entry: VocabEntry, isCore: Bool)])] = []
         for deck in vocab where deck.subject == .korean {
             let core = deck.id.raw.hasPrefix("ko.core.")
-            for e in deck.entries where Self.isUsableNoun(e) && seen.insert(e.hangul).inserted {
-                out.append((e, core))
-            }
+            let items = deck.entries
+                .filter { Self.isUsableNoun($0) && seen.insert($0.hangul).inserted }
+                .map { (entry: $0, isCore: core) }
+            groups.append((deck.id.raw, items))
         }
-        nouns = out
+        nouns = DerivedIntroductionOrder.interleave(groups, derivedID: Self.deckID)
     }
 
     /// Plain nouns written only in syllables (pronouns excluded: 내가/제가/네가).

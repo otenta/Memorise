@@ -108,6 +108,67 @@ public enum DeckValidator {
         return errors
     }
 
+    /// Ownership key of a headword (R7-F7): NFC Hangul without trailing `?!.~`, plus the part of speech.
+    static func headwordKey(_ e: VocabEntry) -> String {
+        normalizedHeadword(e) + "\u{1F}" + e.pos
+    }
+
+    /// NFC Hangul without surrounding spaces or trailing `?!.~`.
+    static func normalizedHeadword(_ e: VocabEntry) -> String {
+        var h = e.hangul.precomposedStringWithCanonicalMapping.trimmingCharacters(in: .whitespaces)
+        while let last = h.last, "?!.~".contains(last) { h.removeLast() }
+        return h
+    }
+
+    /// Content overlap across Korean decks (R7-F7), as warnings (never errors):
+    /// - every headword in more than one place (all `ko.*` decks, and repeats inside a deck; grouped
+    ///   by Hangul, so same-spelling words of different parts of speech are listed too), noting the
+    ///   part of speech and which entries are hidden;
+    /// - every first gloss (case-insensitive) shared by two or more decks among visible entries.
+    ///
+    /// `hidden`: entry ids hidden per deck id (see `DeckCatalog.hiddenDuplicates`).
+    public static func overlapWarnings(_ files: [VocabDeckFile], hidden: [String: Set<String>] = [:]) -> [String] {
+        let korean = files.filter { $0.subject == .korean && $0.deckId.hasPrefix("ko.") }
+        var warnings: [String] = []
+
+        var byHeadword: [String: [(deck: String, id: String, pos: String)]] = [:]
+        var headwordOrder: [String] = []
+        for f in korean {
+            for e in f.entries {
+                let key = normalizedHeadword(e)
+                if byHeadword[key] == nil { headwordOrder.append(key) }
+                byHeadword[key, default: []].append((f.deckId, e.id, e.pos))
+            }
+        }
+        for key in headwordOrder {
+            guard let uses = byHeadword[key], uses.count > 1 else { continue }
+            let list = uses.map { u in
+                "\(u.id) \(u.pos)" + ((hidden[u.deck]?.contains(u.id) ?? false) ? " (hidden)" : "")
+            }.joined(separator: ", ")
+            let sameDeck = Set(uses.map(\.deck)).count == 1
+            warnings.append("Duplicate headword '\(key)'\(sameDeck ? " inside one deck" : ""): \(list)")
+        }
+
+        var byGloss: [String: [(deck: String, id: String)]] = [:]
+        var glossOrder: [String] = []
+        for f in korean {
+            for e in f.entries where !(hidden[f.deckId]?.contains(e.id) ?? false) {
+                guard let first = e.meanings.first else { continue }
+                let gloss = first.trimmingCharacters(in: .whitespaces).lowercased()
+                if byGloss[gloss] == nil { glossOrder.append(gloss) }
+                byGloss[gloss, default: []].append((f.deckId, e.id))
+            }
+        }
+        var sharedGlosses = 0
+        for gloss in glossOrder {
+            guard let uses = byGloss[gloss], Set(uses.map(\.deck)).count > 1 else { continue }
+            sharedGlosses += 1
+            warnings.append("Shared first gloss '\(gloss)': \(uses.map(\.id).joined(separator: ", "))")
+        }
+        if sharedGlosses > 0 { warnings.append("\(sharedGlosses) first glosses are shared across Korean decks") }
+        return warnings
+    }
+
     /// Dialogue and media-reference rules (PLAN_M5 §3, K1).
     static func mediaErrors(_ e: VocabEntry, at: String, mode: Mode, currentYear: Int) -> [String] {
         var errors: [String] = []
