@@ -22,6 +22,7 @@
 | **F2** | Some Korean songs, e.g. *ANTIFRAGILE*, show "Lyrics not available". | `KoreanLyricsCheck.isKorean` needs `Hangul ÷ (Hangul + Latin letters) ≥ 0.25`. The ratio counts **letters**, and an English word has about 5 letters where a Korean word has 2–3 syllables, so the rule is biased against mixed K-pop. Real LRCLIB data (2026-11-18, best Hangul record per song): *ANTIFRAGILE* 274 syllables / 1,166 letters = **0.19** ✗; *Hype Boy* 0.20 ✗; *ETA* 0.23 ✗; *Magnetic* 0.16 ✗ (the M6 mock-up's own example song); *Pink Venom* 0.13 ✗; *EASY* 0.18 ✗; *Shut Down* 0.09 ✗; *Super Shy* 0.07 ✗. English-only songs (*Dynamite*, *Butter*, *Seven*, *The Feels*) have **0** Hangul. **Second cause:** LRCLIB `search` has user-uploaded **romanised** copies (for *ANTIFRAGILE*, record 2269145 has 0 Hangul and the same duration). `bestMatch` ignores the text, so it can pick the romanised copy over the Hangul one. | **LA1** |
 | **F3** | Many words aren't underlined. All words should be translatable (English translation or auto-translation), so I can see the whole meaning. | Only words found in a deck are underlined (`underline(known, …)`). Auto-translated words look like plain text. Apple's word translation also fails or echoes Hangul for many conjugated lyric forms, which ends in "Meaning unavailable", and the bubble never shows what the line means. Without a Genius page, the English page shows nothing (old L-D6). | **LA2** (data), **LA3** (UI) |
 | **F4** | "Now playing" doesn't update on its own. | `refreshNowPlaying()` runs only on connect, pull-to-refresh, the ↻ button and the return to foreground. Nothing polls, and starting a song from the picker doesn't refresh the card either. | **LA4** |
+| **F5** | The reader should show what's playing now. | The reader has no now-playing UI, and polling (LA4 as first planned) stopped as soon as a reader opened. | **LA4** (shared monitor), **LA5** (reader UI) |
 
 ### Decisions
 
@@ -31,6 +32,7 @@
 | **O-3** | Words written only in Latin letters ("ANTIFRAGILE", "Look at me") stay plain: not underlined, not tappable. Every token that contains a Hangul syllable is tappable and underlined. | **owner** | ☑ decided 2026-11-18 |
 | **P-3** | **Replaces the M6 §4.3 share rule.** Lyrics count as Korean when they have **≥ 20 Hangul syllables** and **≥ 4 lines that contain Hangul**. There is no share threshold. A song that is mostly English but has real Korean verses is a Korean song for this app. The English-only songs above still fail, because they have 0 Hangul. An English song with one short Korean line still fails, on the line count. | planner | decided |
 | **P-4** | The word bubble always shows the **line's meaning** under the word's meaning. It uses the aligned Genius line when `TranslationAlignment` pairs the song, and the auto-translated line otherwise. This is how "see the whole meaning" works for words whose single-word translation is weak. | planner | decided |
+| **P-6** | The reader shows Spotify's now playing as a **bottom bar**. When Spotify plays the song that's open, there's a small "Playing" or "Paused" chip in the header and no bar. When it plays **another** song, the bar shows that song with a **Show lyrics** button. The button swaps the open reader for the new song; it doesn't push. The reader **never switches on its own**, so you don't lose your place while studying, and it never changes playback. | planner | decided |
 | **P-5** | Underline styles: a deck word gets a **pink dotted** underline (as today). Every other Hangul word gets a **dotted underline in `Color.secondary`**. A phrase keeps its pink pill. | planner | decided |
 
 ---
@@ -41,7 +43,8 @@
 |---|---|---|
 | F2 (Korean check, LRCLIB pick, stale "not Korean" cache) | **LA1** | implementor (core + `LyricsService`) |
 | F1a, F1b, F3 data (batched glosses, word fallback, line glosses, precomputed tokens) | **LA2** | implementor (core + `GlossService` + reader VM) |
-| F4 (Now playing refreshes itself) | **LA4** | implementor (core + home VM + one `.task` line in the home view) |
+| F4, F5 data (shared now-playing monitor that polls) | **LA4** | implementor (core + `NowPlayingMonitor` + home VM + one `.task` line in the home view) |
+| F5 (now playing in the reader) | **LA5** | frontend (+ one small home VM method) |
 | F1a views, F1c, F1d, F3 UI (underlines, bubble line, English fallback page) | **LA3** | frontend |
 
 ---
@@ -52,10 +55,12 @@
 |---|---|---|---|---|
 | LA1 Korean check by content; LRCLIB picks the Hangul record | F2, P-3 | implementor | ☐ | Wire change 1 (`koreanRule`) |
 | LA2 Glosses: batched, cached once, word fallback, line glosses | F1a, F1b, F3, O-2, P-4 | implementor | ☐ | After LA1 (same `LyricsCacheFile`). Wire change 2 (`lineGlosses`) |
-| LA4 "Now playing" refreshes itself | F4 | implementor | ☐ | Independent of LA1/LA2 |
+| LA4 "Now playing" refreshes itself (shared monitor) | F4, F5 | implementor | ☐ | Independent of LA1/LA2 |
 | LA3 Reader and home rendering; underline every word; English fallback page | F1, F3, O-2, O-3, P-4, P-5 | frontend | ☐ | After LA2 (uses its VM API) **and** LA4 (both edit `LyricsHomeView.swift`) |
 
-**Order:** LA1 → LA2 → LA3. LA4 can run in parallel with LA1/LA2, but must be committed before LA3 starts.
+| LA5 Now playing in the reader | F5, P-6 | frontend | ☐ | After LA3 (both edit `LyricsReaderView.swift`) |
+
+**Order:** LA1 → LA2 → LA3 → LA5. LA4 can run in parallel with LA1/LA2, but must be committed before LA3 starts.
 
 ---
 
@@ -216,16 +221,18 @@
 
 ---
 
-### LA4 · F4 · "Now playing" refreshes itself
+### LA4 · F4, F5 · "Now playing" refreshes itself (shared monitor)
 
-**Commit:** `R10-LA4: poll Spotify now playing while the Lyrics home is on screen`
+**Commit:** `R10-LA4: shared now-playing monitor that polls while the Lyrics home is on screen`
 
 **Files:**
 - `Packages/MemoriseCore/Sources/MemoriseCore/Lyrics/SpotifyModels.swift`
 - `Packages/MemoriseCore/Sources/MemoriseCore/Lyrics/NowPlayingPoll.swift` (**new**)
 - `Packages/MemoriseCore/Sources/MemoriseCore/Lyrics/LyricsModels.swift` (`LyricsConstants`)
+- `App/Sources/Services/Lyrics/NowPlayingMonitor.swift` (**new**)
+- `App/Sources/AppEnvironment.swift` (owns `nowPlaying`; the preview environment too)
 - `App/Sources/Features/Lyrics/LyricsHomeViewModel.swift`
-- `App/Sources/Features/Lyrics/LyricsHomeView.swift` (**only** the `.task` hook in step 4. LA3 owns the rest of this file.)
+- `App/Sources/Features/Lyrics/LyricsHomeView.swift` (**only** the `.task` hook and the VM `init` call in step 5. LA3 owns the rest of this file.)
 - `PLAN_M6_LYRICS.md` §4.9 (one line)
 
 **Steps:**
@@ -243,25 +250,34 @@
    - `rateLimited(retryAfter:)` → `max(retryAfter ?? 60, nowPlayingErrorPollSeconds)`.
    - New `LyricsConstants`: `nowPlayingPollSeconds = 10.0`, `nowPlayingMinPollSeconds = 2.0`, `nowPlayingErrorPollSeconds = 30.0`.
    - `remainingMs = track.durationMs − progressMs`, or `nil` when either is unknown or ≤ 0.
-3. **`LyricsHomeViewModel`:**
-   - `refreshNowPlaying()` returns the `NowPlayingPoll.Last` it observed (`@discardableResult`).
-     - It skips the request and returns `.pausedOrNothing` when a refresh is already in flight (new `@ObservationIgnored var nowPlayingInFlight`), so the poll loop and the ↻ button never overlap.
-     - It assigns `nowPlaying` **only when the visible state changes**: track id, `isPlaying`, nothing↔something, or failed↔loaded. Progress alone never triggers a re-render.
+3. **New `NowPlayingMonitor`** (`App/Sources/Services/Lyrics/NowPlayingMonitor.swift`, `@MainActor @Observable`, owned by `AppEnvironment` as `env.nowPlaying`, built from `env.spotify`). The Lyrics home **and** the reader (LA5) both show what Spotify is playing, so the state lives here and not in a view model.
+   - `private(set) var state: LyricsLoad<SpotifyPlayback?> = .idle`. This moves the `LyricsLoad` enum's use, not its definition.
+   - `@discardableResult func refresh() async -> NowPlayingPoll.Last`:
+     - It skips the request and returns `.pausedOrNothing` when a refresh is already in flight (`@ObservationIgnored var inFlight`), so the poll loop, the ↻ button and a post-play refresh never overlap.
+     - It assigns `state` **only when the visible state changes**: track id, `isPlaying`, nothing↔something, or failed↔loaded. Progress alone never triggers a re-render.
      - Map `SpotifyError` 429 to `.rateLimited` (use the `Retry-After` value if `SpotifyClient` already surfaces it, otherwise `nil`). Map other errors to `.failed`.
-   - New `func watchNowPlaying() async`: `while !Task.isCancelled { let last = await refreshNowPlaying(); try? await Task.sleep(for: .seconds(NowPlayingPoll.delaySeconds(after: last))) }`. Exit on cancellation.
-   - `open(_:play:)`: when the background `play` returns `.playing`, wait 1.5 s and call `refreshNowPlaying()` (same generation guard), so the card shows the song just started.
-4. **`LyricsHomeView`, the hook only:** on the **root `ScrollView` inside the `NavigationStack`** (not on the stack itself, so a pushed reader or playlist cancels it), add
+     - Keep today's `generation` guard: a response for an older generation is dropped.
+   - `func watch() async`: `while !Task.isCancelled { let last = await refresh(); try? await Task.sleep(for: .seconds(NowPlayingPoll.delaySeconds(after: last))) }`. Exit on cancellation. Only one screen is visible at a time (home root **or** reader), so only one watch loop runs. If two ever overlap during a push animation, `inFlight` keeps it to one request.
+   - `func refreshSoon()`: waits 1.5 s, then `refresh()`. It's used after a song is started.
+   - `func reset()`: bumps the generation and sets `.idle`.
+4. **`LyricsHomeViewModel`:**
+   - Delete `nowPlaying`, `refreshNowPlaying()` and their generation handling. Take a `NowPlayingMonitor` in `init` and expose `var nowPlaying: LyricsLoad<SpotifyPlayback?> { monitor.state }`, so `NowPlayingCard` keeps compiling. The ↻ button calls `monitor.refresh()`.
+   - `refreshAll()` calls `monitor.refresh()` in place of `refreshNowPlaying()`. `reset()` calls `monitor.reset()`.
+   - `open(_:play:)`: when the background `play` returns `.playing`, call `monitor.refreshSoon()`, so the card and the reader strip show the song just started.
+   - `previewNowPlaying(_:)` moves to `NowPlayingMonitor` (DEBUG only).
+5. **`LyricsHomeView`, the hook only:** on the **root `ScrollView` inside the `NavigationStack`** (not on the stack itself, so a pushed reader or playlist cancels it), add
    ```swift
    .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
        guard env.spotify.isConnected, scenePhase == .active else { return }
-       await model.watchNowPlaying()
+       await env.nowPlaying.watch()
    }
    ```
-   `NowPlayingWatchKey` is a small private `Hashable` struct.
+   `NowPlayingWatchKey` is a small `Hashable` struct, internal so LA5 can reuse it.
    - Delete the existing `.onChange(of: scenePhase)` now-playing refresh, because the task restarts and refreshes immediately on `.active`.
    - Keep the `.task(id: isConnected) { refreshAll() }` for the lists.
-   - Switching tabs, pushing the reader or backgrounding the app makes the root disappear, so polling stops on its own. Coming back starts it with an immediate refresh.
-5. **Docs:** PLAN_M6 §4.9: "Now playing refreshes every 10 s while the Lyrics home is visible (sooner when the song is about to end), and stops when it isn't."
+   - Switching tabs or backgrounding the app makes the root disappear, so polling stops on its own. Pushing the reader stops the home loop, and the reader starts its own (LA5).
+   - Update the `LyricsHomeViewModel(spotify:)` call site and the previews.
+6. **Docs:** PLAN_M6 §4.9: "Now playing refreshes every 10 s while the Lyrics home or a reader is visible (sooner when the song is about to end), and stops when neither is."
 
 **Acceptance (for the tester):**
 - `NowPlayingPoll.delaySeconds`:
@@ -274,9 +290,10 @@
   - `.rateLimited(retryAfter: 90)` → 90.
   - `.rateLimited(retryAfter: nil)` → 60.
 - `SpotifyDecoder.playback` reads `progress_ms`. A body without it gives `progressMs == nil`.
-- With a stub client, two calls that return the same track with different progress cause **no** change to `nowPlaying` (observation isn't triggered). A different track id does change it.
-- Two overlapping `refreshNowPlaying()` calls send one request.
-- **On device (owner):** with the Lyrics home open, change the song on another device or in the Spotify app. The card updates within 10 s, and within about 2 s of a song ending on its own. Pause shows "Paused" within 10 s. While a reader is open, or another tab is selected, Spotify gets no now-playing requests (check with the Xcode network gauge or the Console log).
+- With a stub client, two `NowPlayingMonitor.refresh()` calls that return the same track with different progress cause **no** change to `state` (observation isn't triggered). A different track id does change it.
+- Two overlapping `refresh()` calls send one request.
+- After `reset()`, a response from before the reset doesn't fill `state`.
+- **On device (owner):** with the Lyrics home open, change the song on another device or in the Spotify app. The card updates within 10 s, and within about 2 s of a song ending on its own. Pause shows "Paused" within 10 s. While another tab is selected, or the app is in the background, Spotify gets no now-playing requests (check with the Xcode network gauge or the Console log).
 
 ---
 
@@ -337,6 +354,49 @@
   - With the reader open, the Lyrics home `AuroraBackground` timeline doesn't tick.
   - Scrolling a 200-song Liked list back and forth doesn't re-request artwork already seen (network gauge) and shows no placeholder flash.
 - Home, Stats, Session Setup and Lyrics cards look the same as before the `GlassCard` change (owner glance, light and dark).
+
+---
+
+### LA5 · F5 · Now playing in the reader
+
+**Agent:** frontend. **Runs after LA3** (same reader file) and needs LA4's `NowPlayingMonitor`.
+
+**Commit:** `R10-LA5: show Spotify now playing in the lyrics reader`
+
+**Files:**
+- `App/Sources/Features/Lyrics/LyricsReaderView.swift`
+- `App/Sources/Features/Lyrics/ReaderNowPlayingBar.swift` (**new**)
+- `App/Sources/Features/Lyrics/LyricsHomeView.swift` (the `navigationDestination` call only)
+- `App/Sources/Features/Lyrics/LyricsHomeViewModel.swift` (one method: `showLyrics(for:)`)
+
+**Steps:**
+1. **Polling in the reader:** `ReaderContent` gets the same hook as the home root:
+   ```swift
+   .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
+       guard env.spotify.isConnected, scenePhase == .active else { return }
+       await env.nowPlaying.watch()
+   }
+   ```
+   Popping or swapping the reader cancels it, and the home root starts its own loop again.
+2. **Same song?** Add `func isShowing(_ playback: SpotifyPlayback) -> Bool` on `LyricsReaderViewModel`. It's true when the `spotifyID` is equal, **or** `TrackQuery.sameTitle(track.title, playback.track.title) && TrackQuery.sameArtist(track.primaryArtist, playback.track.primaryArtist)`. The second test covers Spotify's relinked ids, where the same song has another id per market or album.
+3. **Header chip (same song):** when `env.nowPlaying.state` holds a playback for the open song, show a small capsule under the artist line, "▶ Playing" (`waveform`) or "⏸ Paused" (`pause.fill`), in `Theme.pink`, with identifier `lyrics.reader.playingChip`. Nothing else changes.
+4. **Bottom bar (another song)** (`ReaderNowPlayingBar`, new):
+   - It's shown with `.safeAreaInset(edge: .bottom)` on the reader, so it never covers the last lyric line.
+   - Layout: a glass capsule card with 16 pt side padding, an `ArtworkView` (LA3's cached one, size 40), "Now playing" or "Paused" caption in pink, the title and artist on one line each (`lineLimit(1)`), and a **Show lyrics** button (Korean gradient capsule, min height 44, identifier `lyrics.reader.showNowPlaying`). Bar identifier: `lyrics.reader.nowPlayingBar`.
+   - It appears and disappears with `Theme.spring` and a `.move(edge: .bottom).combined(with: .opacity)` transition. With Reduce Motion on, use opacity only.
+   - Hidden when the state is `.idle`, `.loading`, `.failed` or nothing is playing, and when Spotify isn't connected. Never show an error in the reader; the home card already does that.
+   - The toast overlay moves up by the bar's height when the bar is visible, so they don't overlap.
+5. **Show lyrics:** `LyricsReaderView` takes `onShowLyrics: (TrackInfo) -> Void`.
+   - `LyricsHomeViewModel.showLyrics(for track: TrackInfo)` replaces the **last** path element with `.reader(track)` when it's a reader, and otherwise appends it. It never starts playback.
+   - The home `navigationDestination` passes `{ model.showLyrics(for: $0) }`. Because the route value changes, SwiftUI builds a fresh `LyricsReaderView` (new `@State` model) for the new song. Back still returns to where the first reader came from (Home or the playlist).
+   - Previews pass `{ _ in }`.
+6. **Previews:** the bar for another song (playing and paused) and the reader header with the chip. Use `NowPlayingMonitor.previewNowPlaying`.
+
+**Acceptance (for the tester / owner on device):**
+- `isShowing`: same id → true. Different id but the same title and artist → true. Different title → false.
+- `showLyrics(for:)`: path `[.reader(A)]` → `[.reader(B)]`. Path `[.playlist(P), .reader(A)]` → `[.playlist(P), .reader(B)]`. Path `[]` → `[.reader(B)]`.
+- **On device:** open a song that's playing → the header shows "▶ Playing" and there's no bar. Skip to the next song in Spotify → within 10 s (about 2 s at a natural song end) the bar appears with the new song. Tap **Show lyrics** → that song's lyrics replace the reader, playback is untouched, and Back returns to the list. Pause in Spotify → the chip or the bar says "Paused" within 10 s. Leave the reader open with the screen on for 1 minute → it never switches songs by itself. Pop the reader → the home card is up to date.
+- No now-playing requests while the app is in the background (network gauge or Console).
 
 ---
 
