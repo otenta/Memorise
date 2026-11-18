@@ -244,7 +244,7 @@ Order: L0 → L1 → L2 → L3 → L4 → L5 → L6 → L7 → L8 → L9. Fronte
    - Create a Spotify app at developer.spotify.com (Web API).
    - Add the redirect URI `memorise-spotify://callback`.
    - Add your account email under User Management.
-   - Create a Genius API client at genius.com/api-clients and generate a **client access token**.
+   - Create a Genius API client at genius.com/api-clients. The form requires an **App Website URL** and a **Redirect URI**, but we never use Genius sign-in (only the client access token), so both are placeholders: website `https://github.com` (or your repo page) and redirect `https://example.com/callback`. Save, then press **Generate Access Token** on the client's page and copy that token. Don't use the Client ID or Client Secret.
    - Put both in `App/Config/Secrets.xcconfig`.
 5. **Blocker rule:** if the Spotify dashboard rejects the custom-scheme redirect URI, stop and record it in §17. The planner will switch to a claimed HTTPS redirect.
 6. PLAN.md: §4 "Min iOS 18.0", "Network: Lyrics tab only". §17 decision: the first network feature, iOS 18, no third-party deps (all Apple frameworks plus `URLSession`).
