@@ -51,6 +51,7 @@ A new **Lyrics** tab. You connect Spotify once, pick a song, and it starts playi
 | L-D7 | "Not available" rule | Based on the **lyrics**, not on Spotify genre: no lyrics, instrumental, or Hangul share below the threshold (§4.3) → "Lyrics not available for this track". |
 | L-D8 | Saved card content | Word + meaning + **the lyric line as the example** + a "Heard in" song reference. Kept on device only (same rule as M5 "My snippet"). |
 | L-D9 | Saving words | **＋ Add to deck** opens a sheet: pick an existing custom deck or **+ New deck…**. |
+| L-D10 | Lyric line too long or no English (found in L8) | **Relax the example rules for custom decks only**: `en` may be empty and `ko` may have up to 80 Hangul. Bundled decks keep both lines required and the 40 limit (segment L8b). |
 
 **Copyright rule (extends M5 §2):** lyrics and translations are never bundled, never exported, and never sent anywhere except the request to the source site that fetches them. They are cached only in `Application Support/LyricsCache/`. A saved card's example line is the one exception the owner chose (L-D8), and it lives in the user's own deck file.
 
@@ -229,7 +230,7 @@ The saved card then works like any user-deck card. `MediaSnippetView` already sh
 
 ## 5. Segments
 
-Order: L0 → L1 → L2 → L3 → L4 → L5 → L6 → L7 → L8 → L9. Frontend segments (L6–L8) may start with previews once L1's models exist.
+Order: L0 → L1 → L2 → L3 → L4 → L5 → L6 → L7 → L8 → L9 → L8b (added after L9 shipped). Frontend segments (L6–L8) may start with previews once L1's models exist.
 
 ### L0 — Setup, config and decision log (implementor)
 **Files:** `project.yml`, new `App/Config/Base.xcconfig`, `App/Config/Secrets.example.xcconfig`, `.gitignore`, `README.md`, `PLAN.md` §4/§17.
@@ -364,6 +365,8 @@ No `Codable` or wire change: `Example.en` is already a `String`, and a blank str
 2. `VocabUI` answer view (the `ForEach(e.allExamples…)` block): hide the `Text(ex.en)` row when `ex.en` is blank, so no empty gap shows. The 🔊 on the Korean line stays.
 3. `UserDeckEditorView`: let the example English be empty. Show `UserDecks.problems` messages as today.
 
+**Docs (L9 already shipped):** add the relaxed `.user` example rule to the PLAN.md §8 schema notes, and add a README QA checklist line: "save a long lyric word with no English → the card keeps the line".
+
 Commit: `M6-L8b: relaxed example rules for custom decks`
 **Accept:**
 - A 60-Hangul lyric line with no English saves into a custom deck. The reveal shows the line with 🔊 and no empty English row.
@@ -393,3 +396,4 @@ Synced/karaoke lyrics, playback controls in Memorise (play/pause/skip), romanisa
 | L7 Reader + bubble + English | frontend | ☑ | `LyricFlowLayout` name, see PLAN §17 |
 | L8 Add to deck | implementor + frontend | ☑ | core fix + sheet done together; example rule in PLAN §17 |
 | L9 Docs | implementor | ☑ | |
+| L8b Relaxed custom-deck examples | implementor + frontend | ☐ | L-D10; added after L9 shipped, so it also updates the docs |
