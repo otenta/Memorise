@@ -174,7 +174,7 @@ final class LyricsService: Sendable {
                 guard case let .ok(data) = f else { continue }
                 let hits = GeniusParser.parseSearch(data)
                 if geniusHits == nil { geniusHits = hits }
-                guard let hit = GeniusParser.lyricsHit(hits, artists: track.artists) else { continue }
+                guard let hit = GeniusParser.lyricsHit(hits, artists: track.artists, titles: titles) else { continue }
                 let page = await fetch(GeniusParser.pageRequest(hit.url))
                 note(page)
                 guard case let .ok(html) = page, let text = String(data: html, encoding: .utf8),

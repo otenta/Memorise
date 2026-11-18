@@ -58,7 +58,7 @@
 
 | Segment | Covers | Agent | Status | Notes |
 |---|---|---|---|---|
-| LF1 Genius and LRCLIB match the right song | R8-1 | implementor | ☐ | Core + `LyricsService` call site |
+| LF1 Genius and LRCLIB match the right song | R8-1 | implementor | ☑ | Core + `LyricsService` call site |
 | LF2 Title normalisation and `+` encoding | R8-6 | implementor | ☐ | Core only |
 | LF3 Request budget per phase; English gap retried | R8-5 | implementor | ☐ | After LF1 (same files) |
 | LF4 Cache first, Korean title persisted | R8-4 | implementor | ☐ | After LF3. The plan's only wire change. |

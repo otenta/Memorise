@@ -74,10 +74,13 @@ public enum GeniusParser {
 
     // MARK: Hit selection
 
-    /// First hit whose artist matches one of the track's artists and that isn't a translation/romanisation page.
-    public static func lyricsHit(_ hits: [GeniusHit], artists: [String]) -> GeniusHit? {
+    /// First hit that is not a translation/romanisation page, whose artist matches one of the track's artists
+    /// **and** whose title matches one of `titles` (another song by the same artist must never be shown).
+    public static func lyricsHit(_ hits: [GeniusHit], artists: [String], titles: [String]) -> GeniusHit? {
         hits.first { hit in
-            !excludedArtists.contains(hit.artist.lowercased()) && artists.contains { TrackQuery.sameArtist($0, hit.artist) }
+            !excludedArtists.contains(hit.artist.lowercased())
+                && artists.contains { TrackQuery.sameArtist($0, hit.artist) }
+                && TrackQuery.titleMatches(hit.title, any: titles)
         }
     }
 
@@ -85,11 +88,10 @@ public enum GeniusParser {
     /// contains both the artist and one of the song titles.
     public static func translationHit(_ hits: [GeniusHit], artists: [String], titles: [String]) -> GeniusHit? {
         let titleKeys = titles.map { TrackQuery.key($0) }.filter { !$0.isEmpty }
-        let artistKeys = artists.map { TrackQuery.key($0) }.filter { !$0.isEmpty }
         return hits.first { hit in
             guard hit.artist.lowercased() == translationArtist.lowercased() else { return false }
             let k = TrackQuery.key(hit.title)
-            return artistKeys.contains { k.contains($0) } && titleKeys.contains { k.contains($0) }
+            return artists.contains { TrackQuery.containsWords(hit.title, name: $0) } && titleKeys.contains { k.contains($0) }
         }
     }
 
