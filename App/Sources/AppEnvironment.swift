@@ -94,6 +94,8 @@ final class AppEnvironment {
         notePlayer.volume = { [unowned settings] in Float(settings.noteVolume) }
         self.configStore = configStore
         self.deckReport = deckReport
+        // An open reader re-tokenises (it watches `dataVersion`) once the rebuilt word lookup is in place.
+        glosses.onLookupChanged = { [unowned self] in self.dataDidChange() }
     }
 
     /// Production wiring: bundled decks + SwiftData (bootstrapped off the main thread).
@@ -146,8 +148,19 @@ final class AppEnvironment {
     /// Rebuilds the catalog from bundled decks and the current user decks.
     /// Saved configs of deleted decks are simply never looked up again.
     func reloadCatalog() {
-        cardKeysCache = [:]
-        catalog = DeckCatalog.assemble(bundledVocab: bundledVocab, userVocab: userDeckFiles.map(VocabDeck.init(file:)))
+        let userVocab = userDeckFiles.map(VocabDeck.init(file:))
+        catalog = Perf.interval("catalog.assemble") {
+            DeckCatalog.assemble(bundledVocab: bundledVocab, userVocab: userVocab)
+        }
+        // Keep the pool sizes of decks that can't have changed (PLAN_R11 PA4). `DeckCatalog.assemble` builds the
+        // generated Korean decks (`BuiltInDecks.koreanGeneratedDecks(vocab:)`) from bundled + user vocab, so those
+        // and the user decks themselves are recomputed; music decks and bundled vocab decks depend on neither.
+        let catalog = catalog
+        cardKeysCache = cardKeysCache.filter { key, _ in
+            guard let deck = catalog.deck(id: key.deck) else { return false }
+            if deck.subject == .music { return true }
+            return deck is VocabDeck && !UserDecks.isUserDeckID(deck.id)
+        }
         glosses.catalogDidChange(catalog)
     }
 

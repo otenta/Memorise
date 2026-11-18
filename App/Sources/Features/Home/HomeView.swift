@@ -402,6 +402,8 @@ struct HomeView: View {
     }
 
     private func load() async {
+        let signpost = Perf.begin("home.load")
+        defer { Perf.end("home.load", signpost) }
         // One store round trip for every deck, and cached pool sizes (R5-2).
         let decks = env.catalog.decks
         let all = (try? await env.store.stats(forDecks: decks.map(\.id))) ?? [:]

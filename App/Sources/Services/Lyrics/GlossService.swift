@@ -68,9 +68,28 @@ final class GlossService {
         self.now = now
     }
 
-    /// Call when the catalog is rebuilt (a word was added to a user deck), so new hits show immediately.
+    /// Called on the main actor after a rebuilt lookup replaced the old one, so an open reader can re-tokenise.
+    @ObservationIgnored var onLookupChanged: (() -> Void)?
+    /// Bumped per rebuild request, so an older build that finishes late never replaces a newer one.
+    @ObservationIgnored private var lookupGeneration = 0
+
+    /// Call when the catalog is rebuilt (a word was added to a user deck). The index is built off the main actor
+    /// (it walks every entry of every Korean deck) and swapped in when ready; `onLookupChanged` then fires.
     func catalogDidChange(_ catalog: DeckCatalog) {
-        lookup = WordLookup(catalog: catalog)
+        lookupGeneration &+= 1
+        let generation = lookupGeneration
+        let decks = catalog.vocabDecks
+        Task.detached(priority: .userInitiated) { [weak self] in
+            let built = Perf.interval("gloss.lookupBuild") { WordLookup(decks: decks) }
+            await self?.applyLookup(built, generation: generation)
+        }
+    }
+
+    private func applyLookup(_ built: WordLookup, generation: Int) {
+        guard generation == lookupGeneration else { return }
+        lookup = built
+        revision += 1
+        onLookupChanged?()
     }
 
     /// The phrase matcher and lookup the reader tokenises with.
