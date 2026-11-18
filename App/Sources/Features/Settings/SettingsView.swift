@@ -188,9 +188,16 @@ struct SettingsView: View {
                     } header: {
                         Text("Lyrics")
                     } footer: {
-                        Text(clearedLyricsCache
-                            ? "Lyrics cache cleared."
-                            : "Lyrics are fetched when you open a song and kept on this device only. They are never exported.")
+                        VStack(alignment: .leading, spacing: 6) {
+                            if env.spotify.keychainWriteFailed {
+                                Text("Couldn't save your Spotify sign-in. You'll need to reconnect after restarting the app.")
+                                    .foregroundStyle(.orange)
+                                    .accessibilityIdentifier("lyrics.keychainWarning")
+                            }
+                            Text(clearedLyricsCache
+                                ? "Lyrics cache cleared."
+                                : "Lyrics are fetched when you open a song and kept on this device only. They are never exported.")
+                        }
                     }
                 }
 

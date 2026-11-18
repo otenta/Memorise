@@ -304,6 +304,11 @@ final class LyricsHomeViewModel {
 
     func dismissNotice() { notice = nil }
 
+    #if DEBUG
+    /// Previews only.
+    func previewNowPlaying(_ playback: SpotifyPlayback?) { nowPlaying = .loaded(playback) }
+    #endif
+
     func canReadItems(of playlist: SpotifyPlaylist) -> Bool { spotify.canReadItems(of: playlist) }
 
     /// First page of a playlist's songs. Also becomes the open playlist for `loadMoreItems()`.

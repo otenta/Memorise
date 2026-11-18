@@ -88,6 +88,14 @@ private struct LyricsHomeContent: View {
             .accessibilityIdentifier("lyrics.source")
             .appearAnimation(index: 2)
 
+            if let error = model.listError {
+                Label(error, systemImage: "exclamationmark.triangle.fill")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("lyrics.listError")
+            }
+
             sourceList
         }
     }
@@ -122,21 +130,25 @@ private struct LyricsHomeContent: View {
                           reload: { await model.loadRecent(force: true) }) { TrackList(tracks: $0, model: model) }
             case .playlists:
                 listState(model.playlists, empty: ("music.note.list", "No playlists", "Playlists you create or follow show up here."),
-                          reload: { await model.loadPlaylists(force: true) }) { PlaylistList(playlists: $0, model: model) }
+                          reload: { await model.loadPlaylists(force: true) }) { playlists in
+                    VStack(spacing: 12) {
+                        PlaylistList(playlists: playlists, model: model)
+                        if model.playlistsNextOffset != nil {
+                            LoadMoreRow(loading: model.loadingMorePlaylists, identifier: "lyricsLoadMorePlaylists") {
+                                await model.loadMorePlaylists()
+                            }
+                        }
+                    }
+                }
             case .liked:
                 listState(model.liked, empty: ("heart", "No liked songs", "Songs you like in Spotify show up here."),
                           reload: { await model.loadLiked(force: true) }) { tracks in
                     VStack(spacing: 12) {
                         TrackList(tracks: tracks, model: model)
                         if model.likedNextOffset != nil {
-                            Button {
-                                Task { await model.loadMoreLiked() }
-                            } label: {
-                                if model.loadingMoreLiked { ProgressView() } else { Text("Load more").fontWeight(.semibold) }
+                            LoadMoreRow(loading: model.loadingMoreLiked, identifier: "lyrics.loadMore") {
+                                await model.loadMoreLiked()
                             }
-                            .frame(maxWidth: .infinity, minHeight: 44)
-                            .buttonStyle(PressableStyle())
-                            .accessibilityIdentifier("lyrics.loadMore")
                         }
                     }
                 }
@@ -251,7 +263,8 @@ private struct NowPlayingCard: View {
                     HStack(spacing: 12) {
                         ArtworkView(url: track.artworkURL, size: 56)
                         VStack(alignment: .leading, spacing: 2) {
-                            Label("Now playing", systemImage: "waveform")
+                            Label(playback?.isPlaying == false ? "Paused" : "Now playing",
+                                  systemImage: playback?.isPlaying == false ? "pause.fill" : "waveform")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.pink)
                             Text(track.displayTitle).font(.headline).lineLimit(1)
@@ -464,11 +477,16 @@ private struct PlaylistTracksView: View {
                             icon: "lock.fill", title: "Not shared by Spotify",
                             message: "Spotify only shares songs from playlists you own.")
                             .accessibilityIdentifier("lyrics.playlist.notShared")
-                    case let .tracks(tracks, _):
-                        if tracks.isEmpty {
+                    case .tracks:
+                        if model.playlistTracks.isEmpty {
                             MessageCard(icon: "music.note", title: "Empty playlist", message: "There are no songs in this playlist.")
                         } else {
-                            TrackList(tracks: tracks, model: model)
+                            TrackList(tracks: model.playlistTracks, model: model)
+                            if model.itemsNextOffset != nil {
+                                LoadMoreRow(loading: model.loadingMoreItems, identifier: "lyricsLoadMoreItems") {
+                                    await model.loadMoreItems()
+                                }
+                            }
                         }
                     }
                 }
@@ -495,6 +513,25 @@ private struct PlaylistTracksView: View {
 }
 
 // MARK: - States
+
+/// "Load more" at the end of a paged list. Loads on appear (the model guards against double loads); tapping retries.
+private struct LoadMoreRow: View {
+    let loading: Bool
+    let identifier: String
+    let load: () async -> Void
+
+    var body: some View {
+        Button {
+            Task { await load() }
+        } label: {
+            if loading { ProgressView() } else { Text("Load more").fontWeight(.semibold) }
+        }
+        .frame(maxWidth: .infinity, minHeight: 44)
+        .buttonStyle(PressableStyle())
+        .accessibilityIdentifier(identifier)
+        .onAppear { Task { await load() } }
+    }
+}
 
 private struct LoadingRows: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -572,5 +609,14 @@ private struct MessageCard: View {
     ]
     let model = LyricsHomeViewModel(spotify: SpotifyClient(initialState: .connected(displayName: "me")))
     return ScrollView { TrackList(tracks: tracks, model: model).padding() }
+        .auroraBackground(colors: Subject.korean.colors)
+}
+
+#Preview("Paused") {
+    let track = TrackInfo(spotifyID: "1", title: "Spring Day", titleKo: "봄날", artists: ["BTS"])
+    let spotify = SpotifyClient(initialState: .connected(displayName: "me"))
+    let model = LyricsHomeViewModel(spotify: spotify)
+    model.previewNowPlaying(SpotifyPlayback(track: track, isPlaying: false))
+    return ScrollView { NowPlayingCard(model: model).padding() }
         .auroraBackground(colors: Subject.korean.colors)
 }
