@@ -20,9 +20,10 @@ struct WordBubble: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text(text).font(.title3.weight(.bold))
+                Text(text).font(.title3.weight(.bold)).lineLimit(2).minimumScaleFactor(0.7)
                 if case let .deck(entry, _, _) = state, entry.hangul != text {
                     Text("→ \(entry.hangul)").font(.subheadline).foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             meaning
@@ -50,7 +51,11 @@ struct WordBubble: View {
             }
         }
         .padding(16)
-        .frame(minWidth: 220, maxWidth: 320, alignment: .leading)
+        // A fixed width, then the full wrapped height, so the popover measures the real size (PLAN_R11 P-9).
+        .frame(width: 300, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
+        .animation(.easeOut(duration: 0.15), value: state)
+        .animation(.easeOut(duration: 0.15), value: line)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("lyrics.bubble")
     }
@@ -59,25 +64,32 @@ struct WordBubble: View {
         switch state {
         case let .deck(entry, deckTitle, _):
             VStack(alignment: .leading, spacing: 2) {
-                Text(entry.meaningText).font(.body)
-                Text("In: \(deckTitle)").font(.caption).foregroundStyle(.secondary)
+                wrapping(Text(entry.meaningText).font(.body))
+                wrapping(Text("In: \(deckTitle)").font(.caption).foregroundStyle(.secondary))
             }
         case let .auto(gloss):
             VStack(alignment: .leading, spacing: 2) {
-                Text(gloss).font(.body)
+                wrapping(Text(gloss).font(.body))
                 Text("Auto-translated").font(.caption).foregroundStyle(.secondary)
             }
         case .pending:
-            HStack(spacing: 8) {
-                ProgressView()
-                Text("Translating…").font(.subheadline).foregroundStyle(.secondary)
+            // Same shape as the result, so the bubble doesn't jump when the meaning arrives.
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Translating this word").font(.body)
+                Text("Auto-translated").font(.caption)
             }
+            .redacted(reason: .placeholder)
+            .accessibilityLabel("Translating")
         case .needsLanguagePack:
-            Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
-                .font(.footnote).foregroundStyle(.secondary)
+            wrapping(Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
+                .font(.footnote).foregroundStyle(.secondary))
         case .noWordMeaning:
-            Text("No single-word meaning: see the line below.").font(.footnote).foregroundStyle(.secondary)
+            wrapping(Text("No single-word meaning: see the line below.").font(.footnote).foregroundStyle(.secondary))
         }
+    }
+
+    private func wrapping(_ text: some View) -> some View {
+        text.fixedSize(horizontal: false, vertical: true)
     }
 
     /// What the whole line means (P-4), so a weak word translation still gives the sense.
@@ -92,13 +104,15 @@ struct WordBubble: View {
                 case let .auto(text):
                     lineText(text, caption: "Auto-translated")
                 case .pending:
-                    HStack(spacing: 8) {
-                        ProgressView()
-                        Text("Translating line…").font(.subheadline).foregroundStyle(.secondary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Translating this line, one moment while the meaning arrives").font(.body)
+                        Text("Auto-translated").font(.caption)
                     }
+                    .redacted(reason: .placeholder)
+                    .accessibilityLabel("Translating line")
                 case .needsLanguagePack:
-                    Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
-                        .font(.footnote).foregroundStyle(.secondary)
+                    wrapping(Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
+                        .font(.footnote).foregroundStyle(.secondary))
                 case .unavailable:
                     EmptyView()
                 }
@@ -116,17 +130,33 @@ struct WordBubble: View {
     }
 }
 
-#Preview("Bubble") {
-    VStack(spacing: 20) {
-        WordBubble(token: .word(text: "보고", range: 0..<2), state: .pending, line: .pending, onSpeak: {}, onAdd: {})
-        WordBubble(
-            token: .word(text: "너를", range: 0..<2), state: .auto("you"),
-            line: .genius("I see you and I forget everything"), onSpeak: {}, onAdd: {})
-        WordBubble(
-            token: .word(text: "몰라", range: 0..<2), state: .noWordMeaning,
-            line: .auto("I don't know, I don't know"), onSpeak: {}, onAdd: {})
-        WordBubble(token: .word(text: "몰라", range: 0..<2), state: .needsLanguagePack, line: .needsLanguagePack, onSpeak: {}, onAdd: {})
+#if DEBUG
+private struct BubblePreviews: View {
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                WordBubble(
+                    token: .word(text: "사랑해", range: 0..<3),
+                    state: .deck(
+                        VocabEntry(id: "ko.core.0001", hangul: "사랑하다", romanization: "saranghada",
+                                   meanings: ["to love", "to be deeply fond of someone", "to cherish and care for"],
+                                   pos: "verb", rank: 1),
+                        deckTitle: "Love and feelings, level 2", matchedForm: "사랑해"),
+                    line: .genius("I love you more than I can say, and I will keep loving you through every season that passes"),
+                    onSpeak: {}, onAdd: {})
+                WordBubble(token: .word(text: "보고", range: 0..<2), state: .pending, line: .pending, onSpeak: {}, onAdd: {})
+                WordBubble(
+                    token: .word(text: "몰라", range: 0..<2), state: .noWordMeaning,
+                    line: .auto("I don't know, I don't know, I really don't know why"), onSpeak: {}, onAdd: {})
+                WordBubble(token: .word(text: "몰라", range: 0..<2), state: .needsLanguagePack, line: .needsLanguagePack, onSpeak: {}, onAdd: {})
+            }
+            .glassCard()
+            .padding()
+        }
     }
-    .glassCard()
-    .padding()
 }
+
+#Preview("Bubbles") { BubblePreviews() }
+
+#Preview("Bubbles · Dynamic Type XL") { BubblePreviews().dynamicTypeSize(.xxxLarge) }
+#endif

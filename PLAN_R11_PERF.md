@@ -45,8 +45,8 @@
 
 | Segment | Covers | Agent | Status | Notes |
 |---|---|---|---|---|
-| PA1 Lyrics lists without a giant blur; static aurora | G1, P-7, P-8 | frontend | ☐ | Independent |
-| PA2 Bubble sizes itself correctly and opens where there's room | G2, P-9 | frontend | ☐ | After PA1 (same agent); different files |
+| PA1 Lyrics lists without a giant blur; static aurora | G1, P-7, P-8 | frontend | ☑ | Independent |
+| PA2 Bubble sizes itself correctly and opens where there's room | G2, P-9 | frontend | ☑ | After PA1 (same agent); different files |
 | PA3 Session cards: speech and audio off the main thread; cached headline layout; signposts | G3 a–d | implementor | ☑ | Independent of PA1/PA2. **Do this first:** it's the owner's main complaint. |
 | PA4 Catalog work off the main actor | G3 (related) | implementor | ☑ | After PA3. Lower priority: stalls after Add to deck or editing a deck. |
 
