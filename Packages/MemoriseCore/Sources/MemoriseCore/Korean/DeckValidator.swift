@@ -6,6 +6,26 @@ public enum DeckValidator {
     /// ids must be `user.<8 hex>[.NNNN]`.
     public enum Mode: Sendable { case bundled, user }
 
+    /// Longest example sentence (Hangul syllables) in bundled decks.
+    public static let bundledExampleMaxHangul = 40
+    /// Longest example sentence in user decks (M6 L8b: a saved lyric line may be long).
+    public static let userExampleMaxHangul = 80
+
+    /// Bundled: both lines required, ≤ 40 Hangul. User (L-D10): `ko` required, `en` may be blank, ≤ 80 Hangul,
+    /// except pattern entries, whose prompt is the first example's English.
+    static func exampleErrors(_ ex: VocabEntry.Example, at: String, plural: Bool, user: Bool, isPattern: Bool) -> [String] {
+        var errors: [String] = []
+        let subject = plural ? "examples" : "example"
+        if user, !isPattern {
+            if ex.ko.isBlank { errors.append("\(at): example Korean must be non-empty") }
+        } else if ex.ko.isBlank || ex.en.isBlank {
+            errors.append("\(at): \(subject) ko/en must be non-empty")
+        }
+        let limit = user ? userExampleMaxHangul : bundledExampleMaxHangul
+        if Hangul.syllableCount(ex.ko) > limit { errors.append("\(at): example longer than \(limit) Hangul") }
+        return errors
+    }
+
     /// Validates one file. Returns human-readable errors (empty = valid).
     /// `currentYear` bounds `MediaRef.year` (injected; defaults to the system calendar).
     public static func validate(_ file: VocabDeckFile, mode: Mode = .bundled, currentYear: Int = defaultCurrentYear()) -> [String] {
@@ -63,16 +83,12 @@ public enum DeckValidator {
             }
             if e.examples.count > 3 { errors.append("\(at): at most 3 examples") }
             for ex in e.examples {
-                if ex.ko.isBlank || ex.en.isBlank { errors.append("\(at): examples ko/en must be non-empty") }
-                if Hangul.syllableCount(ex.ko) > 40 { errors.append("\(at): example longer than 40 Hangul") }
+                errors += exampleErrors(ex, at: at, plural: true, user: user, isPattern: e.partOfSpeech == .pattern)
             }
             errors += mediaErrors(e, at: at, mode: mode, currentYear: currentYear)
             if !ranks.insert(e.rank).inserted { errors.append("\(at): duplicate rank \(e.rank)") }
             if let ex = e.example {
-                if ex.ko.isBlank || ex.en.isBlank {
-                    errors.append("\(at): example ko/en must be non-empty")
-                }
-                if Hangul.syllableCount(ex.ko) > 40 { errors.append("\(at): example longer than 40 Hangul") }
+                errors += exampleErrors(ex, at: at, plural: false, user: user, isPattern: e.partOfSpeech == .pattern)
             }
         }
         if !ranks.isEmpty, ranks != Set(1...file.entries.count) {

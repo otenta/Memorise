@@ -154,18 +154,17 @@ struct AddToDeckSheet: View {
             context: "Saved while reading the lyrics.", citation: "spotify:track:\(t.spotifyID)")
     }
 
-    /// The deck validator wants both example lines filled and the Korean at most 40 Hangul syllables.
+    /// The lyric line is always kept (custom decks allow a blank English line and up to 80 Hangul, L-D10).
     private var example: VocabEntry.Example? {
         let ko = candidate.line.trimmingCharacters(in: .whitespacesAndNewlines)
         let en = english.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !ko.isEmpty, !en.isEmpty, Hangul.syllableCount(ko) <= 40 else { return nil }
+        guard !ko.isEmpty, Hangul.syllableCount(ko) <= DeckValidator.userExampleMaxHangul else { return nil }
         return VocabEntry.Example(ko: ko, en: en)
     }
 
     private var exampleNote: String? {
-        guard example == nil else { return nil }
-        if Hangul.syllableCount(candidate.line) > 40 { return "This line is too long to keep as the card's example." }
-        return "Type the English line to keep this lyric as the card's example."
+        guard example == nil, Hangul.syllableCount(candidate.line) > DeckValidator.userExampleMaxHangul else { return nil }
+        return "This line is too long to keep as the card's example."
     }
 
     private var draft: UserDecks.EntryDraft {

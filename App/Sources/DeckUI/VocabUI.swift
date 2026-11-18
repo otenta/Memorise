@@ -184,7 +184,7 @@ struct VocabAnswerView: View {
                         Text(ex.ko).font(.body)
                         speakButton(ex.ko, label: "Play example")
                     }
-                    Text(ex.en).font(.callout).foregroundStyle(.secondary)
+                    if !ex.en.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { Text(ex.en).font(.callout).foregroundStyle(.secondary) }
                 }
                 .padding(12)
                 .frame(maxWidth: .infinity)

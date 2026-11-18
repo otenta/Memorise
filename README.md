@@ -72,3 +72,4 @@ Mic answers (Fretboard Notes, Intervals) need microphone permission; the app ask
 - [ ] M6 offline cache: reopen a song in airplane mode and it loads from the cache; an unopened song shows the offline message with Retry
 - [ ] M6 clear cache: Settings → Lyrics → Clear lyrics cache; the same song needs the network again. Data export contains no lyrics
 - [ ] M6 disconnect: Settings → Lyrics → Disconnect Spotify returns the tab to Connect; removing the app in Spotify account settings also returns it to Connect after the next call
+- [ ] M6 long line: save a long lyric word (over 40 Hangul) with no English line → the card keeps the line; practising it shows the line with no empty gap under it
