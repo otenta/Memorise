@@ -11,10 +11,9 @@ enum LyricsOutcome: Sendable {
 
 /// Finds Hangul lyrics and an English translation for a track, with an on-device cache (PLAN_M6 §4.4).
 /// Hangul: LRCLIB `get`, LRCLIB `search`, then Genius. English: Genius "English Translation" pages.
-/// Never throws for a missing translation. At most 5 requests per song.
+/// Never throws for a missing translation. At most 7 requests for the Korean lyrics and 3 for the English page;
+/// each unit may include one retry after a server error.
 final class LyricsService: Sendable {
-    private static let maxRequests = 5
-
     let cache: LyricsCacheStore
     private let http: any HTTPClient
     private let geniusToken: String
@@ -37,7 +36,14 @@ final class LyricsService: Sendable {
         }
         let run = Run(track: track, service: self)
         switch await run.execute() {
-        case let .done(result):
+        case let .done(fetched):
+            var result = fetched
+            // A refetch that finds no English must never replace a cached English page.
+            if case var .available(doc) = fetched, doc.english == nil, let old = cached?.document, old.english != nil {
+                doc.english = old.english
+                doc.englishSource = old.englishSource
+                result = .available(doc)
+            }
             await cache.save(LyricsCacheFile(
                 track: track, result: result, glosses: cached?.glosses ?? [:], fetchedAt: now()))
             return .result(result)
@@ -74,7 +80,7 @@ final class LyricsService: Sendable {
         let service: LyricsService
         let titles: [String]
         let artist: String
-        var requestsLeft = LyricsService.maxRequests
+        var requestsLeft = LyricsConstants.koreanRequestBudget
         var sawNonKorean = false
         var incomplete = false
         var offline = false
@@ -187,6 +193,7 @@ final class LyricsService: Sendable {
         /// English translation lines, or `nil`. Never an error (L-D6).
         private func englishLines() async -> [LyricLine]? {
             guard !service.geniusToken.isEmpty, !stop else { return nil }
+            requestsLeft = LyricsConstants.englishRequestBudget
             var hit = geniusHits.flatMap { GeniusParser.translationHit($0, artists: track.artists, titles: titles) }
             if hit == nil {
                 let query = "\(artist) \(titles[0]) English Translation"

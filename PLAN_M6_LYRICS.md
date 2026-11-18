@@ -144,7 +144,7 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
    - Use `plainLyrics`. When only `syncedLyrics` is present, strip the `[mm:ss.xx]` stamps.
    - `instrumental: true` → `.notAvailable(.instrumental)`. Nothing found → `.notFound`. Only non-Korean lyrics found → `.notKorean`.
 4. **English translation** (only after Hangul succeeds): Genius search `"<artist> <title> English Translation"`. Accept a hit only if the primary artist is "Genius English Translations" and the normalised title contains both the artist and the song title (or `titleKo`). Parse the page. Not found or a parse failure → `english = nil` (L-D6). This is never an error.
-5. **Networking rules:** 10 s timeout per request, at most 5 requests per song, no retries except one retry on a 5xx. Offline → the reader shows "You're offline. Lyrics you've opened before still work." with Retry.
+5. **Networking rules:** 10 s timeout per request, at most 7 requests for the Korean lyrics and 3 for the English page; each may include one retry after a server error. Offline → the reader shows "You're offline. Lyrics you've opened before still work." with Retry.
 
 ### 4.5 Genius page parsing (`GeniusParser`, core, pure string processing)
 

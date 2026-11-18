@@ -9,6 +9,13 @@ public enum LyricsConstants {
     public static let minHangulSyllables = 20
     /// How long a "not available" cache entry is trusted before it is fetched again.
     public static let notAvailableTTLDays = 7
+    /// Requests for the Korean lyrics: 2 × LRCLIB get + 1 search + 2 × (Genius search + page). A unit may include
+    /// one retry after a server error.
+    public static let koreanRequestBudget = 7
+    /// Requests for the English page: search + page + 1 spare.
+    public static let englishRequestBudget = 3
+    /// A cached document without an English page is looked up again after this many days.
+    public static let missingEnglishTTLDays = 7
 }
 
 /// A Spotify track, as the picker and the reader see it.

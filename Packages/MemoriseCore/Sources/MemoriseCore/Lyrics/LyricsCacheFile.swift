@@ -69,11 +69,19 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         }
     }
 
-    /// Available entries never expire; "not available" entries are trusted for `notAvailableTTLDays`.
+    /// Available entries with an English page never expire. "Not available" entries are trusted for
+    /// `notAvailableTTLDays`, and available entries without English for `missingEnglishTTLDays`.
     public func isFresh(now: Date) -> Bool {
         guard lyricsResult != nil else { return false }
-        if result == "available" { return true }
-        return now.timeIntervalSince(fetchedAt) < Double(LyricsConstants.notAvailableTTLDays) * 86_400
+        let days: Int
+        if result != "available" {
+            days = LyricsConstants.notAvailableTTLDays
+        } else if document?.english == nil {
+            days = LyricsConstants.missingEnglishTTLDays
+        } else {
+            return true
+        }
+        return now.timeIntervalSince(fetchedAt) < Double(days) * 86_400
     }
 
     /// Decodes a file, or `nil` when it is unreadable or has no usable result.
