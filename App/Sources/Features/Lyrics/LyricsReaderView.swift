@@ -6,12 +6,13 @@ import SwiftUI
 struct LyricsReaderView: View {
     @Environment(AppEnvironment.self) private var env
     let track: TrackInfo
+    let onShowLyrics: (TrackInfo) -> Void
     @State private var model: LyricsReaderViewModel?
 
     var body: some View {
         Group {
             if let model {
-                ReaderContent(model: model)
+                ReaderContent(model: model, onShowLyrics: onShowLyrics)
             } else {
                 Color.clear
             }
@@ -26,8 +27,23 @@ struct LyricsReaderView: View {
 
 private struct ReaderContent: View {
     @Environment(AppEnvironment.self) private var env
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Bindable var model: LyricsReaderViewModel
+    let onShowLyrics: (TrackInfo) -> Void
     @State private var page = 0
+
+    /// What Spotify plays right now, when connected and known.
+    private var playback: SpotifyPlayback? {
+        guard env.spotify.isConnected else { return nil }
+        return env.nowPlaying.state.value ?? nil
+    }
+
+    /// Spotify plays the open song: shows the header chip.
+    private var playingHere: SpotifyPlayback? { playback.flatMap { model.isShowing($0) ? $0 : nil } }
+
+    /// Spotify plays another song: shows the bottom bar.
+    private var playingElsewhere: SpotifyPlayback? { playback.flatMap { model.isShowing($0) ? nil : $0 } }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -73,6 +89,19 @@ private struct ReaderContent: View {
             }
         }
         .animation(Theme.spring, value: model.toast)
+        // After the overlay, so the toast sits above the bar instead of under it.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if let other = playingElsewhere {
+                ReaderNowPlayingBar(playback: other) { onShowLyrics(other.track) }
+                    .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .animation(reduceMotion ? .easeInOut(duration: 0.2) : Theme.spring, value: playingElsewhere)
+        // The home root stops its poll while the reader is on top, so the reader runs its own.
+        .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
+            guard env.spotify.isConnected, scenePhase == .active else { return }
+            await env.nowPlaying.watch()
+        }
         .task { await model.load() }
         .onChange(of: env.dataVersion) { _, _ in model.tokenise() }
         .translationTask(model.translation) { session in
@@ -98,6 +127,11 @@ private struct ReaderContent: View {
             }
             .frame(maxWidth: .infinity)
             .accessibilityElement(children: .combine)
+
+            if let here = playingHere {
+                ReaderPlayingChip(isPlaying: here.isPlaying)
+                    .transition(.opacity)
+            }
 
             if model.isAvailable {
                 PageIndicator(page: $page)
@@ -208,7 +242,28 @@ private struct StateMessage: View {
 
 #Preview("Reader") {
     NavigationStack {
-        LyricsReaderView(track: TrackInfo(spotifyID: "x", title: "Spring Day", titleKo: "봄날", artists: ["BTS"]))
+        LyricsReaderView(track: TrackInfo(spotifyID: "x", title: "Spring Day", titleKo: "봄날", artists: ["BTS"])) { _ in }
     }
     .environment(AppEnvironment.preview())
 }
+
+#if DEBUG
+@MainActor private func readerPreview(playing: SpotifyPlayback) -> some View {
+    let env = AppEnvironment.preview()
+    env.nowPlaying.previewNowPlaying(playing)
+    return NavigationStack {
+        LyricsReaderView(track: TrackInfo(spotifyID: "x", title: "Spring Day", titleKo: "봄날", artists: ["BTS"])) { _ in }
+    }
+    .environment(env)
+}
+
+#Preview("Reader · same song (chip)") {
+    readerPreview(playing: SpotifyPlayback(
+        track: TrackInfo(spotifyID: "x", title: "Spring Day", artists: ["BTS"]), isPlaying: true))
+}
+
+#Preview("Reader · other song (bar)") {
+    readerPreview(playing: SpotifyPlayback(
+        track: TrackInfo(spotifyID: "y", title: "Dynamite", artists: ["BTS"]), isPlaying: false))
+}
+#endif

@@ -274,6 +274,16 @@ final class LyricsHomeViewModel {
 
     // MARK: Opening a song
 
+    /// Swaps the open reader for `track`'s (the reader's Show lyrics button). Back still returns to where the first
+    /// reader came from. Never starts playback.
+    func showLyrics(for track: TrackInfo) {
+        if case .reader? = path.last {
+            path[path.count - 1] = .reader(track)
+        } else {
+            path.append(.reader(track))
+        }
+    }
+
     /// Opens the reader at once, then starts the song in Spotify in the background (unless it is already playing).
     /// A failed start is reported in `notice`; it never delays or blocks the reader.
     func open(_ track: TrackInfo, play: Bool) async {

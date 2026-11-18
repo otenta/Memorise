@@ -100,6 +100,14 @@ final class LyricsReaderViewModel {
         return false
     }
 
+    /// Whether Spotify's current song is the one open here: the same id, or the same title and artist (Spotify
+    /// gives a relinked song another id per market or album).
+    func isShowing(_ playback: SpotifyPlayback) -> Bool {
+        playback.track.spotifyID == track.spotifyID
+            || (TrackQuery.sameTitle(track.title, playback.track.title)
+                && TrackQuery.sameArtist(track.primaryArtist, playback.track.primaryArtist))
+    }
+
     var englishLines: [LyricLine]? { document?.english }
 
     var footer: String? {

@@ -60,7 +60,7 @@ private struct LyricsHomeContent: View {
             .navigationTitle("Lyrics")
             .navigationDestination(for: LyricsRoute.self) { route in
                 switch route {
-                case let .reader(track): LyricsReaderView(track: track)
+                case let .reader(track): LyricsReaderView(track: track) { model.showLyrics(for: $0) }
                 case let .playlist(playlist): PlaylistTracksView(playlist: playlist, model: model)
                 }
             }
