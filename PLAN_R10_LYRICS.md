@@ -54,7 +54,7 @@
 | Segment | Covers | Agent | Status | Notes |
 |---|---|---|---|---|
 | LA1 Korean check by content; LRCLIB picks the Hangul record | F2, P-3 | implementor | ☑ | Wire change 1 (`koreanRule`) |
-| LA2 Glosses: batched, cached once, word fallback, line glosses | F1a, F1b, F3, O-2, P-4 | implementor | ☐ | After LA1 (same `LyricsCacheFile`). Wire change 2 (`lineGlosses`) |
+| LA2 Glosses: batched, cached once, word fallback, line glosses | F1a, F1b, F3, O-2, P-4 | implementor | ☑ | After LA1 (same `LyricsCacheFile`). Wire change 2 (`lineGlosses`) |
 | LA4 "Now playing" refreshes itself (shared monitor) | F4, F5 | implementor | ☐ | Independent of LA1/LA2 |
 | LA3 Reader and home rendering; underline every word; English fallback page | F1, F3, O-2, O-3, P-4, P-5 | frontend | ☐ | After LA2 (uses its VM API) **and** LA4 (both edit `LyricsHomeView.swift`) |
 

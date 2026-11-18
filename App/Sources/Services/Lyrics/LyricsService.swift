@@ -75,7 +75,8 @@ final class LyricsService: Sendable {
             }
             await cache.save(LyricsCacheFile(
                 track: track, result: result, glosses: cached?.glosses ?? [:], fetchedAt: now(),
-                koreanTitleChecked: koreanTitleChecked, koreanRule: LyricsConstants.koreanRuleVersion))
+                koreanTitleChecked: koreanTitleChecked, koreanRule: LyricsConstants.koreanRuleVersion,
+                lineGlosses: cached?.lineGlosses ?? [:]))
             return .result(result)
         case .offline:
             // A stale "not available" beats an error message when there is no connection.

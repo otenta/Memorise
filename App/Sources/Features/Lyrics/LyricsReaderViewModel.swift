@@ -3,12 +3,42 @@ import Observation
 import SwiftUI
 @preconcurrency import Translation
 
+/// One token of a Korean line with everything the token view draws, computed once per load / catalog change,
+/// so the view reads nothing observable (PLAN_R10 LA2).
+struct ReaderToken: Identifiable, Equatable {
+    /// Index within the line.
+    let id: Int
+    let token: LyricToken
+    let text: String
+    /// Contains a Hangul syllable (O-3). `.plain` is never tappable.
+    let isTappable: Bool
+    /// The deck knows this word or phrase.
+    let isDeckHit: Bool
+}
+
 /// One line of the Korean page, tokenised once per load / catalog change.
-struct ReaderLine: Identifiable {
+struct ReaderLine: Identifiable, Equatable {
     let id: Int
     let text: String
     let isHeader: Bool
-    let tokens: [LyricToken]
+    let tokens: [ReaderToken]
+}
+
+/// What the English page shows (PLAN_R10 O-2).
+enum EnglishPage {
+    /// The fetched Genius translation.
+    case genius([LyricLine])
+    /// Apple's on-device translation, line by line.
+    case auto([AutoLine])
+    case unavailable(needsLanguagePack: Bool)
+}
+
+/// One line of the auto-translated English page.
+struct AutoLine: Identifiable {
+    let id: Int
+    let isHeader: Bool
+    let korean: String
+    let english: LineGloss
 }
 
 /// A tapped word, ready for the "Add to deck" sheet (L8).
@@ -51,6 +81,9 @@ final class LyricsReaderViewModel {
     @ObservationIgnored private let spotify: SpotifyClient
     @ObservationIgnored private let glosses: GlossService
     @ObservationIgnored private var document: LyricsDocument?
+    /// Genius English by Korean line index, when the translation lines up one to one. Computed once per load.
+    @ObservationIgnored private var alignedEnglish: [Int: String] = [:]
+    @ObservationIgnored private var tokeniseTask: Task<Void, Never>?
     @ObservationIgnored private var toastTask: Task<Void, Never>?
 
     init(track: TrackInfo, lyrics: LyricsService, spotify: SpotifyClient, glosses: GlossService) {
@@ -72,7 +105,11 @@ final class LyricsReaderViewModel {
     var footer: String? {
         guard let document else { return nil }
         var parts = ["Lyrics: \(document.koreanSource)"]
-        if let source = document.englishSource, document.english != nil { parts.append("Translation: \(source)") }
+        if let source = document.englishSource, document.english != nil {
+            parts.append("Translation: \(source)")
+        } else if document.english == nil, !glosses.languagePackMissing {
+            parts.append("Translation: Apple (auto)")
+        }
         return parts.joined(separator: " · ")
     }
 
@@ -86,11 +123,13 @@ final class LyricsReaderViewModel {
         switch outcome {
         case let .result(.available(doc)):
             document = doc
-            tokenise()
+            alignedEnglish = Self.alignment(of: doc)
+            await rebuildLines()
             phase = .ready(doc)
             await prepareGlosses(doc, force: force)
         case .result(.notAvailable):
             document = nil
+            alignedEnglish = [:]
             lines = []
             phase = .notAvailable
         case .offline:
@@ -103,17 +142,56 @@ final class LyricsReaderViewModel {
 
     /// Re-splits the lines (a word was added, so a new phrase may match).
     func tokenise() {
+        tokeniseTask?.cancel()
+        tokeniseTask = Task { await rebuildLines() }
+    }
+
+    /// Songs longer than this are tokenised off the main actor.
+    private static let backgroundTokeniseLines = 80
+
+    private func rebuildLines() async {
         guard let document else { return }
-        let phrases = glosses.wordLookup.phrases
-        lines = document.korean.enumerated().map { i, line in
-            ReaderLine(id: i, text: line.text, isHeader: line.isSectionHeader,
-                       tokens: LyricsTokenizer.tokens(for: line, phrases: phrases))
+        let lookup = glosses.wordLookup
+        let source = document.korean
+        let built: [ReaderLine]
+        if source.count > Self.backgroundTokeniseLines {
+            built = await Task.detached(priority: .userInitiated) { Self.buildLines(source, lookup: lookup) }.value
+        } else {
+            built = Self.buildLines(source, lookup: lookup)
+        }
+        guard !Task.isCancelled else { return }
+        lines = built
+    }
+
+    nonisolated private static func buildLines(_ source: [LyricLine], lookup: WordLookup) -> [ReaderLine] {
+        source.enumerated().map { i, line in
+            let tokens = LyricsTokenizer.tokens(for: line, phrases: lookup.phrases).enumerated().map { j, token in
+                let text: String
+                switch token {
+                case let .word(t, _): text = t
+                case let .phrase(t, _, _): text = t
+                case let .plain(t): text = t
+                }
+                var tappable = true
+                if case .plain = token { tappable = false }
+                tappable = tappable && GlossText.containsHangul(text)
+                return ReaderToken(id: j, token: token, text: text, isTappable: tappable,
+                                   isDeckHit: tappable && lookup.lookup(token) != nil)
+            }
+            return ReaderLine(id: i, text: line.text, isHeader: line.isSectionHeader, tokens: tokens)
         }
     }
 
+    nonisolated private static func alignment(of doc: LyricsDocument) -> [Int: String] {
+        guard let english = doc.english, let pairs = TranslationAlignment.pairs(korean: doc.korean, english: english) else { return [:] }
+        return Dictionary(pairs.map { ($0.koreanIndex, $0.en) }, uniquingKeysWith: { first, _ in first })
+    }
+
     private func prepareGlosses(_ doc: LyricsDocument, force: Bool) async {
-        await glosses.prepare(document: doc, track: trackID)
-        guard !glosses.pendingTexts(track: trackID).isEmpty else { return }
+        // Every bubble already has its Genius line when the English lines up with the Korean one to one.
+        let needsLines = alignedEnglish.isEmpty
+        await glosses.prepare(document: doc, track: trackID, needsLines: needsLines)
+        guard glosses.hasPending(track: trackID) else { return }
         if force { glosses.retryFailed(track: trackID) }
         if translation == nil {
             translation = TranslationSession.Configuration(source: GlossService.source, target: GlossService.target)
@@ -126,9 +204,27 @@ final class LyricsReaderViewModel {
 
     func meaning(for token: LyricToken) -> GlossState { glosses.meaning(for: token, track: trackID) }
 
-    func isKnown(_ token: LyricToken) -> Bool {
-        if case .deck = glosses.meaning(for: token, track: trackID) { return true }
-        return false
+    /// The line's meaning: the aligned Genius line, else Apple's translation of it.
+    func lineMeaning(for line: ReaderLine) -> LineGloss {
+        if let genius = alignedEnglish[line.id] { return .genius(genius) }
+        return glosses.lineMeaning(line.text, track: trackID) ?? .unavailable
+    }
+
+    /// The English page: Genius when the document has it, else Apple's translation line by line.
+    var englishPage: EnglishPage {
+        guard let document else { return .unavailable(needsLanguagePack: false) }
+        if let english = document.english, !english.isEmpty { return .genius(english) }
+        if glosses.languagePackMissing { return .unavailable(needsLanguagePack: true) }
+        let auto = document.korean.enumerated().map { i, line -> AutoLine in
+            let gloss: LineGloss
+            if line.isSectionHeader || !GlossText.containsHangul(line.text) {
+                gloss = .auto(line.text)
+            } else {
+                gloss = glosses.lineMeaning(line.text, track: trackID) ?? .unavailable
+            }
+            return AutoLine(id: i, isHeader: line.isSectionHeader, korean: line.text, english: gloss)
+        }
+        return .auto(auto)
     }
 
     func candidate(for token: LyricToken, in line: ReaderLine) -> LyricAddCandidate {
@@ -143,9 +239,9 @@ final class LyricsReaderViewModel {
         switch glosses.meaning(for: token, track: trackID) {
         case let .deck(entry, _, _): hit = entry; meaning = entry.meaningText
         case let .auto(text): meaning = text
-        case .pending, .unavailable: break
+        case .pending, .needsLanguagePack, .noWordMeaning: break
         }
-        let english = document.flatMap { TranslationAlignment.englishLine(forKoreanLineAt: line.id, in: $0) }
+        let english = alignedEnglish[line.id]
         return LyricAddCandidate(track: track, tapped: tapped, hit: hit, meaning: meaning, line: line.text, englishLine: english)
     }
 

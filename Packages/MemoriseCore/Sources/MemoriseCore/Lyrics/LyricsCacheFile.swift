@@ -18,13 +18,17 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     public var koreanTitleChecked: Bool
     /// `LyricsConstants.koreanRuleVersion` in force when this entry was written. Missing = 0.
     public var koreanRule: Int
+    /// Machine translations of whole Korean lines, by `GlossText.lineKey`. Missing = empty.
+    public var lineGlosses: [String: String]
 
     public init(
         track: TrackInfo, result: LyricsResult, glosses: [String: String] = [:], fetchedAt: Date,
-        koreanTitleChecked: Bool = false, koreanRule: Int = LyricsConstants.koreanRuleVersion
+        koreanTitleChecked: Bool = false, koreanRule: Int = LyricsConstants.koreanRuleVersion,
+        lineGlosses: [String: String] = [:]
     ) {
         self.koreanTitleChecked = koreanTitleChecked
         self.koreanRule = koreanRule
+        self.lineGlosses = lineGlosses
         schemaVersion = Self.currentSchemaVersion
         self.track = track
         self.glosses = glosses
@@ -42,7 +46,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, track, result, reason, document, glosses, fetchedAt, koreanTitleChecked, koreanRule
+        case schemaVersion, track, result, reason, document, glosses, fetchedAt, koreanTitleChecked, koreanRule, lineGlosses
     }
 
     public init(from decoder: any Decoder) throws {
@@ -57,6 +61,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         fetchedAt = Date(timeIntervalSince1970: t)
         koreanTitleChecked = (try? c.decodeIfPresent(Bool.self, forKey: .koreanTitleChecked)) ?? false
         koreanRule = (try? c.decodeIfPresent(Int.self, forKey: .koreanRule)) ?? 0
+        lineGlosses = (try? c.decodeIfPresent([String: String].self, forKey: .lineGlosses)) ?? [:]
     }
 
     /// `fetchedAt` is stored as seconds since 1970, so no date strategy is needed.
@@ -71,6 +76,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         try c.encode(fetchedAt.timeIntervalSince1970, forKey: .fetchedAt)
         try c.encode(koreanTitleChecked, forKey: .koreanTitleChecked)
         try c.encode(koreanRule, forKey: .koreanRule)
+        try c.encode(lineGlosses, forKey: .lineGlosses)
     }
 
     /// The cached result, or `nil` when the file is unusable (unknown kind, or "available" with no document).

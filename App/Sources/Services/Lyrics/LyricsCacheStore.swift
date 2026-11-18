@@ -44,10 +44,12 @@ actor LyricsCacheStore {
         }
     }
 
-    /// Adds machine glosses to an existing entry. Nothing is written for a track that has no entry.
-    func mergeGlosses(_ glosses: [String: String], for spotifyID: String) {
-        guard !glosses.isEmpty, var file = load(spotifyID) else { return }
-        file.glosses.merge(glosses) { _, new in new }
+    /// Adds machine glosses (words and whole lines) to an existing entry with one load and one save.
+    /// Nothing is written when both are empty, or for a track that has no entry.
+    func mergeGlosses(words: [String: String], lines: [String: String], for spotifyID: String) {
+        guard !words.isEmpty || !lines.isEmpty, var file = load(spotifyID) else { return }
+        file.glosses.merge(words) { _, new in new }
+        file.lineGlosses.merge(lines) { _, new in new }
         save(file)
     }
 

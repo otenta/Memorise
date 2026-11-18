@@ -47,7 +47,7 @@ A new **Lyrics** tab. You connect Spotify once, pick a song, and it starts playi
 | L-D3 | Spotify account | **Premium** (needed to start playback, and to own a Development Mode app). |
 | L-D4 | iOS version | Owner's phone is on iOS 18+. **Deployment target is raised to iOS 18.0 for the whole app** (planner decision: single user, and it removes `@available` gating around the Translation framework). |
 | L-D5 | Word meanings in the bubble | **Our decks first** (curated meaning), then **Apple's on-device Translation** (ko→en) for anything else. |
-| L-D6 | No English translation found | Show **"English translation not available"**. No machine translation of whole lyrics. |
+| L-D6 | No English translation found | ~~Show **"English translation not available"**. No machine translation of whole lyrics.~~ Replaced by R10 O-2 (auto-translated English page, labelled). |
 | L-D7 | "Not available" rule | Based on the **lyrics**, not on Spotify genre: no lyrics, instrumental, or too little Hangul (§4.3, R10 P-3) → "Lyrics not available for this track". |
 | L-D8 | Saved card content | Word + meaning + **the lyric line as the example** + a "Heard in" song reference. Kept on device only (same rule as M5 "My snippet"). |
 | L-D9 | Saving words | **＋ Add to deck** opens a sheet: pick an existing custom deck or **+ New deck…**. |
@@ -168,7 +168,7 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
 ### 4.7 Cache (`LyricsCacheFile`, `LyricsCacheStore`)
 
 - One file per track: `Application Support/LyricsCache/<spotifyID>.json`.
-- Contents: `{ schemaVersion: 1, track: TrackInfo, koreanTitleChecked: Bool (optional, missing = false; the ko-KR title lookup was answered, so a fresh cached song makes no Spotify call), koreanRule: Int (optional, missing = 0; the Korean-check rule version in force when written; a `notKorean` entry with an older rule is never fresh), result: "available" | "notAvailable", reason?, document?, glosses: { "<token>": "<meaning>" }, fetchedAt }`. Decoding is tolerant; an unreadable file is deleted and refetched.
+- Contents: `{ schemaVersion: 1, track: TrackInfo, koreanTitleChecked: Bool (optional, missing = false; the ko-KR title lookup was answered, so a fresh cached song makes no Spotify call), koreanRule: Int (optional, missing = 0; the Korean-check rule version in force when written; a `notKorean` entry with an older rule is never fresh), result: "available" | "notAvailable", reason?, document?, glosses: { "<token>": "<meaning>" }, lineGlosses: { "<NFC line>": "<English>" } (optional, missing = empty; Apple's translation of whole lines), fetchedAt }`. Decoding is tolerant; an unreadable file is deleted and refetched.
 - `notAvailable` entries expire after **7 days** (lyrics may appear later). Available entries never expire. **Pull to refresh** in the reader forces a refetch.
 - **Not in the data export** (copyright). Settings → Lyrics → **Clear lyrics cache**.
 
@@ -180,6 +180,8 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
    - Tapping a word whose gloss isn't ready yet shows a spinner in the bubble. It fills in when the batch finishes.
    - Before the first use, check `LanguageAvailability().status(from: ko, to: en)`. `.supported` (not downloaded) → the system download prompt appears via `session.prepareTranslation()`. If it's declined or unsupported, the bubble says "Meaning unavailable. Download Korean in Settings → Apps → Translate", and **＋ Add** still works with an empty meaning field.
    - Label machine glosses "Auto-translated" in small caption text.
+   - **R10:** results are applied in chunks (every 40 results or 0.25 s) and the cache is written once per pass. A word that fails is retried by its particle-stripped stem. A gloss counts only when it has no Hangul and doesn't echo the word (`GlossText.isUsableGloss`). The state is `.deck`, `.auto`, `.pending`, `.needsLanguagePack` (pack missing or declined) or `.noWordMeaning` (translated, nothing usable).
+   - **Line context (R10 P-4):** the bubble also shows the line's meaning: the aligned Genius line, else Apple's translation of the line (`LineGloss`, cached in `lineGlosses`). When Genius has no page, the English page is these auto-translated lines (O-2).
 
 ### 4.9 Spotify (`SpotifyAuth`, `SpotifyClient`, `SpotifyRequests`)
 

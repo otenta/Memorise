@@ -19,8 +19,8 @@ struct KoreanLyricsPage: View {
                         Color.clear.frame(height: 8)
                     } else {
                         LyricFlowLayout(spacing: 7, rowSpacing: 4) {
-                            ForEach(Array(line.tokens.enumerated()), id: \.offset) { _, token in
-                                LyricTokenView(token: token, line: line, model: model)
+                            ForEach(line.tokens) { token in
+                                LyricTokenView(readerToken: token, line: line, model: model)
                             }
                         }
                     }
@@ -44,10 +44,12 @@ struct KoreanLyricsPage: View {
 /// One token: plain text, or a button that opens the bubble.
 private struct LyricTokenView: View {
     @Environment(AppEnvironment.self) private var env
-    let token: LyricToken
+    let readerToken: ReaderToken
     let line: ReaderLine
     let model: LyricsReaderViewModel
     @State private var shown = false
+
+    private var token: LyricToken { readerToken.token }
 
     var body: some View {
         switch token {
@@ -61,7 +63,7 @@ private struct LyricTokenView: View {
     }
 
     private func tappable(_ text: String, phrase: Bool) -> some View {
-        let known = model.isKnown(token)
+        let known = readerToken.isDeckHit
         return Button {
             shown = true
         } label: {

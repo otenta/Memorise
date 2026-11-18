@@ -70,9 +70,11 @@ struct WordBubble: View {
                 ProgressView()
                 Text("Translating…").font(.subheadline).foregroundStyle(.secondary)
             }
-        case .unavailable:
+        case .needsLanguagePack:
             Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
                 .font(.footnote).foregroundStyle(.secondary)
+        case .noWordMeaning:
+            Text("No single-word meaning.").font(.footnote).foregroundStyle(.secondary)
         }
     }
 }
@@ -81,7 +83,7 @@ struct WordBubble: View {
     VStack(spacing: 20) {
         WordBubble(token: .word(text: "보고", range: 0..<2), state: .pending, onSpeak: {}, onAdd: {})
         WordBubble(token: .word(text: "너를", range: 0..<2), state: .auto("you"), onSpeak: {}, onAdd: {})
-        WordBubble(token: .word(text: "몰라", range: 0..<2), state: .unavailable, onSpeak: {}, onAdd: {})
+        WordBubble(token: .word(text: "몰라", range: 0..<2), state: .needsLanguagePack, onSpeak: {}, onAdd: {})
     }
     .glassCard()
     .padding()
