@@ -12,3 +12,7 @@ Package.resolved
 
 # macOS
 .DS_Store
+
+# Secrets (M6 Lyrics: Spotify client ID, Genius token). NEVER commit.
+Secrets.xcconfig
+**/Secrets.xcconfig
