@@ -30,7 +30,7 @@ public enum SessionComposer {
 
     /// Ordered queue of entries; each element holds the card keys of that entry to show this session.
     ///
-    /// Order: ≤ `floor(targetEntries × reviewShare)` due wrong entries (shuffled), fresh entries in
+    /// Order: ≤ `floor(targetEntries × share)` due wrong entries (`share` grows from `reviewShare` to `reviewShareMax` with the due backlog) (shuffled), fresh entries in
     /// rank order, partial entries, remaining due wrong entries, not-yet-due wrong entries (soonest
     /// first), covered entries (least recently seen first).
     ///
@@ -108,7 +108,11 @@ public enum SessionComposer {
         }
 
         dueWrong.shuffle(using: &rng)
-        let reviewSlots = max(0, Int((Double(max(targetEntries, 1)) * constants.reviewShare).rounded(.down)))
+        // The review share scales with the backlog (R7-4, owner option (a)): 0.3 with nothing due, up to 0.6 when
+        // as many entries are due as the session has slots. The epsilon keeps exact products such as 20 × 0.45 = 9.
+        let target = Double(max(targetEntries, 1))
+        let share = constants.reviewShare + (constants.reviewShareMax - constants.reviewShare) * min(1, Double(dueWrong.count) / target)
+        let reviewSlots = max(0, Int((target * share + 1e-9).rounded(.down)))
         let head = Array(dueWrong.prefix(reviewSlots))
         let tailDue = Array(dueWrong.dropFirst(reviewSlots))
         waiting.sort { ($0.remaining, $0.order) < ($1.remaining, $1.order) }

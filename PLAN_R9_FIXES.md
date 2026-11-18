@@ -68,7 +68,7 @@
 | SF1 Await the previous flush before `start()` | R7-2 | implementor | ☑ | App |
 | SF2 Short killed sessions are abandoned | R7-3 (P-1) | implementor | ☑ | Core |
 | SF3 `DeckHistory` is required | R7-6 | implementor | ☑ | Core + app call sites |
-| SF4 Review share grows with the backlog | R7-4 (O-1) | implementor | ☐ | Owner chose O-1 (a) |
+| SF4 Review share grows with the backlog | R7-4 (O-1) | implementor | ☑ | Owner chose O-1 (a) |
 | SF5 Stop speech before arming the mic | R7-9f | implementor | ☐ | App |
 | SF6 Faster `Scheduler.select` | R7-7 | implementor | ☐ | Optional, last |
 | UF1 Paging rows and the "Paused" label | R8-7, R8-10k | frontend | ☐ | After LF5 + LF6 |

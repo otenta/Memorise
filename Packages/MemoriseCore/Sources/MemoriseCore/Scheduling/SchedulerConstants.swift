@@ -28,6 +28,9 @@ public struct SchedulerConstants: Sendable, Hashable {
     public var wrongGapSessions = 2...4
     /// Max fraction of a session's entries that are returning wrong cards while new material remains (R8-S1).
     public var reviewShare = 0.3
+    /// Ceiling of the review share. The share grows from `reviewShare` to this as the due backlog reaches the
+    /// session's entry target: `reviewShare + (reviewShareMax - reviewShare) × min(1, due ÷ target)` (R7-4).
+    public var reviewShareMax = 0.6
     /// A killed session with fewer counted attempts than this is closed as abandoned, so it doesn't advance
     /// "sessions since a miss" or become the baseline (R7-3).
     public var minCountedForKilledSession = 5
