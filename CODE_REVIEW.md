@@ -1,6 +1,487 @@
 # Memorise — Code Review
 
-> Newest first: **Round 6** (R5 fixes + K2 content + performance + spec comparison) → **Round 5** (R4 fixes + performance + spec comparison) → **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4, R5-x from Round 5, R6-x from Round 6.
+> Newest first: **Round 8** (M6 Lyrics + R8 content + R7 follow-up) → **Round 7** (R6 fixes + R7 owner fixes + R8 coverage sessions + spec comparison) → **Round 6** (R5 fixes + K2 content + performance + spec comparison) → **Round 5** (R4 fixes + performance + spec comparison) → **Round 4** (full review after M2–M5) → **Round 3** (G1–G5 + UI visual pass) → **Round 2** (F2–F9) → **Round 1** (original review). Older rounds are kept unchanged as the audit trail. IDs P1-x come from Round 1, N-x from Round 2, R3-x from Round 3, R4-x from Round 4, R5-x from Round 5, R6-x from Round 6, R7-x from Round 7, R8-x from Round 8 (not to be confused with PLAN_R8's S/F/C segment ids).
+
+---
+
+# Round 8 — M6 Lyrics (Spotify, LRCLIB, Genius, tap-to-translate), R8 content, and R7 follow-up
+
+- **Date:** 2026-11-18
+- **Scope:** 20 commits, `11e40ef..36b9c34` (50 files, +14,495/−25):
+  - M6 L0–L9 and L8b (Lyrics tab);
+  - R8-C1, C1b and C2 (K-pop / K-drama content, `ko_media` 169 → 418 entries);
+  - the planning commits.
+- **Read in full:**
+  - app: `SpotifyAuth`, `SpotifyClient`, `LyricsService`, `LyricsCacheStore`, `KeychainStore`, `HTTPClient`, `GlossService`, `LyricsHomeViewModel`, `LyricsReaderViewModel`, `LyricsReaderView`, `AddToDeckSheet`;
+  - core (`Lyrics/`): `SpotifyRequests`, `SpotifyModels`, `GeniusParser`, `LRCLIBParser`, `TrackQuery`, `LyricsCacheFile`, `LyricsModels`, `LyricsTokenizer`, `PhraseMatcher`, `WordLookup`, `TranslationAlignment`, `KoreanLyricsCheck`, `LyricsText`, `HTTPRequestSpec`;
+  - diffs: `UserDecks`, `DeckValidator`, `AppEnvironment`, `MemoriseApp`, `project.yml`, `.gitignore`, xcconfig files.
+- **Read selectively:** `LyricsHomeView` (state handling), `SettingsView` (Lyrics section), `docs/media-verification.md`.
+- **Not reviewed:** the visual layout of `LyricsHomeView` / `WordBubble` / `WordFlowLayout` (needs the owner's device), and the live Spotify, LRCLIB and Genius endpoints (no network calls were made, and `Secrets.xcconfig` was never opened).
+- **Verification actually run** (in a scratch copy made with `git archive HEAD`; the repo was not modified):
+  - `swift test`: **154 tests, 34 issues in 5 failing tests. Identical to Round 7.** No test file mentions Lyrics, Spotify or LRCLIB.
+  - `xcodegen generate` + `xcodebuild` (iOS Simulator, Debug, unsigned, no `Secrets.xcconfig`): **BUILD SUCCEEDED.**
+  - **A scratch probe test** (deleted afterwards), run against the real core code:
+    - `LyricsHTTP.url` encodes `&` and `#`, but leaves `+` literal (`A+B` stays `A+B`, which a server reads as `A B`).
+    - `TrackQuery.normalise`: `"Eight (Prod.&Feat. SUGA of BTS)"`, `"Pop! (Prod. by Cha Cha Malone)"`, `"Stay (Inst.)"` and `"Hype Boy - Special Video"` come back **unchanged**. `"(feat. …)"`, `"- Live"`, `"- Remix"`, `"- Remastered 2023"` and `"[Official]"` are stripped correctly.
+    - `TrackQuery.sameArtist("V","Seventeen")`, `("e","TWICE")`, `("Rain","Brain")`, `("Jin","Jinjin")` all return **true**.
+    - `GeniusParser.lyricsHit([Dynamite by BTS], artists:["BTS"])` returns it for any track by BTS (there is no title parameter).
+    - `GeniusParser.lyrics(fromHTML:)` handles nested `<div>`, `<br/>`, `&amp;`, an excluded child and `[Verse]` correctly.
+  - Content scan (Python): ids and ranks are unique and contiguous in every `ko_*.json` (media 418, Core 5 664, Core 6 156, Slang 53). 294 of 418 media entries carry a source (**70 %, the K2 target is met**).
+  - Secret scan: `git log --all -- App/Config/Secrets.xcconfig` is empty and no key-like string appears in tracked files.
+  - Not run: device, Instruments, VoiceOver, any real network call. Claims that need these are marked *(plausible: measure)*.
+
+## Verdict
+
+**M6 is well structured and mostly sound.**
+- All parsing and request building is pure and sits in core. Every `Codable` type uses tolerant decoding.
+- Auth is correct: PKCE with a `state` check, the refresh token in the Keychain (`AfterFirstUnlockThisDeviceOnly`), and one shared refresh for concurrent callers.
+- A missing translation, a missing credential and a stale cache degrade quietly. The Hangul check is based on the lyrics, not on Spotify's genre.
+- The build is green, and no secret is in git.
+
+**It still ships with the same two structural gaps as every round since R6:**
+- `HEAD` still fails the same 5 tests, and CI still never runs `swift test`.
+- M6 adds about 1,500 lines of core logic (parsers, tokenizer, matcher, lookup, cache) with **no tests at all**, although every one of those types is pure and trivial to test (R8-2).
+
+**One correctness risk can show the learner the wrong song's lyrics and cache them forever** (R8-1). **One feature bug makes the picker lists stale for the whole app session** (R8-3).
+
+## Status of Round 7 findings
+
+No code in `Session*`, `Scheduler*` or the Home rings changed since `11e40ef`, so those findings carry over.
+
+| ID | Status | Evidence |
+|---|---|---|
+| R7-1 · 5 failing tests, CI blind, no R7/R8 tests | 🔴 **Open, widened** | Same 5 failures. `core-tests.yml` still runs `swift build -c release` only. M6 added 14 untested core files (R8-2). |
+| R7-2 · next session reads stats before the flush | 🔴 Open | No `pendingFlush` or equivalent in `App/Sources`. |
+| R7-3 · killed sessions count toward a gap | 🔴 Open | Needs a planner decision. |
+| R7-4 · 30 % cap parks misses | 🔴 Open | Needs an owner decision. |
+| R7-5 · ring on every deck | 🔴 Open | Unchanged. |
+| R7-6 · `history: nil` means all due | 🔴 Open | Unchanged. |
+| R7-7 · O(pool) per pick | ⚪ Unchanged | Low priority. |
+| R7-8 · entries without verification rows | 🟡 **Partly fixed** | R8-C1 / C2 rows were added to `docs/media-verification.md` (306 VERIFIED rows). Core 5 extension, Core 6, AION 2 `0141`–`0232` and Slang still have none, and `docs/core-verification.md` is untouched. 9 new sourced media entries have no row (R8-9). |
+| R7-9 · polish | 🔴 Open | Unchanged. |
+| R6-5 · K2 source target | ✅ **Met** | 294 of 418 media entries have a source (70 %). |
+
+## New findings (Round 8)
+
+### R8-1 · P2 (correctness) · Genius can return another song by the same artist, and the wrong lyrics are cached for good
+
+**Where:**
+- `GeniusParser.lyricsHit` (`GeniusParser.swift:78`) picks the first search hit whose artist matches. It takes **no title** and never compares it.
+- `TrackQuery.sameArtist` (`TrackQuery.swift:31`) is a substring test on folded keys.
+
+**Failure scenario:**
+- LRCLIB has no record, so `LyricsService` falls through to Genius.
+- Genius is a fuzzy search. For a track it doesn't hold, the top hit is another song by the same artist.
+- That page passes `KoreanLyricsCheck` and is returned as `.available`.
+- `LyricsCacheFile.isFresh` never expires an `available` entry, so the wrong lyrics stay until the user taps a force refresh, which nothing suggests.
+
+**The artist test is also too loose** (probe): `"V"` matches `Seventeen`, `"e"` matches `TWICE`, `"Rain"` matches `Brain`, `"Jin"` matches `Jinjin`. The same helper drives `LRCLIBParser.bestMatch` and `translationHit`, whose artist test is `k.contains(key)`.
+
+**Why it matters:** the learner is shown lyrics that don't match the song playing, and learns words from a different song. Nothing in the UI says so.
+
+**Fix:**
+- Make `lyricsHit` take `titles` and require `TrackQuery.sameTitle` (after `normalise`) for at least one of them. Also accept a hit whose title contains the track title as a whole word, for `"Title (Romanized)"` cases.
+- Make `sameArtist` stricter: exact key match, or containment only when the shorter key has at least 4 characters (or is a whole word of the other name).
+- Same rule in `translationHit`.
+- Add tests for each of the cases above (R8-2).
+
+### R8-2 · P2 (High for delivery) · M6 shipped about 1,500 lines of pure core logic with no tests, and `HEAD` is still red
+
+**State on `HEAD`:**
+- The 5 R7-1 failures are unchanged.
+- Test count is still 154.
+- CI still builds only.
+
+**Untested files (all pure, all in core):**
+- `LRCLIBParser`, `GeniusParser`, `SpotifyRequests` (PKCE, callback check, form body), `SpotifyModels`.
+- `TrackQuery`, `LyricsTokenizer`, `PhraseMatcher`, `WordLookup`.
+- `TranslationAlignment`, `KoreanLyricsCheck`, `LyricsText`, `LyricsCacheFile`.
+- The new user-mode `DeckValidator.exampleErrors` (L-D10) and the `UserDecks` rank-preserving change.
+
+**Why the plan's L-steps matter here:** each step lists acceptance cases "for the tester". They translate almost line for line into `@Test`s. My probe harness for this round was 30 lines.
+
+**Fix:** *(tester)* first make `HEAD` green and switch CI to `swift test` (R7-1). Then add a `Lyrics` test suite covering at least the cases in R8-1, R8-6 and R8-7, plus `stripTimestamps`, `bestMatch` duration ties, the state-mismatch path, the `+` in the token body, tokenizer punctuation trimming, phrase merging and the cache round trip.
+
+### R8-3 · P2 (functional) · "Recent", "Playlists" and "Liked" never refresh, and show the previous account's lists after reconnecting
+
+**Where:** `LyricsHomeViewModel.refreshAll` (`LyricsHomeViewModel.swift:79-89`) calls `loadRecent()`, `loadPlaylists()` and `loadLiked()` **without `force: true`**. Each of those returns immediately when it already holds a value (`:102`, `:114`, `:126`).
+
+**Effects:**
+- **Pull-to-refresh** and the `.task(id: isConnected)` refresh update only *Now playing*. The song list stays as it was loaded the first time. A learner who plays a new song and returns to the Lyrics tab does not see it under Recent, and pulling down doesn't help.
+- **Disconnect, then connect as another account** (Settings → Disconnect Spotify, then Connect): the view model keeps the old account's recent songs, playlists and liked songs, because the model lives as long as the tab (`@State` in `LyricsHomeView`) and `disconnect()` doesn't reset it.
+
+**Fix:**
+- `refreshAll` should pass `force: true` to all three loaders (keep the cached list on screen while loading).
+- Reset the model's lists when `isConnected` turns false.
+
+### R8-4 · P3 (performance / offline, *plausible: measure*) · Opening a song that is already cached still waits on a Spotify request
+
+**Where:** `LyricsReaderViewModel.load` (`:83`) runs `spotify.withKoreanTitle(track)` **before** it asks `LyricsService` for lyrics. The cache is keyed by the Spotify id and does not need the Korean title.
+
+**Effects:**
+- Every open costs an extra token check and `GET /tracks/{id}`, even when the lyrics are on disk.
+- When the Korean title equals the English one, `titleKo` stays `nil`, so that request repeats on **every** open.
+- On a bad or no connection, `SpotifyClient.get` maps every transport failure to `.offline` and each request can wait up to the 10 s timeout, so cached lyrics open late. The offline message promises "Lyrics you've opened before still work".
+
+**Fix:** look in the cache first (`lyrics.cache.load`). Call `withKoreanTitle` only on a cache miss, and persist the Korean title (or a "no Korean title" flag) in the cache entry so it is not fetched again.
+
+### R8-5 · P3 (correctness, from the code trace) · The 5-request budget is too small for the two-title Genius path, so there is no English page, and the gap is cached for good
+
+**Trace** for a track with a Korean title (the common case for K-pop, since `withKoreanTitle` sets `titleKo`), not on LRCLIB and found on Genius:
+1. LRCLIB `get` (English title): 1.
+2. LRCLIB `get` (Korean title): 2.
+3. LRCLIB `search`: 3.
+4. Genius `search`: 4.
+5. Genius page: 5.
+6. `englishLines()` → `fetch` returns `.exhausted` and the translation is skipped.
+
+The result `.available` with `english == nil` is saved and **never expires**, so that song never shows an English page unless the user force-refreshes.
+
+**Related:**
+- `sendRetryingServerError` can double each counted request, so "at most 5 requests per song" is really up to 10.
+- When a Genius hit is found for the first title but its page isn't Korean, the second title's search hits `.exhausted` and the song reports `.failed("Couldn't reach the lyrics sources")` instead of "not available", which wastes the user's retries.
+
+**Fix:**
+- Budget the two phases separately (for example 5 for Korean lyrics, 3 for English).
+- Treat a cached `available` entry with `english == nil` as stale after the same TTL as "not available" (7 days), or when the Genius token appears.
+- Count a retried 5xx as one budget unit.
+
+### R8-6 · P3 (matching) · Common K-pop title suffixes are not stripped, and `+` is not encoded
+
+**Verified by probe:**
+- `normalise` leaves `(Prod.&Feat. …)`, `(Prod. by …)`, `(Inst.)` and `- Special Video` in place. IU's "Eight (Prod.&Feat. SUGA of BTS)" and every "(Prod. by …)" title will fail both `get` and `search` (`sameTitle` compares normalised keys on both sides, so the suffix breaks the match).
+- The `with` branch is too greedy the other way: `"(with You)"` is deleted from a title that is really called that.
+- `LyricsHTTP.url` leaves `+` literal in a query value, and servers decode it as a space (`"A+B"` → `"A B"`). The token request already handles this (`SpotifyRequests.swift`), the URL helper doesn't.
+
+**Fix:**
+- Extend the parenthesis pattern to `prod|inst|instrumental|ver|version|remix|acoustic|live` at the start of the group.
+- Only strip `with` when the group starts with `with ` **and** contains an artist-like name (or drop that branch).
+- Encode `+` as `%2B` in `LyricsHTTP.url`.
+- Tests (R8-2).
+
+### R8-7 · P3 (functional) · Playlists over 100 songs, and lists over 50 playlists, are cut off silently
+
+**Where:**
+- `SpotifyClient.playlistItems` (`:138`) requests `limit: 100` and ignores `next`.
+- `SpotifyClient.playlists` (`:131`) requests `limit: 50`, offset 0, and ignores `next`. `liked` is the only list that pages.
+
+**Why it matters:** the owner's K-pop playlists are likely to be longer than 100 songs. Songs past the 100th can't be picked, and nothing says so.
+
+**Fix:** page with `next`, the way `liked` does (a "Load more" row, or loop up to a sane cap).
+
+### R8-8 · P3 (business / legal, owner decision) · Lyrics are scraped, cached and then re-stored in user decks, which the export does include
+
+**Facts:**
+- The Genius path reads the lyrics page HTML (not the API), and `PLAN_M6` marks the cache "never exported (copyright)": `LyricsCacheStore` excludes it from backup, and the export skips it.
+- `AddToDeckSheet` saves the **full lyric line** (up to 80 Hangul syllables) into a user deck as the card's example. User decks **are** part of the data export.
+- The Genius access token is built into `Info.plist` (`GeniusAccessToken`), which anyone can read from the shipped app.
+- Genius's terms restrict automated page access; Cloudflare may also block it (`.failed`, never cached, retried every open).
+
+**Fix (owner):**
+- Decide whether saved example lines are acceptable (one line per word is a reasonable quotation), and then say so in the PLAN.
+- Or cap the saved example at the phrase around the word.
+- If the app is ever shared beyond the owner, move the Genius call to a proxy, or drop the HTML path.
+
+### R8-9 · P3 (content) · Verification rows still lag the entries
+
+- 9 sourced media entries (`ko.media.0147`–`0155`) cite pages that have no row in `docs/media-verification.md`.
+- The 131 media entries without any source are expected (dialogue-only), but the doc header still says "Entries: 105 (`0001`–`0105`)" and "66 %", while the data now holds 418 entries and 70 %.
+- Core 5 `1320`–`1533`, Core 6, AION 2 `0141`–`0232` and Slang still have no rows (R7-8).
+
+**Fix:** *(content agent)* add the 9 rows, refresh the header counts, and append rows for the remaining decks. *(owner)* spot-check 10 rows per deck.
+
+### R8-10 · P4 (polish and robustness)
+
+- **a. Keychain write result is ignored.** `SpotifyAuth.apply` (`:126`) calls `secrets.write(...)` and drops the `Bool`. `KeychainStore.write` is delete-then-add, so a failed add loses the old refresh token as well. The session then works until the app restarts, and the user has to sign in again with no explanation. Use `SecItemUpdate`, and surface a failure.
+- **b. Refresh bookkeeping.** In `SpotifyAuth.refresh` (`:106`) every waiter runs `defer { refreshTask = nil }`. A late waiter can clear a newer refresh task, so two refreshes can run at once. Only the creator should clear it.
+- **c. Timeouts read as "offline".** `SpotifyClient.get` turns every non-offline transport error, including a timeout, into `.offline` ("You're offline.").
+- **d. `play` waits before the reader opens.** `LyricsHomeViewModel.open(play: true)` awaits the Spotify play call (up to 10 s, or an app switch to Spotify on a 404) before it pushes the reader. Push first, play in the background.
+- **e. 404 means two things.** `SpotifyClient.play` treats every 404 as "no active device". A removed track also gives 404, and then the Spotify app opens for nothing.
+- **f. Translation prompt on every open.** `GlossService.prepare` clears `failed`, and `runBatch` calls `prepareTranslation()`, so a learner who declined the Korean language pack sees the system download prompt each time they open a song.
+- **g. Single-word machine translation.** Apple Translation gets isolated eojeol, which gives poor glosses for inflected forms. It is labelled "Auto-translated", which is honest enough. Consider batching the line's words with the whole line as context if quality is a complaint.
+- **h. Cache grows without limit.** `LyricsCacheStore` has no cap or eviction. Add a simple LRU (for example the 200 most recent songs). *(plausible: measure)*
+- **i. Default arguments reach real services.** `AppEnvironment.init` (`:70`) defaults `spotify: SpotifyClient()` and `lyrics: LyricsService()`, so previews and tests built with the default environment get the real Keychain, the real cache directory and a real `URLSession`. Use in-memory defaults for `preview()`.
+- **j. Unvalidated ids in URLs and JSON.** `SpotifyRequests.playlistItems`, `track` and `play` interpolate ids from Spotify's responses straight into the path and the JSON body. Spotify ids are base-62, so this is safe today, but a guard (`id.allSatisfy(\.isLetter || \.isNumber)`) costs one line.
+- **k. Paused songs show as "Now playing".** `SpotifyCurrentlyPlaying.isPlaying` is decoded and never used.
+- **l. Settings.** "Clear lyrics cache" doesn't clear `GlossService`'s in-memory glosses, and "Disconnect" doesn't pop an open reader or reset the picker (see R8-3).
+
+## What's good
+
+- **Pure, injectable design.** Core builds `HTTPRequestSpec`s and parses responses; the app only sends them. `AnyRNG`, `now` and `SecretStore` are injected. That is exactly why R8-2 is cheap to fix.
+- **Auth.** PKCE S256, a `state` check that fails closed, scope list limited to what is used, refresh token only in the Keychain with `ThisDeviceOnly`, and `signOut` on a refused grant.
+- **No secrets in git.** `Secrets.xcconfig` is gitignored, `Base.xcconfig` uses `#include?`, and CI builds with empty values (verified: the scratch build succeeded without the file).
+- **Honest degradation.** "Unknown" (a failed request) is never cached as "not available". Missing translation is not an error. The Hangul check uses the lyrics, not Spotify's genre. Playlists Spotify won't share get an explanation, not an empty list.
+- **Cache hygiene.** Atomic writes, backup exclusion, tolerant decoding, deletion of unreadable files, and a sanitised file name.
+- **Rank preservation fix.** `UserDecks` now keeps `register`, `dialogue` and `sources` when it renumbers entries.
+- **Content.** The K2 source target is met (70 %), ids and ranks are contiguous, and the verification doc records dropped candidates for the audit trail.
+
+## Suggested fix order
+
+1. **R8-1** wrong-song matching (small, local, high impact), with its tests.
+2. **R7-1 / R8-2** make `HEAD` green, switch CI to `swift test`, add the Lyrics and R7/R8 session suites.
+3. **R8-3** refresh the picker lists (a two-line change plus a reset).
+4. **R8-4, R8-5** cache first, then the budget and the English-gap rule.
+5. **R8-6, R8-7** title normalisation, `+`, pagination.
+6. **R7-2** flush before `start()` (still the most likely cause of the owner's "repeated cards" complaint).
+7. **R8-8** owner decision on lyric lines and Genius.
+8. **R8-9 / R7-8** verification rows.
+9. R8-10 items as time allows.
+
+---
+
+# Round 7 — R6 fixes, R7 owner fixes, R8 coverage-first sessions, and spec (business-analysis) comparison
+
+- **Date:** 2026-11-17
+- **Scope:** 30 commits, `e478fba..11e40ef`, with 49 Swift/YAML files changed (+1873/−384):
+  - the R6 fix commits;
+  - R7-F1…F7 and C2;
+  - the content batch C3 (`e842c39`);
+  - R8-S1, S2 and F1.
+  
+  R8-C1 and C2 (content) have not been delivered yet.
+- **Read in full:**
+  - core: `SessionComposer`, `DeckHistory`, `DeckCoverage`, `SchedulerConstants`, `Scheduler`, `SessionEngine`, `SwiftDataStatsStore`, `DeferredStatsStore`, `StatsStore`, `VocabDeck`;
+  - app: `SessionViewModel` (lifecycle, quit/discard, mic F3);
+  - the R8-S2 and R8-F1 diffs.
+- **Read selectively:**
+  - `IntroductionPolicy` (diff), `Records.closedAfterInterruption`, `ConjugationDeck` / `HangulReadingDeck` ranks, `Particles`;
+  - `HomeView` (load, tiles, accessibility), `SummaryView` (abandoned), `FretboardNotesUI` / `IntervalsUI` `micAccepts`, `SpeechService`, `AudioSessionCoordinator`;
+  - the CI workflows, `README`, and PLAN.md §10.5/§10.6/§17.
+- **Not re-reviewed in depth:**
+  - R7-F4 (fretboard redesign, +434 lines in `FretboardView`) and R7-F6 (`KoreanHeadline`). Both build cleanly, but they need the owner's on-device visual check.
+- **Verification actually run** (in a scratch copy; the repo was not modified):
+  - `swift test` on `HEAD`: **154 tests, 34 issues in 5 failing tests** (R7-1).
+  - `xcodegen generate` + `xcodebuild` (iOS Simulator, Debug, unsigned): **BUILD SUCCEEDED, 0 warnings from app sources.**
+  - **A multi-session simulation probe** (a scratch test that carries stats and `DeckHistory` from session to session, on bundled Core 1). Results:
+    - Session 1 shows ranks 1–20 and session 2 shows ranks 21–40.
+    - Ranks 3 and 7 were missed in session 1 with FNV gaps 4 and 2. They returned in sessions 5 and 3, exactly as the formula predicts.
+    - A missed card that was retried correctly keeps `lastAnswerWasWrong == true`.
+    - Both directions: 20 distinct entries per session. The first second direction appears in session 11 (205 entries ÷ 20), and coverage reaches 100 % after 25 sessions.
+    - All answers wrong: at most 6 returning cards per session (the 30 % cap holds).
+    - With `history: nil`, a missed card returns in the very next session (R7-6).
+    - A 30-minute Core 5 session with all three directions (1,992-card pool, 402 cards shown) ran in **1.4 s in Debug**, about 3.5 ms per card.
+  - Content scan (Python): ranks and ids are unique and contiguous in every `ko_*.json`. I also counted the entries that have no verification row.
+  - Not run: device, Instruments, VoiceOver. Claims that need these are marked *(plausible: measure)*.
+
+## Verdict
+
+**R8's core is correct and well built.** The composer is pure and deterministic. It uses the injected RNG, needs no wire change, and its gap is stable per miss. Every owner scenario I could simulate (#1–#4) behaves as the owner asked. The opt-in `usesCoverageSessions` flag is a better design than the plan's "decks with ranks" rule, and it is recorded in §17.
+
+**The release isn't green, and the safety net has fallen behind the behaviour.**
+- `HEAD` fails 5 tests.
+- CI never runs `swift test`, so nothing flagged it.
+- R7 and R8, the two biggest behaviour changes since M1 (session composition and discard), arrived with **no new tests**. The suite still has 154 tests, as it did in Round 6 (R7-1).
+
+**There are two spec mismatches the owner would notice:**
+- A killed session counts toward a missed card's gap (R7-3).
+- Once a learner falls behind, missed words return much later than the promised "2–4 sessions" (R7-4).
+
+**R8 #5, the K-pop / K-drama content, isn't started.** Meanwhile, 515 new Korean entries arrived through C3 and the Core 5 extension with no verification rows (R7-8).
+
+## Status of Round 6 findings
+
+| ID | Status | Evidence |
+|---|---|---|
+| R6-1 · K2 not wired / HEAD red | 🟡 **Wired, but HEAD is red again** | `ko_media` is in `DeckCatalog.swift:73`. The count tests went stale again (R7-1). |
+| R6-2 · media polite forms / shared glosses | ✅ Fixed | `f3f7028` (the 요 rule) and `8790aed` (glosses). The catalog validator test passes with 0 issues. |
+| R6-3 · stale audio answers the next card | ✅ Fixed | `abac376`. `SessionEngine.answerEvaluated` records a pre-prompt onset as untimed (`SessionEngine.swift:269-271`). |
+| R6-4 · content without plan or rows | 🔴 **Recurring** | Rows were added for Core 5 226–450 (`b1d7575`), but 515 newer entries have none (R7-8). |
+| R6-5 · K2 targets | 🔴 Open | 89 of 169 media entries have a source (53 %, target ≥ 70 %). It was 66 % in Round 6, so the share is falling as unsourced entries are added. |
+| R6-6 · PLAN contradicts the code | ✅ Fixed | `8148f54`. `undoLastGrade` is recorded as dropped (PLAN.md:577, :868). |
+| R6-7a · Home aurora under the cover | ✅ Fixed | `HomeView.swift:106` passes `running: launch == nil`. |
+| R6-7b · config decode per load | ⚪ Unchanged | It is still low priority. `initialConfig` decodes on every load (`AppEnvironment.swift:260`). |
+| R6-8a · CI runs no tests | 🔴 Open | `core-tests.yml` still runs `swift build -c release` only. |
+| R6-8b · hard-coded counts | 🔴 Open, and **it bit** | 3 of the 5 failures are these assertions (R7-1). |
+| R3-7 · README wording | ✅ Fixed | README now reads "prompt → Reveal". |
+
+## New findings (Round 7)
+
+### R7-1 · P2 (High for delivery) · HEAD fails 5 tests, CI can't see it, and R7/R8 shipped without tests
+
+**Failures on `HEAD`:**
+
+| Test | Why it fails | Kind |
+|---|---|---|
+| `SessionEngineTests.gatedVocabSessionNeverShowsGatedCards` (30 issues) | It asserts `newPerSession` gating for vocab. R8-S1 and D2 removed that gating on purpose. | Stale test |
+| `IntroductionPolicyTests.twentyCardSessionIntroducesExactlyTenLowestRanks` | R7-F1's fill rule now admits `targetDistinct` entries. | Stale test |
+| `DeckContentTests.entryCountsMatchTracker` | Core 5 is now 664 (the test expects 450) and AION 2 is 232 (it expects 140). | R6-8b |
+| `DeckContentTests.mediaDeckIsValidAndSlotsBeforeAion2` | Media is now 169 (the test expects 105). | R6-8b |
+
+**What's missing:**
+- R7-F1, F2 and F3 and R8-S1 and S2 each list acceptance scenarios "for the tester". None of them is a test yet.
+- The composer, the gap formula, `lastAnswerWasWrong`, `DeckCoverage`, `discard()` and the `SwiftDataStatsStore.discard` single-save path have no coverage at all.
+- My probe shows these scenarios translate directly into tests. The probe harness is about 40 lines: a `Sim` that carries `stats` and `DeckHistory` between engines.
+
+**Fix:**
+- *(tester)* Rewrite the 2 stale tests to the new rules.
+- Replace exact counts with floors plus id/rank contiguity (R6-8b).
+- Add the R7 and R8 scenario tests.
+- Switch CI to `swift test` (R6-8a).
+
+Until this is done, every later round can regress R8 without anyone noticing.
+
+### R7-2 · P3 (Medium, correctness, *plausible: measure*) · A new session can read stats before the previous session's writes are flushed
+
+**Where:**
+- `SessionViewModel.apply` (`SessionViewModel.swift:485-496`) closes the recorder in an unstructured `Task`.
+- `start()` (`:153-160`) reads `stats`, `baseline` and `deckHistory` straight from the store, without waiting for that task.
+
+**Most exposed path: discard.**
+- `vm.discarded` dismisses the cover immediately (`SessionView.swift:69`).
+- The `.discardSession` effect sits at the end of the recorder queue, behind the pending attempt and stats writes. Each write does its own `modelContext.save()`.
+
+**What can go wrong** if the user re-opens the same deck before the queue drains:
+- The new engine's `initialStats` contain the stats that are about to be discarded. The composer treats those cards as seen.
+- If that session is then also discarded, it "restores" the stale values over the discard.
+
+**After a normal finish:** the same race can make the next session repeat cards from the previous one. This is exactly the owner's complaint #2. The window is small because Summary sits in between.
+
+**Fix:** keep the close task on `AppEnvironment` (for example, `pendingFlush: Task<Void, Never>?`) and `await` it at the top of `start()`.
+
+### R7-3 · P3 (spec mismatch) · Killed sessions *do* count toward a missed card's gap
+
+**Spec:** PLAN_R8 S1 says "killed sessions are not `.completed`, so neither counts", and the acceptance list says "Discarded **and killed** sessions don't advance 'sessions since a miss'".
+
+**Code:** `SessionRecord.closedAfterInterruption` (`Records.swift:36-46`), run at launch, marks a killed session `.completed` whenever it has a counted attempt. `deckHistory(for:)` then counts it.
+
+So a session with one answered card, after which the app was swiped away, advances every pending miss by one session. The plan's premise is wrong. R7-F2 §6 explicitly left `closeInterruptedSessions` unchanged.
+
+**Fix (planner decision):**
+- either accept this and correct the plan's acceptance line;
+- or have `deckHistory` count only sessions whose `endedAt` came from a normal finish, or that reached ≥ N counted cards.
+
+The second option needs a way to tell the two cases apart. `SessionRecord` has no such field, and adding one is a wire change.
+
+### R7-4 · P3 (business, owner-facing) · Under the 30 % cap, "wrong words come back after 2–4 sessions" holds only while the learner keeps up
+
+**Measured:** in the all-wrong probe, each 20-card session adds 14 new misses but returns at most 6 (`reviewSlots = floor(20 × 0.3)`).
+
+**What happens:**
+- The due backlog grows without bound while coverage keeps marching forward.
+- A word missed in session 3 can wait dozens of sessions. The composer orders `head` (6 due) → fresh → partial → remaining due, so leftover due words are reached only after **all fresh and all partial** entries, which on Core 5 means hundreds of sessions.
+- `wrongGapSessions` is therefore a *minimum*, not the promised window.
+
+**Why it matters:** this matches D5 as written, but not the owner's request #3 ("come back after a while, in a random later session"). A learner who is struggling sees new words they keep failing, and their misses are effectively parked.
+
+**Options for the owner and planner:**
+- (a) Raise the cap when the backlog is large. For example, `reviewShare` could scale with `dueCount / targetEntries`, up to 0.6.
+- (b) Pause new material when there are more than *k* due misses.
+- (c) Accept it, and state in PLAN §10.5 that the gap is a minimum.
+
+### R7-5 · P3 (business / UX) · The coverage ring now applies to every deck, including decks that aren't composed by coverage
+
+**Scope of the ring:** `DeckRowInfo.coverage` is computed for **all** decks (`HomeView.load`), so music decks, Particles and the small default Hangul pool all show the ring. Only vocab, conjugation and Hangul reading use the composer.
+
+**Effects:**
+- **Particles:** PLAN_R8 S1 lists it in scope, but it has no `introductionRank`, so it keeps adaptive selection. That deviation isn't recorded in §17. Its pool is a dozen particle × ending cards with random nouns, so one good session shows ✓ "done" for a drill that is effectively endless.
+- **Music decks:** the same happens on small pools such as fretboard notes on one string. The owner's complaint #4 ("one perfect session shows 100 %") comes back for these decks.
+- **Hangul Reading:** the default pool is 20 cards (probe). One 20-card all-correct session shows ✓.
+
+**Fix (planner/owner):**
+- Decide whether non-coverage decks keep the accuracy ring.
+- Record the Particles deviation in §17.
+
+### R7-6 · P4 · `SessionEngine(history: nil)` silently means "every miss is due now"
+
+**Context:** the §17 deviation (2) made `history` optional so that "no history given" can be told apart from "empty history". The app always passes a history, but any future caller that forgets it will bring misses back in the very next session. The probe confirms this: rank 3 returns in session 2.
+
+**Fix:**
+- Make the parameter non-optional (`DeckHistory`).
+- Keep the "all due" behaviour behind an explicit `.allDue` value, or keep it test-only.
+
+### R7-7 · P4 (performance) · Per-pick cost is O(pool), with a median sort, done once or twice per card
+
+**Where:**
+- `Scheduler.select` builds a `WeightCalculator` on every call (`Scheduler.swift:95`). That is a median over every seen card's EWMA, plus a full pass over the pool even when only about 20 keys are `allowed`.
+- With top-up (`SessionEngine.swift:374-381`), `select` runs twice per card.
+
+**Measured:** about 3.5 ms per card in Debug on the largest pool (1,992 cards). That's fine today *(plausible: measure in Release on device)*.
+
+**Cheap win if it ever matters:** when `allowed != nil`, iterate only `allowed` (keep an index map `key → pool index`), and compute `referenceMs` once per session.
+
+**Related:**
+- `deckHistory(for:)` decodes every `SDSession.configData` JSON just to read `startedAt`.
+- `start()` also calls `baselineOfLastCompletedSession`, which fetches the same sessions again.
+
+A predicate on `statusRaw` plus `propertiesToFetch`, or one shared fetch, would halve the work. It is low priority: it grows linearly with sessions per deck.
+
+### R7-8 · P3 (content integrity) · 515 Korean entries have no verification row, and 0 of all rows are ticked
+
+| Deck | Entries without a row in `docs/*-verification.md` |
+|---|---|
+| Core 5 | 214 (`ko.core.1320`–`1533`, the 451→664 extension in `c34d745`) |
+| Core 6 | 156 (new in C3) |
+| AION 2 | 92 (`0141`–`0232`) |
+| Slang | 53 (new in C3) |
+
+- `docs/core-verification.md` still says "have not yet been checked", and no ✓ appears anywhere in it.
+- C3 was done at the owner's request, which is fine because the owner may waive plan-first. But its §17 line doesn't schedule the rows.
+- This is R4-6 and R6-4 again, and the gap keeps widening.
+
+**Fix:** *(content agent)* append the rows, as `b1d7575` did. *(owner)* do a 10-row spot-check per deck before any external release.
+
+### R7-9 · P4 (polish)
+
+- **a. "100%" without a ✓.**
+  - `CoverageRing` shows ✓ only at `coverage >= 0.9999` (`HomeView.swift:415`).
+  - `Fmt.percent` rounds, so anything from 99.5 % up shows "100%" with no ✓. On Core 5 with all three directions, that is up to 9 uncovered cards.
+  - Use `floor` for the coverage text, or show ✓ only when `coveredCount == cardCount`.
+- **b. The ring's identifier is unreachable.** `deckCoverageRing` is set on a child of an element with `.accessibilityElement(children: .ignore)` (`HomeView.swift:430` vs `:502`, `:567`), so XCUITest can't find it. Move the identifier to the tile, or set it as a value.
+- **c. Inconsistent scopes on Home.** `DeckRowInfo.make` computes accuracy, median and last-seen over **all** of the deck's stats rows (`HomeView.swift:25`), including F7-hidden entries and other option sets. Coverage uses the pool. Filter all four by `poolKeys` so the numbers on the card agree.
+- **d. Stats screen.** `StatsOverview` still uses an accuracy ring, and it passes `Array(data.stats.keys)` as `poolKeys`, so its `coverage` would mean "covered ÷ attempted". It isn't displayed today. Either use the real pool or don't compute coverage there.
+- **e. Stale tracker.** PLAN_R8 §2 still shows S1 and S2 as ☐, although both are committed (`669892e`, `3b68b8a`).
+- **f. Mic "Correct" speech isn't stopped before the next prompt** *(plausible: measure)*. The correct-note path grades through `apply(engine.answerDetected…)`, not through `grade()`, so `env.speech.stop()` never runs. The next prompt arms the mic after 0.9 s while "Correct" may still be playing. R6-3's pre-arm filter doesn't cover audio *after* arming. If spoken feedback ever produces a phantom "Try again" on the next card, stop speech, or delay `setListening(true)` until it finishes.
+
+## Spec comparison (business-analysis view)
+
+**R8 (PLAN_R8_COVERAGE):**
+
+| Item | Requirement | Delivered | Gap |
+|---|---|---|---|
+| #1 | X distinct cards per session | ✅ Verified (probe) | — |
+| #2 | the next session continues through the deck | ✅ Verified: session 2 is ranks 21–40 | R7-2 (race) |
+| #3 | misses return in a random session 2–4 later, never the next one | 🟡 Holds only while due misses ≤ 30 % of the session | R7-3, R7-4 |
+| #4 | ring = coverage (20 of 100 = 20 %) | ✅ Data and UI | R7-5 (scope), R7-9a/b/c |
+| #5 | +120 K-pop and +100 K-drama phrases | ❌ Not started (C1, C2 ☐; media is still 169, target ≥ 389) | — |
+| S1 | composer, `DeckHistory`, `allowed`/top-up, constants, PLAN §10.5/§10.6/§17 | ✅ (Particles deviation not recorded) | R7-5 |
+| S2 | `DeckCoverage`, `deckHistory`, `cardKeys` cache, `DeckRowInfo` | ✅ | R7-9c/d |
+| F1 | ring, caption, accuracy chip, ✓, animation, steppers hidden, previews | ✅ | R7-9a/b |
+| Acceptance: "music decks byte-identical" | | ✅ By construction: `usesCoverageSessions == false` returns before consuming the RNG, and `topUpQueue` stays empty | — |
+| Acceptance: "killed sessions don't count" | | ❌ | R7-3 |
+| Acceptance: `PersistedFormatCheck` untouched | | ✅ No wire change | — |
+
+**R7 (PLAN_R7_FIXES):**
+- F1, F2, F3, F5 and F7 meet their code-level requirements as read. The spoken feedback setting, the octave-tolerant `micAccepts`, the abandoned-summary defence, the discard dialog and the single-save discard are all present.
+- F4 and F6 need the owner's device check.
+- Every R7 acceptance scenario is still untested (R7-1).
+
+**Product-level status:**
+
+| Milestone | User-visible state | Blocking items |
+|---|---|---|
+| M1–M3 | complete | on-device QA (fretboard F4, mic F3) |
+| M4 | complete; Core 6 and Slang added | R7-8 (verification) |
+| M5 | media deck visible, 169 entries | R6-5 (53 % sourced), R8-C1/C2 |
+| R8 | coverage-first sessions and coverage ring work | R7-1 (tests/CI), R7-3, R7-4 |
+
+## What's good
+
+- **The composer is a clean, pure function.** It needs no stored state: the FNV gap derives from `lastWrongAt`, and history derives from existing session rows. The plan's "no wire change" rule is fully met.
+- **`lastAnswerWasWrong` lives in one place.** The composer and the coverage metric share it, as S2 asked. The "missed and then retried correctly stays wrong" rule falls out naturally.
+- **The opt-in `usesCoverageSessions` was the right call over "has ranks".** Triads, scales, chords, theory and progressions keep their adaptive behaviour. The deviation is documented.
+- **The top-up keeps minute-based sessions fresh** instead of falling back to repeats.
+- **The discard is atomic.** It is one `discard(session:restore:delete:deck:)` with one `save()`, and its ordering is guaranteed by the serial recorder.
+- **The R6 follow-ups landed promptly:** R6-2, R6-3, R6-6 and R6-7a, plus the README.
+- **The app builds with 0 source warnings.**
+
+## Suggested fix order
+
+1. **R7-1** Green the suite: rewrite the 2 stale tests and switch the count asserts to floors. Add the R7/R8 scenario tests, and make CI run `swift test`. *(tester)*
+2. **R7-2** Await the previous session's flush in `start()`. *(implementor)*
+3. **R7-3 / R7-4 / R7-5** Owner and planner decisions: killed sessions, behaviour when the learner falls behind, and where the ring applies (plus the Particles §17 line). *(planner + owner)*
+4. **R8-C1, then C2** Content. Also restore the media source share toward 70 %. *(content agent)*
+5. **R7-8** Verification rows for the 515 entries, plus the owner spot-check. *(content agent + owner)*
+6. **R7-9** Polish. **R7-6 / R7-7** when convenient. *(frontend / implementor)*
 
 ---
 
