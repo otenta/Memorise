@@ -193,6 +193,7 @@ public struct ItemKey: Hashable, Codable, Sendable { public let raw: String }  /
 - Fretboard: `"fret:s6:A"` (string number + pitch-class canonical sharp name, e.g. `"fret:s3:C#"`).
 - Korean: `"<entryId>#<direction>"`, e.g. `"ko.core.0042#ko-en"`, `"ko.core.0042#en-ko"`. Each direction has its own stats.
 - If deck content is removed, orphaned stats are simply ignored (never crash).
+- **M6 lyrics cache:** `Application Support/LyricsCache/<spotifyID>.json`, one file per track (`LyricsCacheFile`: schema version, track, available/not-available result, glosses, fetch time). It holds fetched lyrics and machine glosses, so it is **never part of the data export** (copyright), is excluded from device backups, and can be rebuilt by reopening songs. Settings → Lyrics → Clear lyrics cache deletes it. Spotify's refresh token lives in the Keychain, not in a file. Details: [PLAN_M6_LYRICS.md](PLAN_M6_LYRICS.md) §4.7.
 
 ### 6.2 Cards
 
@@ -804,6 +805,14 @@ Root: `TabView` with **Practice**, **Stats**, **Settings**.
 - Data: **Export** (JSON of all sessions + attempts + item stats, and CSV of attempts) via `ShareLink`; **Reset stats** per deck or all (confirmation dialog).
 - About: version, link to repo (text only).
 
+### 11.8 Lyrics tab (M6)
+
+Full spec: [PLAN_M6_LYRICS.md](PLAN_M6_LYRICS.md) §4 and §5 (L6–L8). Tab `music.note.list`, tag 3, shown second.
+- **Picker:** setup text when no Spotify client ID is configured; a Connect Spotify card when signed out; when connected, a Now playing card, a search field and Recent / Playlists / Liked lists. Tapping a song starts it in Spotify and opens the reader.
+- **Reader:** two pages, Korean and English (swipe left). Tap a word or phrase for a bubble (meaning, 🔊, ＋ Add to deck). A track without Korean lyrics shows "Lyrics not available for this track"; a missing translation shows "English translation not available". Footer names the sources, no links.
+- **Add to deck:** saves the word to a new or existing custom deck with a "Heard in" song reference.
+- **Settings:** Lyrics section with Clear lyrics cache and Disconnect Spotify.
+
 App settings are stored with `@AppStorage`; a `Settings` struct in core mirrors the values that core logic needs (e.g. naming, solfège variant) so formatting functions are testable.
 
 ---
@@ -971,6 +980,8 @@ M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §1
 - Tap a word or phrase for a bubble meaning (deck entry first, then Apple's on-device Translation); swipe left for the Genius English translation, or "English translation not available"; a track without Korean lyrics shows "Lyrics not available for this track".
 - ＋ Add to deck saves the word to a new or existing custom deck, with the lyric line as the example and a "Heard in" song reference. Raises the app's minimum to iOS 18 and is the first network feature.
 
+M6 status: code implemented 2026-11-18 (L0–L8, docs in L9; see §6.1, §11.8, the §17 decision log and the PLAN_M6_LYRICS.md tracker). Device checks are open.
+
 **Later / quality of life**
 - iCloud sync (SwiftData + CloudKit), home-screen widget with daily streak, practice reminders, spaced-repetition hybrid (combine response-time weighting with interval scheduling for Korean), Apple Watch remote OK button, Shortcuts/Siri "start fretboard session".
 
@@ -1022,7 +1033,7 @@ M4 status: implemented 2026-11-17 for M4-0, M4-2…M4-10 (see §8.3b, §9.2, §1
 | M3 Harmony | ☑ (code) | [PLAN_M3_HARMONY.md](PLAN_M3_HARMONY.md) |
 | M4 Korean | ☑ (code + content) | [PLAN_M4_KOREAN.md](PLAN_M4_KOREAN.md) §5; M4-1b extension added (R6-4); dictionary verification open |
 | M5 K-pop & K-drama phrases | 🟡 | [PLAN_M5_KOREAN_MEDIA.md](PLAN_M5_KOREAN_MEDIA.md) §6. K1, K3, K4 in code; K2 content wired by PLAN_R6_FIXES T1 (pending owner spot-check D2); K5 = PLAN_R6_FIXES T7 |
-| M6 K-pop Lyrics reader | ☐ | [PLAN_M6_LYRICS.md](PLAN_M6_LYRICS.md) §7; owner must create Spotify + Genius credentials (L0) |
+| M6 K-pop Lyrics reader | ☑ (code) | [PLAN_M6_LYRICS.md](PLAN_M6_LYRICS.md) §7; L0–L9 done. On-device checks pending: Spotify/Genius credentials, dashboard redirect `memorise-spotify://callback`, README QA checklist |
 | Review fixes | — | Round 5: [PLAN_R5_FIXES.md](PLAN_R5_FIXES.md) (S7 = K2 open); Round 6: [PLAN_R6_FIXES.md](PLAN_R6_FIXES.md) |
 
 ### Decision log

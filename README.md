@@ -63,3 +63,12 @@ Mic answers (Fretboard Notes, Intervals) need microphone permission; the app ask
 - [ ] M5 media deck: Home lists "Korean · K-pop & K-drama" between Patterns and AION 2; Setup defaults to ko→en; a reveal shows "In a scene" (each line has 🔊), "Heard in" (names only, no links; songs end in "· lyrics") and "My snippet"; long reveals scroll and Wrong/Correct stay reachable
 - [ ] M5 my snippet: on any vocab reveal (Core, AION, user decks, listening), "Add your own snippet" opens the editor and pauses the timer; the saved text shows on the next reveal of that card; Export contains `personalSnippets`; Reset all asks "Also delete my snippets?"
 - [ ] M5 typed media (en→ko): 미안해요 for 미안해 → Close; 사랑 for 사랑해 → Wrong; the prompt "cheer up (short)" expects 힘내 and "cheer up (lit. find strength)" expects 힘을 내
+- [ ] M6 connect: with credentials in `Secrets.xcconfig`, Lyrics shows Connect Spotify; sign-in returns to the app connected; kill and relaunch stays connected. Without credentials it shows "Spotify isn't set up yet"
+- [ ] M6 pick: Now playing, Recent, Playlists (your own), Liked and search all list songs; tapping one plays it in Spotify (Spotify app closed → it opens on the track) and opens the reader; a followed playlist shows "only playlists you own"
+- [ ] M6 not available: an English-language song and an instrumental show "Lyrics not available for this track"; the English page can't be swiped to
+- [ ] M6 bubble: a deck word (사랑) shows its deck meaning and "In: <deck>"; an uncommon word shows a spinner, then an "Auto-translated" meaning; 🔊 speaks it; a mixed Hangul/English song still opens
+- [ ] M6 swipe: swiping left shows the English translation, or "English translation not available"
+- [ ] M6 add to deck: ＋ Add to deck into a new "My lyrics words" deck; practising it works and the reveal shows "Heard in"; saving the same word again is blocked; editing or deleting another entry keeps the source
+- [ ] M6 offline cache: reopen a song in airplane mode and it loads from the cache; an unopened song shows the offline message with Retry
+- [ ] M6 clear cache: Settings → Lyrics → Clear lyrics cache; the same song needs the network again. Data export contains no lyrics
+- [ ] M6 disconnect: Settings → Lyrics → Disconnect Spotify returns the tab to Connect; removing the app in Spotify account settings also returns it to Connect after the next call

@@ -368,4 +368,4 @@ Synced/karaoke lyrics, playback controls in Memorise (play/pause/skip), romanisa
 | L6 Lyrics tab + picker | frontend | ☑ | |
 | L7 Reader + bubble + English | frontend | ☑ | `LyricFlowLayout` name, see PLAN §17 |
 | L8 Add to deck | implementor + frontend | ☑ | core fix + sheet done together; example rule in PLAN §17 |
-| L9 Docs | implementor | ☐ | |
+| L9 Docs | implementor | ☑ | |
