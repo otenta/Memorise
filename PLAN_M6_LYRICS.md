@@ -360,7 +360,7 @@ Synced/karaoke lyrics, playback controls in Memorise (play/pause/skip), romanisa
 | Segment | Agent | Status | Notes |
 |---|---|---|---|
 | L0 Setup, iOS 18, secrets | implementor | ☑ | owner: create Spotify + Genius credentials |
-| L1 Core models, tokenizer, lookup | implementor | ☐ | |
+| L1 Core models, tokenizer, lookup | implementor | ☑ | |
 | L2 Core parsers | implementor | ☐ | |
 | L3 Spotify auth + client | implementor | ☐ | |
 | L4 Lyrics service + cache | implementor | ☐ | |
