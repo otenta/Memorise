@@ -108,7 +108,8 @@ public enum SpotifyRequests {
 
     /// `/playlists/{id}/items` (`/tracks` was removed in 2026).
     public static func playlistItems(id: String, token: String, limit: Int = 100, offset: Int = 0) -> HTTPRequestSpec? {
-        api("/playlists/\(id)/items", [("limit", String(limit)), ("offset", String(offset))], token: token)
+        guard isValidID(id) else { return nil }
+        return api("/playlists/\(id)/items", [("limit", String(limit)), ("offset", String(offset))], token: token)
     }
 
     public static func savedTracks(token: String, limit: Int = 50, offset: Int = 0) -> HTTPRequestSpec? {
@@ -122,6 +123,7 @@ public enum SpotifyRequests {
 
     /// `language` becomes `Accept-Language` (e.g. "ko-KR") so Spotify localises the names.
     public static func track(id: String, token: String, language: String? = nil) -> HTTPRequestSpec? {
+        guard isValidID(id) else { return nil }
         var r = api("/tracks/\(id)", token: token)
         if let language { r?.headers["Accept-Language"] = language }
         return r
@@ -129,6 +131,7 @@ public enum SpotifyRequests {
 
     /// `PUT /me/player/play` with `{"uris":["spotify:track:<id>"]}`.
     public static func play(trackID: String, token: String) -> HTTPRequestSpec? {
+        guard isValidID(trackID) else { return nil }
         var r = api("/me/player/play", token: token)
         r?.method = "PUT"
         r?.headers["Content-Type"] = "application/json"
@@ -136,8 +139,13 @@ public enum SpotifyRequests {
         return r
     }
 
+    /// Spotify ids are base-62. Anything else (empty, `../me`, `?x=`) must never reach a path or a body.
+    public static func isValidID(_ id: String) -> Bool {
+        !id.isEmpty && id.unicodeScalars.allSatisfy { $0.isASCII && CharacterSet.alphanumerics.contains($0) }
+    }
+
     /// `spotify:track:<id>`, opened with `UIApplication.open` when there is no active device.
-    public static func trackURI(_ id: String) -> URL? { URL(string: "spotify:track:\(id)") }
+    public static func trackURI(_ id: String) -> URL? { !isValidID(id) ? nil : URL(string: "spotify:track:\(id)") }
 
     private static func api(_ path: String, _ items: [(String, String)] = [], token: String) -> HTTPRequestSpec? {
         LyricsHTTP.url(apiBase + path, items).map {

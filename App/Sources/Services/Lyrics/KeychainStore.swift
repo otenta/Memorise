@@ -28,11 +28,16 @@ struct KeychainStore: SecretStore {
         return String(data: data, encoding: .utf8)
     }
 
+    /// Updates the item in place and only adds it when it doesn't exist yet. There is no delete-then-add, so a
+    /// failed write can never lose the value that is already stored.
     @discardableResult
     func write(_ value: String, for key: String) -> Bool {
-        delete(key)
+        let data = Data(value.utf8)
+        let status = SecItemUpdate(query(key) as CFDictionary, [kSecValueData as String: data] as CFDictionary)
+        if status == errSecSuccess { return true }
+        guard status == errSecItemNotFound else { return false }
         var q = query(key)
-        q[kSecValueData as String] = Data(value.utf8)
+        q[kSecValueData as String] = data
         q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         return SecItemAdd(q as CFDictionary, nil) == errSecSuccess
     }

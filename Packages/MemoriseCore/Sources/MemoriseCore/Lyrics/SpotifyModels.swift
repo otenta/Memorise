@@ -219,6 +219,9 @@ public enum SpotifyDecoder {
         ((try? JSONDecoder().decode(SpotifySearchResponse.self, from: data))?.tracks?.items ?? []).compactMap { $0.trackInfo() }
     }
 
+    /// The `reason` of a player error body (`{"error":{"reason":"NO_ACTIVE_DEVICE"}}`), or `nil` when there is none.
+    public static func playerErrorReason(_ data: Data) -> String? { errorReason(data) }
+
     /// Spotify's `reason` (e.g. `NO_ACTIVE_DEVICE`, `QUOTA_EXCEEDED`) from an error body, wherever it sits.
     public static func errorReason(_ data: Data) -> String? {
         guard let b = try? JSONDecoder().decode(SpotifyErrorBody.self, from: data) else { return nil }

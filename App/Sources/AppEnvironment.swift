@@ -125,7 +125,12 @@ final class AppEnvironment {
         AppEnvironment(
             catalog: DeckCatalog.builtIn().catalog,
             store: store,
-            settings: AppSettings(defaults: UserDefaults(suiteName: "preview") ?? .standard)
+            settings: AppSettings(defaults: UserDefaults(suiteName: "preview") ?? .standard),
+            // Previews never touch the Keychain, the network or the lyrics cache on disk.
+            spotify: SpotifyClient(
+                auth: SpotifyAuth(clientID: "preview", http: OfflineHTTPClient(), secrets: InMemorySecretStore()),
+                http: OfflineHTTPClient()),
+            lyrics: LyricsService(http: OfflineHTTPClient(), cache: LyricsCacheStore(directory: nil), geniusToken: "")
         )
     }
 

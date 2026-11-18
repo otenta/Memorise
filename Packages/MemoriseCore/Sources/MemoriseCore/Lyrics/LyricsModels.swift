@@ -16,6 +16,8 @@ public enum LyricsConstants {
     public static let englishRequestBudget = 3
     /// A cached document without an English page is looked up again after this many days.
     public static let missingEnglishTTLDays = 7
+    /// The lyrics cache keeps at most this many tracks; the least recently opened are deleted first.
+    public static let cacheMaxEntries = 200
 }
 
 /// A Spotify track, as the picker and the reader see it.

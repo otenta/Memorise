@@ -8,7 +8,8 @@ enum SpotifyError: Error, Equatable, LocalizedError {
     case offline
     case rateLimited(retryAfter: Int)
     case quotaExceeded
-    case http(Int)
+    case timedOut
+    case http(Int, reason: String?)
     case unreadable
 
     var errorDescription: String? {
@@ -17,7 +18,8 @@ enum SpotifyError: Error, Equatable, LocalizedError {
         case .offline: "You're offline."
         case let .rateLimited(n): "Spotify is busy, try again in \(n) s."
         case .quotaExceeded: "Spotify daily limit reached."
-        case let .http(code): "Spotify answered \(code)."
+        case .timedOut: "Spotify didn't respond. Try again."
+        case let .http(code, _): "Spotify answered \(code)."
         case .unreadable: "Spotify sent something unexpected."
         }
     }
@@ -80,6 +82,9 @@ final class SpotifyClient {
         self.openURL = openURL
         state = initialState ?? (!auth.isConfigured ? .notConfigured : (auth.hasStoredSession ? .connected(displayName: nil) : .disconnected))
     }
+
+    /// The Keychain refused the refresh token, so the sign-in won't survive a relaunch.
+    var keychainWriteFailed: Bool { auth.keychainWriteFailed }
 
     var isConnected: Bool {
         if case .connected = state { return true }
@@ -185,10 +190,11 @@ final class SpotifyClient {
         do {
             _ = try await get { SpotifyRequests.play(trackID: trackID, token: $0) }
             return .playing
-        } catch SpotifyError.http(403) {
+        } catch SpotifyError.http(403, _) {
             return .notPremium
-        } catch SpotifyError.http(404) {
-            // NO_ACTIVE_DEVICE: let the Spotify app start the track.
+        } catch let SpotifyError.http(404, reason) {
+            // Only NO_ACTIVE_DEVICE (or an unexplained 404) means "start it in the Spotify app".
+            guard reason == nil || reason == "NO_ACTIVE_DEVICE" else { return .failed("This song can't be played on Spotify.") }
             guard let uri = SpotifyRequests.trackURI(trackID), await openURL(uri) else {
                 return .failed("Open Spotify, then pick the song again.")
             }
@@ -212,6 +218,8 @@ final class SpotifyClient {
                 response = try await http.send(spec)
             } catch HTTPError.offline {
                 throw SpotifyError.offline
+            } catch HTTPError.timedOut {
+                throw SpotifyError.timedOut
             } catch is CancellationError {
                 throw CancellationError()
             } catch {
@@ -223,7 +231,9 @@ final class SpotifyClient {
             }
             if response.status == 401 { lostSession(); throw SpotifyError.notConnected }
             if response.status == 429 { throw rateLimit(response) }
-            guard response.isSuccess else { throw SpotifyError.http(response.status) }
+            guard response.isSuccess else {
+                throw SpotifyError.http(response.status, reason: SpotifyDecoder.playerErrorReason(response.data))
+            }
             return response.data
         }
         throw SpotifyError.notConnected

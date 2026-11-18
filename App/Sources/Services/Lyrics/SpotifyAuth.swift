@@ -2,6 +2,8 @@ import AuthenticationServices
 import CryptoKit
 import Foundation
 import MemoriseCore
+import Observation
+import os
 import UIKit
 
 enum SpotifyAuthError: Error, Equatable {
@@ -23,21 +25,23 @@ struct AnyRNG: RandomNumberGenerator {
 
 /// Authorization Code + PKCE through `ASWebAuthenticationSession` (PLAN_M6 §4.9).
 /// The access token lives in memory, the refresh token in the Keychain.
-@MainActor
+@MainActor @Observable
 final class SpotifyAuth: NSObject, ASWebAuthenticationPresentationContextProviding {
     private static let refreshKey = "spotify.refreshToken"
     /// Refresh this long before the access token expires.
     private static let refreshLeeway: TimeInterval = 60
 
-    let clientID: String
-    private let http: any HTTPClient
-    private let secrets: any SecretStore
-    private let now: @Sendable () -> Date
-    private var rng: AnyRNG
-    private var accessToken: String?
-    private var expiry = Date.distantPast
-    private var refreshTask: Task<String, any Error>?
-    private var session: ASWebAuthenticationSession?
+    @ObservationIgnored let clientID: String
+    @ObservationIgnored private let http: any HTTPClient
+    @ObservationIgnored private let secrets: any SecretStore
+    @ObservationIgnored private let now: @Sendable () -> Date
+    @ObservationIgnored private var rng: AnyRNG
+    @ObservationIgnored private var accessToken: String?
+    @ObservationIgnored private var expiry = Date.distantPast
+    @ObservationIgnored private var refreshTask: Task<String, any Error>?
+    @ObservationIgnored private var session: ASWebAuthenticationSession?
+    /// The Keychain refused to store the refresh token: the session works now but won't survive a relaunch.
+    private(set) var keychainWriteFailed = false
 
     init(
         clientID: String, http: any HTTPClient, secrets: any SecretStore,
@@ -81,6 +85,7 @@ final class SpotifyAuth: NSObject, ASWebAuthenticationPresentationContextProvidi
         expiry = .distantPast
         refreshTask?.cancel()
         refreshTask = nil
+        keychainWriteFailed = false
         secrets.delete(Self.refreshKey)
     }
 
@@ -103,7 +108,8 @@ final class SpotifyAuth: NSObject, ASWebAuthenticationPresentationContextProvidi
         if let refreshTask { return try await refreshTask.value }
         let task = Task { try await self.performRefresh() }
         refreshTask = task
-        defer { refreshTask = nil }
+        // Only the task's creator clears it, and only while it is still the current one.
+        defer { if refreshTask == task { refreshTask = nil } }
         return try await task.value
     }
 
@@ -123,7 +129,11 @@ final class SpotifyAuth: NSObject, ASWebAuthenticationPresentationContextProvidi
     private func apply(_ token: SpotifyToken) {
         accessToken = token.accessToken
         expiry = now().addingTimeInterval(TimeInterval(token.expiresIn))
-        if let refresh = token.refreshToken { secrets.write(refresh, for: Self.refreshKey) }
+        if let refresh = token.refreshToken {
+            let stored = secrets.write(refresh, for: Self.refreshKey)
+            keychainWriteFailed = !stored
+            if !stored { Logger(subsystem: "Memorise", category: "spotify").error("Keychain write of the refresh token failed") }
+        }
     }
 
     private func tokenCall(_ spec: HTTPRequestSpec?) async throws -> SpotifyToken {

@@ -27,6 +27,9 @@ final class GlossService {
     private var glosses: [String: [String: String]] = [:]
     /// Words that couldn't be translated, by track id.
     private var failed: [String: Set<String>] = [:]
+    /// The user declined (or can't get) the Korean language pack: don't prompt again this launch.
+    /// Reset only by `retryFailed` (the reader's pull to refresh).
+    @ObservationIgnored private var translationDeclined = false
     /// Unique words of each prepared song that no deck knows, in first-seen order.
     @ObservationIgnored private var wanted: [String: [String]] = [:]
 
@@ -106,7 +109,18 @@ final class GlossService {
     }
 
     /// Forgets words marked as failed, so the reader can try the batch again.
-    func retryFailed(track: String) { failed[track] = [] }
+    func retryFailed(track: String) {
+        failed[track] = []
+        translationDeclined = false
+    }
+
+    /// Empties every in-memory gloss (Settings → Clear lyrics cache).
+    func clearAll() {
+        glosses = [:]
+        failed = [:]
+        wanted = [:]
+        translationDeclined = false
+    }
 
     // MARK: Apple Translation
 
@@ -128,10 +142,24 @@ final class GlossService {
     func runBatch(session: TranslationSession, track: String) async {
         let texts = pendingTexts(track: track)
         guard !texts.isEmpty else { return }
-        guard await Self.availability() != .unavailable else { markFailed(texts, track: track); return }
+        guard !translationDeclined else { markFailed(texts, track: track); return }
+        guard await Self.availability() != .unavailable else {
+            translationDeclined = true
+            markFailed(texts, track: track)
+            return
+        }
         do {
             // Shows the system download prompt when the Korean pack isn't installed yet.
             try await session.prepareTranslation()
+        } catch is CancellationError {
+            return
+        } catch {
+            // Download declined or failed: remember it, so the next song doesn't prompt again.
+            translationDeclined = true
+            markFailed(texts, track: track)
+            return
+        }
+        do {
             let requests = texts.map { TranslationSession.Request(sourceText: $0, clientIdentifier: $0) }
             for try await response in session.translate(batch: requests) {
                 if let id = response.clientIdentifier { store([id: response.targetText], track: track) }

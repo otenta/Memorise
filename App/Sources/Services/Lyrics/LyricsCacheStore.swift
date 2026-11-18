@@ -22,7 +22,11 @@ actor LyricsCacheStore {
     func load(_ spotifyID: String) -> LyricsCacheFile? {
         guard let url = fileURL(spotifyID) else { return memory[spotifyID] }
         guard let data = try? Data(contentsOf: url) else { return nil }
-        if let file = LyricsCacheFile.decode(data) { return file }
+        if let file = LyricsCacheFile.decode(data) {
+            // A hit counts as a use, so pruning removes the least recently opened tracks.
+            try? FileManager.default.setAttributes([.modificationDate: Date()], ofItemAtPath: url.path)
+            return file
+        }
         try? FileManager.default.removeItem(at: url)
         return nil
     }
@@ -34,6 +38,7 @@ actor LyricsCacheStore {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             Self.excludeFromBackup(directory)
             try file.encoded().write(to: url, options: .atomic)
+            prune(directory)
         } catch {
             AppEnvironment.log.error("Lyrics cache write failed: \(error.localizedDescription, privacy: .public)")
         }
@@ -51,6 +56,17 @@ actor LyricsCacheStore {
         memory = [:]
         guard let directory else { return }
         try? FileManager.default.removeItem(at: directory)
+    }
+
+    /// Keeps at most `LyricsConstants.cacheMaxEntries` files, deleting the oldest by modification date.
+    private func prune(_ directory: URL) {
+        let keys: [URLResourceKey] = [.contentModificationDateKey]
+        guard let files = try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: keys),
+              files.count > LyricsConstants.cacheMaxEntries else { return }
+        let dated = files.map { ($0, (try? $0.resourceValues(forKeys: Set(keys)).contentModificationDate) ?? .distantPast) }
+        for (url, _) in dated.sorted(by: { $0.1 < $1.1 }).prefix(files.count - LyricsConstants.cacheMaxEntries) {
+            try? FileManager.default.removeItem(at: url)
+        }
     }
 
     private func fileURL(_ spotifyID: String) -> URL? {

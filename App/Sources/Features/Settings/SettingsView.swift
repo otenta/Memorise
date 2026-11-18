@@ -177,6 +177,7 @@ struct SettingsView: View {
                         Button(role: .destructive) {
                             Task {
                                 await env.lyrics.cache.clearAll()
+                                env.glosses.clearAll()
                                 clearedLyricsCache = true
                             }
                         } label: {

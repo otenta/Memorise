@@ -79,3 +79,8 @@ struct URLSessionHTTPClient: HTTPClient {
         }
     }
 }
+
+/// Always offline: previews and tests that must never reach the network.
+struct OfflineHTTPClient: HTTPClient {
+    func send(_ spec: HTTPRequestSpec) async throws -> HTTPResponse { throw HTTPError.offline }
+}
