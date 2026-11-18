@@ -51,7 +51,7 @@ private struct LyricsHomeContent: View {
                 .padding(.vertical, 12)
             }
             .scrollDismissesKeyboard(.interactively)
-            .auroraBackground(colors: Subject.korean.colors, intensity: 0.8, running: model.path.isEmpty)
+            .auroraBackground(colors: Subject.korean.colors, intensity: 0.8, animated: false)
             // On the root, not the stack, so a pushed reader or playlist cancels the poll.
             .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
                 guard env.spotify.isConnected, scenePhase == .active else { return }
@@ -391,6 +391,7 @@ struct TrackList: View {
     @Bindable var model: LyricsHomeViewModel
 
     var body: some View {
+        // No background, material or shadow on the stack: each row draws its own piece of the card.
         LazyVStack(spacing: 0) {
             ForEach(tracks.indices, id: \.self) { index in
                 let track = tracks[index]
@@ -400,11 +401,10 @@ struct TrackList: View {
                     TrackRow(track: track)
                 }
                 .buttonStyle(PressableStyle(scale: 0.98))
+                .listCardRow(position: .at(index: index, count: tracks.count))
                 .accessibilityIdentifier("lyrics.row.\(track.spotifyID)")
-                if index < tracks.count - 1 { Divider().padding(.leading, 68) }
             }
         }
-        .glassCard(radius: Theme.smallRadius)
     }
 }
 
@@ -414,7 +414,8 @@ private struct PlaylistList: View {
 
     var body: some View {
         LazyVStack(spacing: 0) {
-            ForEach(Array(playlists.enumerated()), id: \.element.id) { index, playlist in
+            ForEach(playlists.indices, id: \.self) { index in
+                let playlist = playlists[index]
                 Button {
                     model.path.append(.playlist(playlist))
                 } label: {
@@ -436,11 +437,10 @@ private struct PlaylistList: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(PressableStyle(scale: 0.98))
+                .listCardRow(position: .at(index: index, count: playlists.count))
                 .accessibilityIdentifier("lyrics.playlist.\(playlist.id)")
-                if index < playlists.count - 1 { Divider().padding(.leading, 68) }
             }
         }
-        .glassCard(radius: Theme.smallRadius)
     }
 }
 
@@ -482,7 +482,7 @@ private struct PlaylistTracksView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
         }
-        .auroraBackground(colors: Subject.korean.colors, intensity: 0.8, running: model.path.last == .playlist(playlist))
+        .auroraBackground(colors: Subject.korean.colors, intensity: 0.8, animated: false)
         .navigationTitle(playlist.name)
         .navigationBarTitleDisplayMode(.inline)
         .task { await fetch() }
@@ -524,10 +524,11 @@ private struct LoadMoreRow: View {
 private struct LoadingRows: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pulse = false
+    private let count = 5
 
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(0..<5, id: \.self) { _ in
+            ForEach(0..<count, id: \.self) { index in
                 HStack(spacing: 12) {
                     RoundedRectangle(cornerRadius: 9, style: .continuous).fill(.primary.opacity(0.1)).frame(width: 44, height: 44)
                     VStack(alignment: .leading, spacing: 6) {
@@ -536,13 +537,14 @@ private struct LoadingRows: View {
                     }
                     Spacer()
                 }
+                // Only the placeholder shapes pulse; the row surfaces stay still.
+                .opacity(pulse ? 0.55 : 1)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 12)
                 .frame(minHeight: 60)
+                .listCardRow(position: .at(index: index, count: count))
             }
         }
-        .glassCard(radius: Theme.smallRadius)
-        .opacity(pulse ? 0.55 : 1)
         .onAppear {
             guard !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) { pulse = true }
@@ -590,16 +592,29 @@ private struct MessageCard: View {
     }
 }
 
-#Preview("Rows") {
+@MainActor private func rowsPreview(scheme: ColorScheme) -> some View {
     let tracks = [
         TrackInfo(spotifyID: "1", title: "Spring Day", titleKo: "봄날", artists: ["BTS"]),
         TrackInfo(spotifyID: "2", title: "Supernova", artists: ["aespa"]),
+        TrackInfo(spotifyID: "3", title: "Dynamite", artists: ["BTS"]),
     ]
     let spotify = SpotifyClient(initialState: .connected(displayName: "me"))
     let model = LyricsHomeViewModel(spotify: spotify, nowPlaying: NowPlayingMonitor(spotify: spotify))
-    return ScrollView { TrackList(tracks: tracks, model: model).padding() }
-        .auroraBackground(colors: Subject.korean.colors)
+    return ScrollView {
+        VStack(spacing: 16) {
+            TrackList(tracks: Array(tracks.prefix(1)), model: model)
+            TrackList(tracks: tracks, model: model)
+            LoadingRows()
+        }
+        .padding()
+    }
+    .auroraBackground(colors: Subject.korean.colors, animated: false)
+    .preferredColorScheme(scheme)
 }
+
+#Preview("Rows · light") { rowsPreview(scheme: .light) }
+
+#Preview("Rows · dark") { rowsPreview(scheme: .dark) }
 
 #Preview("Paused") {
     let track = TrackInfo(spotifyID: "1", title: "Spring Day", titleKo: "봄날", artists: ["BTS"])

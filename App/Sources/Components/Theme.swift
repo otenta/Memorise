@@ -9,6 +9,11 @@ enum Theme {
     static let smallRadius: CGFloat = 16
 
     /// Snappy, slightly bouncy default spring.
+    /// Opaque-ish fill for the rows of long lists (PLAN_R11 P-7): no material, so nothing is blurred per frame.
+    static let listSurface = Color(uiColor: .secondarySystemBackground).opacity(0.92)
+    /// The row card's edge, matching `GlassCard`'s light and dark edge as one flat colour.
+    static func listEdge(_ scheme: ColorScheme) -> Color { .white.opacity(scheme == .dark ? 0.14 : 0.7) }
+
     static let spring = Animation.spring(response: 0.38, dampingFraction: 0.72)
     static let softSpring = Animation.spring(response: 0.55, dampingFraction: 0.85)
 
@@ -215,6 +220,64 @@ private struct AppearAnimation: ViewModifier {
                 guard !shown else { return }
                 withAnimation(Theme.softSpring.delay(delay)) { shown = true }
             }
+    }
+}
+
+// MARK: - List card rows
+
+/// Where a row sits in a stacked list card.
+enum ListRowPosition {
+    case only, first, middle, last
+
+    /// The position of row `index` of `count`.
+    static func at(index: Int, count: Int) -> ListRowPosition {
+        if count <= 1 { return .only }
+        if index == 0 { return .first }
+        return index == count - 1 ? .last : .middle
+    }
+
+    fileprivate var roundsTop: Bool { self == .only || self == .first }
+    fileprivate var roundsBottom: Bool { self == .only || self == .last }
+}
+
+/// One row of a long list drawn as a segment of a rounded card. Each row paints its own piece, so no material,
+/// shadow or clip ever spans the whole list (PLAN_R11 P-7).
+struct ListCardRow: ViewModifier {
+    let position: ListRowPosition
+    var radius: CGFloat = Theme.smallRadius
+    @Environment(\.colorScheme) private var scheme
+
+    func body(content: Content) -> some View {
+        let shape = UnevenRoundedRectangle(
+            topLeadingRadius: position.roundsTop ? radius : 0, bottomLeadingRadius: position.roundsBottom ? radius : 0,
+            bottomTrailingRadius: position.roundsBottom ? radius : 0, topTrailingRadius: position.roundsTop ? radius : 0,
+            style: .continuous)
+        content
+            .background(Theme.listSurface, in: shape)
+            .overlay {
+                // The outline is pushed past the row on the sides that touch a neighbour and clipped back, so
+                // only the card's outer edges show a line.
+                Color.clear
+                    .overlay {
+                        shape.strokeBorder(Theme.listEdge(scheme), lineWidth: 1)
+                            .padding(.top, position.roundsTop ? 0 : -2)
+                            .padding(.bottom, position.roundsBottom ? 0 : -2)
+                    }
+                    .clipped()
+                    .allowsHitTesting(false)
+            }
+            .overlay(alignment: .bottom) {
+                if !position.roundsBottom {
+                    Rectangle().fill(Color.primary.opacity(0.1)).frame(height: 0.5).padding(.leading, 68)
+                        .allowsHitTesting(false)
+                }
+            }
+    }
+}
+
+extension View {
+    func listCardRow(position: ListRowPosition, radius: CGFloat = Theme.smallRadius) -> some View {
+        modifier(ListCardRow(position: position, radius: radius))
     }
 }
 
