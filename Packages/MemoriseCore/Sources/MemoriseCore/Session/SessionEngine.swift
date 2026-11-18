@@ -99,7 +99,7 @@ public final class SessionEngine {
         sessionID: UUID = UUID(),
         wallClock: @escaping @Sendable () -> Date = { Date() },
         constants: SchedulerConstants = .standard,
-        history deckHistory: DeckHistory? = nil
+        history deckHistory: DeckHistory
     ) {
         self.deck = deck
         self.config = config

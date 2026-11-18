@@ -24,7 +24,8 @@ func makeEngine(
         rng: SplitMix64(seed: seed),
         sessionID: UUID(),
         wallClock: { fixedNow.addingTimeInterval(Double(clock.now().wholeMilliseconds) / 1_000) },
-        constants: constants
+        constants: constants,
+        history: .allDue // R9-SF3: this helper never passed a history, which meant "every miss is due"
     )
     return (engine, clock)
 }

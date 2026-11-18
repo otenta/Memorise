@@ -34,13 +34,13 @@ public enum SessionComposer {
     /// rank order, partial entries, remaining due wrong entries, not-yet-due wrong entries (soonest
     /// first), covered entries (least recently seen first).
     ///
-    /// - Parameter history: `nil` counts every wrong card as due (callers without session history).
+    /// - Parameter history: the deck's completed sessions. `.allDue` counts every wrong card as due; `.empty` none.
     /// - Returns: `nil` when the deck doesn't use coverage sessions or the pool has no ranks.
     public static func queue(
         pool: [Card],
         stats: [ItemKey: ItemStats],
         deck: any Deck,
-        history: DeckHistory?,
+        history: DeckHistory,
         targetEntries: Int,
         constants: SchedulerConstants = .standard,
         rng: inout SplitMix64
@@ -82,7 +82,6 @@ public enum SessionComposer {
                 var soonest = Int.max
                 for card in wrongCards {
                     guard let missed = stats[card.key]?.lastWrongAt else { continue }
-                    guard let history else { due.append(card.key); continue }
                     let left = wrongGap(key: card.key, lastWrongAt: missed, constants: constants) - 1 - history.sessionsSince(missed)
                     if left <= 0 { due.append(card.key) } else { soonest = min(soonest, left) }
                 }
