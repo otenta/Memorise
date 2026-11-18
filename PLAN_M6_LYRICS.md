@@ -347,6 +347,30 @@ Commit: `M6-L8: add lyric words to custom decks`
 - Saving a duplicate is blocked.
 - The full data export includes the deck (user decks are already exported) but **no** lyrics cache.
 
+### L8b — Relaxed example rules for custom decks (implementor core + frontend)
+**Why:** owner decision L-D10 (2026-11-18). L8 found that `DeckValidator` requires both example lines filled and `ko` ≤ 40 Hangul in **every** mode. So `AddToDeckSheet` drops the lyric line when there's no aligned English line or the line is long, which breaks L-D8 ("keep the line"). The fix is to relax the rule **for `.user` mode only**. Bundled decks keep the strict rule.
+
+**Core**, in `Korean/DeckValidator.swift`, applied to both `e.example` and every `e.examples` element:
+1. New constants in `DeckValidator`: `bundledExampleMaxHangul = 40` (today's literal 40, now named) and `userExampleMaxHangul = 80`.
+2. In `.user` mode, an example needs a non-blank `ko`, `en` may be blank, and `ko` can have up to `userExampleMaxHangul` syllables.
+3. **Exception:** a `.user` entry whose `pos` is `.pattern` still needs a non-blank `en` on every example, because the pattern prompt is the first example's English (`VocabUI`).
+4. In `.bundled` mode nothing changes: both lines are required and the limit is 40. Dialogue lines keep the 40 limit in every mode.
+5. `UserDecks.EntryDraft.normalized` already keeps an example whose `en` is empty and drops one where both are empty. Keep that. An example with an empty `ko` and a filled `en` becomes a validator error in `.user` mode ("example Korean must be non-empty").
+
+No `Codable` or wire change: `Example.en` is already a `String`, and a blank string round-trips.
+
+**Frontend:**
+1. `AddToDeckSheet`: always keep the lyric line as `example.ko` when it has ≤ 80 Hangul. Set `en` to the aligned English line, or empty. The English field stays editable. Remove the "Type the English line…" note. Keep a note only for a line over 80 Hangul ("This line is too long to keep as the card's example.").
+2. `VocabUI` answer view (the `ForEach(e.allExamples…)` block): hide the `Text(ex.en)` row when `ex.en` is blank, so no empty gap shows. The 🔊 on the Korean line stays.
+3. `UserDeckEditorView`: let the example English be empty. Show `UserDecks.problems` messages as today.
+
+Commit: `M6-L8b: relaxed example rules for custom decks`
+**Accept:**
+- A 60-Hangul lyric line with no English saves into a custom deck. The reveal shows the line with 🔊 and no empty English row.
+- The same entry in a bundled deck file fails validation (40 limit, `en` required).
+- A custom-deck pattern entry with a blank example `en` is rejected.
+- Editing that saved card in the deck editor keeps the line and the source.
+
 ### L9 — Docs and tracker (implementor)
 **Files:** `PLAN.md` §6.1 (new persisted file `LyricsCache/*.json`, not exported), §11 (a Lyrics tab subsection pointing here), §15 (M6 status), §17 tracker row; `README.md` QA checklist (connect, pick, not-available, bubble, swipe, add to deck, offline cache, clear cache, disconnect).
 
