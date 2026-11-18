@@ -3,13 +3,18 @@ import Foundation
 /// Turns Spotify track names into search queries and comparison keys (PLAN_M6 §4.4 step 2). Pure.
 public enum TrackQuery {
     private static let suffixWords =
-        "remix|live|inst|instrumental|ver|version|edit|acoustic|remaster|remastered|mix|clean|explicit|radio|sped|slowed|demo|mono|stereo"
+        "remix|live|inst|instrumental|ver|version|edit|acoustic|remaster|remastered|mix|clean|explicit|radio|sped|slowed|demo|mono|stereo|video|special|performance|mv|ost|prod"
 
-    /// Strips `(feat. …)`, `(ft. …)`, `[…]` and ` - Remix` / ` - Live` / ` - Inst.` / ` - Japanese ver.` style suffixes.
-    /// `"Seven (feat. Latto) - Clean Ver."` → `"Seven"`; `"Love wins all"` is unchanged.
+    /// Bracket groups whose first word is one of these are stripped: `(feat. …)`, `(Prod. by …)`, `(Inst.)`,
+    /// `(Japanese ver.)`. `(with …)` is kept: Spotify lists collaborators in `artists`, so search doesn't need it gone.
+    private static let groupWords =
+        "feat|ft|featuring|prod|produced|inst|instrumental|ver|version|remix|acoustic|live|remaster|remastered|sped|slowed|english|japanese|chinese|korean"
+
+    /// Strips the groups above, every `[…]` group, and ` - Remix` / ` - Live` / ` - Inst.` / ` - Special Video` style
+    /// suffixes. `"Seven (feat. Latto) - Clean Ver."` → `"Seven"`; `"Love wins all"` is unchanged.
     public static func normalise(_ title: String) -> String {
         var s = title
-        s = replacing(s, #"\s*[\(\[]\s*(?:feat|ft|featuring|with)\b[^\)\]]*[\)\]]"#, with: "")
+        s = replacing(s, #"\s*[\(\[]\s*(?:\#(groupWords))\b[^\)\]]*[\)\]]"#, with: "")
         s = replacing(s, #"\s*\[[^\]]*\]"#, with: "")
         s = replacing(s, #"\s+-\s+[^-]*\b(?:\#(suffixWords))\b[^-]*$"#, with: "")
         let trimmed = s.trimmingCharacters(in: .whitespacesAndNewlines)
