@@ -199,7 +199,9 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
   - Search: `GET /search?type=track&limit=10&q=`, debounced 400 ms.
   - Skip non-track items (podcast episodes: `type != "track"`).
 - **Playing:** tapping a song calls `PUT /me/player/play` with body `{"uris":["spotify:track:<id>"]}`, then opens the reader.
-  - On 404 `NO_ACTIVE_DEVICE`, open `spotify:track:<id>` with `UIApplication.open`. The Spotify app starts it, and the reader is already open when the user comes back. Add `LSApplicationQueriesSchemes: [spotify]`.
+  - **R12 P-10:** Memorise never opens the Spotify app on its own. On 404 `NO_ACTIVE_DEVICE` it reads `GET /me/player/devices`, picks a device (active, else a `Smartphone`, else the first usable one) and plays there with `?device_id=`. With no device at all, the notice "Spotify isn't open on any device" has an **Open Spotify** button, the only place that opens the app. Add `LSApplicationQueriesSchemes: [spotify]`.
+  - **R12 P-13:** songs started from a playlist or Liked play in that context (`context_uri` + `offset`), so next and previous follow the list. A refused context is retried once with the song alone. Recent and search results play on their own.
+  - **R12 controls:** pause (`PUT /me/player/pause`), resume (`PUT /me/player/play`, with a device transfer when nothing is active), next and previous (`POST /me/player/next|previous`). The card flips at once and a quick double tap sends one command.
   - On 403 (not Premium), show a one-line note; the reader still opens.
   - Opening a song from "Now playing" doesn't call play.
 - **Errors:** 429 → wait for `Retry-After` and show "Spotify is busy, try again in N s"; `QUOTA_EXCEEDED` → "Spotify daily limit reached".
@@ -281,10 +283,10 @@ Commit: `M6-L2: LRCLIB, Genius and Spotify parsing; lyrics cache model`
 
 ### L3 — App networking, Keychain, Spotify auth and client (implementor, app)
 **Files:** `Services/Lyrics/HTTPClient.swift`, `KeychainStore.swift`, `SpotifyAuth.swift`, `SpotifyClient.swift`, `AppEnvironment.swift` (adds `spotify: SpotifyClient`, `lyrics: LyricsService`).
-Implements §4.9. `SpotifyClient` is `@MainActor @Observable` with `state: .notConfigured | .disconnected | .connecting | .connected(displayName)`. Methods: `connect()`, `disconnect()` (deletes the Keychain item), `nowPlaying()`, `recent()`, `playlists()`, `playlistItems(id:)`, `liked(offset:)`, `search(_:)`, `track(id:language:)`, `play(trackID:) -> PlayOutcome (.playing | .openedSpotify | .notPremium | .failed)`.
+Implements §4.9. `SpotifyClient` is `@MainActor @Observable` with `state: .notConfigured | .disconnected | .connecting | .connected(displayName)`. Methods: `connect()`, `disconnect()` (deletes the Keychain item), `nowPlaying()`, `recent()`, `playlists()`, `playlistItems(id:)`, `liked(offset:)`, `search(_:)`, `track(id:language:)`, `play(trackID:context:) -> PlayOutcome (.playing | .noDevice | .notPremium | .failed)`, `pause()`, `resume()`, `next()`, `previous()`, `openSpotifyApp()`.
 
 Commit: `M6-L3: Spotify PKCE sign-in, token refresh and Web API client`
-**Accept:** connect → the Spotify consent screen → back in the app, connected. Killing and relaunching keeps you connected. A revoked app (removed in Spotify account settings) → back to Connect after the next call. `play` with the Spotify app closed → it opens Spotify playing the track.
+**Accept:** connect → the Spotify consent screen → back in the app, connected. Killing and relaunching keeps you connected. A revoked app (removed in Spotify account settings) → back to Connect after the next call. `play` with no active device → it plays on an available device (R12); with the Spotify app not running anywhere → the no-device notice.
 
 ### L4 — Lyrics service and cache (implementor, app)
 **Files:** `Services/Lyrics/LyricsService.swift`, `LyricsCacheStore.swift` (actor, atomic writes, like `PersonalSnippetStore`), `SettingsView.swift` (a "Lyrics" section with **Clear lyrics cache** and **Disconnect Spotify**; frontend can restyle it).

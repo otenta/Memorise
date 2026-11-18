@@ -176,6 +176,65 @@ private struct SpotifyErrorBody: Decodable {
     var reason: String?
 }
 
+/// Where a song is played from, so next and previous follow the list (PLAN_R12 P-13).
+public enum PlayContext: Hashable, Sendable {
+    case none
+    case playlist(id: String)
+    case likedSongs(userID: String)
+
+    /// The Spotify context URI, or `nil` for `.none`. Ids are checked when the request is built.
+    public var uri: String? {
+        switch self {
+        case .none: nil
+        case let .playlist(id): SpotifyRequests.isValidID(id) ? "spotify:playlist:\(id)" : nil
+        case let .likedSongs(userID): userID.isEmpty || userID.contains(where: { !$0.isASCII || !($0.isLetter || $0.isNumber || "._-~".contains($0)) })
+            ? nil : "spotify:user:\(userID):collection"
+        }
+    }
+}
+
+/// One Spotify Connect device from `GET /me/player/devices`.
+public struct SpotifyDevice: Decodable, Hashable, Sendable {
+    public var id: String?
+    public var isActive: Bool
+    public var isRestricted: Bool
+    public var name: String
+    public var type: String
+
+    public init(id: String?, isActive: Bool = false, isRestricted: Bool = false, name: String = "", type: String = "") {
+        self.id = id
+        self.isActive = isActive
+        self.isRestricted = isRestricted
+        self.name = name
+        self.type = type
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, type
+        case isActive = "is_active"
+        case isRestricted = "is_restricted"
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try? c.decodeIfPresent(String.self, forKey: .id)
+        isActive = (try? c.decodeIfPresent(Bool.self, forKey: .isActive)) ?? false
+        isRestricted = (try? c.decodeIfPresent(Bool.self, forKey: .isRestricted)) ?? false
+        name = (try? c.decodeIfPresent(String.self, forKey: .name)) ?? ""
+        type = (try? c.decodeIfPresent(String.self, forKey: .type)) ?? ""
+    }
+}
+
+/// Picks the device to play on when none is active.
+public enum SpotifyDevicePick {
+    /// Skips devices with no id and restricted ones. Then prefers an active device, then a `Smartphone` (this
+    /// phone, normally), then the first one left. `nil` when none can be used.
+    public static func pick(_ devices: [SpotifyDevice]) -> String? {
+        let usable = devices.filter { $0.id != nil && !$0.isRestricted }
+        return (usable.first { $0.isActive } ?? usable.first { $0.type == "Smartphone" } ?? usable.first)?.id
+    }
+}
+
 /// What Spotify is playing: the song and whether it is playing or paused.
 public struct SpotifyPlayback: Hashable, Sendable {
     public var track: TrackInfo
@@ -216,6 +275,18 @@ public enum SpotifyDecoder {
         guard !data.isEmpty, let p = try? JSONDecoder().decode(SpotifyCurrentlyPlaying.self, from: data),
               let track = p.item?.trackInfo() else { return nil }
         return SpotifyPlayback(track: track, isPlaying: p.isPlaying, progressMs: p.progressMs)
+    }
+
+    /// Devices of `GET /me/player/devices`; elements that don't decode are skipped.
+    public static func devices(_ data: Data) -> [SpotifyDevice] {
+        struct Body: Decodable {
+            let devices: [Lossy]?
+            struct Lossy: Decodable {
+                let value: SpotifyDevice?
+                init(from decoder: any Decoder) throws { value = try? SpotifyDevice(from: decoder) }
+            }
+        }
+        return ((try? JSONDecoder().decode(Body.self, from: data))?.devices ?? []).compactMap(\.value)
     }
 
     /// Tracks of a `recently-played`, `me/tracks` or `playlists/{id}/items` page, in order, non-tracks skipped.

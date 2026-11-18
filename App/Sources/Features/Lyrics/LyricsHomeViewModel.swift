@@ -285,22 +285,24 @@ final class LyricsHomeViewModel {
     }
 
     /// Opens the reader at once, then starts the song in Spotify in the background (unless it is already playing).
-    /// A failed start is reported in `notice`; it never delays or blocks the reader.
-    func open(_ track: TrackInfo, play: Bool) async {
+    /// A failed start is reported by the shared player (`NowPlayingMonitor.notice`); it never delays or blocks the
+    /// reader, and Memorise never switches to Spotify by itself.
+    func open(_ track: TrackInfo, play: Bool, context: PlayContext = .none) async {
         notice = nil
         path.append(.reader(track))
         guard play else { return }
-        let spotify = spotify
-        let gen = generation
-        Task { [weak self] in
-            let outcome = await spotify.play(trackID: track.spotifyID)
-            guard let self, gen == self.generation else { return }
-            switch outcome {
-            case .playing: self.monitor.refreshSoon()
-            case .openedSpotify: self.notice = "Opened in Spotify."
-            case .notPremium: self.notice = "Spotify needs Premium to start songs from here. Press play in Spotify."
-            case let .failed(message): self.notice = message
-            }
+        monitor.dismissNotice()
+        let monitor = monitor
+        Task { await monitor.play(track, context: context) }
+    }
+
+    /// Where songs of `source` are played from, so next and previous follow the list (P-13). Recent and search
+    /// results play on their own.
+    func context(for source: LyricsSource) -> PlayContext {
+        guard !isSearching else { return .none }
+        switch source {
+        case .recent, .playlists: return .none
+        case .liked: return spotify.userID.map { .likedSongs(userID: $0) } ?? .none
         }
     }
 

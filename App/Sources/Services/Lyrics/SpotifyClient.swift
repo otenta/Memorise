@@ -55,8 +55,9 @@ final class SpotifyClient {
 
     enum PlayOutcome: Equatable {
         case playing
-        /// No active device: the Spotify app was opened on the track instead.
-        case openedSpotify
+        /// Spotify knows no device to play on (the app isn't running anywhere). Memorise never opens Spotify itself
+        /// (PLAN_R12 P-10); the UI offers an Open Spotify button.
+        case noDevice
         /// Spotify refused playback (needs Premium).
         case notPremium
         case failed(String)
@@ -186,21 +187,89 @@ final class SpotifyClient {
 
     // MARK: Playback
 
-    func play(trackID: String) async -> PlayOutcome {
-        do {
-            _ = try await get { SpotifyRequests.play(trackID: trackID, token: $0) }
-            return .playing
-        } catch SpotifyError.http(403, _) {
-            return .notPremium
-        } catch let SpotifyError.http(404, reason) {
-            // Only NO_ACTIVE_DEVICE (or an unexplained 404) means "start it in the Spotify app".
-            guard reason == nil || reason == "NO_ACTIVE_DEVICE" else { return .failed("This song can't be played on Spotify.") }
-            guard let uri = SpotifyRequests.trackURI(trackID), await openURL(uri) else {
-                return .failed("Open Spotify, then pick the song again.")
+    /// Starts `trackID`, in `context` when there is one (P-13). Never leaves the app (P-10). At most 4 requests:
+    /// play; on "no active device" the device list and play on the picked device; on a refused context one
+    /// retry with the song alone.
+    func play(trackID: String, context: PlayContext = .none) async -> PlayOutcome {
+        var context = context
+        var device: String?
+        var askedForDevice = false
+        for _ in 0..<4 {
+            do {
+                let d = device
+                let c = context
+                _ = try await get { SpotifyRequests.play(trackID: trackID, context: c, deviceID: d, token: $0) }
+                return .playing
+            } catch let SpotifyError.http(code, reason) {
+                if code == 403 {
+                    return reason == nil || reason == "PREMIUM_REQUIRED" ? .notPremium : .failed("Spotify refused to play this.")
+                }
+                if code == 404, reason == nil || reason == "NO_ACTIVE_DEVICE", device == nil, !askedForDevice {
+                    askedForDevice = true
+                    switch await pickDevice() {
+                    case let .success(id?): device = id; continue
+                    case .success(nil): return .noDevice
+                    case let .failure(error): return .failed(error.localizedDescription)
+                    }
+                }
+                if code == 400 || code == 404, context != .none {
+                    context = .none
+                    continue
+                }
+                return .failed(code == 404 ? "This song can't be played on Spotify." : "Spotify answered \(code).")
+            } catch {
+                return .failed(error.localizedDescription)
             }
-            return .openedSpotify
+        }
+        return .failed("Spotify didn't start the song.")
+    }
+
+    func pause() async -> PlayOutcome { await command { SpotifyRequests.pause(token: $0) } }
+
+    func next() async -> PlayOutcome { await command { SpotifyRequests.next(token: $0) } }
+
+    func previous() async -> PlayOutcome { await command { SpotifyRequests.previous(token: $0) } }
+
+    /// Resumes. With no active device the phone (or another device) takes over playback.
+    func resume() async -> PlayOutcome {
+        let outcome = await command { SpotifyRequests.resume(token: $0) }
+        guard outcome == .noDevice else { return outcome }
+        switch await pickDevice() {
+        case let .success(id?): return await command { SpotifyRequests.transfer(deviceID: id, play: true, token: $0) }
+        case .success(nil): return .noDevice
+        case let .failure(error): return .failed(error.localizedDescription)
+        }
+    }
+
+    /// The only place that opens the Spotify app, and only from the "Open Spotify" button (P-10).
+    func openSpotifyApp() async {
+        guard let url = URL(string: "spotify:") else { return }
+        _ = await openURL(url)
+    }
+
+    /// One player command. A 403 that isn't `PREMIUM_REQUIRED` is Spotify's "restriction violated" (pausing what is
+    /// already paused): the state the caller wanted, so it counts as success.
+    private func command(_ build: (String) -> HTTPRequestSpec?) async -> PlayOutcome {
+        do {
+            _ = try await get(build)
+            return .playing
+        } catch let SpotifyError.http(code, reason) {
+            switch code {
+            case 403: return reason == "PREMIUM_REQUIRED" ? .notPremium : .playing
+            case 404 where reason == nil || reason == "NO_ACTIVE_DEVICE": return .noDevice
+            default: return .failed("Spotify answered \(code).")
+            }
         } catch {
             return .failed(error.localizedDescription)
+        }
+    }
+
+    private func pickDevice() async -> Result<String?, Error> {
+        do {
+            let data = try await get { SpotifyRequests.devices(token: $0) }
+            return .success(SpotifyDevicePick.pick(SpotifyDecoder.devices(data)))
+        } catch {
+            return .failure(error)
         }
     }
 

@@ -129,23 +129,73 @@ public enum SpotifyRequests {
         return r
     }
 
-    /// `PUT /me/player/play` with `{"uris":["spotify:track:<id>"]}`.
-    public static func play(trackID: String, token: String) -> HTTPRequestSpec? {
-        guard isValidID(trackID) else { return nil }
-        var r = api("/me/player/play", token: token)
-        r?.method = "PUT"
-        r?.headers["Content-Type"] = "application/json"
-        r?.body = Data(#"{"uris":["spotify:track:\#(trackID)"]}"#.utf8)
+    /// `PUT /me/player/play`, plus `?device_id=` when given. The body is `{"uris":[…]}` for `.none`, else
+    /// `{"context_uri":…,"offset":{"uri":…}}`, so next and previous follow the playlist or Liked.
+    public static func play(
+        trackID: String, context: PlayContext = .none, deviceID: String? = nil, token: String
+    ) -> HTTPRequestSpec? {
+        guard isValidID(trackID), validDevice(deviceID) else { return nil }
+        let track = "spotify:track:\(trackID)"
+        let body: String
+        if let uri = context.uri {
+            body = #"{"context_uri":"\#(uri)","offset":{"uri":"\#(track)"}}"#
+        } else if context == .none {
+            body = #"{"uris":["\#(track)"]}"#
+        } else {
+            return nil // a context whose ids are invalid
+        }
+        return player("/me/player/play", method: "PUT", query: deviceQuery(deviceID), body: Data(body.utf8), token: token)
+    }
+
+    /// `PUT /me/player/play` with no body: resumes what is paused.
+    public static func resume(deviceID: String? = nil, token: String) -> HTTPRequestSpec? {
+        guard validDevice(deviceID) else { return nil }
+        return player("/me/player/play", method: "PUT", query: deviceQuery(deviceID), body: nil, token: token)
+    }
+
+    public static func pause(token: String) -> HTTPRequestSpec? {
+        player("/me/player/pause", method: "PUT", query: [], body: nil, token: token)
+    }
+
+    public static func next(token: String) -> HTTPRequestSpec? {
+        player("/me/player/next", method: "POST", query: [], body: nil, token: token)
+    }
+
+    public static func previous(token: String) -> HTTPRequestSpec? {
+        player("/me/player/previous", method: "POST", query: [], body: nil, token: token)
+    }
+
+    public static func devices(token: String) -> HTTPRequestSpec? { api("/me/player/devices", token: token) }
+
+    /// `PUT /me/player` moves playback to `deviceID`.
+    public static func transfer(deviceID: String, play: Bool, token: String) -> HTTPRequestSpec? {
+        guard isValidID(deviceID) else { return nil }
+        let body = #"{"device_ids":["\#(deviceID)"],"play":\#(play ? "true" : "false")}"#
+        return player("/me/player", method: "PUT", query: [], body: Data(body.utf8), token: token)
+    }
+
+    /// A player request. Every `PUT`/`POST` carries `Content-Length`, which Spotify needs even with no body.
+    private static func player(
+        _ path: String, method: String, query: [(String, String)], body: Data?, token: String
+    ) -> HTTPRequestSpec? {
+        var r = api(path, query, token: token)
+        r?.method = method
+        if let body {
+            r?.headers["Content-Type"] = "application/json"
+            r?.body = body
+        }
+        r?.headers["Content-Length"] = String(body?.count ?? 0)
         return r
     }
+
+    private static func deviceQuery(_ id: String?) -> [(String, String)] { id.map { [("device_id", $0)] } ?? [] }
+
+    private static func validDevice(_ id: String?) -> Bool { id.map(isValidID) ?? true }
 
     /// Spotify ids are base-62. Anything else (empty, `../me`, `?x=`) must never reach a path or a body.
     public static func isValidID(_ id: String) -> Bool {
         !id.isEmpty && id.unicodeScalars.allSatisfy { $0.isASCII && CharacterSet.alphanumerics.contains($0) }
     }
-
-    /// `spotify:track:<id>`, opened with `UIApplication.open` when there is no active device.
-    public static func trackURI(_ id: String) -> URL? { !isValidID(id) ? nil : URL(string: "spotify:track:\(id)") }
 
     private static func api(_ path: String, _ items: [(String, String)] = [], token: String) -> HTTPRequestSpec? {
         LyricsHTTP.url(apiBase + path, items).map {

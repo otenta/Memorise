@@ -119,7 +119,7 @@ private struct LyricsHomeContent: View {
                 if tracks.isEmpty {
                     MessageCard(icon: "magnifyingglass", title: "No songs found", message: "Try the title and the artist.")
                 } else {
-                    TrackList(tracks: tracks, model: model)
+                    TrackList(tracks: tracks, context: .none, model: model)
                 }
             }
         }
@@ -135,7 +135,7 @@ private struct LyricsHomeContent: View {
             switch model.source {
             case .recent:
                 listState(model.recent, empty: ("clock", "Nothing played yet", "Songs you play in Spotify show up here."),
-                          reload: { await model.loadRecent(force: true) }) { TrackList(tracks: $0, model: model) }
+                          reload: { await model.loadRecent(force: true) }) { TrackList(tracks: $0, context: .none, model: model) }
             case .playlists:
                 listState(model.playlists, empty: ("music.note.list", "No playlists", "Playlists you create or follow show up here."),
                           reload: { await model.loadPlaylists(force: true) }) { playlists in
@@ -152,7 +152,7 @@ private struct LyricsHomeContent: View {
                 listState(model.liked, empty: ("heart", "No liked songs", "Songs you like in Spotify show up here."),
                           reload: { await model.loadLiked(force: true) }) { tracks in
                     VStack(spacing: 12) {
-                        TrackList(tracks: tracks, model: model)
+                        TrackList(tracks: tracks, context: model.context(for: .liked), model: model)
                         if model.likedNextOffset != nil {
                             LoadMoreRow(loading: model.loadingMoreLiked, identifier: "lyrics.loadMore") {
                                 await model.loadMoreLiked()
@@ -388,6 +388,8 @@ private struct TrackRow: View {
 
 struct TrackList: View {
     let tracks: [TrackInfo]
+    /// Where a tapped song is played from (P-13).
+    let context: PlayContext
     @Bindable var model: LyricsHomeViewModel
 
     var body: some View {
@@ -396,7 +398,7 @@ struct TrackList: View {
             ForEach(tracks.indices, id: \.self) { index in
                 let track = tracks[index]
                 Button {
-                    Task { await model.open(track, play: true) }
+                    Task { await model.open(track, play: true, context: context) }
                 } label: {
                     TrackRow(track: track)
                 }
@@ -469,7 +471,7 @@ private struct PlaylistTracksView: View {
                         if model.playlistTracks.isEmpty {
                             MessageCard(icon: "music.note", title: "Empty playlist", message: "There are no songs in this playlist.")
                         } else {
-                            TrackList(tracks: model.playlistTracks, model: model)
+                            TrackList(tracks: model.playlistTracks, context: .playlist(id: playlist.id), model: model)
                             if model.itemsNextOffset != nil {
                                 LoadMoreRow(loading: model.loadingMoreItems, identifier: "lyricsLoadMoreItems") {
                                     await model.loadMoreItems()
@@ -602,8 +604,8 @@ private struct MessageCard: View {
     let model = LyricsHomeViewModel(spotify: spotify, nowPlaying: NowPlayingMonitor(spotify: spotify))
     return ScrollView {
         VStack(spacing: 16) {
-            TrackList(tracks: Array(tracks.prefix(1)), model: model)
-            TrackList(tracks: tracks, model: model)
+            TrackList(tracks: Array(tracks.prefix(1)), context: .none, model: model)
+            TrackList(tracks: tracks, context: .none, model: model)
             LoadingRows()
         }
         .padding()
