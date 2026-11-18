@@ -33,17 +33,21 @@ private struct ReaderContent: View {
     let onShowLyrics: (TrackInfo) -> Void
     @State private var page = 0
 
-    /// What Spotify plays right now, when connected and known.
-    private var playback: SpotifyPlayback? {
-        guard env.spotify.isConnected else { return nil }
-        return env.nowPlaying.state.value ?? nil
+    /// The bar shows while Spotify is connected and the monitor has an answer (failed or loading: hidden).
+    private var barVisible: Bool {
+        guard env.spotify.isConnected, case .loaded = env.nowPlaying.state else { return false }
+        return true
     }
 
-    /// Spotify plays the open song: shows the header chip.
-    private var playingHere: SpotifyPlayback? { playback.flatMap { model.isShowing($0) ? $0 : nil } }
+    /// What Spotify plays right now; `nil` when nothing is.
+    private var playback: SpotifyPlayback? { env.nowPlaying.state.value ?? nil }
 
-    /// Spotify plays another song: shows the bottom bar.
-    private var playingElsewhere: SpotifyPlayback? { playback.flatMap { model.isShowing($0) ? nil : $0 } }
+    /// Changes whenever the bar's content does, to drive its transition.
+    private var barKey: String {
+        guard barVisible else { return "hidden" }
+        guard let playback else { return "nothing" }
+        return "\(model.isShowing(playback) ? "here" : "other")-\(playback.track.spotifyID)"
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -91,12 +95,27 @@ private struct ReaderContent: View {
         .animation(Theme.spring, value: model.toast)
         // After the overlay, so the toast sits above the bar instead of under it.
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if let other = playingElsewhere {
-                ReaderNowPlayingBar(playback: other) { onShowLyrics(other.track) }
+            VStack(spacing: 8) {
+                if let notice = env.nowPlaying.notice {
+                    PlayerNoticeBanner(
+                        notice: notice,
+                        onOpenSpotify: { Task { await env.spotify.openSpotifyApp() } },
+                        dismiss: { env.nowPlaying.dismissNotice() }
+                    )
+                    .padding(.horizontal, 16)
+                }
+                if barVisible {
+                    ReaderPlayerBar(
+                        playback: playback, isHere: playback.map(model.isShowing) ?? false, player: env.nowPlaying,
+                        onShowLyrics: onShowLyrics,
+                        onPlayThis: { Task { await env.nowPlaying.play(model.track, context: .none) } }
+                    )
                     .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
+                }
             }
         }
-        .animation(reduceMotion ? .easeInOut(duration: 0.2) : Theme.spring, value: playingElsewhere)
+        .animation(reduceMotion ? .easeInOut(duration: 0.2) : Theme.spring, value: barKey)
+        .animation(Theme.spring, value: env.nowPlaying.notice)
         // The home root stops its poll while the reader is on top, so the reader runs its own.
         .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
             guard env.spotify.isConnected, scenePhase == .active else { return }
@@ -127,11 +146,6 @@ private struct ReaderContent: View {
             }
             .frame(maxWidth: .infinity)
             .accessibilityElement(children: .combine)
-
-            if let here = playingHere {
-                ReaderPlayingChip(isPlaying: here.isPlaying)
-                    .transition(.opacity)
-            }
 
             if model.isAvailable {
                 PageIndicator(page: $page)
@@ -248,7 +262,7 @@ private struct StateMessage: View {
 }
 
 #if DEBUG
-@MainActor private func readerPreview(playing: SpotifyPlayback) -> some View {
+@MainActor private func readerPreview(playing: SpotifyPlayback?) -> some View {
     let env = AppEnvironment.preview()
     env.nowPlaying.previewNowPlaying(playing)
     return NavigationStack {
@@ -257,13 +271,15 @@ private struct StateMessage: View {
     .environment(env)
 }
 
-#Preview("Reader · same song (chip)") {
+#Preview("Reader · this song (controls)") {
     readerPreview(playing: SpotifyPlayback(
         track: TrackInfo(spotifyID: "x", title: "Spring Day", artists: ["BTS"]), isPlaying: true))
 }
 
-#Preview("Reader · other song (bar)") {
+#Preview("Reader · other song") {
     readerPreview(playing: SpotifyPlayback(
         track: TrackInfo(spotifyID: "y", title: "Dynamite", artists: ["BTS"]), isPlaying: false))
 }
+
+#Preview("Reader · nothing playing") { readerPreview(playing: nil) }
 #endif

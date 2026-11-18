@@ -79,6 +79,14 @@ private struct LyricsHomeContent: View {
     @ViewBuilder private var connectedContent: some View {
         NowPlayingCard(model: model).appearAnimation()
 
+        if let notice = env.nowPlaying.notice {
+            PlayerNoticeBanner(
+                notice: notice,
+                onOpenSpotify: { Task { await env.spotify.openSpotifyApp() } },
+                dismiss: { env.nowPlaying.dismissNotice() }
+            )
+        }
+
         if let notice = model.notice {
             NoticeBanner(text: notice) { model.dismissNotice() }
         }
@@ -248,6 +256,7 @@ private struct ConnectCard: View {
 }
 
 private struct NowPlayingCard: View {
+    @Environment(AppEnvironment.self) private var env
     @Bindable var model: LyricsHomeViewModel
 
     var body: some View {
@@ -264,31 +273,10 @@ private struct NowPlayingCard: View {
                     Image(systemName: "exclamationmark.triangle").foregroundStyle(Theme.amber)
                     Text(message).font(.subheadline).foregroundStyle(.secondary)
                     Spacer()
-                    refreshButton
                 }
             case let .loaded(playback):
-                if let track = playback?.track {
-                    HStack(spacing: 12) {
-                        ArtworkView(url: track.artworkURL, size: 56)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Label(playback?.isPlaying == false ? "Paused" : "Now playing",
-                                  systemImage: playback?.isPlaying == false ? "pause.fill" : "waveform")
-                                .font(.caption.weight(.semibold))
-                                .foregroundStyle(Theme.pink)
-                            Text(track.displayTitle).font(.headline).lineLimit(1)
-                            Text(track.artistLine).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
-                        }
-                        Spacer(minLength: 8)
-                        refreshButton
-                        Button("Open") { Task { await model.open(track, play: false) } }
-                            .font(.subheadline.weight(.bold))
-                            .padding(.horizontal, 16)
-                            .frame(minHeight: 44)
-                            .background(Subject.korean.gradient, in: Capsule())
-                            .foregroundStyle(.white)
-                            .buttonStyle(PressableStyle())
-                            .accessibilityIdentifier("lyrics.nowPlaying.open")
-                    }
+                if let playback {
+                    playing(playback)
                 } else {
                     HStack(spacing: 12) {
                         Image(systemName: "pause.circle").font(.title2).foregroundStyle(.secondary)
@@ -297,7 +285,6 @@ private struct NowPlayingCard: View {
                             Text("Start a song in Spotify, or pick one below.").font(.subheadline).foregroundStyle(.secondary)
                         }
                         Spacer()
-                        refreshButton
                     }
                 }
             }
@@ -308,17 +295,40 @@ private struct NowPlayingCard: View {
         .accessibilityIdentifier("lyrics.nowPlaying")
     }
 
-    private var refreshButton: some View {
-        Button {
-            Task { await model.refreshNowPlaying() }
-        } label: {
-            Image(systemName: "arrow.clockwise")
-                .font(.system(size: 15, weight: .bold))
-                .frame(width: 44, height: 44)
+    private func playing(_ playback: SpotifyPlayback) -> some View {
+        let track = playback.track
+        let player = env.nowPlaying
+        return VStack(spacing: 10) {
+            HStack(spacing: 12) {
+                ArtworkView(url: track.artworkURL, size: 56)
+                VStack(alignment: .leading, spacing: 2) {
+                    if player.switching {
+                        ProgressView().controlSize(.small)
+                    } else {
+                        Label(playback.isPlaying ? "Now playing" : "Paused",
+                              systemImage: playback.isPlaying ? "waveform" : "pause.fill")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Theme.pink)
+                    }
+                    Text(track.displayTitle).font(.headline).lineLimit(1)
+                    Text(track.artistLine).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                }
+                Spacer(minLength: 8)
+                Button("Open") { Task { await model.open(track, play: false) } }
+                    .font(.subheadline.weight(.bold))
+                    .padding(.horizontal, 16)
+                    .frame(minHeight: 44)
+                    .background(Subject.korean.gradient, in: Capsule())
+                    .foregroundStyle(.white)
+                    .buttonStyle(PressableStyle())
+                    .accessibilityIdentifier("lyrics.nowPlaying.open")
+            }
+            PlayerControls(
+                isPlaying: playback.isPlaying, disabled: player.commandInFlight, switching: player.switching,
+                onPrevious: { Task { await player.skipPrevious() } },
+                onToggle: { Task { await player.togglePlayPause() } },
+                onNext: { Task { await player.skipNext() } })
         }
-        .buttonStyle(PressableStyle(scale: 0.88))
-        .accessibilityLabel("Refresh now playing")
-        .accessibilityIdentifier("lyrics.nowPlaying.refresh")
     }
 }
 
@@ -618,12 +628,16 @@ private struct MessageCard: View {
 
 #Preview("Rows · dark") { rowsPreview(scheme: .dark) }
 
-#Preview("Paused") {
+@MainActor private func cardPreview(isPlaying: Bool) -> some View {
     let track = TrackInfo(spotifyID: "1", title: "Spring Day", titleKo: "봄날", artists: ["BTS"])
-    let spotify = SpotifyClient(initialState: .connected(displayName: "me"))
-    let monitor = NowPlayingMonitor(spotify: spotify)
-    let model = LyricsHomeViewModel(spotify: spotify, nowPlaying: monitor)
-    monitor.previewNowPlaying(SpotifyPlayback(track: track, isPlaying: false))
+    let env = AppEnvironment.preview()
+    let model = LyricsHomeViewModel(spotify: env.spotify, nowPlaying: env.nowPlaying)
+    env.nowPlaying.previewNowPlaying(SpotifyPlayback(track: track, isPlaying: isPlaying))
     return ScrollView { NowPlayingCard(model: model).padding() }
-        .auroraBackground(colors: Subject.korean.colors)
+        .auroraBackground(colors: Subject.korean.colors, animated: false)
+        .environment(env)
 }
+
+#Preview("Now playing") { cardPreview(isPlaying: true) }
+
+#Preview("Paused") { cardPreview(isPlaying: false) }

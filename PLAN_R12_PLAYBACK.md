@@ -47,7 +47,7 @@
 | Segment | Covers | Agent | Status | Notes |
 |---|---|---|---|---|
 | PC1 Player API: device pick, controls, context play, no auto-open | H1, H2, P-10, P-13 | implementor | ☑ | First |
-| PC2 Controls on the home card and the reader player bar | H1, P-11, P-12 | frontend | ☐ | After PC1 |
+| PC2 Controls on the home card and the reader player bar | H1, P-11, P-12 | frontend | ☑ | After PC1 |
 
 ---
 
