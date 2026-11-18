@@ -35,11 +35,11 @@
 
 | Segment | Covers | Status | Notes |
 |---|---|---|---|
-| S1 Coverage-first session composer | #1, #2, #3 | ☐ | Core. New `SessionComposer`, `DeckHistory`. Update PLAN.md §10.5 and §10.6. |
-| S2 Coverage numbers and session history wiring | #4 (data), #2/#3 (app wiring) | ☐ | App. Store extension, VM wiring and `DeckRowInfo.coverage`. |
+| S1 Coverage-first session composer | #1, #2, #3 | ☑ | Core. New `SessionComposer`, `DeckHistory`. Update PLAN.md §10.5 and §10.6. |
+| S2 Coverage numbers and session history wiring | #4 (data), #2/#3 (app wiring) | ☑ | App. Store extension, VM wiring and `DeckRowInfo.coverage`. |
 | F1 Coverage ring on Home | #4 (UI) | ☑ | Frontend. Also hides the "New per session" steppers (D2). |
-| C1 K-pop chorus phrases (+120) | #5 | ☐ | Content agent. Verified sources only. |
-| C2 K-drama everyday phrases (+100) | #5 | ☐ | Content agent, after C1. |
+| C1 K-pop chorus phrases (+120) | #5 | ☑ | Content agent. Verified sources only. |
+| C2 K-drama everyday phrases (+100) | #5 | ☑ | Content agent, after C1. |
 
 ---
 
