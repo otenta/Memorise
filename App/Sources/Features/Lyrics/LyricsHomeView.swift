@@ -51,7 +51,7 @@ private struct LyricsHomeContent: View {
                 .padding(.vertical, 12)
             }
             .scrollDismissesKeyboard(.interactively)
-            .auroraBackground(colors: Subject.korean.colors, intensity: 0.8)
+            .auroraBackground(colors: Subject.korean.colors, intensity: 0.8, running: model.path.isEmpty)
             // On the root, not the stack, so a pushed reader or playlist cancels the poll.
             .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
                 guard env.spotify.isConnected, scenePhase == .active else { return }
@@ -366,27 +366,6 @@ private struct SearchField: View {
 
 // MARK: - Lists
 
-private struct ArtworkView: View {
-    let url: String?
-    var size: CGFloat = 44
-
-    var body: some View {
-        AsyncImage(url: url.flatMap(URL.init(string:))) { phase in
-            switch phase {
-            case let .success(image): image.resizable().scaledToFill()
-            default:
-                ZStack {
-                    Subject.korean.gradient.opacity(0.35)
-                    Image(systemName: "music.note").foregroundStyle(.white.opacity(0.9))
-                }
-            }
-        }
-        .frame(width: size, height: size)
-        .clipShape(RoundedRectangle(cornerRadius: size * 0.2, style: .continuous))
-        .accessibilityHidden(true)
-    }
-}
-
 private struct TrackRow: View {
     let track: TrackInfo
 
@@ -413,7 +392,8 @@ struct TrackList: View {
 
     var body: some View {
         LazyVStack(spacing: 0) {
-            ForEach(Array(tracks.enumerated()), id: \.offset) { index, track in
+            ForEach(tracks.indices, id: \.self) { index in
+                let track = tracks[index]
                 Button {
                     Task { await model.open(track, play: true) }
                 } label: {
@@ -502,7 +482,7 @@ private struct PlaylistTracksView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 12)
         }
-        .auroraBackground(colors: Subject.korean.colors, intensity: 0.8)
+        .auroraBackground(colors: Subject.korean.colors, intensity: 0.8, running: model.path.last == .playlist(playlist))
         .navigationTitle(playlist.name)
         .navigationBarTitleDisplayMode(.inline)
         .task { await fetch() }

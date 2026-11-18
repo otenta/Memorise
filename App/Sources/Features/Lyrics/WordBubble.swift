@@ -5,6 +5,7 @@ import SwiftUI
 struct WordBubble: View {
     let token: LyricToken
     let state: GlossState
+    let line: LineGloss
     let onSpeak: () -> Void
     let onAdd: () -> Void
 
@@ -25,6 +26,7 @@ struct WordBubble: View {
                 }
             }
             meaning
+            lineSection
             HStack(spacing: 10) {
                 Button(action: onSpeak) {
                     Image(systemName: "speaker.wave.2.fill")
@@ -48,7 +50,7 @@ struct WordBubble: View {
             }
         }
         .padding(16)
-        .frame(minWidth: 220, maxWidth: 300, alignment: .leading)
+        .frame(minWidth: 220, maxWidth: 320, alignment: .leading)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("lyrics.bubble")
     }
@@ -74,16 +76,56 @@ struct WordBubble: View {
             Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
                 .font(.footnote).foregroundStyle(.secondary)
         case .noWordMeaning:
-            Text("No single-word meaning.").font(.footnote).foregroundStyle(.secondary)
+            Text("No single-word meaning: see the line below.").font(.footnote).foregroundStyle(.secondary)
+        }
+    }
+
+    /// What the whole line means (P-4), so a weak word translation still gives the sense.
+    @ViewBuilder private var lineSection: some View {
+        if line != .unavailable {
+            Divider()
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Line").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                switch line {
+                case let .genius(text):
+                    lineText(text, caption: "Translation: Genius")
+                case let .auto(text):
+                    lineText(text, caption: "Auto-translated")
+                case .pending:
+                    HStack(spacing: 8) {
+                        ProgressView()
+                        Text("Translating line…").font(.subheadline).foregroundStyle(.secondary)
+                    }
+                case .needsLanguagePack:
+                    Text("Meaning unavailable. Download Korean in Settings → Apps → Translate.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                case .unavailable:
+                    EmptyView()
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("lyrics.bubble.line")
+        }
+    }
+
+    private func lineText(_ text: String, caption: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(text).font(.body).fixedSize(horizontal: false, vertical: true)
+            Text(caption).font(.caption).foregroundStyle(.secondary)
         }
     }
 }
 
 #Preview("Bubble") {
     VStack(spacing: 20) {
-        WordBubble(token: .word(text: "보고", range: 0..<2), state: .pending, onSpeak: {}, onAdd: {})
-        WordBubble(token: .word(text: "너를", range: 0..<2), state: .auto("you"), onSpeak: {}, onAdd: {})
-        WordBubble(token: .word(text: "몰라", range: 0..<2), state: .needsLanguagePack, onSpeak: {}, onAdd: {})
+        WordBubble(token: .word(text: "보고", range: 0..<2), state: .pending, line: .pending, onSpeak: {}, onAdd: {})
+        WordBubble(
+            token: .word(text: "너를", range: 0..<2), state: .auto("you"),
+            line: .genius("I see you and I forget everything"), onSpeak: {}, onAdd: {})
+        WordBubble(
+            token: .word(text: "몰라", range: 0..<2), state: .noWordMeaning,
+            line: .auto("I don't know, I don't know"), onSpeak: {}, onAdd: {})
+        WordBubble(token: .word(text: "몰라", range: 0..<2), state: .needsLanguagePack, line: .needsLanguagePack, onSpeak: {}, onAdd: {})
     }
     .glassCard()
     .padding()

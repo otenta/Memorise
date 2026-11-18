@@ -5,6 +5,8 @@ import SwiftUI
 struct KoreanLyricsPage: View {
     @Environment(AppEnvironment.self) private var env
     let model: LyricsReaderViewModel
+    /// The token whose bubble is open. Held here so a token view keeps no state of its own.
+    @State private var selected: SelectedToken?
 
     var body: some View {
         ScrollView {
@@ -20,7 +22,16 @@ struct KoreanLyricsPage: View {
                     } else {
                         LyricFlowLayout(spacing: 7, rowSpacing: 4) {
                             ForEach(line.tokens) { token in
-                                LyricTokenView(readerToken: token, line: line, model: model)
+                                let mine = SelectedToken(line: line.id, token: token.id)
+                                LyricTokenView(
+                                    readerToken: token,
+                                    isPresented: Binding(
+                                        get: { selected == mine },
+                                        set: { if $0 { selected = mine } else if selected == mine { selected = nil } }
+                                    )
+                                ) {
+                                    bubble(for: token, in: line)
+                                }
                             }
                         }
                     }
@@ -39,38 +50,55 @@ struct KoreanLyricsPage: View {
         }
         .refreshable { await model.load(force: true) }
     }
+
+    /// Read only when the popover opens, so the token views never observe the gloss store.
+    private func bubble(for token: ReaderToken, in line: ReaderLine) -> some View {
+        WordBubble(
+            token: token.token, state: model.meaning(for: token.token), line: model.lineMeaning(for: line),
+            onSpeak: { env.speech.speak(token.text, rate: env.settings.speechRate) },
+            onAdd: {
+                selected = nil
+                model.adding = model.candidate(for: token.token, in: line)
+            }
+        )
+        .presentationCompactAdaptation(.popover)
+    }
 }
 
-/// One token: plain text, or a button that opens the bubble.
-private struct LyricTokenView: View {
-    @Environment(AppEnvironment.self) private var env
-    let readerToken: ReaderToken
-    let line: ReaderLine
-    let model: LyricsReaderViewModel
-    @State private var shown = false
+/// Which token's bubble is open: line id + token id.
+private struct SelectedToken: Equatable {
+    let line: Int
+    let token: Int
+}
 
-    private var token: LyricToken { readerToken.token }
+/// One token: plain text, or a button that opens the bubble. Reads nothing observable (PLAN_R10 LA3).
+private struct LyricTokenView<Bubble: View>: View {
+    let readerToken: ReaderToken
+    @Binding var isPresented: Bool
+    @ViewBuilder let bubble: () -> Bubble
 
     var body: some View {
-        switch token {
-        case let .plain(text):
-            Text(text).font(.title3).foregroundStyle(.secondary)
-        case let .word(text, _):
-            tappable(text, phrase: false)
-        case let .phrase(text, _, _):
-            tappable(text, phrase: true)
+        if readerToken.isTappable {
+            tappable(isPhrase: isPhrase)
+        } else {
+            Text(readerToken.text).font(.title3).foregroundStyle(.secondary)
         }
     }
 
-    private func tappable(_ text: String, phrase: Bool) -> some View {
-        let known = readerToken.isDeckHit
+    private var isPhrase: Bool {
+        if case .phrase = readerToken.token { return true }
+        return false
+    }
+
+    private func tappable(isPhrase phrase: Bool) -> some View {
+        let underline: Color = readerToken.isDeckHit ? Theme.pink : .secondary
         return Button {
-            shown = true
+            isPresented = true
         } label: {
-            Text(text)
+            Text(readerToken.text)
                 .font(.title3.weight(.medium))
                 .foregroundStyle(.primary)
-                .underline(known, pattern: .dot, color: Theme.pink)
+                .underline(true, pattern: .dot, color: underline)
                 .padding(.horizontal, phrase ? 6 : 0)
                 .padding(.vertical, 2)
                 .background {
@@ -81,16 +109,6 @@ private struct LyricTokenView: View {
         }
         .buttonStyle(PressableStyle(scale: 0.94))
         .accessibilityHint("Shows the meaning")
-        .popover(isPresented: $shown, attachmentAnchor: .rect(.bounds), arrowEdge: .bottom) {
-            WordBubble(
-                token: token, state: model.meaning(for: token),
-                onSpeak: { env.speech.speak(text, rate: env.settings.speechRate) },
-                onAdd: {
-                    shown = false
-                    model.adding = model.candidate(for: token, in: line)
-                }
-            )
-            .presentationCompactAdaptation(.popover)
-        }
+        .popover(isPresented: $isPresented, attachmentAnchor: .rect(.bounds), arrowEdge: .bottom, content: bubble)
     }
 }

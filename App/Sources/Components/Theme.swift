@@ -173,8 +173,10 @@ struct GlassCard: ViewModifier {
         let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
         content
             .background {
+                // The shadow hangs off the background shape alone, so a tall list isn't shadowed as one big layer.
                 shape.fill(.regularMaterial)
                     .overlay { if let tint { shape.fill(tint.opacity(0.08)) } }
+                    .shadow(color: (tint ?? .black).opacity(scheme == .dark ? 0.25 : 0.12), radius: 18, y: 8)
             }
             .overlay {
                 shape.strokeBorder(
@@ -185,7 +187,6 @@ struct GlassCard: ViewModifier {
                     lineWidth: 1
                 )
             }
-            .shadow(color: (tint ?? .black).opacity(scheme == .dark ? 0.25 : 0.12), radius: 18, y: 8)
     }
 }
 
