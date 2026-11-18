@@ -11,18 +11,21 @@ struct SessionLaunch: Identifiable {
 /// Per-deck stats line.
 struct DeckRowInfo: Equatable {
     var cardCount: Int
-    /// Share of pool cards whose last answer was correct (R8-S2); `nil` while the deck is new.
+    /// Share of pool cards whose last answer was correct (R8-S2). `nil` while the deck is new, and always `nil`
+    /// for decks that don't use coverage sessions (R9-UF2): those show an accuracy ring instead.
     var coverage: Double?
     var coveredCount: Int
     var accuracy: Double?
     var medianMs: Double?
     var lastSeen: Date?
 
-    static func make(poolKeys: [ItemKey], stats: [ItemKey: ItemStats]) -> DeckRowInfo {
+    /// Every number comes from the same cards: `poolKeys` (the deck's pool for its current options).
+    static func make(poolKeys: [ItemKey], stats: [ItemKey: ItemStats], usesCoverage: Bool) -> DeckRowInfo {
         var attempts = 0, correct = 0
         var times: [Double] = []
         var last: Date?
-        for s in stats.values where s.attempts > 0 {
+        for key in poolKeys {
+            guard let s = stats[key], s.attempts > 0 else { continue }
             attempts += s.attempts
             correct += s.correctCount
             if let t = s.ewmaResponseMs { times.append(t) }
@@ -30,7 +33,7 @@ struct DeckRowInfo: Equatable {
         }
         return DeckRowInfo(
             cardCount: poolKeys.count,
-            coverage: DeckCoverage.fraction(poolKeys: poolKeys, stats: stats),
+            coverage: usesCoverage ? DeckCoverage.fraction(poolKeys: poolKeys, stats: stats) : nil,
             coveredCount: DeckCoverage.coveredCount(poolKeys: poolKeys, stats: stats),
             accuracy: attempts > 0 ? Double(correct) / Double(attempts) : nil,
             medianMs: Statistics.median(times),
@@ -38,10 +41,17 @@ struct DeckRowInfo: Equatable {
         )
     }
 
+    /// No pool card has been answered yet.
+    var isNew: Bool { accuracy == nil }
+
+    /// What the tile's ring shows: coverage on coverage decks, otherwise accuracy.
+    var ringValue: Double? { coverage ?? accuracy }
+    var ringCaption: String { coverage != nil ? "covered" : "accuracy" }
+
     var text: String {
         guard let accuracy else { return "\(cardCount) cards · New" }
         var parts = ["\(cardCount) cards"]
-        if let coverage { parts.append("\(Fmt.percent(coverage)) covered") }
+        if let coverage { parts.append("\(Fmt.percentFloor(coverage)) covered") }
         parts.append("\(Fmt.percent(accuracy)) accuracy")
         if let medianMs { parts.append("median \(Fmt.seconds(medianMs))") }
         if let lastSeen { parts.append("last: \(Fmt.relative(lastSeen))") }
@@ -399,35 +409,47 @@ struct HomeView: View {
         result.reserveCapacity(decks.count)
         for deck in decks {
             let keys = env.cardKeys(for: deck, options: env.initialConfig(for: deck).options)
-            result[deck.id] = .make(poolKeys: keys, stats: all[deck.id] ?? [:])
+            result[deck.id] = .make(poolKeys: keys, stats: all[deck.id] ?? [:], usesCoverage: deck.usesCoverageSessions)
         }
         withAnimation(Theme.softSpring) { info = result }
     }
 }
 
-/// White ring showing how much of a deck is covered; a checkmark once fully covered.
-private struct CoverageRing: View {
-    let coverage: Double
+/// White ring on a deck tile: coverage (a checkmark only when every pool card is covered) or, for decks
+/// without coverage sessions, accuracy. Percentages round down, so 99.6 % never reads as 100 %.
+private struct DeckRing: View {
+    let info: DeckRowInfo
     let lineWidth: CGFloat
     let fontSize: CGFloat
 
     var body: some View {
-        let done = coverage >= 0.9999
-        ZStack {
-            RingGauge(value: coverage, colors: [.white, .white.opacity(0.7)], lineWidth: lineWidth)
-            if done {
-                Image(systemName: "checkmark")
-                    .font(.system(size: fontSize + 3, weight: .heavy))
-                    .foregroundStyle(.white)
-            } else {
-                Text(Fmt.percent(coverage))
-                    .font(.system(size: fontSize, weight: .heavy).monospacedDigit())
-                    .foregroundStyle(.white)
-                    .minimumScaleFactor(0.6)
-                    .contentTransition(.numericText(value: coverage))
+        if let value = info.ringValue {
+            let done = info.coverage != nil && info.cardCount > 0 && info.coveredCount == info.cardCount
+            ZStack {
+                RingGauge(value: value, colors: [.white, .white.opacity(0.7)], lineWidth: lineWidth)
+                if done {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: fontSize + 3, weight: .heavy))
+                        .foregroundStyle(.white)
+                } else {
+                    Text(Fmt.percentFloor(value))
+                        .font(.system(size: fontSize, weight: .heavy).monospacedDigit())
+                        .foregroundStyle(.white)
+                        .minimumScaleFactor(0.6)
+                        .contentTransition(.numericText(value: value))
+                }
             }
         }
-        .accessibilityIdentifier("deckCoverageRing")
+    }
+}
+
+extension View {
+    /// The tile is one accessibility element, so the ring's state is exposed here (R9-UF2 b).
+    fileprivate func deckTileAccessibility(_ deck: any Deck, info: DeckRowInfo?) -> some View {
+        accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(deck.title). \(deck.subtitle). \(info?.text ?? "")")
+            .accessibilityValue(info?.ringValue.map { "\(Fmt.percentFloor($0)) \(info?.ringCaption ?? "")" } ?? "")
+            .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -450,11 +472,11 @@ private struct DeckCard: View {
                         .lineLimit(2)
                 }
                 Spacer(minLength: 12)
-                if let info, let coverage = info.coverage {
+                if let info, info.ringValue != nil {
                     VStack(spacing: 2) {
-                        CoverageRing(coverage: coverage, lineWidth: 5, fontSize: 12)
+                        DeckRing(info: info, lineWidth: 5, fontSize: 12)
                             .frame(width: 50, height: 50)
-                        Text("covered")
+                        Text(info.ringCaption)
                             .font(.caption2)
                             .foregroundStyle(.white.opacity(0.8))
                     }
@@ -463,10 +485,11 @@ private struct DeckCard: View {
             HStack(spacing: 8) {
                 if let info {
                     chip("rectangle.stack.fill", "\(info.cardCount)")
-                    if info.coverage == nil {
+                    if info.isNew {
                         chip("sparkles", "New")
                     }
-                    if let a = info.accuracy { chip("checkmark.circle", Fmt.percent(a)) }
+                    // Accuracy is already the ring on decks without coverage.
+                    if info.coverage != nil, let a = info.accuracy { chip("checkmark.circle", Fmt.percent(a)) }
                     if let m = info.medianMs { chip("timer", Fmt.seconds(m)) }
                     if let last = info.lastSeen { chip("clock.arrow.circlepath", Fmt.relative(last)) }
                 } else {
@@ -499,9 +522,7 @@ private struct DeckCard: View {
                 .clipShape(shape)
                 .shadow(color: subject.accent.opacity(0.4), radius: 16, y: 10)
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(deck.title). \(deck.subtitle). \(info?.text ?? "")")
-        .accessibilityAddTraits(.isButton)
+        .deckTileAccessibility(deck, info: info)
     }
 
     private func chip(_ icon: String, _ text: String) -> some View {
@@ -526,8 +547,8 @@ private struct DeckTile: View {
             HStack(alignment: .top) {
                 badge
                 Spacer(minLength: 4)
-                if let coverage = info?.coverage {
-                    CoverageRing(coverage: coverage, lineWidth: 3.5, fontSize: 9)
+                if let info, info.ringValue != nil {
+                    DeckRing(info: info, lineWidth: 3.5, fontSize: 9)
                         .frame(width: 34, height: 34)
                 }
             }
@@ -555,7 +576,7 @@ private struct DeckTile: View {
                         .font(.system(size: 78))
                         .foregroundStyle(.white.opacity(0.13))
                         .rotationEffect(.degrees(-14))
-                        .offset(x: 20, y: info?.coverage == nil ? -6 : 34)
+                        .offset(x: 20, y: info?.ringValue == nil ? -6 : 34)
                 }
                 .overlay {
                     shape.fill(LinearGradient(colors: [.white.opacity(0.25), .clear], startPoint: .top, endPoint: .center))
@@ -564,17 +585,15 @@ private struct DeckTile: View {
                 .clipShape(shape)
                 .shadow(color: colors[0].opacity(0.35), radius: 12, y: 7)
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(deck.title). \(deck.subtitle). \(info?.text ?? "")")
-        .accessibilityAddTraits(.isButton)
+        .deckTileAccessibility(deck, info: info)
     }
 
     /// Card count, or "New" for never-practised decks.
     @ViewBuilder private var badge: some View {
         if let info {
             HStack(spacing: 4) {
-                Image(systemName: info.coverage == nil ? "sparkles" : "rectangle.stack.fill")
-                Text(info.coverage == nil ? "New · \(info.cardCount)" : "\(info.cardCount)")
+                Image(systemName: info.isNew ? "sparkles" : "rectangle.stack.fill")
+                Text(info.isNew ? "New · \(info.cardCount)" : "\(info.cardCount)")
             }
             .font(.caption2.weight(.bold).monospacedDigit())
             .foregroundStyle(.white)
@@ -624,21 +643,23 @@ extension Subject {
     HomeView().environment(AppEnvironment.preview())
 }
 
-#Preview("Coverage ring states") {
-    HStack(spacing: 20) {
-        ForEach([nil, 0.2, 1.0] as [Double?], id: \.self) { value in
+#Preview("Ring states") {
+    let states: [DeckRowInfo] = [
+        DeckRowInfo(cardCount: 664, coverage: 0.2, coveredCount: 133, accuracy: 0.8),
+        DeckRowInfo(cardCount: 664, coverage: 659.0 / 664, coveredCount: 659, accuracy: 0.9),
+        DeckRowInfo(cardCount: 664, coverage: 1.0, coveredCount: 664, accuracy: 0.95),
+        DeckRowInfo(cardCount: 40, coverage: nil, coveredCount: 0, accuracy: 0.74),
+    ]
+    HStack(spacing: 12) {
+        ForEach(states.indices, id: \.self) { i in
             ZStack {
                 LinearGradient(colors: [Theme.coral, Theme.pink], startPoint: .topLeading, endPoint: .bottomTrailing)
-                if let value {
-                    VStack(spacing: 2) {
-                        CoverageRing(coverage: value, lineWidth: 5, fontSize: 12).frame(width: 50, height: 50)
-                        Text("covered").font(.caption2).foregroundStyle(.white.opacity(0.8))
-                    }
-                } else {
-                    Label("New", systemImage: "sparkles").font(.caption.bold()).foregroundStyle(.white)
+                VStack(spacing: 2) {
+                    DeckRing(info: states[i], lineWidth: 5, fontSize: 12).frame(width: 50, height: 50)
+                    Text(states[i].ringCaption).font(.caption2).foregroundStyle(.white.opacity(0.8))
                 }
             }
-            .frame(width: 90, height: 110)
+            .frame(width: 80, height: 100)
             .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
     }

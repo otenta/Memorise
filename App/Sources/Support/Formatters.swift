@@ -13,6 +13,11 @@ enum Fmt {
     static func seconds(_ ms: Int) -> String { seconds(Double(ms)) }
 
     /// "87%".
+    /// Rounds down, so 99.6 % reads "99%" and only a true 100 % reads "100%" (R9-UF2).
+    static func percentFloor(_ v: Double) -> String {
+        "\(Int((v * 100).rounded(.down)))%"
+    }
+
     static func percent(_ v: Double?) -> String {
         guard let v else { return "–" }
         return "\(Int((v * 100).rounded()))%"
