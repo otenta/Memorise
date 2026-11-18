@@ -482,7 +482,16 @@ final class SessionViewModel {
         state = engine.state
         if case let .prompting(p) = state { prepare(p) }
         // Listen only while a prompt is visible (not during reveal / pause / playback).
-        if case .prompting = state { mic?.setListening(true) } else { mic?.setListening(false); micTimeoutTask?.cancel() }
+        if case .prompting = state {
+            if let mic {
+                // Spoken feedback ("Correct") may still be playing: the mic must not hear it as the next answer (R7-9f).
+                env.speech.stop()
+                mic.setListening(true)
+            }
+        } else {
+            mic?.setListening(false)
+            micTimeoutTask?.cancel()
+        }
     }
 
     private func apply(_ effects: [SessionEffect]) {

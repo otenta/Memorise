@@ -69,7 +69,7 @@
 | SF2 Short killed sessions are abandoned | R7-3 (P-1) | implementor | ☑ | Core |
 | SF3 `DeckHistory` is required | R7-6 | implementor | ☑ | Core + app call sites |
 | SF4 Review share grows with the backlog | R7-4 (O-1) | implementor | ☑ | Owner chose O-1 (a) |
-| SF5 Stop speech before arming the mic | R7-9f | implementor | ☐ | App |
+| SF5 Stop speech before arming the mic | R7-9f | implementor | ☑ | App |
 | SF6 Faster `Scheduler.select` | R7-7 | implementor | ☐ | Optional, last |
 | UF1 Paging rows and the "Paused" label | R8-7, R8-10k | frontend | ☐ | After LF5 + LF6 |
 | UF2 Rings and Home numbers | R7-5 (P-2), R7-9 a–d | frontend | ☐ | Independent |
