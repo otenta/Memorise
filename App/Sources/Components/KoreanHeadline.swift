@@ -89,14 +89,36 @@ struct WordFlowLayout: Layout {
         var scale: CGFloat
     }
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let p = place(width: proposal.width, subviews: subviews)
+    /// Per-layout cache (PLAN_R11 PA3): the words' ideal sizes, and the last few placements by proposed width.
+    /// SwiftUI sizes the headline several times per frame, often with the same width.
+    struct Cache {
+        var ideal: [CGSize]
+        var placements: [Int: Placement] = [:]
+        var order: [Int] = []
+    }
+
+    /// Placements kept per cache.
+    private static let cachedWidths = 4
+    /// Smallest scale tried, and the resolution of the search.
+    private static let minScale: CGFloat = 0.4
+    private static let scaleResolution: CGFloat = 0.025
+
+    func makeCache(subviews: Subviews) -> Cache {
+        Cache(ideal: subviews.map { $0.sizeThatFits(.unspecified) })
+    }
+
+    func updateCache(_ cache: inout Cache, subviews: Subviews) {
+        cache = makeCache(subviews: subviews)
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout Cache) -> CGSize {
+        let p = place(width: proposal.width, subviews: subviews, cache: &cache)
         let width = p.lines.map { lineWidth($0, p) }.max() ?? 0
         return CGSize(width: min(width, proposal.width ?? .infinity), height: height(p))
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let p = place(width: bounds.width, subviews: subviews)
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout Cache) {
+        let p = place(width: bounds.width, subviews: subviews, cache: &cache)
         var y = bounds.minY
         for line in p.lines {
             let lh = line.map { p.sizes[$0].height }.max() ?? 0
@@ -124,18 +146,43 @@ struct WordFlowLayout: Layout {
             + lineSpacing * CGFloat(max(0, p.lines.count - 1))
     }
 
-    /// Tries full size first, then steps down until the words fit in `maxLines`.
-    private func place(width: CGFloat?, subviews: Subviews) -> Placement {
-        let ideal = subviews.map { $0.sizeThatFits(.unspecified) }
-        guard let width, width.isFinite, width > 0 else {
-            return Placement(lines: [Array(subviews.indices)], sizes: ideal, scale: 1)
+    /// Full size when the words fit in `maxLines`, else the largest scale in `[minScale, 1]` that does
+    /// (binary search, ≤ 5 flows). A width ≤ 1 (an `HStack` probing with 0) returns one line at once.
+    private func place(width: CGFloat?, subviews: Subviews, cache: inout Cache) -> Placement {
+        guard let width, width.isFinite, width > 1 else {
+            return Placement(lines: [Array(subviews.indices)], sizes: cache.ideal, scale: 1)
         }
-        var scale: CGFloat = 1
-        while true {
-            let p = flow(width: width, ideal: ideal, scale: scale, subviews: subviews)
-            if p.lines.count <= maxLines || scale <= 0.4 { return p }
-            scale -= 0.05
+        let key = Int((width * 2).rounded())
+        if let hit = cache.placements[key] { return hit }
+        let result = search(width: width, ideal: cache.ideal, subviews: subviews)
+        Perf.event("headline.layout")
+        if cache.order.count >= Self.cachedWidths, let oldest = cache.order.first {
+            cache.placements[oldest] = nil
+            cache.order.removeFirst()
         }
+        cache.placements[key] = result
+        cache.order.append(key)
+        return result
+    }
+
+    private func search(width: CGFloat, ideal: [CGSize], subviews: Subviews) -> Placement {
+        let full = flow(width: width, ideal: ideal, scale: 1, subviews: subviews)
+        if full.lines.count <= maxLines { return full }
+        var best = flow(width: width, ideal: ideal, scale: Self.minScale, subviews: subviews)
+        if best.lines.count > maxLines { return best }
+        var lo = Self.minScale
+        var hi: CGFloat = 1
+        while hi - lo > Self.scaleResolution {
+            let mid = (lo + hi) / 2
+            let p = flow(width: width, ideal: ideal, scale: mid, subviews: subviews)
+            if p.lines.count <= maxLines {
+                best = p
+                lo = mid
+            } else {
+                hi = mid
+            }
+        }
+        return best
     }
 
     private func flow(width: CGFloat, ideal: [CGSize], scale: CGFloat, subviews: Subviews) -> Placement {

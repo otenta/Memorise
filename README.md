@@ -29,6 +29,18 @@ The Lyrics tab needs a Spotify Premium account and two free API credentials. Wit
 5. Copy `App/Config/Secrets.example.xcconfig` to `App/Config/Secrets.xcconfig` and fill in `SPOTIFY_CLIENT_ID` and `GENIUS_ACCESS_TOKEN`. That file is gitignored; never commit it.
 6. `xcodegen generate`, then build and run.
 
+## Debugging performance
+
+The app emits `os_signpost` intervals in Release builds, subsystem = the bundle id, category `perf`. In Instruments
+use the *os_signpost* instrument (or *Points of Interest* with the category added) and filter on `perf`.
+
+- `session.reveal`: from Reveal / choose / submit until the session state is updated.
+- `session.revealVisible`: from the reveal until the answer card's `.task` runs (answer on screen).
+- `session.nextPrompt`: from a grade until the next prompt's `.task` runs.
+- `speech.speak`, `speech.stop`: work on the speech queue (off the main thread).
+- `audio.activate`: audio session activation (off the main thread).
+- `headline.layout` (event): one per `WordFlowLayout` placement computed; cache hits don't emit.
+
 ## Hardware keyboard / page-turner pedal
 - Prompt: Space, Return, →, ↓, Page Down = Reveal · Esc = pause
 - Reveal: →, Page Down, Return = Correct · ←, Page Up, Backspace = Wrong

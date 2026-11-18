@@ -356,7 +356,10 @@ private struct SessionContent: View {
         .contentShape(Rectangle())
         .onTapGesture { if env.settings.tapAnywhereForOK { vm.ok() } }
         // Ear-training prompts start the timer themselves (when the second note sounds).
-        .task(id: p.presentationID) { if !vm.managesPromptTiming(p.card) { vm.promptDidAppear() } }
+        .task(id: p.presentationID) {
+            vm.promptViewDidAppear()
+            if !vm.managesPromptTiming(p.card) { vm.promptDidAppear() }
+        }
     }
 
     private func revealState(_ p: PresentedCard, responseMs: Int) -> some View {
@@ -401,6 +404,7 @@ private struct SessionContent: View {
             }
         }
         .task(id: phaseKey) {
+            vm.revealDidAppear()
             gradeEnabled = false
             let remaining = vm.gradeLockoutRemaining
             if remaining > .zero { try? await Task.sleep(for: remaining) }

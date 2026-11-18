@@ -1,6 +1,7 @@
 import Foundation
 import MemoriseCore
 import Observation
+import os
 
 /// An automatically checked answer (typed / choice) waiting on the reveal for Next.
 struct AutoAnswer: Hashable {
@@ -91,6 +92,9 @@ final class SessionViewModel {
     @ObservationIgnored private var micAnswerTask: Task<Void, Never>?
     @ObservationIgnored private var micFeedbackClearTask: Task<Void, Never>?
     @ObservationIgnored private var micAutoGradeTask: Task<Void, Never>?
+    /// Signpost intervals that end in the view (PLAN_R11 PA3): reveal → answer visible, grade → next prompt visible.
+    @ObservationIgnored private var revealVisibleInterval: OSSignpostIntervalState?
+    @ObservationIgnored private var nextPromptInterval: OSSignpostIntervalState?
     /// The current reveal came from the third wrong note: any grade is stored as wrong.
     @ObservationIgnored private var micForcedWrong = false
 
@@ -173,6 +177,13 @@ final class SessionViewModel {
             env.haptics.prepare()
             await startMicIfNeeded()
             apply(engine.start())
+            // Load the Korean voice and the audio session once the first prompt is up, not on the first reveal.
+            if deck.subject == .korean, env.speech.hasKoreanVoice {
+                Task { [env] in
+                    await Task.yield()
+                    env.speech.prewarm()
+                }
+            }
         } catch {
             loadError = error.localizedDescription
         }
@@ -193,9 +204,12 @@ final class SessionViewModel {
         guard let engine, case .prompting = engine.state, micAnswerTask == nil else { return }
         // Typed / choice prompts reveal through `submitTyped` / `choose` / `giveUp`.
         guard choices == nil, typedSpec == nil else { return }
-        engine.ok(countsTime: countsTime)
-        env.haptics.ok()
-        syncState()
+        beginRevealIntervals()
+        Perf.interval("session.reveal") {
+            engine.ok(countsTime: countsTime)
+            env.haptics.ok()
+            syncState()
+        }
         if case let .revealed(p, _) = state { ui.onReveal(p.card, ctx: context(presentationID: p.presentationID)) }
     }
 
@@ -213,8 +227,29 @@ final class SessionViewModel {
         micForcedWrong = false
         env.speech.stop()
         if haptic { env.haptics.grade(correct: correct) }
+        if let old = nextPromptInterval { Perf.end("session.nextPrompt", old) }
+        nextPromptInterval = Perf.begin("session.nextPrompt")
         apply(engine.grade(correct: correct))
         return true
+    }
+
+    private func beginRevealIntervals() {
+        if let old = revealVisibleInterval { Perf.end("session.revealVisible", old) }
+        revealVisibleInterval = Perf.begin("session.revealVisible")
+    }
+
+    /// The revealed answer is on screen (called from the view).
+    func revealDidAppear() {
+        guard let state = revealVisibleInterval else { return }
+        revealVisibleInterval = nil
+        Perf.end("session.revealVisible", state)
+    }
+
+    /// The next prompt is on screen (called from the view).
+    func promptViewDidAppear() {
+        guard let state = nextPromptInterval else { return }
+        nextPromptInterval = nil
+        Perf.end("session.nextPrompt", state)
     }
 
     func pause() {
@@ -310,10 +345,13 @@ final class SessionViewModel {
 
     private func reveal(_ engine: SessionEngine, _ answer: AutoAnswer) {
         // Per-answer mode: typed and choice reveals never feed the time EWMA.
-        engine.ok(countsTime: activeMode.countsTime)
-        autoAnswer = answer
-        env.haptics.grade(correct: answer.correct)
-        syncState()
+        beginRevealIntervals()
+        Perf.interval("session.reveal") {
+            engine.ok(countsTime: activeMode.countsTime)
+            autoAnswer = answer
+            env.haptics.grade(correct: answer.correct)
+            syncState()
+        }
         if case let .revealed(p, _) = state { ui.onReveal(p.card, ctx: context(presentationID: p.presentationID)) }
     }
 
@@ -482,11 +520,17 @@ final class SessionViewModel {
         state = engine.state
         if case let .prompting(p) = state { prepare(p) }
         // Listen only while a prompt is visible (not during reveal / pause / playback).
-        if case .prompting = state {
+        if case let .prompting(p) = state {
             if let mic {
-                // Spoken feedback ("Correct") may still be playing: the mic must not hear it as the next answer (R7-9f).
-                env.speech.stop()
-                mic.setListening(true)
+                // Spoken feedback ("Correct") may still be playing: the mic must not hear it as the next answer
+                // (R7-9f). Wait for the stop without blocking, then arm the mic if this prompt is still showing.
+                let id = p.presentationID
+                Task { [weak self, weak mic] in
+                    await self?.env.speech.stopAndWait()
+                    guard let self, let mic, self.mic === mic, case let .prompting(cur) = self.state,
+                          cur.presentationID == id else { return }
+                    mic.setListening(true)
+                }
             }
         } else {
             mic?.setListening(false)
