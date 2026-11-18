@@ -363,7 +363,7 @@ Synced/karaoke lyrics, playback controls in Memorise (play/pause/skip), romanisa
 | L1 Core models, tokenizer, lookup | implementor | ☑ | |
 | L2 Core parsers | implementor | ☑ | |
 | L3 Spotify auth + client | implementor | ☑ | |
-| L4 Lyrics service + cache | implementor | ☐ | |
+| L4 Lyrics service + cache | implementor | ☑ | |
 | L5 Bubble meanings | implementor | ☐ | |
 | L6 Lyrics tab + picker | frontend | ☐ | |
 | L7 Reader + bubble + English | frontend | ☐ | |

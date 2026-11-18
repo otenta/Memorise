@@ -10,6 +10,8 @@ struct SettingsView: View {
     @State private var resetTarget: ResetTarget?
     /// M5 K4: after reset-all, asked separately when the user has snippets.
     @State private var askDeleteSnippets = false
+    /// M6: confirms the lyrics cache was cleared.
+    @State private var clearedLyricsCache = false
     #if DEBUG && targetEnvironment(simulator)
     @State private var seeding = false
     #endif
@@ -159,6 +161,36 @@ struct SettingsView: View {
                     Text("Data")
                 } footer: {
                     Text("Export includes every session, attempt and item statistic.")
+                }
+
+                if env.spotify.state != .notConfigured {
+                    Section {
+                        if env.spotify.isConnected {
+                            Button(role: .destructive) {
+                                env.spotify.disconnect()
+                            } label: {
+                                SettingLabel("Disconnect Spotify", icon: "person.crop.circle.badge.xmark", colors: [Theme.rose, Theme.coral])
+                            }
+                            .foregroundStyle(.red)
+                            .accessibilityIdentifier("lyrics.disconnect")
+                        }
+                        Button(role: .destructive) {
+                            Task {
+                                await env.lyrics.cache.clearAll()
+                                clearedLyricsCache = true
+                            }
+                        } label: {
+                            SettingLabel("Clear lyrics cache", icon: "trash.fill", colors: [Theme.indigo, Theme.violet])
+                        }
+                        .foregroundStyle(.red)
+                        .accessibilityIdentifier("lyrics.clearCache")
+                    } header: {
+                        Text("Lyrics")
+                    } footer: {
+                        Text(clearedLyricsCache
+                            ? "Lyrics cache cleared."
+                            : "Lyrics are fetched when you open a song and kept on this device only. They are never exported.")
+                    }
                 }
 
                 #if DEBUG && targetEnvironment(simulator)

@@ -37,6 +37,8 @@ final class AppEnvironment {
     let settings: AppSettings
     /// Spotify sign-in and Web API for the Lyrics tab (M6).
     let spotify: SpotifyClient
+    /// Lyrics provider chain and on-device cache (M6).
+    let lyrics: LyricsService
 
     /// Card-pool sizes by deck and options (R5-2): Home and Setup only need the count, and building
     /// every pool on each `dataVersion` bump was ~90 ms of main-thread work. Cleared by `reloadCatalog()`.
@@ -63,9 +65,11 @@ final class AppEnvironment {
         deckReport: DeckLoadReport = DeckLoadReport(),
         userDeckStore: UserDeckStore = UserDeckStore(directory: nil),
         snippetStore: PersonalSnippetStore = PersonalSnippetStore(fileURL: nil),
-        spotify: SpotifyClient = SpotifyClient()
+        spotify: SpotifyClient = SpotifyClient(),
+        lyrics: LyricsService = LyricsService()
     ) {
         self.spotify = spotify
+        self.lyrics = lyrics
         self.userDeckStore = userDeckStore
         self.snippetStore = snippetStore
         self.catalog = catalog
