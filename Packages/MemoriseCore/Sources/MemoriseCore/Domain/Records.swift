@@ -31,11 +31,14 @@ public struct SessionRecord: Identifiable, Codable, Sendable, Hashable {
 
     /// Closes a session the app was killed in.
     ///
-    /// With ≥ 1 counted attempt: `.completed`, ended at the latest `shownAt + responseMs + gradeMs`.
-    /// Otherwise: `.abandoned`, ended at the last attempt's `shownAt` (or `startedAt`).
-    public func closedAfterInterruption(attempts: [Attempt]) -> SessionRecord {
+    /// With at least `minCounted` counted attempts: `.completed`, ended at the latest `shownAt + responseMs + gradeMs`.
+    /// Otherwise: `.abandoned`, ended at the last attempt's `shownAt` (or `startedAt`). The per-card stats written
+    /// during the session are kept either way; only the session's status changes.
+    public func closedAfterInterruption(
+        attempts: [Attempt], minCounted: Int = SchedulerConstants.standard.minCountedForKilledSession
+    ) -> SessionRecord {
         var r = self
-        if attempts.contains(where: \.isCounted) {
+        if attempts.filter(\.isCounted).count >= minCounted {
             r.status = .completed
             r.endedAt = attempts.map { $0.shownAt.addingTimeInterval(Double($0.responseMs + $0.gradeMs) / 1_000) }.max()
         } else {

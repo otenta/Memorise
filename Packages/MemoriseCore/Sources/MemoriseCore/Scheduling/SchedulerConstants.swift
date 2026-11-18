@@ -28,6 +28,9 @@ public struct SchedulerConstants: Sendable, Hashable {
     public var wrongGapSessions = 2...4
     /// Max fraction of a session's entries that are returning wrong cards while new material remains (R8-S1).
     public var reviewShare = 0.3
+    /// A killed session with fewer counted attempts than this is closed as abandoned, so it doesn't advance
+    /// "sessions since a miss" or become the baseline (R7-3).
+    public var minCountedForKilledSession = 5
     /// Minimum eligible pool size before introduction gating is relaxed.
     public var minEligiblePool = 6
     /// Grades arriving sooner than this after the reveal are ignored (guards against double-taps).

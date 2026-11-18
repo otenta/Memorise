@@ -77,7 +77,7 @@
   - `fresh` if all of its cards are `new`;
   - `partial` if some cards are `new` and the rest are `correct` (e.g. the ko→en direction is done but en→ko has never been shown);
   - `covered` if all of its cards are `correct`.
-- **Sessions since a miss:** the number of **completed** sessions of this deck whose `startedAt` is after the card's `lastWrongAt`. The session in which the card was missed started *before* the miss, so it does not count. Discarded sessions (R7-F2) leave no record, and killed sessions are not `.completed`, so neither counts.
+- **Sessions since a miss:** the number of **completed** sessions of this deck whose `startedAt` is after the card's `lastWrongAt`. The session in which the card was missed started *before* the miss, so it does not count. Discarded sessions (R7-F2) leave no record, and killed sessions with fewer than 5 counted cards are closed as `.abandoned` (R9-SF2), so neither counts.
 - **Wrong-card gap:** `gap = constants.wrongGapSessions.lowerBound + fnv1a("\(itemKey.raw)|\(lastWrongAt.timeIntervalSince1970)") % width`, giving 2, 3 or 4 by default. The gap is random per miss but **stable across launches**, so it needs no stored state. A `wrong` card is **due** when `sessionsSinceMiss >= gap - 1`. Example: missed in session 5 with gap 2 → not in session 6 → eligible from session 7.
 
 **Steps:**
@@ -126,7 +126,7 @@
 - **Both directions.** Core 1, both directions, 20 cards: 20 distinct entries, one card each. Session 2 shows 20 *other* entries while fresh ones remain. Each entry's second direction appears only after all fresh entries are used up.
 - **Fully covered deck.** If every card is `correct`, a session shows the least recently seen entries first and has no duplicates.
 - **Tiny deck.** A 5-entry deck in a 20-card session: falls back to F1 rounds after the 5 entries, with no crash and no empty session.
-- **Discarded and killed sessions** don't advance "sessions since a miss".
+- **Discarded sessions, and killed sessions with fewer than 5 counted cards** (`minCountedForKilledSession`, R9-SF2), don't advance "sessions since a miss".
 - **Music decks** (no ranks): the selection sequence is byte-identical to before S1 for the same seed.
 - **Persisted formats:** unchanged. `PersistedFormatCheck` passes untouched.
 

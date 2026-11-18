@@ -66,7 +66,7 @@
 | LF6 Playlist and playlist-item paging | R8-7 | implementor | ☑ | After LF5 (same VM) |
 | LF7 Lyrics robustness pass | R8-10 a b c e f h i j l | implementor | ☑ | App services |
 | SF1 Await the previous flush before `start()` | R7-2 | implementor | ☑ | App |
-| SF2 Short killed sessions are abandoned | R7-3 (P-1) | implementor | ☐ | Core |
+| SF2 Short killed sessions are abandoned | R7-3 (P-1) | implementor | ☑ | Core |
 | SF3 `DeckHistory` is required | R7-6 | implementor | ☐ | Core + app call sites |
 | SF4 Review share grows with the backlog | R7-4 (O-1) | implementor | ☐ | Owner chose O-1 (a) |
 | SF5 Stop speech before arming the mic | R7-9f | implementor | ☐ | App |
