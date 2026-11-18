@@ -276,8 +276,15 @@ struct UserEntryEditorView: View {
         UserDecks.EntryDraft(
             hangul: hangul, meanings: UserDecks.meanings(from: meanings), pos: pos, romanization: romanization,
             example: exampleKo.isEmpty && exampleEn.isEmpty ? nil : VocabEntry.Example(ko: exampleKo, en: exampleEn),
-            tags: UserDecks.meanings(from: tags)
+            tags: UserDecks.meanings(from: tags),
+            // Sources (e.g. "Heard in" a song) aren't shown here, but an edit must keep them.
+            sources: existingSources
         ).normalized
+    }
+
+    private var existingSources: [MediaRef] {
+        if case let .existing(e) = target { return e.sources }
+        return []
     }
 
     private func fill() {

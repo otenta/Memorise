@@ -41,6 +41,12 @@ final class AppSettings {
     var hapticsEnabled: Bool { didSet { store(hapticsEnabled, .hapticsEnabled) } }
     /// Typed/choice answers: move on after 0.8 s when exactly correct.
     var autoAdvanceOnCorrect: Bool { didSet { store(autoAdvanceOnCorrect, .autoAdvanceOnCorrect) } }
+    /// M6: the deck lyric words were last saved to (offered first next time). `nil` until the first save.
+    var lastLyricsDeckID: String? {
+        didSet {
+            if let id = lastLyricsDeckID { store(id, .lastLyricsDeckID) } else { defaults.removeObject(forKey: Key.lastLyricsDeckID.rawValue) }
+        }
+    }
 
     @ObservationIgnored private let defaults: UserDefaults
 
@@ -48,7 +54,7 @@ final class AppSettings {
         case noteNaming, solfegeVariant, leftHanded, highEOnTop, defaultMaxFret, showStringHint
         case playNoteOnReveal, noteVolume, dotLabels, showShapeHint, spokenMicFeedback
         case autoPlayPronunciation, speechRate, showRomanization, koreanVoiceHintShown
-        case tapAnywhereForOK, showTimer, hapticsEnabled, autoAdvanceOnCorrect
+        case tapAnywhereForOK, showTimer, hapticsEnabled, autoAdvanceOnCorrect, lastLyricsDeckID
     }
 
     init(defaults: UserDefaults = .standard) {
@@ -73,6 +79,7 @@ final class AppSettings {
         showTimer = bool(.showTimer, false)
         hapticsEnabled = bool(.hapticsEnabled, true)
         autoAdvanceOnCorrect = bool(.autoAdvanceOnCorrect, true)
+        lastLyricsDeckID = defaults.string(forKey: Key.lastLyricsDeckID.rawValue)
     }
 
     private func store(_ value: Any, _ key: Key) { defaults.set(value, forKey: key.rawValue) }

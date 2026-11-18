@@ -43,20 +43,23 @@ public enum UserDecks {
         public var romanization: String
         public var example: VocabEntry.Example?
         public var tags: [String]
+        /// "Heard in" references (e.g. a song, M6 lyrics). Not edited in the deck editor; kept on edit.
+        public var sources: [MediaRef]
 
         public init(hangul: String = "", meanings: [String] = [], pos: PartOfSpeech = .noun, romanization: String = "",
-                    example: VocabEntry.Example? = nil, tags: [String] = []) {
+                    example: VocabEntry.Example? = nil, tags: [String] = [], sources: [MediaRef] = []) {
             self.hangul = hangul
             self.meanings = meanings
             self.pos = pos
             self.romanization = romanization
             self.example = example
             self.tags = tags
+            self.sources = sources
         }
 
         public init(_ e: VocabEntry) {
             self.init(hangul: e.hangul, meanings: e.meanings, pos: e.partOfSpeech ?? .noun, romanization: e.romanization,
-                      example: e.example, tags: e.tags)
+                      example: e.example, tags: e.tags, sources: e.sources)
         }
 
         /// Trimmed copy (romanization lowercased, empty tags/meanings dropped).
@@ -78,7 +81,7 @@ public enum UserDecks {
             let d = normalized
             return VocabEntry(id: id, hangul: d.hangul, romanization: d.romanization, meanings: d.meanings,
                               pos: d.pos.rawValue, rank: rank, tags: d.tags, example: d.example,
-                              conj: UserDecks.inferredConj(hangul: d.hangul, pos: d.pos))
+                              conj: UserDecks.inferredConj(hangul: d.hangul, pos: d.pos), sources: d.sources)
         }
     }
 
@@ -149,7 +152,8 @@ public enum UserDecks {
         let ranked = entries.sorted { $0.rank < $1.rank }.enumerated().map { i, e in
             e.rank == i + 1 ? e : VocabEntry(id: e.id, hangul: e.hangul, romanization: e.romanization, meanings: e.meanings,
                                              pos: e.pos, rank: i + 1, tags: e.tags, hanja: e.hanja, example: e.example,
-                                             notes: e.notes, conj: e.conj, examples: e.examples)
+                                             notes: e.notes, conj: e.conj, examples: e.examples,
+                                             register: e.register, dialogue: e.dialogue, sources: e.sources)
         }
         return VocabDeckFile(schemaVersion: VocabDeckFile.currentSchemaVersion, deckId: file.deckId, title: file.title,
                              subtitle: file.subtitle, subject: file.subject, entries: ranked, nextEntryNumber: nextEntryNumber)
