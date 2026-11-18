@@ -192,7 +192,7 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
 - **Tokens:** the access token is kept in memory and the refresh token in the Keychain (`KeychainStore`, `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`). Refresh 60 s before expiry and on any 401. A failed refresh → state `.disconnected`, and the UI shows Connect again.
 - **Client ID:** from Info.plist key `SpotifyClientID`, filled from xcconfig (§5 L0). An empty value → the tab shows "Spotify isn't set up yet" with the setup steps from the README.
 - **Picker sources:**
-  - Now playing: `GET /me/player/currently-playing`, refreshed on appear, when the app becomes active, and with a manual refresh button. No polling timer.
+  - Now playing: `GET /me/player/currently-playing`, refreshed every 10 s while the Lyrics home or a reader is visible (sooner when the song is about to end), and stops when neither is (R10 LA4, `NowPlayingMonitor`). Also on appear, when the app becomes active, and with the manual refresh button.
   - Recent: `GET /me/player/recently-played?limit=50`, deduplicated by track id.
   - Playlists: `GET /me/playlists?limit=50` → `GET /playlists/{id}/items?limit=100`. Playlists the user doesn't own show "Spotify only shares songs from playlists you own", because `items` is absent.
   - Liked: `GET /me/tracks?limit=50`, with "Load more" by `offset`.

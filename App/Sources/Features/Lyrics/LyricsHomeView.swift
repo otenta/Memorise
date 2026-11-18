@@ -15,9 +15,15 @@ struct LyricsHomeView: View {
             }
         }
         .onAppear {
-            if model == nil { model = LyricsHomeViewModel(spotify: env.spotify) }
+            if model == nil { model = LyricsHomeViewModel(spotify: env.spotify, nowPlaying: env.nowPlaying) }
         }
     }
+}
+
+/// Restarts the now-playing poll when Spotify connects or disconnects, or the app goes to or from the foreground.
+struct NowPlayingWatchKey: Hashable {
+    let connected: Bool
+    let active: Bool
 }
 
 private struct LyricsHomeContent: View {
@@ -46,6 +52,11 @@ private struct LyricsHomeContent: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .auroraBackground(colors: Subject.korean.colors, intensity: 0.8)
+            // On the root, not the stack, so a pushed reader or playlist cancels the poll.
+            .task(id: NowPlayingWatchKey(connected: env.spotify.isConnected, active: scenePhase == .active)) {
+                guard env.spotify.isConnected, scenePhase == .active else { return }
+                await env.nowPlaying.watch()
+            }
             .navigationTitle("Lyrics")
             .navigationDestination(for: LyricsRoute.self) { route in
                 switch route {
@@ -60,9 +71,6 @@ private struct LyricsHomeContent: View {
         }
         .onChange(of: env.spotify.isConnected) { _, connected in
             if !connected { model.reset() }
-        }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .active, env.spotify.isConnected { Task { await model.refreshNowPlaying() } }
         }
     }
 
@@ -607,7 +615,8 @@ private struct MessageCard: View {
         TrackInfo(spotifyID: "1", title: "Spring Day", titleKo: "봄날", artists: ["BTS"]),
         TrackInfo(spotifyID: "2", title: "Supernova", artists: ["aespa"]),
     ]
-    let model = LyricsHomeViewModel(spotify: SpotifyClient(initialState: .connected(displayName: "me")))
+    let spotify = SpotifyClient(initialState: .connected(displayName: "me"))
+    let model = LyricsHomeViewModel(spotify: spotify, nowPlaying: NowPlayingMonitor(spotify: spotify))
     return ScrollView { TrackList(tracks: tracks, model: model).padding() }
         .auroraBackground(colors: Subject.korean.colors)
 }
@@ -615,8 +624,9 @@ private struct MessageCard: View {
 #Preview("Paused") {
     let track = TrackInfo(spotifyID: "1", title: "Spring Day", titleKo: "봄날", artists: ["BTS"])
     let spotify = SpotifyClient(initialState: .connected(displayName: "me"))
-    let model = LyricsHomeViewModel(spotify: spotify)
-    model.previewNowPlaying(SpotifyPlayback(track: track, isPlaying: false))
+    let monitor = NowPlayingMonitor(spotify: spotify)
+    let model = LyricsHomeViewModel(spotify: spotify, nowPlaying: monitor)
+    monitor.previewNowPlaying(SpotifyPlayback(track: track, isPlaying: false))
     return ScrollView { NowPlayingCard(model: model).padding() }
         .auroraBackground(colors: Subject.korean.colors)
 }

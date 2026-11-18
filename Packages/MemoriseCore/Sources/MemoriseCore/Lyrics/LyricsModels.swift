@@ -18,6 +18,12 @@ public enum LyricsConstants {
     public static let englishRequestBudget = 3
     /// A cached document without an English page is looked up again after this many days.
     public static let missingEnglishTTLDays = 7
+    /// "Now playing" is asked again this often while a screen that shows it is visible.
+    public static let nowPlayingPollSeconds = 10.0
+    /// Shortest wait before the next now-playing request, used when the song is about to end.
+    public static let nowPlayingMinPollSeconds = 2.0
+    /// Wait after a failed now-playing request.
+    public static let nowPlayingErrorPollSeconds = 30.0
     /// The lyrics cache keeps at most this many tracks; the least recently opened are deleted first.
     public static let cacheMaxEntries = 200
 }

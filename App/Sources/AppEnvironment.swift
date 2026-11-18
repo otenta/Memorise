@@ -41,6 +41,8 @@ final class AppEnvironment {
     let lyrics: LyricsService
     /// Word meanings for the lyrics bubble (M6).
     let glosses: GlossService
+    /// What Spotify is playing, polled by the Lyrics home and the reader (R10).
+    let nowPlaying: NowPlayingMonitor
 
     /// Card-pool sizes by deck and options (R5-2): Home and Setup only need the count, and building
     /// every pool on each `dataVersion` bump was ~90 ms of main-thread work. Cleared by `reloadCatalog()`.
@@ -77,6 +79,7 @@ final class AppEnvironment {
         self.spotify = spotify
         self.lyrics = lyrics
         self.glosses = GlossService(catalog: catalog, cache: lyrics.cache)
+        self.nowPlaying = NowPlayingMonitor(spotify: spotify)
         self.userDeckStore = userDeckStore
         self.snippetStore = snippetStore
         self.catalog = catalog

@@ -41,7 +41,6 @@ final class LyricsHomeViewModel {
     var source: LyricsSource = .recent
     var query = ""
 
-    private(set) var nowPlaying: LyricsLoad<SpotifyPlayback?> = .idle
     private(set) var recent: LyricsLoad<[TrackInfo]> = .idle
     private(set) var playlists: LyricsLoad<[SpotifyPlaylist]> = .idle
     private(set) var liked: LyricsLoad<[TrackInfo]> = .idle
@@ -66,10 +65,18 @@ final class LyricsHomeViewModel {
     @ObservationIgnored private var generation = 0
 
     @ObservationIgnored private let spotify: SpotifyClient
+    @ObservationIgnored private let monitor: NowPlayingMonitor
 
-    init(spotify: SpotifyClient) {
+    init(spotify: SpotifyClient, nowPlaying: NowPlayingMonitor) {
         self.spotify = spotify
+        monitor = nowPlaying
     }
+
+    /// What Spotify is playing. The state lives in the shared monitor (the reader shows it too).
+    var nowPlaying: LyricsLoad<SpotifyPlayback?> { monitor.state }
+
+    /// The ↻ button on the card.
+    func refreshNowPlaying() async { await monitor.refresh(showLoading: true) }
 
     var isSearching: Bool { !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
@@ -101,21 +108,6 @@ final class LyricsHomeViewModel {
         case .liked: await loadLiked(force: true); stale.remove(.liked)
         }
         staleSources.formUnion(stale)
-    }
-
-    func refreshNowPlaying() async {
-        let gen = generation
-        if nowPlaying.value == nil { nowPlaying = .loading }
-        do {
-            let playing = try await spotify.nowPlaying()
-            guard gen == generation else { return }
-            nowPlaying = .loaded(playing)
-        } catch is CancellationError {
-            return
-        } catch {
-            guard gen == generation else { return }
-            nowPlaying = .failed(Self.message(error))
-        }
     }
 
     func loadRecent(force: Bool = false) async {
@@ -182,7 +174,7 @@ final class LyricsHomeViewModel {
     /// Forgets everything the previous account loaded (Spotify was disconnected).
     func reset() {
         generation &+= 1
-        nowPlaying = .idle
+        monitor.reset()
         recent = .idle
         playlists = .idle
         liked = .idle
@@ -294,7 +286,7 @@ final class LyricsHomeViewModel {
             let outcome = await spotify.play(trackID: track.spotifyID)
             guard let self, gen == self.generation else { return }
             switch outcome {
-            case .playing: break
+            case .playing: self.monitor.refreshSoon()
             case .openedSpotify: self.notice = "Opened in Spotify."
             case .notPremium: self.notice = "Spotify needs Premium to start songs from here. Press play in Spotify."
             case let .failed(message): self.notice = message
@@ -303,11 +295,6 @@ final class LyricsHomeViewModel {
     }
 
     func dismissNotice() { notice = nil }
-
-    #if DEBUG
-    /// Previews only.
-    func previewNowPlaying(_ playback: SpotifyPlayback?) { nowPlaying = .loaded(playback) }
-    #endif
 
     func canReadItems(of playlist: SpotifyPlaylist) -> Bool { spotify.canReadItems(of: playlist) }
 

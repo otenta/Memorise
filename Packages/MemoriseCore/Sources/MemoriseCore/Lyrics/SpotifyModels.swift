@@ -150,13 +150,15 @@ public struct SpotifyPlaylist: Hashable, Sendable, Decodable {
 public struct SpotifyCurrentlyPlaying: Sendable, Decodable {
     public var item: SpotifyTrack?
     public var isPlaying: Bool
+    public var progressMs: Int?
 
-    private enum CodingKeys: String, CodingKey { case item, isPlaying = "is_playing" }
+    private enum CodingKeys: String, CodingKey { case item, isPlaying = "is_playing", progressMs = "progress_ms" }
 
     public init(from decoder: any Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         item = try? c.decodeIfPresent(SpotifyTrack.self, forKey: .item)
         isPlaying = (try? c.decodeIfPresent(Bool.self, forKey: .isPlaying)) ?? false
+        progressMs = try? c.decodeIfPresent(Int.self, forKey: .progressMs)
     }
 }
 
@@ -178,10 +180,25 @@ private struct SpotifyErrorBody: Decodable {
 public struct SpotifyPlayback: Hashable, Sendable {
     public var track: TrackInfo
     public var isPlaying: Bool
+    /// Where the song is, in milliseconds. Not persisted. `nil` when Spotify didn't say.
+    public var progressMs: Int?
 
-    public init(track: TrackInfo, isPlaying: Bool) {
+    public init(track: TrackInfo, isPlaying: Bool, progressMs: Int? = nil) {
         self.track = track
         self.isPlaying = isPlaying
+        self.progressMs = progressMs
+    }
+
+    /// Milliseconds until the song ends, or `nil` when the duration or the progress is unknown or ≤ 0.
+    public var remainingMs: Int? {
+        guard let progressMs, track.durationMs > 0 else { return nil }
+        let r = track.durationMs - progressMs
+        return r > 0 ? r : nil
+    }
+
+    /// What the Now playing card shows: the song and playing/paused. Progress alone is not a visible change.
+    public func sameCard(as other: SpotifyPlayback) -> Bool {
+        track.spotifyID == other.track.spotifyID && isPlaying == other.isPlaying
     }
 }
 
@@ -198,7 +215,7 @@ public enum SpotifyDecoder {
     public static func playback(_ data: Data) -> SpotifyPlayback? {
         guard !data.isEmpty, let p = try? JSONDecoder().decode(SpotifyCurrentlyPlaying.self, from: data),
               let track = p.item?.trackInfo() else { return nil }
-        return SpotifyPlayback(track: track, isPlaying: p.isPlaying)
+        return SpotifyPlayback(track: track, isPlaying: p.isPlaying, progressMs: p.progressMs)
     }
 
     /// Tracks of a `recently-played`, `me/tracks` or `playlists/{id}/items` page, in order, non-tracks skipped.
