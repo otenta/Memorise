@@ -80,8 +80,10 @@ final class LyricsReaderViewModel {
 
     func load(force: Bool = false) async {
         if !isAvailable { phase = .loading }
-        if track.titleKo == nil { track = await spotify.withKoreanTitle(track) }
-        switch await lyrics.lyrics(for: track, forceRefresh: force) {
+        let spotify = spotify
+        let (outcome, resolved) = await lyrics.lyrics(for: track, forceRefresh: force) { await spotify.koreanTitle(of: $0) }
+        track = resolved
+        switch outcome {
         case let .result(.available(doc)):
             document = doc
             tokenise()

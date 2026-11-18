@@ -168,7 +168,7 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
 ### 4.7 Cache (`LyricsCacheFile`, `LyricsCacheStore`)
 
 - One file per track: `Application Support/LyricsCache/<spotifyID>.json`.
-- Contents: `{ schemaVersion: 1, track: TrackInfo, result: "available" | "notAvailable", reason?, document?, glosses: { "<token>": "<meaning>" }, fetchedAt }`. Decoding is tolerant; an unreadable file is deleted and refetched.
+- Contents: `{ schemaVersion: 1, track: TrackInfo, koreanTitleChecked: Bool (optional, missing = false; the ko-KR title lookup was answered, so a fresh cached song makes no Spotify call), result: "available" | "notAvailable", reason?, document?, glosses: { "<token>": "<meaning>" }, fetchedAt }`. Decoding is tolerant; an unreadable file is deleted and refetched.
 - `notAvailable` entries expire after **7 days** (lyrics may appear later). Available entries never expire. **Pull to refresh** in the reader forces a refetch.
 - **Not in the data export** (copyright). Settings → Lyrics → **Clear lyrics cache**.
 

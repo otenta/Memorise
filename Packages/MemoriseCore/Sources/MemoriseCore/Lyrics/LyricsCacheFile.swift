@@ -14,8 +14,14 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     /// Machine glosses by token text (PLAN_M6 §4.8).
     public var glosses: [String: String]
     public var fetchedAt: Date
+    /// The `ko-KR` title lookup has been answered for this track (found or same), so it isn't repeated. Missing = false.
+    public var koreanTitleChecked: Bool
 
-    public init(track: TrackInfo, result: LyricsResult, glosses: [String: String] = [:], fetchedAt: Date) {
+    public init(
+        track: TrackInfo, result: LyricsResult, glosses: [String: String] = [:], fetchedAt: Date,
+        koreanTitleChecked: Bool = false
+    ) {
+        self.koreanTitleChecked = koreanTitleChecked
         schemaVersion = Self.currentSchemaVersion
         self.track = track
         self.glosses = glosses
@@ -33,7 +39,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, track, result, reason, document, glosses, fetchedAt
+        case schemaVersion, track, result, reason, document, glosses, fetchedAt, koreanTitleChecked
     }
 
     public init(from decoder: any Decoder) throws {
@@ -46,6 +52,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         glosses = (try? c.decodeIfPresent([String: String].self, forKey: .glosses)) ?? [:]
         let t = (try? c.decodeIfPresent(Double.self, forKey: .fetchedAt)) ?? 0
         fetchedAt = Date(timeIntervalSince1970: t)
+        koreanTitleChecked = (try? c.decodeIfPresent(Bool.self, forKey: .koreanTitleChecked)) ?? false
     }
 
     /// `fetchedAt` is stored as seconds since 1970, so no date strategy is needed.
@@ -58,6 +65,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         try c.encodeIfPresent(document, forKey: .document)
         try c.encode(glosses, forKey: .glosses)
         try c.encode(fetchedAt.timeIntervalSince1970, forKey: .fetchedAt)
+        try c.encode(koreanTitleChecked, forKey: .koreanTitleChecked)
     }
 
     /// The cached result, or `nil` when the file is unusable (unknown kind, or "available" with no document).

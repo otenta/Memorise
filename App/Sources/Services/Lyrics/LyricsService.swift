@@ -9,6 +9,15 @@ enum LyricsOutcome: Sendable {
     case failed(String)
 }
 
+/// Answer of the Spotify `ko-KR` title lookup (PLAN_M6 §4.4 step 1).
+enum KoreanTitleLookup: Sendable, Equatable {
+    case found(String)
+    /// The Korean title equals the title: nothing to store, and no need to ask again.
+    case same
+    /// The request failed: ask again next time.
+    case unknown
+}
+
 /// Finds Hangul lyrics and an English translation for a track, with an on-device cache (PLAN_M6 §4.4).
 /// Hangul: LRCLIB `get`, LRCLIB `search`, then Genius. English: Genius "English Translation" pages.
 /// Never throws for a missing translation. At most 7 requests for the Korean lyrics and 3 for the English page;
@@ -29,11 +38,31 @@ final class LyricsService: Sendable {
         self.now = now
     }
 
-    func lyrics(for track: TrackInfo, forceRefresh: Bool = false) async -> LyricsOutcome {
-        let cached = await cache.load(track.spotifyID)
+    /// `koreanTitle` is only called when the track has no Korean title, the cache doesn't already know it, and the
+    /// cached entry (if any) is stale or missing: opening a fresh cached song makes no Spotify call at all.
+    /// Returns the outcome and the track with its Korean title filled in.
+    func lyrics(
+        for incoming: TrackInfo, forceRefresh: Bool = false,
+        koreanTitle: @Sendable (TrackInfo) async -> KoreanTitleLookup
+    ) async -> (outcome: LyricsOutcome, track: TrackInfo) {
+        let cached = await cache.load(incoming.spotifyID)
+        var track = incoming
+        if track.titleKo == nil, let ko = cached?.track.titleKo { track.titleKo = ko }
         if !forceRefresh, let cached, cached.isFresh(now: now()), let result = cached.lyricsResult {
-            return .result(result)
+            return (.result(result), track)
         }
+        var checked = cached?.koreanTitleChecked == true || track.titleKo != nil
+        if !checked {
+            switch await koreanTitle(track) {
+            case let .found(ko): track.titleKo = ko; checked = true
+            case .same: checked = true
+            case .unknown: break
+            }
+        }
+        return (await fetch(track: track, cached: cached, koreanTitleChecked: checked), track)
+    }
+
+    private func fetch(track: TrackInfo, cached: LyricsCacheFile?, koreanTitleChecked: Bool) async -> LyricsOutcome {
         let run = Run(track: track, service: self)
         switch await run.execute() {
         case let .done(fetched):
@@ -45,7 +74,8 @@ final class LyricsService: Sendable {
                 result = .available(doc)
             }
             await cache.save(LyricsCacheFile(
-                track: track, result: result, glosses: cached?.glosses ?? [:], fetchedAt: now()))
+                track: track, result: result, glosses: cached?.glosses ?? [:], fetchedAt: now(),
+                koreanTitleChecked: koreanTitleChecked))
             return .result(result)
         case .offline:
             // A stale "not available" beats an error message when there is no connection.

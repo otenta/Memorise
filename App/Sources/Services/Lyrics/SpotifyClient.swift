@@ -160,13 +160,11 @@ final class SpotifyClient {
         return SpotifyDecoder.track(data)?.trackInfo()
     }
 
-    /// `track` plus its Korean title (PLAN_M6 §4.4 step 1). Failures leave the track as it was.
-    func withKoreanTitle(_ track: TrackInfo) async -> TrackInfo {
-        guard track.titleKo == nil, let ko = try? await self.track(id: track.spotifyID, language: "ko-KR"), ko.title != track.title
-        else { return track }
-        var t = track
-        t.titleKo = ko.title
-        return t
+    /// The Korean title of `track` (PLAN_M6 §4.4 step 1): `.same` when Spotify's `ko-KR` name equals the title,
+    /// `.unknown` when the request failed.
+    func koreanTitle(of track: TrackInfo) async -> KoreanTitleLookup {
+        guard let ko = try? await self.track(id: track.spotifyID, language: "ko-KR") else { return .unknown }
+        return ko.title == track.title || ko.title.isEmpty ? .same : .found(ko.title)
     }
 
     // MARK: Playback
