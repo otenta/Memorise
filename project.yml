@@ -2,7 +2,7 @@ name: Memorise
 options:
   bundleIdPrefix: com.example
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "18.0"
   createIntermediateGroups: true
   generateEmptyDirectories: true
 
@@ -32,6 +32,9 @@ targets:
       - path: App/Resources
     dependencies:
       - package: MemoriseCore
+    configFiles:
+      Debug: App/Config/Base.xcconfig
+      Release: App/Config/Base.xcconfig
     info:
       path: App/Info.plist
       properties:
@@ -43,6 +46,15 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         NSMicrophoneUsageDescription: Memorise listens to your guitar to check the note you play.
         UILaunchScreen: {}
+        # M6 Lyrics: values come from App/Config/Base.xcconfig (+ gitignored Secrets.xcconfig).
+        SpotifyClientID: $(SPOTIFY_CLIENT_ID)
+        GeniusAccessToken: $(GENIUS_ACCESS_TOKEN)
+        CFBundleURLTypes:
+          - CFBundleURLName: com.example.memorise.spotify
+            CFBundleURLSchemes:
+              - memorise-spotify
+        LSApplicationQueriesSchemes:
+          - spotify
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
         UISupportedInterfaceOrientations:

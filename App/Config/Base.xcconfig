@@ -1,0 +1,8 @@
+// Shared build settings for the Memorise app target (Debug and Release).
+// Secrets live in the gitignored Secrets.xcconfig; see README "Lyrics setup".
+
+SPOTIFY_CLIENT_ID =
+GENIUS_ACCESS_TOKEN =
+
+// Optional include: a missing file is fine (CI builds with empty values).
+#include? "Secrets.xcconfig"

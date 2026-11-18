@@ -20,6 +20,15 @@ See [PLAN.md](PLAN.md) for the full design.
 
 Core only: `cd Packages/MemoriseCore && swift build`.
 
+## Lyrics setup (M6)
+The Lyrics tab needs a Spotify Premium account and two free API credentials. Without them the tab shows "Spotify isn't set up yet" and the rest of the app is unaffected.
+1. Create a Spotify app at [developer.spotify.com](https://developer.spotify.com/dashboard) (choose **Web API**).
+2. Add the redirect URI `memorise-spotify://callback`.
+3. Under **User Management**, add the email of your Spotify account (Development Mode apps allow 5 users).
+4. Create a Genius API client at genius.com/api-clients. The form requires an **App Website URL** and a **Redirect URI**, but Memorise never uses Genius sign-in, so both are placeholders: website `https://github.com` (or your repo page) and redirect `https://example.com/callback`. Save, press **Generate Access Token** on the client's page and copy that token. Don't use the Client ID or Client Secret.
+5. Copy `App/Config/Secrets.example.xcconfig` to `App/Config/Secrets.xcconfig` and fill in `SPOTIFY_CLIENT_ID` and `GENIUS_ACCESS_TOKEN`. That file is gitignored; never commit it.
+6. `xcodegen generate`, then build and run.
+
 ## Hardware keyboard / page-turner pedal
 - Prompt: Space, Return, →, ↓, Page Down = Reveal · Esc = pause
 - Reveal: →, Page Down, Return = Correct · ←, Page Up, Backspace = Wrong

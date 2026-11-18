@@ -155,12 +155,8 @@ private struct ScrollAwareAurora: ViewModifier {
     }
 
     @ViewBuilder private func tracked(_ content: Content) -> some View {
-        if #available(iOS 18.0, *) {
-            content.onScrollPhaseChange { _, phase in
-                if scrolling != phase.isScrolling { scrolling = phase.isScrolling }
-            }
-        } else {
-            content
+        content.onScrollPhaseChange { _, phase in
+            if scrolling != phase.isScrolling { scrolling = phase.isScrolling }
         }
     }
 }
