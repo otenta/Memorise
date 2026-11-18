@@ -48,7 +48,7 @@ A new **Lyrics** tab. You connect Spotify once, pick a song, and it starts playi
 | L-D4 | iOS version | Owner's phone is on iOS 18+. **Deployment target is raised to iOS 18.0 for the whole app** (planner decision: single user, and it removes `@available` gating around the Translation framework). |
 | L-D5 | Word meanings in the bubble | **Our decks first** (curated meaning), then **Apple's on-device Translation** (ko→en) for anything else. |
 | L-D6 | No English translation found | Show **"English translation not available"**. No machine translation of whole lyrics. |
-| L-D7 | "Not available" rule | Based on the **lyrics**, not on Spotify genre: no lyrics, instrumental, or Hangul share below the threshold (§4.3) → "Lyrics not available for this track". |
+| L-D7 | "Not available" rule | Based on the **lyrics**, not on Spotify genre: no lyrics, instrumental, or too little Hangul (§4.3, R10 P-3) → "Lyrics not available for this track". |
 | L-D8 | Saved card content | Word + meaning + **the lyric line as the example** + a "Heard in" song reference. Kept on device only (same rule as M5 "My snippet"). |
 | L-D9 | Saving words | **＋ Add to deck** opens a sheet: pick an existing custom deck or **+ New deck…**. |
 | L-D10 | Lyric line too long or no English (found in L8) | **Relax the example rules for custom decks only**: `en` may be empty and `ko` may have up to 80 Hangul. Bundled decks keep both lines required and the 40 limit (segment L8b). |
@@ -126,9 +126,9 @@ public enum LyricToken: Hashable, Sendable {
 
 ### 4.3 Korean check (`KoreanLyricsCheck`)
 
-- `hangulShare(lines)` = Hangul syllables ÷ (Hangul syllables + Latin letters), ignoring section headers. Use the existing `Hangul.isSyllable`.
-- **Korean** when `hangulShare ≥ 0.25` **and** there are at least **20** Hangul syllables. The constant is `LyricsConstants.minHangulShare = 0.25`, chosen because many K-pop songs are half English.
-- Reference: an all-English song → 0.0 → not Korean. *Supernova*-style mixed lyrics (about 40 % Hangul) → Korean. A romanised-only page ("bogo sipda") → 0.0 → not Korean, so the chain tries the next provider.
+- **Korean** (R10 P-3) when there are at least **20** Hangul syllables (`LyricsConstants.minHangulSyllables`) on at least **4** lines (`LyricsConstants.minHangulLines`; section headers are ignored). There is no share threshold: a mostly English song with real Korean verses is a Korean song here. `hangulShare(lines)` stays as a diagnostic only.
+- Reference: an all-English song → 0 Hangul → not Korean. A song with one short Korean line → fails the line rule. *ANTIFRAGILE* (274 syllables on 24 lines, share 0.19) → Korean. A romanised-only page ("bogo sipda") → 0 Hangul → not Korean, so the chain tries the next hit or provider.
+- LRCLIB `search` hits are tried best first (`LRCLIBParser.rankedMatches`); the first one that passes this check wins, so a romanised copy never hides the Hangul one.
 
 ### 4.4 Finding the lyrics (`LyricsService`, provider chain)
 
@@ -168,7 +168,7 @@ Input: `TrackInfo`. Output: `LyricsResult`. Check the cache first (§4.7).
 ### 4.7 Cache (`LyricsCacheFile`, `LyricsCacheStore`)
 
 - One file per track: `Application Support/LyricsCache/<spotifyID>.json`.
-- Contents: `{ schemaVersion: 1, track: TrackInfo, koreanTitleChecked: Bool (optional, missing = false; the ko-KR title lookup was answered, so a fresh cached song makes no Spotify call), result: "available" | "notAvailable", reason?, document?, glosses: { "<token>": "<meaning>" }, fetchedAt }`. Decoding is tolerant; an unreadable file is deleted and refetched.
+- Contents: `{ schemaVersion: 1, track: TrackInfo, koreanTitleChecked: Bool (optional, missing = false; the ko-KR title lookup was answered, so a fresh cached song makes no Spotify call), koreanRule: Int (optional, missing = 0; the Korean-check rule version in force when written; a `notKorean` entry with an older rule is never fresh), result: "available" | "notAvailable", reason?, document?, glosses: { "<token>": "<meaning>" }, fetchedAt }`. Decoding is tolerant; an unreadable file is deleted and refetched.
 - `notAvailable` entries expire after **7 days** (lyrics may appear later). Available entries never expire. **Pull to refresh** in the reader forces a refetch.
 - **Not in the data export** (copyright). Settings → Lyrics → **Clear lyrics cache**.
 
@@ -254,7 +254,7 @@ Commit: `M6-L0: iOS 18 target, lyrics config and secrets`
 **Accept:** `xcodegen generate` and a build succeed with no `Secrets.xcconfig`. With a real file, `Bundle.main` returns both values. `git status` never shows `Secrets.xcconfig`.
 
 ### L1 — Core models, Korean check, tokenizer, phrase matcher, word lookup (implementor, core)
-**Files:** `Lyrics/LyricsModels.swift`, `KoreanLyricsCheck.swift`, `LyricsTokenizer.swift`, `PhraseMatcher.swift`, `WordLookup.swift`, plus a `LyricsConstants` enum (`minHangulShare = 0.25`, `minHangulSyllables = 20`, `notAvailableTTLDays = 7`).
+**Files:** `Lyrics/LyricsModels.swift`, `KoreanLyricsCheck.swift`, `LyricsTokenizer.swift`, `PhraseMatcher.swift`, `WordLookup.swift`, plus a `LyricsConstants` enum (`minHangulSyllables = 20`, `minHangulLines = 4`, `notAvailableTTLDays = 7`).
 Implements §4.2, §4.3 and §4.6. `ScreenshotWords.stripParticle` becomes `public` if it isn't already.
 
 Commit: `M6-L1: lyrics models, Korean check, tokenizer and word lookup`

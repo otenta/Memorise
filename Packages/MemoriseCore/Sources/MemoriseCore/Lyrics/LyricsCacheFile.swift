@@ -16,12 +16,15 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     public var fetchedAt: Date
     /// The `ko-KR` title lookup has been answered for this track (found or same), so it isn't repeated. Missing = false.
     public var koreanTitleChecked: Bool
+    /// `LyricsConstants.koreanRuleVersion` in force when this entry was written. Missing = 0.
+    public var koreanRule: Int
 
     public init(
         track: TrackInfo, result: LyricsResult, glosses: [String: String] = [:], fetchedAt: Date,
-        koreanTitleChecked: Bool = false
+        koreanTitleChecked: Bool = false, koreanRule: Int = LyricsConstants.koreanRuleVersion
     ) {
         self.koreanTitleChecked = koreanTitleChecked
+        self.koreanRule = koreanRule
         schemaVersion = Self.currentSchemaVersion
         self.track = track
         self.glosses = glosses
@@ -39,7 +42,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case schemaVersion, track, result, reason, document, glosses, fetchedAt, koreanTitleChecked
+        case schemaVersion, track, result, reason, document, glosses, fetchedAt, koreanTitleChecked, koreanRule
     }
 
     public init(from decoder: any Decoder) throws {
@@ -53,6 +56,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         let t = (try? c.decodeIfPresent(Double.self, forKey: .fetchedAt)) ?? 0
         fetchedAt = Date(timeIntervalSince1970: t)
         koreanTitleChecked = (try? c.decodeIfPresent(Bool.self, forKey: .koreanTitleChecked)) ?? false
+        koreanRule = (try? c.decodeIfPresent(Int.self, forKey: .koreanRule)) ?? 0
     }
 
     /// `fetchedAt` is stored as seconds since 1970, so no date strategy is needed.
@@ -66,6 +70,7 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
         try c.encode(glosses, forKey: .glosses)
         try c.encode(fetchedAt.timeIntervalSince1970, forKey: .fetchedAt)
         try c.encode(koreanTitleChecked, forKey: .koreanTitleChecked)
+        try c.encode(koreanRule, forKey: .koreanRule)
     }
 
     /// The cached result, or `nil` when the file is unusable (unknown kind, or "available" with no document).
@@ -81,6 +86,8 @@ public struct LyricsCacheFile: Hashable, Codable, Sendable {
     /// `notAvailableTTLDays`, and available entries without English for `missingEnglishTTLDays`.
     public func isFresh(now: Date) -> Bool {
         guard lyricsResult != nil else { return false }
+        // Rejected as "not Korean" under an older rule: look again, with no wait for the TTL.
+        if result == "notAvailable", reason == .notKorean, koreanRule < LyricsConstants.koreanRuleVersion { return false }
         let days: Int
         if result != "available" {
             days = LyricsConstants.notAvailableTTLDays

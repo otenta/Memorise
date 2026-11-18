@@ -2,11 +2,13 @@ import Foundation
 
 /// Tunables for the Lyrics feature (PLAN_M6 §4.3, §4.7).
 public enum LyricsConstants {
-    /// Minimum Hangul share (Hangul ÷ Hangul + Latin) for lyrics to count as Korean. Low on purpose:
-    /// many K-pop songs are half English.
-    public static let minHangulShare = 0.25
     /// Minimum number of Hangul syllables for lyrics to count as Korean.
     public static let minHangulSyllables = 20
+    /// Minimum number of lines (not section headers) that contain at least one Hangul syllable.
+    public static let minHangulLines = 4
+    /// Version of the "is it Korean" rule. "Not Korean" cache entries written under an older rule are stale.
+    /// The rule before R10 is version 0/1.
+    public static let koreanRuleVersion = 2
     /// How long a "not available" cache entry is trusted before it is fetched again.
     public static let notAvailableTTLDays = 7
     /// Requests for the Korean lyrics: 2 × LRCLIB get + 1 search + 2 × (Genius search + page). A unit may include

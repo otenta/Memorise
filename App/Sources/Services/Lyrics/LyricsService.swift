@@ -75,7 +75,7 @@ final class LyricsService: Sendable {
             }
             await cache.save(LyricsCacheFile(
                 track: track, result: result, glosses: cached?.glosses ?? [:], fetchedAt: now(),
-                koreanTitleChecked: koreanTitleChecked))
+                koreanTitleChecked: koreanTitleChecked, koreanRule: LyricsConstants.koreanRuleVersion))
             return .result(result)
         case .offline:
             // A stale "not available" beats an error message when there is no connection.
@@ -175,10 +175,16 @@ final class LyricsService: Sendable {
             if found == nil, !instrumental, !stop, let title = titles.first {
                 let f = await fetch(LRCLIBParser.searchRequest(title: title, artist: artist))
                 note(f)
-                if case let .ok(data) = f,
-                   let record = LRCLIBParser.bestMatch(LRCLIBParser.parseSearch(data), titles: titles, artist: artist, durationMs: track.durationMs) {
-                    if record.instrumental { instrumental = true } else if let lines = accept(LRCLIBParser.lines(from: record)) {
-                        found = (lines, "LRCLIB")
+                if case let .ok(data) = f {
+                    // Walk the ranked hits: a romanised copy fails `accept`, so the Hangul copy is still found.
+                    let ranked = LRCLIBParser.rankedMatches(
+                        LRCLIBParser.parseSearch(data), titles: titles, artist: artist, durationMs: track.durationMs)
+                    for record in ranked {
+                        if record.instrumental { instrumental = true; break }
+                        if let lines = accept(LRCLIBParser.lines(from: record)) {
+                            found = (lines, "LRCLIB")
+                            break
+                        }
                     }
                 }
             }

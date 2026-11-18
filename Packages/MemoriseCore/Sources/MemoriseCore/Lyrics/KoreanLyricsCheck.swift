@@ -2,31 +2,36 @@
 public enum KoreanLyricsCheck {
     /// Hangul syllables ÷ (Hangul syllables + Latin letters), ignoring section headers. 0 when there is neither.
     public static func hangulShare(_ lines: [LyricLine]) -> Double {
-        let (hangul, latin) = counts(lines)
+        let c = counts(lines)
+        let (hangul, latin) = (c.hangul, c.latin)
         let total = hangul + latin
         return total == 0 ? 0 : Double(hangul) / Double(total)
     }
 
-    /// Korean when the share reaches `minHangulShare` and there are at least `minHangulSyllables` syllables.
+    /// Korean when there are at least `minHangulSyllables` syllables on at least `minHangulLines` lines
+    /// (PLAN_R10 P-3). There is no share threshold: half-English K-pop still counts.
     public static func isKorean(_ lines: [LyricLine]) -> Bool {
-        let (hangul, latin) = counts(lines)
-        guard hangul >= LyricsConstants.minHangulSyllables else { return false }
-        return Double(hangul) / Double(hangul + latin) >= LyricsConstants.minHangulShare
+        let c = counts(lines)
+        return c.hangul >= LyricsConstants.minHangulSyllables && c.hangulLines >= LyricsConstants.minHangulLines
     }
 
-    private static func counts(_ lines: [LyricLine]) -> (hangul: Int, latin: Int) {
+    private static func counts(_ lines: [LyricLine]) -> (hangul: Int, latin: Int, hangulLines: Int) {
         var hangul = 0
         var latin = 0
+        var hangulLines = 0
         for line in lines where !line.isSectionHeader {
+            var lineHangul = 0
             for s in line.text.unicodeScalars {
                 if Hangul.isSyllable(s) {
-                    hangul += 1
+                    lineHangul += 1
                 } else if isLatinLetter(s) {
                     latin += 1
                 }
             }
+            hangul += lineHangul
+            if lineHangul > 0 { hangulLines += 1 }
         }
-        return (hangul, latin)
+        return (hangul, latin, hangulLines)
     }
 
     private static func isLatinLetter(_ s: Unicode.Scalar) -> Bool {

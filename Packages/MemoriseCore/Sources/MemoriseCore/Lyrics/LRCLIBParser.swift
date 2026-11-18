@@ -83,9 +83,9 @@ public enum LRCLIBParser {
         return ((try? JSONDecoder().decode([Lossy].self, from: data)) ?? []).compactMap(\.value)
     }
 
-    /// Best search hit: title and artist must match; among those the closest duration within ±3 s
-    /// (a hit without a duration is accepted last). `nil` when none qualifies.
-    public static func bestMatch(_ records: [LRCLIBRecord], titles: [String], artist: String, durationMs: Int) -> LRCLIBRecord? {
+    /// Search hits whose title and artist match, best first: the closest duration within ±3 s
+    /// (a hit without a duration comes last). Ties keep LRCLIB's order. Empty when none qualifies.
+    public static func rankedMatches(_ records: [LRCLIBRecord], titles: [String], artist: String, durationMs: Int) -> [LRCLIBRecord] {
         let seconds = Double(durationMs) / 1000
         let candidates = records.filter { r in
             titles.contains { TrackQuery.sameTitle($0, r.trackName) } && TrackQuery.sameArtist(artist, r.artistName)
@@ -95,11 +95,16 @@ public enum LRCLIBParser {
             let diff = abs(d - seconds)
             return diff <= durationToleranceSeconds ? diff : .infinity
         }
-        let scored = candidates.compactMap { r -> (LRCLIBRecord, Double)? in
-            guard let d = distance(r) else { return durationMs > 0 ? (r, 1000) : (r, 0) }
-            return d == .infinity ? nil : (r, d)
+        let scored = candidates.enumerated().compactMap { i, r -> (record: LRCLIBRecord, score: Double, index: Int)? in
+            guard let d = distance(r) else { return (r, durationMs > 0 ? 1000 : 0, i) }
+            return d == .infinity ? nil : (r, d, i)
         }
-        return scored.min { $0.1 < $1.1 }?.0
+        return scored.sorted { $0.score != $1.score ? $0.score < $1.score : $0.index < $1.index }.map(\.record)
+    }
+
+    /// Best search hit: `rankedMatches(…).first`.
+    public static func bestMatch(_ records: [LRCLIBRecord], titles: [String], artist: String, durationMs: Int) -> LRCLIBRecord? {
+        rankedMatches(records, titles: titles, artist: artist, durationMs: durationMs).first
     }
 
     /// Display lines from `plainLyrics`, else from `syncedLyrics` with its stamps stripped. `nil` when neither has text.
