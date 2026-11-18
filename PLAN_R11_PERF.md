@@ -18,7 +18,7 @@
 |---|---|---|---|
 | **G1** | The Lyrics tab (the song picker, not the reader) is extremely laggy. | **(a) One huge live blur.** `TrackList` and `PlaylistList` are a nested `LazyVStack` wrapped in **one** `.glassCard`. Its `.regularMaterial` background, gradient `strokeBorder` and shadow are sized to the **whole list**: 50 rows (Recent) is about 3,000 pt, and Liked after a few "load more" pages is 10,000–30,000 pt. A material is a live backdrop blur, so the GPU re-samples and re-blurs that whole layer every frame the content behind it changes. **(b) It changes every frame.** The tab's `AuroraBackground` animates at 30 fps whenever the list isn't being scrolled, and scrolling moves the blurred layer across it. So the blur work never stops, even while the screen is idle. The rest of the app uses glass cards only on small, fixed-size tiles, which is why only this tab feels slow. **(c)** `LoadingRows` runs a `repeatForever` opacity pulse on a material card (same cost while lists load). | **PA1** |
 | **G2** | Some translation bubbles are cramped and the top is almost cut off. | **(a) Wrong size measured.** The popover sizes itself to the bubble's *ideal* size. The bubble is `.frame(minWidth: 220, maxWidth: 320)`, and most of its `Text`s have no vertical `fixedSize`. Their ideal size is therefore measured as **one line**, the width is then clamped to 320, the text needs 2–3 lines, and the popover height is too small. The content is squeezed, and because the stack is centred the top is clipped. **(b) It grows after it opens.** The meaning and the line arrive after the bubble is shown (`.pending` → text), and a presented popover doesn't reliably grow. **(c) Fixed arrow direction.** `arrowEdge: .bottom` always puts the bubble *above* the word. For words near the top of the screen there's no room, so iOS shrinks it further. | **PA2** |
-| **G3** | Words and cards that show text sometimes take a while to appear. | Not reproducible from the code alone, so **PA3 measures first** and fixes the main-thread work we can already see: **(a)** `GlossService.catalogDidChange` rebuilds `WordLookup` over every Korean entry (about 3,000) **on the main actor**. `AppEnvironment.reloadCatalog()` calls it after every Add to deck or user-deck edit. **(b)** `reloadCatalog()` empties `cardKeysCache` completely, so the next Home `load()` regenerates the cards of **every** deck on the main actor, derived conjugation decks included, before any tile number can show. Tiles then animate in with `softSpring`, which looks like "loading". **(c)** `WordFlowLayout` (`KoreanHeadline`, on every Korean session card) has no layout cache. Each `sizeThatFits` and `placeSubviews` call re-measures every word and then tries up to 12 scales; each try re-measures `minimumScaleFactor` texts, which is CoreText's slow path. SwiftUI calls these several times per pass, so a long headline can take tens of ms before the card's text shows. | **PA3** |
+| **G3** | **Session cards:** the Korean words take a while to appear (owner confirmed the screen, 2026-11-18). | It happens on Korean cards and not music ones, because only Korean cards speak. All the speech and audio work runs **synchronously on the main actor**, right when a card should render. **(a) Every grade blocks.** `SessionViewModel.grade` calls `env.speech.stop()` → `AVSpeechSynthesizer.stopSpeaking(at: .immediate)`. The pronunciation that auto-played on reveal is usually still speaking, and an immediate stop blocks the calling thread while the speech engine tears down (often 50–300 ms). Only then is the next prompt rendered. **(b) Every reveal does speech work before the answer card's frame.** `reveal` calls `ui.onReveal` → `speech.speak`, which on the main thread runs `audio.ensurePlayback()` (`AVAudioSession.setCategory` and `setActive`, which block, on the first reveal) and `synthesizer.speak`. The first utterance loads the Korean voice synchronously, a long stall on the first card. **(c) `syncState`** calls `speech.stop()` again before arming the mic (R9-SF5). That's harmless for Korean (no mic), but it's the same blocking call. **(d) Layout cost:** `WordFlowLayout` (`KoreanHeadline`, on every Korean prompt and answer) has no layout cache. It re-measures every word, and up to 12 scale steps of `minimumScaleFactor` text, on each of SwiftUI's several sizing passes. The answer puts it in an `HStack` next to the speaker button, which adds more probing passes. **Quick owner check that confirms (a)/(b):** turn **Auto-play pronunciation** off in the deck's session setup. If the cards become instant, speech is the cause. | **PA3** (session), **PA4** (other main-thread work) |
 
 ### Decisions
 
@@ -36,7 +36,8 @@
 |---|---|---|
 | G1 a b c | **PA1** | frontend |
 | G2 a b c | **PA2** | frontend |
-| G3 a b c (+ measurement) | **PA3** | implementor |
+| G3 a–d (session cards) | **PA3** | implementor |
+| Other main-thread catalog work | **PA4** | implementor |
 
 ---
 
@@ -46,10 +47,10 @@
 |---|---|---|---|---|
 | PA1 Lyrics lists without a giant blur; static aurora | G1, P-7, P-8 | frontend | ☐ | Independent |
 | PA2 Bubble sizes itself correctly and opens where there's room | G2, P-9 | frontend | ☐ | After PA1 (same agent); different files |
-| PA3 Measure slow text; move catalog work off the main actor; cache the headline layout | G3 | implementor | ☐ | Independent of PA1/PA2 |
-| PA4 Follow-up fixes from the owner's trace | G3 | planner → agent | ☐ | Planned after the owner sends the PA3 trace numbers |
+| PA3 Session cards: speech and audio off the main thread; cached headline layout; signposts | G3 a–d | implementor | ☐ | Independent of PA1/PA2. **Do this first:** it's the owner's main complaint. |
+| PA4 Catalog work off the main actor | G3 (related) | implementor | ☐ | After PA3. Lower priority: stalls after Add to deck or editing a deck. |
 
-**Order:** PA1 → PA2 (frontend), with PA3 (implementor) in parallel. PA4 is written once the owner reports the trace.
+**Order:** PA3 → PA4 (implementor), in parallel with PA1 → PA2 (frontend).
 
 ---
 
@@ -124,73 +125,103 @@
 
 ---
 
-### PA3 · G3 · Measure slow text; move catalog work off the main actor; cache the headline layout
+### PA3 · G3 · Session cards: speech and audio off the main thread; cached headline layout
 
 **Agent:** implementor.
 
-**Commit:** `R11-PA3: perf signposts, off-main word lookup, keep card-key cache, cached headline layout`
+**Commit:** `R11-PA3: speech and audio session off the main thread, cached headline layout, perf signposts`
 
 **Files:**
-- `App/Sources/Services/Perf.swift` (**new**)
-- `App/Sources/AppEnvironment.swift`
-- `App/Sources/Services/Lyrics/GlossService.swift`
-- `App/Sources/Features/Lyrics/LyricsReaderViewModel.swift` (signposts only)
-- `App/Sources/Features/Home/HomeView.swift` (signposts only, in `load()`)
-- `App/Sources/Features/Session/SessionViewModel.swift` (signposts only)
+- `App/Sources/Services/SpeechService.swift`
+- `App/Sources/Services/AudioSessionCoordinator.swift` (wherever `AudioSessionCoordinator` lives)
+- `App/Sources/Features/Session/SessionViewModel.swift`
+- `App/Sources/Features/Session/SessionView.swift` (session start hook only)
 - `App/Sources/Components/KoreanHeadline.swift` (`WordFlowLayout` only)
+- `App/Sources/Services/Perf.swift` (**new**)
+- README "Debugging performance" (short list)
 
 **Steps:**
-1. **Signposts** (`Perf.swift`):
-   - `enum Perf { static let signposter = OSSignposter(subsystem: <app bundle id>, category: "perf") }`, plus a helper `Perf.interval(_ name: StaticString, _ body: () throws -> T) rethrows -> T` and an `async` twin.
-   - They're on in Release too (signposts cost almost nothing when not recorded).
-   - Intervals:
-     - `catalog.assemble` (in `reloadCatalog`)
-     - `gloss.lookupBuild`
-     - `home.load`, split into `home.stats` and `home.cardKeys`
-     - `reader.cache`, `reader.network`, `reader.lines`, `reader.glossPrepare`
-     - `session.nextPrompt` (from the grade to the next prompt state)
-   - Add one `Perf.signposter.emitEvent("headline.layout")` per `WordFlowLayout.place` call.
-2. **`WordLookup` off the main actor:**
-   - `GlossService.catalogDidChange(_:)` captures `catalog.vocabDecks` (`[VocabDeck]`; confirm it's `Sendable`, and if it isn't, capture the decks' entries and titles as a `Sendable` snapshot). It builds `WordLookup(decks:)` in `Task.detached(priority: .userInitiated)`, then assigns `lookup` on the main actor.
-   - A generation counter makes sure an older build never overwrites a newer one.
-   - After the swap, post the existing `dataVersion` change (or call a new `onLookupChanged` closure) so an open reader re-tokenises with the new lookup. The reader already re-tokenises on `env.dataVersion`, so make sure that bump happens **after** the swap, not before.
-   - `init` keeps the synchronous build (launch path, already measured as part of `catalog.assemble`).
-3. **Keep the card-key cache:** `reloadCatalog()` no longer empties `cardKeysCache`. It removes only the entries for decks whose cards can change:
-   - every user deck id;
-   - every derived deck whose sources include a user deck. Check `DeckCatalog.assemble`: if derived decks are built from bundled decks only, this set is empty.
-
-   Write the rule as a short comment that names the function the decision depends on.
-4. **`WordFlowLayout` cache:**
+1. **`SpeechService`: the main actor only enqueues.**
+   - Keep the class's public API (`speak`, `speakEnglish`, `stop`, `hasKoreanVoice`, `refreshVoices`) so no call site changes, except the one in step 4.
+   - Move the `AVSpeechSynthesizer` and every call on it (`speak`, `stopSpeaking`, `isSpeaking`) onto **one private serial `DispatchQueue`** (`qos: .userInitiated`), owned by a small `nonisolated final class SpeechEngine: @unchecked Sendable` that also is the delegate.
+   - The `@MainActor` facade:
+     - creates the `AVSpeechUtterance` on the main actor (cheap);
+     - records `pending` (the utterance plus `onFinish`) as today;
+     - `queue.async`'s the work and returns at once.
+   - Ordering is kept, because one serial queue runs every speak and stop in call order.
+   - Delegate callbacks (`didFinish` / `didCancel`) hop to the main actor as today. `finishPending` semantics are unchanged: `onFinish` runs on finish, on cancellation by a later `speak`/`stop`, or immediately with no voice.
+   - Use `stopSpeaking(at: .immediate)` on the queue as today.
+   - The voice objects (`AVSpeechSynthesisVoice`) are looked up once (as today), and `refreshVoices()` stays on the main actor.
+2. **Audio session activation off the main thread:** `AudioSessionCoordinator.ensurePlayback()` does `setCategory` and `setActive` on its own serial queue. Keep `mode` bookkeeping on the main actor, set optimistically before dispatch, and log failures as today.
+   - **Mic paths keep their order:** `beginRecording()` stays synchronous and `throws`, because the mic must know the session is ready. It must run after any queued playback activation, so it does `queue.sync` (it's called at session start, not per card).
+   - `deactivate()` dispatches to the same queue.
+3. **Warm up at session start** (`SessionView` `.task` at start, or `SessionViewModel.start`): when the deck is Korean **and** a Korean voice exists, call a new `speech.prewarm()`. It does `ensurePlayback()`, then on the speech queue speaks a single-space utterance with `volume = 0`, so the voice is loaded before the first reveal. It must not show up as speech or delay the first prompt. Run it after the first prompt is on screen, using `Task { await Task.yield(); … }`.
+4. **Mic arming waits without blocking** (keeps R9-SF5):
+   - Add `func stopAndWait() async` to `SpeechService`. It enqueues the stop and resumes when the queue has run it (a `CheckedContinuation` resumed from the queue).
+   - In `syncState`, the `.prompting` + mic branch becomes `Task { await env.speech.stopAndWait(); guard <still prompting the same presentationID> else { return }; mic.setListening(true) }`. The stale-presentation guard is needed because the state may have moved on during the await.
+   - All other `stop()` calls (grade, quit, pause) stay fire-and-forget.
+5. **`WordFlowLayout` cache:**
    - Use `Layout`'s `Cache` with `ideal: [CGSize]` (computed in `makeCache` and refreshed in `updateCache`) and `placements: [CGFloat: Placement]`, the last few widths, keyed by width rounded to 0.5 pt.
    - `sizeThatFits` and `placeSubviews` reuse a cached placement for the same width.
-   - Replace the linear 5 % scale walk with a **binary search** over `[0.4, 1]` to a 0.025 resolution (≤ 5 `flow` calls), taking the largest scale that fits `maxLines`. The result must equal the linear walk's within one 0.05 step. Check by eye on the existing "Korean headlines" preview.
-5. **Docs:** add the interval names to README "Debugging performance" (one short list), so the owner can find them in Instruments under *os_signpost*, category `perf`.
+   - A proposal width ≤ 1 (an `HStack` probing with 0) returns the single-line ideal at once, **without** running the scale search.
+   - Replace the linear 5 % scale walk with a **binary search** over `[0.4, 1]` to a 0.025 resolution (≤ 5 `flow` calls), taking the largest scale that fits `maxLines`. The lines must match the old walk's within one 0.05 step. Check by eye on the "Korean headlines" preview.
+6. **Signposts** (`Perf.swift`):
+   - `enum Perf { static let signposter = OSSignposter(subsystem: <bundle id>, category: "perf") }`, with `interval` helpers (sync and async). They're on in Release.
+   - Intervals:
+     - `session.reveal`: from `ok()`/`choose`/`submitTyped` until `syncState` returns, plus a `.task` in the revealed view that ends a `session.revealVisible` interval;
+     - `session.nextPrompt`: from `grade` until the next prompt's `.task(id: presentationID)` runs;
+     - `speech.speak`, `speech.stop` (on the queue);
+     - `audio.activate`.
+   - One `emitEvent("headline.layout")` per placement computed (not per cache hit).
+   - README: list the names, and where to find them in Instruments (*os_signpost*, category `perf`).
 
 **Acceptance:**
 - Tester:
-  - `WordFlowLayout` returns the same lines for the preview samples at widths 280, 320 and 390 as before the change (snapshot the line arrays through a small test-only helper if needed).
-  - After `catalogDidChange`, `GlossService.wordLookup` contains a word added to a user deck, and an older detached build finishing late doesn't replace a newer one.
-  - `reloadCatalog()` keeps the cached keys of a bundled deck (the same array instance or count, with no regeneration).
-- Owner on device:
-  - After saving a word from the reader, the reader and Home stay responsive. No freeze is visible.
-  - The headline of a long Korean prompt (e.g. "새해 복 많이 받으세요") appears with the card, with no visible delay.
-- **Owner trace for PA4:** one Instruments recording (template *Time Profiler*, plus the *os_signpost* and *Hitches* instruments) covering:
-  1. open the app → Home;
-  2. start a Korean session and answer 5 cards;
-  3. finish → Home;
-  4. Lyrics → open a song → add a word.
-
-  Send the planner the durations of the `perf` intervals, or the trace file. Every interval > 100 ms becomes a PA4 fix.
+  - `SpeechService` with a stub engine: `speak` then `stop` from the main actor return without waiting on the engine. `onFinish` is called exactly once for a speak that's cancelled by `stop`, by a later `speak`, or that finishes normally. With no voice it's called immediately.
+  - `stopAndWait` resumes after the queued stop has run.
+  - `WordFlowLayout`: the same line arrays as before for the preview samples at widths 280, 320 and 390. Width 0 returns a single line without searching.
+- Owner on device (Release build, **Auto-play pronunciation on**):
+  - Korean vocab session: tap **Reveal**, and the answer card with the Korean headline flips in immediately, even on the first card.
+  - Grade while the pronunciation is still speaking: the next Korean word appears immediately and the speech cuts off.
+  - In Instruments, `session.revealVisible` and `session.nextPrompt` are < 50 ms, and Xcode reports no hangs.
+  - Music mic decks: a spoken "Correct" is still never heard as the next answer (R9-SF5 is unchanged).
 
 ---
 
-### PA4 · G3 · Follow-up fixes from the trace
+### PA4 · G3 (related) · Catalog work off the main actor
 
-Planned after the owner sends PA3's trace. Placeholder only, nothing to implement yet.
+**Agent:** implementor. **After PA3** (it reuses `Perf`).
+
+**Commit:** `R11-PA4: build the word lookup off the main actor, keep the card-key cache`
+
+**Files:**
+- `App/Sources/AppEnvironment.swift`
+- `App/Sources/Services/Lyrics/GlossService.swift`
+
+**Steps:**
+1. **`WordLookup` off the main actor:**
+   - `GlossService.catalogDidChange(_:)` captures `catalog.vocabDecks` (`[VocabDeck]`; confirm it's `Sendable`, and if it isn't, capture a `Sendable` snapshot of entries and titles). It builds `WordLookup(decks:)` in `Task.detached(priority: .userInitiated)`, then assigns `lookup` on the main actor.
+   - A generation counter makes sure an older build never overwrites a newer one.
+   - Bump `env.dataVersion` (or call an `onLookupChanged` closure) **after** the swap, so an open reader re-tokenises with the new lookup.
+   - `init` keeps the synchronous build.
+   - Signpost: `gloss.lookupBuild`.
+2. **Keep the card-key cache:** `reloadCatalog()` no longer empties `cardKeysCache`. It removes only:
+   - user deck ids;
+   - derived decks whose sources include a user deck. Check `DeckCatalog.assemble`: if derived decks use bundled decks only, this set is empty.
+
+   Write the rule as a comment naming the function it depends on. Signposts: `catalog.assemble`, `home.load`.
+
+**Acceptance:**
+- Tester:
+  - After `catalogDidChange`, `wordLookup` finds a word just added to a user deck.
+  - A late, older build doesn't replace a newer one.
+  - `reloadCatalog()` keeps a bundled deck's cached keys.
+- Owner: saving a word from the reader, or editing a user deck, causes no visible freeze. Home deck numbers appear without a delay after a session.
 
 ---
 
 ## 5. Notes for the owner
 
 - PA1 and PA2 are the direct fixes for the laggy picker and the clipped bubbles.
-- For "text takes a while", PA3 removes the main-thread work visible in the code, but the exact screen wasn't certain. If you meant one specific place (Home tiles, session cards, the lyrics words, or the song rows), say which. The signposts will also show it in a trace.
+- PA3 is the fix for slow Korean session cards. Before it lands, you can confirm the cause: turn **Auto-play pronunciation** off in the deck's session setup. If the cards become instant, it's the speech work blocking the screen.
+- If session cards are still slow after PA3, send an Instruments trace with the `perf` signposts (README "Debugging performance"), and the planner will add a follow-up.
