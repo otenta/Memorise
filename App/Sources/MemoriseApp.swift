@@ -12,7 +12,7 @@ struct MemoriseApp: App {
     }
 }
 
-/// Root tab bar: Practice, Stats, Settings.
+/// Root tab bar: Practice, Lyrics, Stats, Settings.
 struct RootView: View {
     @Environment(AppEnvironment.self) private var env
     @Environment(\.scenePhase) private var scenePhase
@@ -23,6 +23,9 @@ struct RootView: View {
             HomeView()
                 .tabItem { Label("Practice", systemImage: "rectangle.stack") }
                 .tag(0)
+            LyricsHomeView()
+                .tabItem { Label("Lyrics", systemImage: "music.note.list") }
+                .tag(3)
             StatsView()
                 .tabItem { Label("Stats", systemImage: "chart.xyaxis.line") }
                 .tag(1)
