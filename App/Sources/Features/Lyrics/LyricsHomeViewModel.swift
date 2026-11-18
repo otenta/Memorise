@@ -41,7 +41,7 @@ final class LyricsHomeViewModel {
     var source: LyricsSource = .recent
     var query = ""
 
-    private(set) var nowPlaying: LyricsLoad<TrackInfo?> = .idle
+    private(set) var nowPlaying: LyricsLoad<SpotifyPlayback?> = .idle
     private(set) var recent: LyricsLoad<[TrackInfo]> = .idle
     private(set) var playlists: LyricsLoad<[SpotifyPlaylist]> = .idle
     private(set) var liked: LyricsLoad<[TrackInfo]> = .idle
@@ -51,6 +51,12 @@ final class LyricsHomeViewModel {
     /// One-line note after tapping a song (not Premium, Spotify opened, or a failure).
     private(set) var notice: String?
     private(set) var connectError: String?
+    /// A refresh failed while a list was already on screen: the list stays, this says why.
+    private(set) var listError: String?
+    /// Lists that weren't visible during the last refresh; each reloads once when it is opened.
+    private(set) var staleSources: Set<LyricsSource> = []
+    /// Bumped by `reset()`, so a request still in flight for the old account can't fill a list.
+    @ObservationIgnored private var generation = 0
 
     @ObservationIgnored private let spotify: SpotifyClient
 
@@ -77,63 +83,110 @@ final class LyricsHomeViewModel {
     // MARK: Loading
 
     func refreshAll() async {
+        listError = nil
         async let now: Void = refreshNowPlaying()
-        async let rec: Void = loadRecent()
+        async let rec: Void = loadRecent(force: true)
         _ = await (now, rec)
+        var stale: Set<LyricsSource> = [.playlists, .liked]
         switch source {
         case .recent: break
-        case .playlists: await loadPlaylists()
-        case .liked: await loadLiked()
+        case .playlists: await loadPlaylists(force: true); stale.remove(.playlists)
+        case .liked: await loadLiked(force: true); stale.remove(.liked)
         }
+        staleSources.formUnion(stale)
     }
 
     func refreshNowPlaying() async {
+        let gen = generation
         if nowPlaying.value == nil { nowPlaying = .loading }
         do {
-            nowPlaying = .loaded(try await spotify.nowPlaying())
+            let playing = try await spotify.nowPlaying()
+            guard gen == generation else { return }
+            nowPlaying = .loaded(playing)
         } catch is CancellationError {
             return
         } catch {
+            guard gen == generation else { return }
             nowPlaying = .failed(Self.message(error))
         }
     }
 
     func loadRecent(force: Bool = false) async {
         if !force, recent.value != nil { return }
-        recent = .loading
+        let gen = generation
+        if recent.value == nil { recent = .loading }
         do {
-            recent = .loaded(try await spotify.recent())
+            let tracks = try await spotify.recent()
+            guard gen == generation else { return }
+            recent = .loaded(tracks)
         } catch is CancellationError {
-            recent = .idle
+            if gen == generation, recent.value == nil { recent = .idle }
         } catch {
-            recent = .failed(Self.message(error))
+            guard gen == generation else { return }
+            fail(&recent, error)
         }
     }
 
     func loadPlaylists(force: Bool = false) async {
         if !force, playlists.value != nil { return }
-        playlists = .loading
+        let gen = generation
+        if playlists.value == nil { playlists = .loading }
         do {
-            playlists = .loaded(try await spotify.playlists())
+            let all = try await spotify.playlists()
+            guard gen == generation else { return }
+            playlists = .loaded(all)
+            staleSources.remove(.playlists)
         } catch is CancellationError {
-            playlists = .idle
+            if gen == generation, playlists.value == nil { playlists = .idle }
         } catch {
-            playlists = .failed(Self.message(error))
+            guard gen == generation else { return }
+            fail(&playlists, error)
         }
     }
 
     func loadLiked(force: Bool = false) async {
         if !force, liked.value != nil { return }
-        liked = .loading
+        let gen = generation
+        if liked.value == nil { liked = .loading }
         do {
             let page = try await spotify.liked(offset: 0)
+            guard gen == generation else { return }
             liked = .loaded(page.tracks)
             likedNextOffset = page.nextOffset
+            staleSources.remove(.liked)
         } catch is CancellationError {
-            liked = .idle
+            if gen == generation, liked.value == nil { liked = .idle }
         } catch {
-            liked = .failed(Self.message(error))
+            guard gen == generation else { return }
+            fail(&liked, error)
         }
+    }
+
+    /// A failed load replaces an empty list with the error, but never wipes a list already on screen.
+    private func fail<V>(_ load: inout LyricsLoad<V>, _ error: Error) {
+        if load.value == nil {
+            load = .failed(Self.message(error))
+        } else {
+            listError = Self.message(error)
+        }
+    }
+
+    /// Forgets everything the previous account loaded (Spotify was disconnected).
+    func reset() {
+        generation &+= 1
+        nowPlaying = .idle
+        recent = .idle
+        playlists = .idle
+        liked = .idle
+        likedNextOffset = nil
+        loadingMoreLiked = false
+        results = .idle
+        staleSources = []
+        listError = nil
+        notice = nil
+        connectError = nil
+        query = ""
+        path = []
     }
 
     func loadMoreLiked() async {
@@ -168,27 +221,34 @@ final class LyricsHomeViewModel {
     }
 
     func loadSource() async {
+        let stale = staleSources.contains(source)
         switch source {
-        case .recent: await loadRecent()
-        case .playlists: await loadPlaylists()
-        case .liked: await loadLiked()
+        case .recent: await loadRecent(force: stale)
+        case .playlists: await loadPlaylists(force: stale)
+        case .liked: await loadLiked(force: stale)
         }
     }
 
     // MARK: Opening a song
 
-    /// Starts the song in Spotify (unless it's already playing), then opens the reader.
+    /// Opens the reader at once, then starts the song in Spotify in the background (unless it is already playing).
+    /// A failed start is reported in `notice`; it never delays or blocks the reader.
     func open(_ track: TrackInfo, play: Bool) async {
         notice = nil
-        if play {
-            switch await spotify.play(trackID: track.spotifyID) {
+        path.append(.reader(track))
+        guard play else { return }
+        let spotify = spotify
+        let gen = generation
+        Task { [weak self] in
+            let outcome = await spotify.play(trackID: track.spotifyID)
+            guard let self, gen == self.generation else { return }
+            switch outcome {
             case .playing: break
-            case .openedSpotify: notice = "Opened in Spotify."
-            case .notPremium: notice = "Spotify needs Premium to start songs from here. Press play in Spotify."
-            case let .failed(message): notice = message
+            case .openedSpotify: self.notice = "Opened in Spotify."
+            case .notPremium: self.notice = "Spotify needs Premium to start songs from here. Press play in Spotify."
+            case let .failed(message): self.notice = message
             }
         }
-        path.append(.reader(track))
     }
 
     func dismissNotice() { notice = nil }

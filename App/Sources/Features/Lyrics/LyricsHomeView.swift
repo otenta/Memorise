@@ -58,6 +58,9 @@ private struct LyricsHomeContent: View {
         .task(id: env.spotify.isConnected) {
             if env.spotify.isConnected { await model.refreshAll() }
         }
+        .onChange(of: env.spotify.isConnected) { _, connected in
+            if !connected { model.reset() }
+        }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active, env.spotify.isConnected { Task { await model.refreshNowPlaying() } }
         }
@@ -243,8 +246,8 @@ private struct NowPlayingCard: View {
                     Spacer()
                     refreshButton
                 }
-            case let .loaded(track):
-                if let track {
+            case let .loaded(playback):
+                if let track = playback?.track {
                     HStack(spacing: 12) {
                         ArtworkView(url: track.artworkURL, size: 56)
                         VStack(alignment: .leading, spacing: 2) {

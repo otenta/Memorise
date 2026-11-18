@@ -117,8 +117,8 @@ final class SpotifyClient {
     // MARK: Songs
 
     /// `nil` when nothing is playing, or it isn't a song.
-    func nowPlaying() async throws -> TrackInfo? {
-        SpotifyDecoder.currentlyPlaying(try await get { SpotifyRequests.currentlyPlaying(token: $0) })
+    func nowPlaying() async throws -> SpotifyPlayback? {
+        SpotifyDecoder.playback(try await get { SpotifyRequests.currentlyPlaying(token: $0) })
     }
 
     /// Last 50 plays, repeats removed (most recent first).

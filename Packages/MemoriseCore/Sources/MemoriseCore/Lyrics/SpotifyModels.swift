@@ -174,6 +174,17 @@ private struct SpotifyErrorBody: Decodable {
     var reason: String?
 }
 
+/// What Spotify is playing: the song and whether it is playing or paused.
+public struct SpotifyPlayback: Hashable, Sendable {
+    public var track: TrackInfo
+    public var isPlaying: Bool
+
+    public init(track: TrackInfo, isPlaying: Bool) {
+        self.track = track
+        self.isPlaying = isPlaying
+    }
+}
+
 /// Decoding for every Spotify response body.
 public enum SpotifyDecoder {
     public static func token(_ data: Data) -> SpotifyToken? { try? JSONDecoder().decode(SpotifyToken.self, from: data) }
@@ -181,9 +192,13 @@ public enum SpotifyDecoder {
     public static func track(_ data: Data) -> SpotifyTrack? { try? JSONDecoder().decode(SpotifyTrack.self, from: data) }
 
     /// `nil` when nothing is playing (Spotify answers 204 with an empty body) or the item isn't a track.
-    public static func currentlyPlaying(_ data: Data) -> TrackInfo? {
-        guard !data.isEmpty, let p = try? JSONDecoder().decode(SpotifyCurrentlyPlaying.self, from: data) else { return nil }
-        return p.item?.trackInfo()
+    public static func currentlyPlaying(_ data: Data) -> TrackInfo? { playback(data)?.track }
+
+    /// Like `currentlyPlaying`, with the playing/paused flag.
+    public static func playback(_ data: Data) -> SpotifyPlayback? {
+        guard !data.isEmpty, let p = try? JSONDecoder().decode(SpotifyCurrentlyPlaying.self, from: data),
+              let track = p.item?.trackInfo() else { return nil }
+        return SpotifyPlayback(track: track, isPlaying: p.isPlaying)
     }
 
     /// Tracks of a `recently-played`, `me/tracks` or `playlists/{id}/items` page, in order, non-tracks skipped.
