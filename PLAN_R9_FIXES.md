@@ -37,7 +37,7 @@
 | R7-2 | A new session can read stats before the previous flush | **SF1** | implementor (app) |
 | R7-3 | Killed sessions count toward a missed card's gap | **SF2** | implementor (core) (planner decision P-1) |
 | R7-6 | `history: nil` silently means "all due" | **SF3** | implementor (core) |
-| R7-4 | 30 % review cap parks misses | **SF4** | implementor (core). **Blocked on owner decision O-1.** |
+| R7-4 | 30 % review cap parks misses | **SF4** | implementor (core), owner decision O-1 (a) |
 | R7-9 f | Mic "Correct" speech is still playing when the next prompt arms | **SF5** | implementor (app) |
 | R7-7 | O(pool) per pick | **SF6** (optional) | implementor (core) |
 | R7-5, R7-9 a b c d | Ring on every deck, "100 %" without ✓, unreachable identifier, mixed scopes, Stats coverage | **UF2** | frontend (planner decision P-2) |
@@ -50,7 +50,7 @@
 |---|---|---|---|
 | **P-1** (R7-3) | A killed session counts as `.completed` (and so toward "sessions since a miss" and the baseline) only when it has **≥ 5 counted attempts** (`SchedulerConstants.minCountedForKilledSession = 5`). With fewer, it is closed as `.abandoned`. No wire change: it's the same `SessionStatus` values, set by a different rule. Sessions already closed under the old rule stay as they are. | planner | decided |
 | **P-2** (R7-5) | The coverage ring is shown only for decks with `deck.usesCoverageSessions == true` (vocab, conjugation, Hangul reading). Every other deck (music, harmony, Particles) shows the old accuracy ring again. Particles keeping adaptive selection is recorded in §17 as a deviation from PLAN_R8 S1. | planner | decided |
-| **O-1** (R7-4) | How should missed words come back when the learner falls behind? **Recommended: (a)** `reviewShare` scales with the backlog: `0.3 + 0.3 × min(1, dueCount ÷ targetEntries)`, so it tops out at 0.6. Alternatives: (b) pause new words while more than *k* misses are due; (c) keep the 30 % cap and document that the gap is only a minimum. | **owner** | ☐ **pending.** SF4 does not start until this is answered. |
+| **O-1** (R7-4) | How should missed words come back when the learner falls behind? **Recommended: (a)** `reviewShare` scales with the backlog: `0.3 + 0.3 × min(1, dueCount ÷ targetEntries)`, so it tops out at 0.6. Alternatives: (b) pause new words while more than *k* misses are due; (c) keep the 30 % cap and document that the gap is only a minimum. | **owner** | ☑ **decided 2026-11-18: option (a).** |
 
 ---
 
@@ -68,7 +68,7 @@
 | SF1 Await the previous flush before `start()` | R7-2 | implementor | ☐ | App |
 | SF2 Short killed sessions are abandoned | R7-3 (P-1) | implementor | ☐ | Core |
 | SF3 `DeckHistory` is required | R7-6 | implementor | ☐ | Core + app call sites |
-| SF4 Review share grows with the backlog | R7-4 (O-1) | implementor | ⛔ | Blocked on O-1 |
+| SF4 Review share grows with the backlog | R7-4 (O-1) | implementor | ☐ | Owner chose O-1 (a) |
 | SF5 Stop speech before arming the mic | R7-9f | implementor | ☐ | App |
 | SF6 Faster `Scheduler.select` | R7-7 | implementor | ☐ | Optional, last |
 | UF1 Paging rows and the "Paused" label | R8-7, R8-10k | frontend | ☐ | After LF5 + LF6 |
@@ -436,7 +436,7 @@
 
 ---
 
-### SF4 · R7-4 (O-1) · Review share grows with the backlog ⛔ blocked on O-1
+### SF4 · R7-4 (O-1 = a) · Review share grows with the backlog
 
 **Commit:** `R9-SF4: review share scales with the due backlog`
 
@@ -445,7 +445,7 @@
 - `Scheduling/SchedulerConstants.swift`
 - PLAN.md §10.5 and §17
 
-**Steps (if the owner picks the recommended option (a)):**
+**Steps (owner chose option (a) on 2026-11-18):**
 1. **`SchedulerConstants`:** add `reviewShareMax = 0.6`. Keep `reviewShare = 0.3` as the floor.
 2. **In `SessionComposer.queue`:**
    - `share = reviewShare + (reviewShareMax - reviewShare) * min(1, Double(dueCount) / Double(max(1, targetEntries)))`.
@@ -453,9 +453,7 @@
    - Leave the rest of the ordering unchanged.
 3. **Docs:** in PLAN §10.5, state the formula, and that `wrongGapSessions` is the *minimum* gap.
 
-If the owner picks (b) or (c), the planner rewrites this segment before it starts.
-
-**Acceptance (option a):**
+**Acceptance:**
 - 0 due → 6 review slots of 20.
 - 10 due → 9.
 - ≥ 20 due → 12.
