@@ -234,7 +234,7 @@ Order: L0 → L1 → L2 → L3 → L4 → L5 → L6 → L7 → L8 → L9. Fronte
 ### L0 — Setup, config and decision log (implementor)
 **Files:** `project.yml`, new `App/Config/Base.xcconfig`, `App/Config/Secrets.example.xcconfig`, `.gitignore`, `README.md`, `PLAN.md` §4/§17.
 1. `deploymentTarget` `iOS: "18.0"` (L-D4). Remove any `#available(iOS 18…)` checks that become always-true.
-2. xcconfig: `Base.xcconfig` contains `#include? "Secrets.xcconfig"` and defaults `SPOTIFY_CLIENT_ID =` and `GENIUS_ACCESS_TOKEN =`. Attach it as the target's `configFiles` for Debug and Release. `Secrets.xcconfig` is gitignored; the example file has placeholders. CI builds with empty values.
+2. xcconfig: `Base.xcconfig` contains `#include? "Secrets.xcconfig"` and defaults `SPOTIFY_CLIENT_ID =` and `GENIUS_ACCESS_TOKEN =`. Attach it as the target's `configFiles` for Debug and Release. `Secrets.xcconfig` is gitignored; the example file has placeholders. CI builds with empty values. **`App/Config/Secrets.xcconfig` already exists on the owner's Mac with real values (2026-11-18). Never overwrite, print, `cat` or stage it, and never copy its values into any other file, log or commit.** The `.gitignore` rule is already committed (81be1dd).
 3. Info.plist properties:
    - `SpotifyClientID: $(SPOTIFY_CLIENT_ID)`
    - `GeniusAccessToken: $(GENIUS_ACCESS_TOKEN)`
