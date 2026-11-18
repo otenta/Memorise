@@ -50,6 +50,10 @@ final class AppEnvironment {
         let options: DeckOptions
     }
 
+    /// The previous session's final writes (`SessionRecorder.close()`). A new session awaits it before reading stats,
+    /// so it never starts from a store that is still being written (R7-2).
+    @ObservationIgnored var pendingFlush: Task<Void, Never>?
+
     /// Bumped whenever stored data changes (session finished, reset) so screens reload.
     private(set) var dataVersion = 0
     /// Non-nil when progress is not being persisted this launch.

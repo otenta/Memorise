@@ -152,6 +152,9 @@ final class SessionViewModel {
 
     func start() async {
         guard engine == nil else { return }
+        // The previous session may still be writing: wait for it before reading stats, baseline and history.
+        await env.pendingFlush?.value
+        guard engine == nil else { return }
         do {
             async let stats = env.store.stats(for: deck.id)
             async let previous = env.store.baselineOfLastCompletedSession(for: deck.id)
@@ -489,7 +492,10 @@ final class SessionViewModel {
             self.recorder = nil
             stopMic()
             let env = env
-            Task {
+            // Chained, so closes finish in order and the next `start()` waits for all of them.
+            let previous = env.pendingFlush
+            env.pendingFlush = Task {
+                await previous?.value
                 await recorder.close()
                 env.dataDidChange()
             }
