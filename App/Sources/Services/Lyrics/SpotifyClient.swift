@@ -29,9 +29,15 @@ struct SpotifyTrackPage: Sendable {
     var nextOffset: Int?
 }
 
-/// Songs of a playlist, or the 2026 rule that Spotify only shares them for playlists you own.
+/// One page of playlists. `nextOffset` is `nil` on the last page.
+struct SpotifyPlaylistPage: Sendable {
+    var playlists: [SpotifyPlaylist]
+    var nextOffset: Int?
+}
+
+/// Songs of a playlist (one page), or the 2026 rule that Spotify only shares them for playlists you own.
 enum PlaylistContents: Sendable {
-    case tracks([TrackInfo])
+    case tracks([TrackInfo], nextOffset: Int?)
     case notShared
 }
 
@@ -128,17 +134,23 @@ final class SpotifyClient {
         return (SpotifyDecoder.trackRows(data)?.tracks ?? []).filter { seen.insert($0.spotifyID).inserted }
     }
 
-    func playlists() async throws -> [SpotifyPlaylist] {
-        SpotifyDecoder.playlists(try await get { SpotifyRequests.playlists(token: $0, limit: 50) })?.playlists ?? []
+    /// 50 playlists from `offset`.
+    func playlists(offset: Int = 0) async throws -> SpotifyPlaylistPage {
+        let limit = 50
+        let data = try await get { SpotifyRequests.playlists(token: $0, limit: limit, offset: offset) }
+        let page = SpotifyDecoder.playlists(data)
+        return SpotifyPlaylistPage(playlists: page?.playlists ?? [], nextOffset: page?.next == nil ? nil : offset + limit)
     }
 
     /// Whether Spotify will list this playlist's songs for the signed-in user.
     func canReadItems(of playlist: SpotifyPlaylist) -> Bool { playlist.isReadable(by: userID) }
 
-    func playlistItems(id: String) async throws -> PlaylistContents {
-        let data = try await get { SpotifyRequests.playlistItems(id: id, token: $0, limit: 100) }
+    /// 100 songs from `offset`.
+    func playlistItems(id: String, offset: Int = 0) async throws -> PlaylistContents {
+        let limit = 100
+        let data = try await get { SpotifyRequests.playlistItems(id: id, token: $0, limit: limit, offset: offset) }
         guard let rows = SpotifyDecoder.trackRows(data) else { return .notShared }
-        return .tracks(rows.tracks)
+        return .tracks(rows.tracks, nextOffset: rows.next == nil ? nil : offset + limit)
     }
 
     func liked(offset: Int = 0) async throws -> SpotifyTrackPage {

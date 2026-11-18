@@ -51,6 +51,13 @@ final class LyricsHomeViewModel {
     /// One-line note after tapping a song (not Premium, Spotify opened, or a failure).
     private(set) var notice: String?
     private(set) var connectError: String?
+    private(set) var playlistsNextOffset: Int?
+    private(set) var loadingMorePlaylists = false
+    /// Songs of the open playlist loaded so far (all pages), and where the next page starts.
+    private(set) var playlistTracks: [TrackInfo] = []
+    private(set) var itemsNextOffset: Int?
+    private(set) var loadingMoreItems = false
+    @ObservationIgnored private var openPlaylistID: String?
     /// A refresh failed while a list was already on screen: the list stays, this says why.
     private(set) var listError: String?
     /// Lists that weren't visible during the last refresh; each reloads once when it is opened.
@@ -132,9 +139,10 @@ final class LyricsHomeViewModel {
         let gen = generation
         if playlists.value == nil { playlists = .loading }
         do {
-            let all = try await spotify.playlists()
+            let page = try await spotify.playlists(offset: 0)
             guard gen == generation else { return }
-            playlists = .loaded(all)
+            playlists = .loaded(page.playlists)
+            playlistsNextOffset = page.nextOffset
             staleSources.remove(.playlists)
         } catch is CancellationError {
             if gen == generation, playlists.value == nil { playlists = .idle }
@@ -180,6 +188,12 @@ final class LyricsHomeViewModel {
         liked = .idle
         likedNextOffset = nil
         loadingMoreLiked = false
+        playlistsNextOffset = nil
+        loadingMorePlaylists = false
+        playlistTracks = []
+        itemsNextOffset = nil
+        loadingMoreItems = false
+        openPlaylistID = nil
         results = .idle
         staleSources = []
         listError = nil
@@ -199,6 +213,43 @@ final class LyricsHomeViewModel {
             current += page.tracks.filter { !known.contains($0.spotifyID) }
             liked = .loaded(current)
             likedNextOffset = page.nextOffset
+        } catch is CancellationError {
+            return
+        } catch {
+            notice = Self.message(error)
+        }
+    }
+
+    func loadMorePlaylists() async {
+        guard let offset = playlistsNextOffset, !loadingMorePlaylists, var current = playlists.value else { return }
+        let gen = generation
+        loadingMorePlaylists = true
+        defer { loadingMorePlaylists = false }
+        do {
+            let page = try await spotify.playlists(offset: offset)
+            guard gen == generation else { return }
+            let known = Set(current.map(\.id))
+            current += page.playlists.filter { !known.contains($0.id) }
+            playlists = .loaded(current)
+            playlistsNextOffset = page.nextOffset
+        } catch is CancellationError {
+            return
+        } catch {
+            if gen == generation { notice = Self.message(error) }
+        }
+    }
+
+    /// Next page of the open playlist's songs.
+    func loadMoreItems() async {
+        guard let offset = itemsNextOffset, let id = openPlaylistID, !loadingMoreItems else { return }
+        loadingMoreItems = true
+        defer { loadingMoreItems = false }
+        do {
+            let contents = try await spotify.playlistItems(id: id, offset: offset)
+            guard openPlaylistID == id, case let .tracks(tracks, next) = contents else { return }
+            let known = Set(playlistTracks.map(\.spotifyID))
+            playlistTracks += tracks.filter { !known.contains($0.spotifyID) }
+            itemsNextOffset = next
         } catch is CancellationError {
             return
         } catch {
@@ -255,8 +306,19 @@ final class LyricsHomeViewModel {
 
     func canReadItems(of playlist: SpotifyPlaylist) -> Bool { spotify.canReadItems(of: playlist) }
 
+    /// First page of a playlist's songs. Also becomes the open playlist for `loadMoreItems()`.
     func playlistItems(id: String) async throws -> PlaylistContents {
-        try await spotify.playlistItems(id: id)
+        let contents = try await spotify.playlistItems(id: id, offset: 0)
+        openPlaylistID = id
+        switch contents {
+        case let .tracks(tracks, next):
+            playlistTracks = tracks
+            itemsNextOffset = next
+        case .notShared:
+            playlistTracks = []
+            itemsNextOffset = nil
+        }
+        return contents
     }
 
     // MARK: Messages

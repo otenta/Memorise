@@ -63,7 +63,7 @@
 | LF3 Request budget per phase; English gap retried | R8-5 | implementor | ☑ | After LF1 (same files) |
 | LF4 Cache first, Korean title persisted | R8-4 | implementor | ☑ | After LF3. The plan's only wire change. |
 | LF5 Picker lists refresh and reset; play doesn't block | R8-3, R8-10d, R8-10k | implementor | ☑ | App VM |
-| LF6 Playlist and playlist-item paging | R8-7 | implementor | ☐ | After LF5 (same VM) |
+| LF6 Playlist and playlist-item paging | R8-7 | implementor | ☑ | After LF5 (same VM) |
 | LF7 Lyrics robustness pass | R8-10 a b c e f h i j l | implementor | ☐ | App services |
 | SF1 Await the previous flush before `start()` | R7-2 | implementor | ☐ | App |
 | SF2 Short killed sessions are abandoned | R7-3 (P-1) | implementor | ☐ | Core |

@@ -464,7 +464,7 @@ private struct PlaylistTracksView: View {
                             icon: "lock.fill", title: "Not shared by Spotify",
                             message: "Spotify only shares songs from playlists you own.")
                             .accessibilityIdentifier("lyrics.playlist.notShared")
-                    case let .tracks(tracks):
+                    case let .tracks(tracks, _):
                         if tracks.isEmpty {
                             MessageCard(icon: "music.note", title: "Empty playlist", message: "There are no songs in this playlist.")
                         } else {
