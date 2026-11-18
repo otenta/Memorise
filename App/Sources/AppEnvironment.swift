@@ -35,6 +35,8 @@ final class AppEnvironment {
     @ObservationIgnored let haptics = Haptics()
     @ObservationIgnored let configStore: SessionConfigStore
     let settings: AppSettings
+    /// Spotify sign-in and Web API for the Lyrics tab (M6).
+    let spotify: SpotifyClient
 
     /// Card-pool sizes by deck and options (R5-2): Home and Setup only need the count, and building
     /// every pool on each `dataVersion` bump was ~90 ms of main-thread work. Cleared by `reloadCatalog()`.
@@ -60,8 +62,10 @@ final class AppEnvironment {
         configStore: SessionConfigStore = SessionConfigStore(),
         deckReport: DeckLoadReport = DeckLoadReport(),
         userDeckStore: UserDeckStore = UserDeckStore(directory: nil),
-        snippetStore: PersonalSnippetStore = PersonalSnippetStore(fileURL: nil)
+        snippetStore: PersonalSnippetStore = PersonalSnippetStore(fileURL: nil),
+        spotify: SpotifyClient = SpotifyClient()
     ) {
+        self.spotify = spotify
         self.userDeckStore = userDeckStore
         self.snippetStore = snippetStore
         self.catalog = catalog
@@ -100,6 +104,7 @@ final class AppEnvironment {
         )
         Task { [weak env] in await env?.loadUserDecks() }
         Task { [weak env] in await env?.loadPersonalSnippets() }
+        Task { [weak env] in await env?.spotify.restore() }
         Task { [weak env] in
             let status = await store.status
             guard !status.persistent else { return }
